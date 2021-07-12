@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutube/models/models.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -24,7 +25,9 @@ class FTVideo extends StatelessWidget {
             children: [
               AspectRatio(
                 aspectRatio: 16 / 9,
-                child: Container(child: Placeholder()),
+                child: CachedNetworkImage(
+                  imageUrl: video.thumbnailUrl,
+                ),
               ),
               Positioned.fill(
                 child: Align(
@@ -63,30 +66,17 @@ class FTVideo extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                        margin: EdgeInsets.only(right: 2),
-                        child: Text(
-                          video.owner,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
+                    secLabel(
+                      secColor: SecColor.dark,
+                      label: video.owner,
                     ),
                   ],
                 ),
               ),
-              iconWithLabel(
-                icon: MdiIcons.eye,
-                label: video.views.formatNumber,
+              secLabel(
+                label: video.views.formatNumber + " views",
               ),
-              iconWithLabel(
-                icon: MdiIcons.timer,
+              secLabel(
                 label: timeago.format(video.date),
               ),
             ],

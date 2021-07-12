@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutube/models/models.dart';
 import 'package:flutube/screens/screens.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -80,7 +81,21 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: PageView.builder(
         controller: _controller,
-        itemBuilder: (context, index) => HomeScreen(),
+        itemBuilder: (context, index) => [
+          HomeScreen(),
+          ChannelScreen(
+            channel: Channel(
+              id: 'UCBefBxNTPoNCQBU_Lta6Nvg',
+              videoCount: '500',
+              uploadPlaylistId: '',
+              subscriberCount: '5100000',
+              profilePictureUrl:
+                  'https://yt3.ggpht.com/VY8byr8HMzvi8UOAXIp1II02zkM16tC_zKfQRZd1efONGTFPOd7SC6ngbC9HmoEXxldOwq8ItWM=s176-c-k-c0x00ffffff-no-rj',
+              title: "NEFFEX",
+            ),
+          ),
+          Container(child: Text("It's so cold outside."))
+        ][index],
         onPageChanged: (index) {
           setState(() {
             _currentIndex = index;

@@ -1,25 +1,18 @@
 import 'package:flutter/material.dart';
 
-Widget iconWithLabel({
-  required IconData icon,
+enum SecColor { dark, light }
+
+Widget secLabel({
   required String label,
+  SecColor secColor = SecColor.light,
 }) {
   return Container(
     margin: EdgeInsets.symmetric(horizontal: 2),
     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
     decoration: BoxDecoration(
-      color: Colors.black.withOpacity(0.18),
+      color: Colors.black.withOpacity(secColor == SecColor.light ? 0.18 : 1),
       borderRadius: BorderRadius.circular(4),
     ),
-    child: Row(
-      children: [
-        Icon(
-          icon,
-          size: 20,
-        ),
-        SizedBox(width: 10),
-        Text(label),
-      ],
-    ),
+    child: Text(label),
   );
 }
