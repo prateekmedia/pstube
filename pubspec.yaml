@@ -12,6 +12,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  intl: ^0.17.0
+  timeago: ^3.1.0
   google_nav_bar: ^5.0.5
   material_design_icons_flutter: ^5.0.5955-rc.1
 

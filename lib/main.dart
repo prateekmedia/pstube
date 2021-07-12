@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutube/screens/screens.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -39,6 +40,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
 
+  PageController _controller = PageController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.grey[900]!,
         title: TextField(
           decoration: InputDecoration(
-            hintText: "Search now",
+            hintText: "Search",
             isDense: true,
             prefixIcon: Icon(
               MdiIcons.magnify,
@@ -75,6 +78,16 @@ class _MyHomePageState extends State<MyHomePage> {
           SizedBox(width: 10),
         ],
       ),
+      body: PageView.builder(
+        controller: _controller,
+        itemBuilder: (context, index) => HomeScreen(),
+        onPageChanged: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        itemCount: 3,
+      ),
       bottomNavigationBar: Container(
         margin: EdgeInsets.all(4),
         padding: EdgeInsets.all(6),
@@ -95,23 +108,21 @@ class _MyHomePageState extends State<MyHomePage> {
           tabs: [
             GButton(
               text: "Home",
-              icon: MdiIcons.homeOutline,
+              icon: MdiIcons.home,
             ),
             GButton(
               text: "Downloads",
-              icon: MdiIcons.downloadOutline,
+              icon: MdiIcons.download,
             ),
             GButton(
               text: "Settings",
-              icon: MdiIcons.cogOutline,
+              icon: MdiIcons.cog,
             ),
           ],
           selectedIndex: _currentIndex,
-          onTabChange: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
+          onTabChange: (index) => _controller.animateToPage(index,
+              duration: Duration(milliseconds: 300),
+              curve: Curves.fastOutSlowIn),
         ),
       ),
     );
