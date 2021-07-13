@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutube/models/models.dart';
 import 'package:flutube/widgets/widgets.dart';
 import '../utils/utils.dart';
 
@@ -23,16 +22,8 @@ class HomeScreen extends StatelessWidget {
           crossAxisCount: 12,
           shrinkWrap: true,
           primary: false,
-          itemBuilder: (ctx, udx) => FTVideo(
-            video: Video(
-              id: 'WzQBAc8i73E',
-              title: "NEFFEX - Cold ❄️[Copyright Free]",
-              thumbnailUrl:
-                  "https://img.youtube.com/vi/WzQBAc8i73E/maxresdefault.jpg",
-              views: 84919661,
-              date: DateTime(2018, 4, 11),
-              owner: "NEFFEX",
-            ),
+          itemBuilder: (ctx, idx) => FTVideo(
+            videoUrl: 'https://www.youtube.com/watch?v=CYDP_8UTAus',
           ),
           itemCount: 4,
         ),
