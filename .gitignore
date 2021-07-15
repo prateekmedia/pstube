@@ -24,7 +24,7 @@
 # AppImage Related
 *.AppDir/data/
 *.AppDir/lib/
-*.AppDir/appimagebrowser
+*.AppDir/flutube
 *.AppDir/.DirIcon
 *-x86_64.AppImage
 

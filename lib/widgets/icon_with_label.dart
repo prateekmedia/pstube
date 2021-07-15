@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 enum SecColor { dark, light }
 
-Widget secLabel({
-  required String label,
+Widget secLabel(
+  String label, {
   SecColor secColor = SecColor.light,
+  TextStyle? style,
+  bool enabled = false,
 }) {
   return Container(
     margin: EdgeInsets.symmetric(horizontal: 2),
@@ -13,6 +16,11 @@ Widget secLabel({
       color: Colors.black.withOpacity(secColor == SecColor.light ? 0.18 : 1),
       borderRadius: BorderRadius.circular(4),
     ),
-    child: Text(label),
+    child: enabled
+        ? Shimmer.fromColors(
+            baseColor: Colors.grey[900]!,
+            highlightColor: Colors.grey[800]!,
+            child: Text(label, style: style))
+        : Text(label, style: style),
   );
 }

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Name=FluTube
+Comment=Youtube video downloader made using flutter.
+Exec=flutube %u
+Icon=flutube
+Categories=Utility;

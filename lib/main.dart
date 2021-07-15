@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutube/screens/screens.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 void main() {
   runApp(MyApp());
@@ -23,27 +24,19 @@ class MyApp extends StatelessWidget {
       ),
       themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+class MyHomePage extends HookWidget {
+  MyHomePage({Key? key}) : super(key: key);
 
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _currentIndex = 0;
-
-  PageController _controller = PageController();
+  final PageController _controller = PageController();
 
   @override
   Widget build(BuildContext context) {
+    final _currentIndex = useState<int>(0);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey[900]!,
@@ -85,15 +78,11 @@ class _MyHomePageState extends State<MyHomePage> {
           Container(child: Text("It's so cold outside.")),
           Container(child: Text("It's so cold outside."))
         ][index],
-        onPageChanged: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+        onPageChanged: (index) => _currentIndex.value = index,
         itemCount: 3,
       ),
       bottomNavigationBar: Container(
-        margin: EdgeInsets.all(4),
+        margin: EdgeInsets.fromLTRB(4, 0, 4, 4),
         padding: EdgeInsets.all(6),
         decoration: ShapeDecoration(
           shape: StadiumBorder(),
@@ -123,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: MdiIcons.cog,
             ),
           ],
-          selectedIndex: _currentIndex,
+          selectedIndex: _currentIndex.value,
           onTabChange: (index) => _controller.animateToPage(index,
               duration: Duration(milliseconds: 300),
               curve: Curves.fastOutSlowIn),
