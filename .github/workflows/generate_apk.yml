@@ -49,14 +49,29 @@ jobs:
           draft: true
           prerelease: false
 
-      - name: Upload Apk to Release
-        id: upload-release-assets
-        uses: dwenegar/upload-release-assets@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload file to a GitHub release
+        uses: svenstaro/upload-release-action@2.2.1
         with:
-          release_id: ${{ steps.create_release.outputs.id }}
-          assets_path: build/app/outputs/apk/release/*.apk
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/app/outputs/apk/release/app-arm64-v8a-release.apk
+          tag: ${{ github.ref }}
+          overwrite: true
+
+      - name: Upload files to a GitHub release
+        uses: svenstaro/upload-release-action@2.2.1
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/app/outputs/apk/release/app-armeabi-v7a-release.apk
+          tag: ${{ github.ref }}
+          overwrite: true
+
+      - name: Upload files to a GitHub release
+        uses: svenstaro/upload-release-action@2.2.1
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/app/outputs/apk/release/app-x86_64-release.apk
+          tag: ${{ github.ref }}
+          overwrite: true
 #      - name: Upload to Artifact
 #        uses: actions/upload-artifact@v2
 #        with:

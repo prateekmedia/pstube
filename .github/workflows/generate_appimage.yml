@@ -43,9 +43,8 @@ jobs:
           file: flutube.AppImage
           tag: ${{ github.ref }}
           overwrite: true
-
-      - name: Upload to Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: appimage-release
-          path: ./flutube.AppImage
+      # - name: Upload to Artifact
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: appimage-release
+      #     path: ./flutube.AppImage
