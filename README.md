@@ -16,12 +16,12 @@
 ### Build from source
 
 - Download latest Flutter SDK (>=2.2.3)
-- Clone this repo and then for building in linux
+- Clone this repo and then for building
 
 ```bash
-# Download dependencies and Enable Linux support
-$ flutter pub get; flutter config --enable-linux-desktop
+# Download dependencies
+$ flutter pub get; flutter create .
 
 # For Direct Testing
-$ flutter run -v -d linux
+$ flutter build <windows/apk/linux>
 ```
