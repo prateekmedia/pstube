@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.flutube">
+    package="com.psu.flutube">
    <application
         android:label="flutube"
         android:icon="@mipmap/ic_launcher">

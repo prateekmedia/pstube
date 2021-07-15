@@ -1,4 +1,4 @@
-package com.example.flutube
+package com.psu.flutube
 
 import io.flutter.embedding.android.FlutterActivity
 
