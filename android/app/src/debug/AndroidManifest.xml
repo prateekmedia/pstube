@@ -1,7 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.psu.flutube">
-    <!-- Flutter needs it to communicate with the running application
-         to allow setting breakpoints, to provide hot reload, etc.
-    -->
+    package="com.psu.flutube"
+    xmlns:tools="http://schemas.android.com/tools">
+    <application
+        tools:replace="android:label"
+        android:name="io.flutter.app.FlutterApplication"
+        android:label="FluTube Debug"
+        android:requestLegacyExternalStorage="true">
+    </application>
     <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>
