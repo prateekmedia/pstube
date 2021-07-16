@@ -44,6 +44,7 @@ class VideoScreen extends HookWidget {
             onTap: () {
               showPopover(
                 context,
+                isScrollControlled: false,
                 builder: (ctx) => Container(
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   child: Column(

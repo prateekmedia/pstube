@@ -141,11 +141,13 @@ class FTVideo extends HookWidget {
                           : Container(),
                     ),
                     IconButton(
-                      onPressed: () {
-                        showPopover(context, builder: (ctx) {
-                          return FittedBox();
-                        });
-                      },
+                      onPressed: video != null
+                          ? () {
+                              showPopover(context, builder: (ctx) {
+                                return FittedBox();
+                              });
+                            }
+                          : null,
                       icon: Icon(
                         MdiIcons.progressDownload,
                       ),
