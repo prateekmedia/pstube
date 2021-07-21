@@ -148,9 +148,7 @@ class FTVideo extends HookWidget {
                               });
                             }
                           : null,
-                      icon: Icon(
-                        MdiIcons.progressDownload,
-                      ),
+                      icon: Icon(Icons.save_alt_outlined),
                     )
                   ],
                 ),

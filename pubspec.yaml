@@ -24,6 +24,7 @@ dependencies:
   path: ^1.8.0
   path_provider: ^2.0.2
   permission_handler: ^8.1.2
+  share_plus: ^2.1.4
   shared_preferences: ^2.0.6
   shimmer: ^2.0.0
   timeago: ^3.1.0
