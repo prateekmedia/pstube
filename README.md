@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://raw.githubusercontent.com/prateekmedia/flutube/main/Flutube.AppDir/flutube.png">
+<img src="https://raw.githubusercontent.com/prateekmedia/flutube/main/assets/flutube.png">
 </p>
 <h1 align="center">FluTube</h1>
 <p align="center"><i><b>Youtube video downloader made using flutter.</b></i></p>

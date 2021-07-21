@@ -22,11 +22,9 @@
 .vscode/
 
 # AppImage Related
-*.AppDir/data/
-*.AppDir/lib/
-*.AppDir/flutube
-*.AppDir/.DirIcon
-*.AppImage
+*AppDir/*
+!*AppDir/AppRun
+*AppImage
 
 # Flutter/Dart/Pub related
 **/doc/api/
