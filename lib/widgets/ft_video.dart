@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutube/screens/screens.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shimmer/shimmer.dart';

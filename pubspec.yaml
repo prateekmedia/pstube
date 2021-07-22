@@ -28,7 +28,10 @@ dependencies:
   shared_preferences: ^2.0.6
   shimmer: ^2.0.0
   timeago: ^3.1.0
-  youtube_explode_dart: ^1.9.10
+  youtube_explode_dart: ^1.10.0
+
+dependency_overrides:
+  meta: ^1.4.0
 
 dev_dependencies:
   build_runner: ^2.0.1
