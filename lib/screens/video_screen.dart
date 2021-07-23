@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutube/widgets/widgets.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:share_plus/share_plus.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import '../utils/utils.dart';
@@ -15,6 +16,16 @@ class VideoScreen extends HookWidget {
     final channel = useFuture(useMemoized(
         () => YoutubeExplode().channels.get(video.channelId.value)));
     final isLiked = useState<int>(0);
+    List? comments;
+    getComments() async {
+      comments =
+          (await YoutubeExplode().videos.commentsClient.getComments(video))
+              .take(20)
+              .toList();
+    }
+
+    getComments();
+
     return Scaffold(
       body: ListView(
         children: [
@@ -72,21 +83,37 @@ class VideoScreen extends HookWidget {
             },
             child: Container(
               padding: EdgeInsets.all(12),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Text(
-                      video.title,
-                      style: context.textTheme.headline6,
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          video.title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: context.textTheme.headline6,
+                        ),
+                      ),
+                      Icon(Icons.arrow_drop_down),
+                    ],
                   ),
-                  Icon(Icons.arrow_drop_down),
+                  SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Text(video.engagement.viewCount.formatNumber + ' views'),
+                      Text(video.publishDate != null
+                          ? '  •  ' + timeago.format(video.publishDate!)
+                          : ''),
+                    ],
+                  ),
                 ],
               ),
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -130,10 +157,17 @@ class VideoScreen extends HookWidget {
               ],
             ),
           ),
+          Divider(),
           ChannelInfo(
             channel: channel,
             isOnVideo: true,
           ),
+          Divider(),
+          if (comments != null)
+            for (var comment in comments!)
+              ListTile(
+                leading: Text(comment),
+              ),
         ],
       ),
     );

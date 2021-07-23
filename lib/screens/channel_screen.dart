@@ -10,8 +10,8 @@ class ChannelScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final channel = useFuture(useMemoized(
-        () => YoutubeExplode().channels.get('UCBefBxNTPoNCQBU_Lta6Nvg')));
+    final channel =
+        useFuture(useMemoized(() => YoutubeExplode().channels.get(id)));
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

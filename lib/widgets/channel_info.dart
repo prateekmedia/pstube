@@ -26,7 +26,7 @@ class ChannelInfo extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 6),
             child: Row(children: [
               Container(
                 height: size,
