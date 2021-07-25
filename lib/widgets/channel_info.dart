@@ -1,6 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutube/screens/screens.dart';
+import 'package:flutube/widgets/widgets.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import '../utils/utils.dart';
 
@@ -28,20 +28,7 @@ class ChannelInfo extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 6),
             child: Row(children: [
-              Container(
-                height: size,
-                width: size,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  image: channel.data != null
-                      ? DecorationImage(
-                          image:
-                              CachedNetworkImageProvider(channel.data!.logoUrl),
-                          fit: BoxFit.fitWidth,
-                        )
-                      : null,
-                ),
-              ),
+              ChannelLogo(channel: channel.data!, size: size),
               SizedBox(width: 20),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

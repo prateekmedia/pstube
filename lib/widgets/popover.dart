@@ -130,14 +130,29 @@ class Popover extends StatelessWidget {
             color: theme.cardColor,
             borderRadius: BorderRadius.all(Radius.circular(16.0)),
           ),
-          constraints: BoxConstraints(maxWidth: 500),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [_buildHandle(context), child],
+            children: [
+              _buildHandle(context),
+              isScrollable
+                  ? Flexible(
+                      fit: FlexFit.loose,
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: [
+                          child,
+                        ],
+                      ),
+                    )
+                  : child
+            ],
           ),
-        )).centerHorizontally();
-
-    return isScrollable ? SingleChildScrollView(child: ch) : ch;
+        ));
+    //Remove this when constraints property comes into stable channel for showModelBottomSheet
+    return Align(
+        alignment: Alignment.bottomCenter,
+        child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 500), child: ch));
   }
 
   Widget _buildHandle(BuildContext context) {

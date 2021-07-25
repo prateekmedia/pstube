@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen>
           shrinkWrap: true,
           primary: false,
           itemBuilder: (ctx, idx) => FTVideo(
-            videoUrl: 'https://www.youtube.com/watch?v=aqz-KE-bpKQ',
+            videoUrl: 'https://www.youtube.com/watch?v=WhWc3b3KhnY',
           ),
           itemCount: 4,
         ),

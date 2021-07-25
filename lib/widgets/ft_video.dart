@@ -62,7 +62,7 @@ class FTVideo extends HookWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  secLabel(video == null ? "Loading" : video.title,
+                  iconWithLabel(video == null ? "Loading" : video.title,
                       enabled: video == null,
                       style:
                           context.textTheme.bodyText2!.copyWith(fontSize: 12)),
@@ -119,7 +119,7 @@ class FTVideo extends HookWidget {
                       Positioned.fill(
                         child: Align(
                           alignment: Alignment(0.98, 0.94),
-                          child: secLabel(
+                          child: iconWithLabel(
                               (video.duration ?? Duration(seconds: 0)).format(),
                               secColor: SecColor.dark),
                         ),
@@ -162,7 +162,7 @@ class FTVideo extends HookWidget {
                                 ? () => context.pushPage(
                                     ChannelScreen(id: video.channelId.value))
                                 : null,
-                            child: secLabel(
+                            child: iconWithLabel(
                               video != null ? video.author : "Loading...",
                               secColor: SecColor.dark,
                               enabled: video == null,
@@ -171,14 +171,14 @@ class FTVideo extends HookWidget {
                         ],
                       ),
                     ),
-                    secLabel(
+                    iconWithLabel(
                       (video != null
                               ? video.engagement.viewCount.formatNumber
                               : "0") +
                           " views",
                       enabled: video == null,
                     ),
-                    secLabel(
+                    iconWithLabel(
                       video != null
                           ? timeago.format(video.uploadDate ?? DateTime.now())
                           : "just now",

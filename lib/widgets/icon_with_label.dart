@@ -3,7 +3,7 @@ import 'package:shimmer/shimmer.dart';
 
 enum SecColor { dark, light }
 
-Widget secLabel(
+Widget iconWithLabel(
   String label, {
   SecColor secColor = SecColor.light,
   TextStyle? style,

@@ -16,12 +16,11 @@ class VideoScreen extends HookWidget {
     final channel = useFuture(useMemoized(
         () => YoutubeExplode().channels.get(video.channelId.value)));
     final isLiked = useState<int>(0);
-    List? comments;
+    final comments = useState<List?>(null);
     getComments() async {
-      comments =
-          (await YoutubeExplode().videos.commentsClient.getComments(video))
-              .take(20)
-              .toList();
+      comments.value =
+          (await YoutubeExplode().videos.commentsClient.getComments(video));
+      YoutubeExplode().close();
     }
 
     getComments();
@@ -163,33 +162,59 @@ class VideoScreen extends HookWidget {
             isOnVideo: true,
           ),
           Divider(),
-          if (comments != null)
-            for (var comment in comments!)
-              ListTile(
-                leading: Text(comment),
-              ),
+          ListTile(
+            onTap: () => showPopover(
+              context,
+              isScrollControlled: false,
+              builder: (ctx) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      child: Text("${(comments.value ?? []).length} comments",
+                          style: context.textTheme.bodyText1!
+                              .copyWith(fontWeight: FontWeight.w600)),
+                    ),
+                    for (Comment comment in comments.value ?? [])
+                      buildCommentBox(comment),
+                  ],
+                );
+              },
+            ),
+            title: Container(
+              child: Text("Comments"),
+            ),
+            trailing: Text("${(comments.value ?? []).length}"),
+          ),
+          Divider(),
         ],
       ),
     );
   }
 
-  Widget iconWithBottomLabel({
-    required IconData icon,
-    VoidCallback? onPressed,
-    required String label,
-  }) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
-        children: [
-          IconButton(
-            icon: Icon(icon, size: 28),
-            onPressed: onPressed ?? () {},
-          ),
-          SizedBox(height: 2),
-          Text(label),
-        ],
-      ),
-    );
-  }
+  Widget buildCommentBox(Comment comment) => Container(
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        child: Row(
+          children: [
+            ChannelLogo(channelId: comment.channelId),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    iconWithLabel(comment.author),
+                    SizedBox(width: 10),
+                    iconWithLabel(comment.publishedTime),
+                  ],
+                ),
+                SizedBox(height: 10),
+                Text(comment.text),
+              ],
+            ),
+          ],
+        ),
+      );
 }
