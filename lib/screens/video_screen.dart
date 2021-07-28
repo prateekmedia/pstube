@@ -179,7 +179,7 @@ class VideoScreen extends HookWidget {
                               .copyWith(fontWeight: FontWeight.w600)),
                     ),
                     for (Comment comment in comments.value ?? [])
-                      buildCommentBox(comment),
+                      buildCommentBox(context, comment),
                   ],
                 );
               },
@@ -194,27 +194,4 @@ class VideoScreen extends HookWidget {
       ),
     );
   }
-
-  Widget buildCommentBox(Comment comment) => Container(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: Row(
-          children: [
-            ChannelLogo(channelId: comment.channelId),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    iconWithLabel(comment.author),
-                    SizedBox(width: 10),
-                    iconWithLabel(comment.publishedTime),
-                  ],
-                ),
-                SizedBox(height: 10),
-                Text(comment.text),
-              ],
-            ),
-          ],
-        ),
-      );
 }

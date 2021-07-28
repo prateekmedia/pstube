@@ -63,7 +63,6 @@ class FTVideo extends HookWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   iconWithLabel(video == null ? "Loading" : video.title,
-                      enabled: video == null,
                       style:
                           context.textTheme.bodyText2!.copyWith(fontSize: 12)),
                   if (video != null)
@@ -165,7 +164,6 @@ class FTVideo extends HookWidget {
                             child: iconWithLabel(
                               video != null ? video.author : "Loading...",
                               secColor: SecColor.dark,
-                              enabled: video == null,
                             ),
                           ),
                         ],
@@ -176,13 +174,11 @@ class FTVideo extends HookWidget {
                               ? video.engagement.viewCount.formatNumber
                               : "0") +
                           " views",
-                      enabled: video == null,
                     ),
                     iconWithLabel(
                       video != null
                           ? timeago.format(video.uploadDate ?? DateTime.now())
                           : "just now",
-                      enabled: video == null,
                     ),
                   ],
                 )

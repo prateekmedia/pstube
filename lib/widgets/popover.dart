@@ -152,7 +152,7 @@ class Popover extends StatelessWidget {
     return Align(
         alignment: Alignment.bottomCenter,
         child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 500), child: ch));
+            constraints: BoxConstraints(maxWidth: 600), child: ch));
   }
 
   Widget _buildHandle(BuildContext context) {

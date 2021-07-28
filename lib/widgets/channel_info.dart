@@ -28,7 +28,7 @@ class ChannelInfo extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 6),
             child: Row(children: [
-              ChannelLogo(channel: channel.data!, size: size),
+              ChannelLogo(channel: channel.data, size: size),
               SizedBox(width: 20),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
