@@ -15,18 +15,18 @@ class ChannelScreen extends HookWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.chevron_left),
+          icon: const Icon(Icons.chevron_left),
           onPressed: context.back,
         ),
       ),
       body: channel.hasData && channel.data != null
           ? ListView(
               children: [
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
                 ChannelInfo(channel: channel),
               ],
             )
-          : CircularProgressIndicator().center(),
+          : const CircularProgressIndicator().center(),
     );
   }
 }

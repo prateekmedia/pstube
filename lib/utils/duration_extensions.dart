@@ -1,6 +1,6 @@
 extension DurationExtensions on Duration {
   format() {
-    final totalSecs = this.inSeconds;
+    final totalSecs = inSeconds;
     final hours = totalSecs ~/ 3600;
     final minutes = (totalSecs % 3600) ~/ 60;
     final seconds = totalSecs % 60;

@@ -6,7 +6,7 @@ import 'package:readmore/readmore.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 Widget buildCommentBox(BuildContext context, Comment comment) => Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -17,7 +17,7 @@ Widget buildCommentBox(BuildContext context, Comment comment) => Container(
               child: ChannelLogo(channelId: comment.channelId, size: 40)),
           Flexible(
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -42,7 +42,7 @@ Widget buildCommentBox(BuildContext context, Comment comment) => Container(
                           ],
                         ),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       iconWithLabel(
                         comment.publishedTime,
                         style:
@@ -50,17 +50,17 @@ Widget buildCommentBox(BuildContext context, Comment comment) => Container(
                       ),
                     ],
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Padding(
-                    padding: EdgeInsets.only(left: 10),
+                    padding: const EdgeInsets.only(left: 10),
                     child: ReadMoreText(
                       comment.text,
                       trimLines: 4,
                       trimMode: TrimMode.Line,
                       trimCollapsedText: '\nRead more',
                       trimExpandedText: '\nShow less',
-                      moreStyle:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      moreStyle: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                   ),
                   Row(
@@ -68,10 +68,10 @@ Widget buildCommentBox(BuildContext context, Comment comment) => Container(
                       TextButton.icon(
                           onPressed: () {},
                           style: TextButton.styleFrom(
-                              padding: EdgeInsets.all(14),
+                              padding: const EdgeInsets.all(14),
                               primary:
                                   context.isDark ? Colors.white : Colors.black),
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.thumb_up,
                             size: 18,
                           ),
@@ -85,9 +85,9 @@ Widget buildCommentBox(BuildContext context, Comment comment) => Container(
                   TextButton(
                       style: TextButton.styleFrom(
                           primary: context.isDark
-                              ? Color.fromARGB(255, 40, 170, 255)
-                              : Color.fromARGB(255, 6, 95, 212),
-                          padding: EdgeInsets.symmetric(horizontal: 16)),
+                              ? const Color.fromARGB(255, 40, 170, 255)
+                              : const Color.fromARGB(255, 6, 95, 212),
+                          padding: const EdgeInsets.symmetric(horizontal: 16)),
                       onPressed: comment.replyCount > 0 ? () {} : null,
                       child: Text(
                           "${comment.replyCount} repl${comment.replyCount > 1 ? "ies" : "y"}"))

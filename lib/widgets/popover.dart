@@ -37,10 +37,10 @@ Future<T?> showPopoverWB<T>(BuildContext context,
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         if (title != null)
           Padding(
-            padding: EdgeInsets.only(bottom: 8),
+            padding: const EdgeInsets.only(bottom: 8),
             child: Text(title,
                 style: context.textTheme.headline6!
                     .copyWith(fontWeight: FontWeight.w600)),
@@ -66,21 +66,22 @@ Future<T?> showPopoverWB<T>(BuildContext context,
                         context.isDark ? Colors.grey[300] : Colors.grey[800]),
               ),
               validator: validator,
-              inputFormatters: [
+              inputFormatters: const [
                 // ValidatorInputFormatter(editingValidator: NameValidator()),
               ],
             ),
           ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             TextButton(
               style: TextButton.styleFrom(
                 primary: context.textTheme.bodyText2!.color,
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               ),
-              child: Text("CANCEL"),
+              child: const Text("CANCEL"),
               onPressed: () {
                 context.back();
                 if (onCancel != null) onCancel();
@@ -89,7 +90,8 @@ Future<T?> showPopoverWB<T>(BuildContext context,
             TextButton(
                 style: TextButton.styleFrom(
                   primary: context.textTheme.bodyText1!.color,
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 ),
                 child: Text(confirmText),
                 onPressed: controller != null
@@ -101,14 +103,14 @@ Future<T?> showPopoverWB<T>(BuildContext context,
                     : onConfirm)
           ],
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
       ],
     ),
   );
 }
 
 class Popover extends StatelessWidget {
-  Popover({
+  const Popover({
     Key? key,
     required this.child,
     this.isScrollable = true,
@@ -124,11 +126,11 @@ class Popover extends StatelessWidget {
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Container(
-          margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
-          padding: EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+          margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
           decoration: BoxDecoration(
             color: theme.cardColor,
-            borderRadius: BorderRadius.all(Radius.circular(16.0)),
+            borderRadius: const BorderRadius.all(Radius.circular(16.0)),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -152,7 +154,7 @@ class Popover extends StatelessWidget {
     return Align(
         alignment: Alignment.bottomCenter,
         child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 600), child: ch));
+            constraints: const BoxConstraints(maxWidth: 600), child: ch));
   }
 
   Widget _buildHandle(BuildContext context) {
@@ -161,12 +163,12 @@ class Popover extends StatelessWidget {
     return FractionallySizedBox(
       widthFactor: 0.25,
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 6),
+        margin: const EdgeInsets.symmetric(vertical: 6),
         child: Container(
           height: 5.0,
           decoration: BoxDecoration(
             color: theme.dividerColor,
-            borderRadius: BorderRadius.all(Radius.circular(2.5)),
+            borderRadius: const BorderRadius.all(Radius.circular(2.5)),
           ),
         ),
       ),

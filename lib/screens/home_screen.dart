@@ -16,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     super.build(context);
     return ListView(
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       children: [
         StaggeredGridView.countBuilder(
           staggeredTileBuilder: (idx) => StaggeredTile.fit(context.width > 1200
@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen>
           crossAxisCount: 12,
           shrinkWrap: true,
           primary: false,
-          itemBuilder: (ctx, idx) => FTVideo(
+          itemBuilder: (ctx, idx) => const FTVideo(
             videoUrl: 'https://www.youtube.com/watch?v=WhWc3b3KhnY',
           ),
           itemCount: 4,

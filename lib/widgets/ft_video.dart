@@ -22,11 +22,11 @@ class FTVideo extends HookWidget {
         useFuture(useMemoized(() => YoutubeExplode().videos.get(videoUrl)));
     Video? video = snapshot.data;
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       width: context.width,
       child: isRow
           ? Row(children: [
-              Container(
+              SizedBox(
                 height: 70,
                 child: AspectRatio(
                   aspectRatio: 1,
@@ -58,7 +58,7 @@ class FTVideo extends HookWidget {
                         ),
                 ),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -67,7 +67,7 @@ class FTVideo extends HookWidget {
                           context.textTheme.bodyText2!.copyWith(fontSize: 12)),
                   if (video != null)
                     Container(
-                      margin: EdgeInsets.symmetric(horizontal: 14),
+                      margin: const EdgeInsets.symmetric(horizontal: 14),
                       child: Text(video.author,
                           style: context.textTheme.bodyText2!
                               .copyWith(fontSize: 12)),
@@ -117,15 +117,16 @@ class FTVideo extends HookWidget {
                     if (video != null)
                       Positioned.fill(
                         child: Align(
-                          alignment: Alignment(0.98, 0.94),
+                          alignment: const Alignment(0.98, 0.94),
                           child: iconWithLabel(
-                              (video.duration ?? Duration(seconds: 0)).format(),
+                              (video.duration ?? const Duration(seconds: 0))
+                                  .format(),
                               secColor: SecColor.dark),
                         ),
                       )
                   ],
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Row(
                   children: [
                     Expanded(
@@ -134,7 +135,7 @@ class FTVideo extends HookWidget {
                               video.title,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontSize: 18),
+                              style: const TextStyle(fontSize: 18),
                             )
                           : Container(),
                     ),
@@ -142,11 +143,11 @@ class FTVideo extends HookWidget {
                       onPressed: video != null
                           ? () {
                               showPopover(context, builder: (ctx) {
-                                return FittedBox();
+                                return const FittedBox();
                               });
                             }
                           : null,
-                      icon: Icon(Icons.save_alt_outlined),
+                      icon: const Icon(Icons.save_alt_outlined),
                     )
                   ],
                 ),

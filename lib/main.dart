@@ -5,10 +5,12 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -44,7 +46,7 @@ class MyHomePage extends HookWidget {
           decoration: InputDecoration(
             hintText: "Search",
             isDense: true,
-            prefixIcon: Icon(
+            prefixIcon: const Icon(
               MdiIcons.magnify,
               color: Colors.grey,
             ),
@@ -66,26 +68,26 @@ class MyHomePage extends HookWidget {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(MdiIcons.account),
+            icon: const Icon(MdiIcons.account),
           ),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
         ],
       ),
       body: PageView.builder(
         controller: _controller,
         itemBuilder: (context, index) => [
-          HomeScreen(),
-          Container(child: Text("It's so cold outside.")),
-          Container(child: Text("It's so cold outside."))
+          const HomeScreen(),
+          const SizedBox(child: Text("It's so cold outside.")),
+          const SizedBox(child: Text("It's so cold outside."))
         ][index],
         onPageChanged: (index) => _currentIndex.value = index,
         itemCount: 3,
       ),
       bottomNavigationBar: Container(
-        margin: EdgeInsets.fromLTRB(4, 0, 4, 4),
-        padding: EdgeInsets.all(6),
+        margin: const EdgeInsets.fromLTRB(4, 0, 4, 4),
+        padding: const EdgeInsets.all(6),
         decoration: ShapeDecoration(
-          shape: StadiumBorder(),
+          shape: const StadiumBorder(),
           color: Colors.grey[900]!,
         ),
         child: GNav(
@@ -94,11 +96,11 @@ class MyHomePage extends HookWidget {
           gap: 8,
           activeColor: Colors.white,
           iconSize: 24,
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-          duration: Duration(milliseconds: 400),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          duration: const Duration(milliseconds: 400),
           tabBackgroundColor: Theme.of(context).primaryColor,
           color: Colors.grey,
-          tabs: [
+          tabs: const [
             GButton(
               text: "Home",
               icon: MdiIcons.home,
@@ -114,7 +116,7 @@ class MyHomePage extends HookWidget {
           ],
           selectedIndex: _currentIndex.value,
           onTabChange: (index) => _controller.animateToPage(index,
-              duration: Duration(milliseconds: 300),
+              duration: const Duration(milliseconds: 300),
               curve: Curves.fastOutSlowIn),
         ),
       ),

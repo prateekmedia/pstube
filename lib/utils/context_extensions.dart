@@ -13,9 +13,9 @@ extension ContextExtensions on BuildContext {
       Navigator.of(this).push(MaterialPageRoute(builder: (ctx) => page));
 
   Color get getBackgroundColor =>
-      this.isDark ? Colors.grey[800]! : Colors.grey[200]!;
+      isDark ? Colors.grey[800]! : Colors.grey[200]!;
 
   get queryData => MediaQuery.of(this);
-  get width => this.queryData.size.width;
-  get height => this.queryData.size.height;
+  get width => queryData.size.width;
+  get height => queryData.size.height;
 }

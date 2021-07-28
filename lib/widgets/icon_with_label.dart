@@ -10,7 +10,7 @@ Widget iconWithLabel(
 }) {
   return Container(
     margin: EdgeInsets.symmetric(horizontal: spacing),
-    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
     decoration: BoxDecoration(
       color: Colors.black.withOpacity(secColor == SecColor.light ? 0.18 : 1),
       borderRadius: BorderRadius.circular(4),

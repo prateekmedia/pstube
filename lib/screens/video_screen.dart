@@ -46,7 +46,7 @@ class VideoScreen extends HookWidget {
                   child: Align(
                 alignment: Alignment.topLeft,
                 child: IconButton(
-                  icon: Icon(Icons.chevron_left),
+                  icon: const Icon(Icons.chevron_left),
                   onPressed: context.back,
                 ),
               ))
@@ -58,7 +58,7 @@ class VideoScreen extends HookWidget {
                 context,
                 isScrollControlled: false,
                 builder: (ctx) => Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -67,12 +67,12 @@ class VideoScreen extends HookWidget {
                         style: context.textTheme.bodyText2!.copyWith(
                             fontWeight: FontWeight.bold, fontSize: 15),
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       Container(
-                        padding: EdgeInsets.symmetric(vertical: 4),
+                        padding: const EdgeInsets.symmetric(vertical: 4),
                         child: Text(
                           video.description,
-                          style: TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 16),
                         ),
                       ),
                     ],
@@ -81,7 +81,7 @@ class VideoScreen extends HookWidget {
               );
             },
             child: Container(
-              padding: EdgeInsets.all(12),
+              padding: const EdgeInsets.all(12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -95,10 +95,10 @@ class VideoScreen extends HookWidget {
                           style: context.textTheme.headline6,
                         ),
                       ),
-                      Icon(Icons.arrow_drop_down),
+                      const Icon(Icons.arrow_drop_down),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Row(
                     children: [
                       Text(video.engagement.viewCount.formatNumber + ' views'),
@@ -112,7 +112,7 @@ class VideoScreen extends HookWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -156,12 +156,12 @@ class VideoScreen extends HookWidget {
               ],
             ),
           ),
-          Divider(),
+          const Divider(),
           ChannelInfo(
             channel: channel,
             isOnVideo: true,
           ),
-          Divider(),
+          const Divider(),
           ListTile(
             onTap: () => showPopover(
               context,
@@ -172,8 +172,8 @@ class VideoScreen extends HookWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 6),
                       child: Text("${(comments.value ?? []).length} comments",
                           style: context.textTheme.bodyText1!
                               .copyWith(fontWeight: FontWeight.w600)),
@@ -184,12 +184,10 @@ class VideoScreen extends HookWidget {
                 );
               },
             ),
-            title: Container(
-              child: Text("Comments"),
-            ),
+            title: const Text("Comments"),
             trailing: Text("${(comments.value ?? []).length}"),
           ),
-          Divider(),
+          const Divider(),
         ],
       ),
     );

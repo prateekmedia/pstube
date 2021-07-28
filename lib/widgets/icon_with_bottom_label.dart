@@ -6,14 +6,14 @@ Widget iconWithBottomLabel({
   required String label,
 }) {
   return Container(
-    padding: EdgeInsets.symmetric(horizontal: 8),
+    padding: const EdgeInsets.symmetric(horizontal: 8),
     child: Column(
       children: [
         IconButton(
           icon: Icon(icon, size: 28),
           onPressed: onPressed ?? () {},
         ),
-        SizedBox(height: 2),
+        const SizedBox(height: 2),
         Text(label),
       ],
     ),
