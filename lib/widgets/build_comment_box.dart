@@ -63,7 +63,25 @@ Widget buildCommentBox(BuildContext context, Comment comment) => Container(
                           TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  SizedBox(height: 4),
+                  Row(
+                    children: [
+                      TextButton.icon(
+                          onPressed: () {},
+                          style: TextButton.styleFrom(
+                              padding: EdgeInsets.all(14),
+                              primary:
+                                  context.isDark ? Colors.white : Colors.black),
+                          icon: Icon(
+                            Icons.thumb_up,
+                            size: 18,
+                          ),
+                          label: Text(
+                            "${comment.likeCount.formatNumber}",
+                            style: context.textTheme.bodyText2!
+                                .copyWith(fontSize: 12),
+                          ))
+                    ],
+                  ),
                   TextButton(
                       style: TextButton.styleFrom(
                           primary: context.isDark
