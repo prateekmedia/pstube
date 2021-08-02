@@ -5,5 +5,5 @@ Terminal=false
 Name=FluTube
 Exec=flutube %u
 Icon=flutube
-StartupWMClass=Nyrna
+StartupWMClass=flutube
 Categories=Utility;
