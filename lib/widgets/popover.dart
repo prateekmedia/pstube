@@ -141,6 +141,7 @@ class Popover extends StatelessWidget {
                       fit: FlexFit.loose,
                       child: ListView(
                         shrinkWrap: true,
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
                         children: [
                           child,
                         ],

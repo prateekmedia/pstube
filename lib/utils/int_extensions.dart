@@ -14,7 +14,6 @@ extension IntExtension on int {
         suffixes[i];
   }
 
-  String getBitrate({int decimals = 1}) {
-    return getFileSize() + "PS";
-  }
+  String getBitrate({int decimals = 0}) =>
+      getFileSize(decimals: decimals) + "PS";
 }

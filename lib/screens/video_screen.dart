@@ -17,17 +17,15 @@ class VideoScreen extends HookWidget {
     final channel = useFuture(useMemoized(
         () => YoutubeExplode().channels.get(video.channelId.value)));
     final isLiked = useState<int>(0);
-    final comments = useState<List?>(null);
     final replyComment = useState<Comment?>(null);
     final currentIndex = useState<int>(0);
     final PageController pageController = usePageController();
-    getComments() async {
-      comments.value =
-          (await YoutubeExplode().videos.commentsClient.getComments(video));
-      YoutubeExplode().close();
-    }
 
-    getComments();
+    getComments() async {
+      var comments = YoutubeExplode().videos.commentsClient.getComments(video);
+      YoutubeExplode().close();
+      return comments;
+    }
 
     return Scaffold(
       body: ListView(
@@ -167,44 +165,60 @@ class VideoScreen extends HookWidget {
             isOnVideo: true,
           ),
           const Divider(),
-          ListTile(
-            onTap: () => showPopover(
-              context,
-              isScrollControlled: true,
-              isScrollable: false,
-              builder: (ctx) {
-                return Expanded(
-                  child: PageView.builder(
-                    controller: pageController,
-                    itemBuilder: (_, index) => [
-                      ListView(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 6),
-                            child: Text(
-                                "${(comments.value ?? []).length} comments",
-                                style: context.textTheme.bodyText1!
-                                    .copyWith(fontWeight: FontWeight.w600)),
-                          ),
-                          for (Comment comment in comments.value ?? [])
-                            buildCommentBox(context, comment, () {
-                              replyComment.value = comment;
-                              pageController.animateToPage(1,
-                                  duration: const Duration(milliseconds: 200),
-                                  curve: Curves.easeInBack);
-                            }),
-                        ],
-                      ),
-                      showReplies(replyComment.value),
-                    ][index],
-                  ),
+          FutureBuilder<List?>(
+              future: getComments(),
+              builder: (context, snapshot) {
+                return ListTile(
+                  onTap: () => showPopover(
+                    context,
+                    isScrollable: false,
+                    builder: (ctx) {
+                      return Expanded(
+                        child: PageView.builder(
+                          controller: pageController,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: 2,
+                          itemBuilder: (_, index) => [
+                            ListView(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 6),
+                                  child: Text(
+                                      "${(snapshot.data ?? []).length} comments",
+                                      style: context.textTheme.bodyText1!
+                                          .copyWith(
+                                              fontWeight: FontWeight.w600)),
+                                ),
+                                for (Comment comment in snapshot.data ?? [])
+                                  buildCommentBox(context, comment, () {
+                                    replyComment.value = comment;
+                                    pageController.animateToPage(1,
+                                        duration:
+                                            const Duration(milliseconds: 200),
+                                        curve: Curves.easeInOut);
+                                  }),
+                              ],
+                            ),
+                            WillPopScope(
+                                child: showReplies(context, replyComment.value),
+                                onWillPop: () async {
+                                  await pageController.animateToPage(0,
+                                      duration:
+                                          const Duration(milliseconds: 200),
+                                      curve: Curves.easeInOut);
+                                  replyComment.value = null;
+                                  return false;
+                                }),
+                          ][index],
+                        ),
+                      );
+                    },
+                  ).whenComplete(() => currentIndex.value = 0),
+                  title: const Text("Comments"),
+                  trailing: Text("${(snapshot.data ?? []).length}"),
                 );
-              },
-            ).whenComplete(() => currentIndex.value = 0),
-            title: const Text("Comments"),
-            trailing: Text("${(comments.value ?? []).length}"),
-          ),
+              }),
           const Divider(),
         ],
       ),
@@ -212,6 +226,40 @@ class VideoScreen extends HookWidget {
   }
 }
 
-Widget showReplies(Comment? comment) {
-  return Text(comment != null ? comment.text : "");
+Widget showReplies(BuildContext context, Comment? comment) {
+  getReplies() async {
+    if (comment == null) return null;
+    var replies =
+        await YoutubeExplode().videos.commentsClient.getReplies(comment);
+    YoutubeExplode().close();
+    return replies;
+  }
+
+  return comment != null
+      ? ListView(
+          children: [
+            buildCommentBox(context, comment, null, isInsideReply: true),
+            FutureBuilder<List?>(
+                future: getReplies(),
+                builder: (context, snapshot) {
+                  return snapshot.data != null
+                      ? Container(
+                          padding: const EdgeInsets.only(left: 50),
+                          child: Column(
+                            children: [
+                              for (Comment reply in snapshot.data!)
+                                buildCommentBox(context, reply, null,
+                                    isInsideReply: true)
+                            ],
+                          ),
+                        )
+                      : const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                }),
+          ],
+        )
+      : const Center(
+          child: CircularProgressIndicator(),
+        );
 }

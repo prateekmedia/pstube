@@ -6,10 +6,8 @@ import 'package:readmore/readmore.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 Widget buildCommentBox(
-  BuildContext context,
-  Comment comment,
-  VoidCallback onReplyTap,
-) =>
+        BuildContext context, Comment comment, VoidCallback? onReplyTap,
+        {bool isInsideReply = false}) =>
     Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Row(
@@ -58,15 +56,17 @@ Widget buildCommentBox(
                   const SizedBox(height: 4),
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
-                    child: ReadMoreText(
-                      comment.text,
-                      trimLines: 4,
-                      trimMode: TrimMode.Line,
-                      trimCollapsedText: '\nRead more',
-                      trimExpandedText: '\nShow less',
-                      moreStyle: const TextStyle(
-                          fontSize: 14, fontWeight: FontWeight.bold),
-                    ),
+                    child: !isInsideReply
+                        ? ReadMoreText(
+                            comment.text,
+                            trimLines: 4,
+                            trimMode: TrimMode.Line,
+                            trimCollapsedText: '\nRead more',
+                            trimExpandedText: '\nShow less',
+                            moreStyle: const TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.bold),
+                          )
+                        : Text(comment.text),
                   ),
                   Row(
                     children: [
@@ -87,16 +87,17 @@ Widget buildCommentBox(
                           ))
                     ],
                   ),
-                  TextButton(
-                      style: TextButton.styleFrom(
-                        primary: context.isDark
-                            ? const Color.fromARGB(255, 40, 170, 255)
-                            : const Color.fromARGB(255, 6, 95, 212),
-                        padding: kTabLabelPadding,
-                      ),
-                      onPressed: comment.replyCount > 0 ? onReplyTap : null,
-                      child: Text(
-                          "${comment.replyCount} repl${comment.replyCount > 1 ? "ies" : "y"}"))
+                  if (!isInsideReply)
+                    TextButton(
+                        style: TextButton.styleFrom(
+                          primary: context.isDark
+                              ? const Color.fromARGB(255, 40, 170, 255)
+                              : const Color.fromARGB(255, 6, 95, 212),
+                          padding: kTabLabelPadding,
+                        ),
+                        onPressed: comment.replyCount > 0 ? onReplyTap : null,
+                        child: Text(
+                            "${comment.replyCount} repl${comment.replyCount > 1 ? "ies" : "y"}"))
                 ],
               ),
             ),

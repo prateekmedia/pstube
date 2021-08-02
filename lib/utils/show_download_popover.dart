@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutube/widgets/widgets.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'utils.dart';
 
@@ -13,24 +14,12 @@ Future showDownloadPopup(BuildContext context, Video video) {
               ? Column(
                   children: [
                     const SizedBox(height: 6),
-                    Row(
-                      children: const [
-                        Icon(Icons.audiotrack),
-                        SizedBox(width: 15),
-                        Text("Audio Download Links")
-                      ],
-                    ),
+                    linksHeader(icon: Ionicons.musical_note, label: "Audio"),
                     const SizedBox(height: 14),
                     for (var audioStream in snapshot.data!.audioOnly.toList())
                       customListTile(audioStream),
                     const SizedBox(height: 14),
-                    Row(
-                      children: const [
-                        Icon(Icons.video_library),
-                        SizedBox(width: 15),
-                        Text("Video Download Links")
-                      ],
-                    ),
+                    linksHeader(icon: Ionicons.videocam, label: "Video"),
                     const SizedBox(height: 14),
                     for (var videoStream in snapshot.data!.video
                         .where((element) => element.tag > 100)
@@ -46,31 +35,46 @@ Future showDownloadPopup(BuildContext context, Video video) {
   });
 }
 
-Container customListTile(dynamic stream) {
+Widget linksHeader({required IconData icon, required String label}) {
+  return Row(
+    children: [
+      Icon(
+        icon,
+        size: 22,
+      ),
+      const SizedBox(width: 10),
+      Text("$label Download Links")
+    ],
+  );
+}
+
+Widget customListTile(dynamic stream) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 4),
     child: InkWell(
       onTap: () => debugPrint("It's so cold outside!"),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-        child: Row(
+        child: Stack(
           children: [
-            Text(stream.container.name.toUpperCase()),
-            Expanded(
-              child: Column(
-                children: [
-                  Text(
-                    stream is VideoStreamInfo
-                        ? stream.videoQualityLabel
-                        : stream is AudioOnlyStreamInfo
-                            ? stream.bitrate.bitsPerSecond.getBitrate()
-                            : "",
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(stream.container.name.toUpperCase()),
+                Text((stream.size.totalBytes as int).getFileSize()),
+              ],
             ),
-            Text((stream.size.totalBytes as int).getFileSize()),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                stream is VideoStreamInfo
+                    ? stream.videoQualityLabel
+                    : stream is AudioOnlyStreamInfo
+                        ? stream.bitrate.bitsPerSecond.getBitrate()
+                        : "",
+                textAlign: TextAlign.center,
+              ),
+            )
           ],
         ),
       ),
