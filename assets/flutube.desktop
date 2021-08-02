@@ -1,9 +1,10 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Terminal=false
 Name=FluTube
 Exec=flutube %u
 Icon=flutube
+StartupNotify=false
+Terminal=false
 StartupWMClass=flutube
 Categories=Utility;
