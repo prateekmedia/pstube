@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutube/screens/screens.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:ionicons/ionicons.dart';
 
 void main() {
   runApp(const MyApp());
@@ -47,7 +47,7 @@ class MyHomePage extends HookWidget {
             hintText: "Search",
             isDense: true,
             prefixIcon: const Icon(
-              MdiIcons.magnify,
+              Icons.search,
               color: Colors.grey,
             ),
             border: OutlineInputBorder(
@@ -68,7 +68,7 @@ class MyHomePage extends HookWidget {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(MdiIcons.account),
+            icon: const Icon(Ionicons.person_outline),
           ),
           const SizedBox(width: 10),
         ],
@@ -103,15 +103,15 @@ class MyHomePage extends HookWidget {
           tabs: const [
             GButton(
               text: "Home",
-              icon: MdiIcons.home,
+              icon: Ionicons.home,
             ),
             GButton(
               text: "Downloads",
-              icon: MdiIcons.download,
+              icon: Ionicons.download_outline,
             ),
             GButton(
               text: "Settings",
-              icon: MdiIcons.cog,
+              icon: Ionicons.settings_sharp,
             ),
           ],
           selectedIndex: _currentIndex.value,

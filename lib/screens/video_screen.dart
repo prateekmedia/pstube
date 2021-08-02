@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutube/widgets/widgets.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:share_plus/share_plus.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
@@ -17,6 +18,9 @@ class VideoScreen extends HookWidget {
         () => YoutubeExplode().channels.get(video.channelId.value)));
     final isLiked = useState<int>(0);
     final comments = useState<List?>(null);
+    final replyComment = useState<Comment?>(null);
+    final currentIndex = useState<int>(0);
+    final PageController pageController = usePageController();
     getComments() async {
       comments.value =
           (await YoutubeExplode().videos.commentsClient.getComments(video));
@@ -139,14 +143,15 @@ class VideoScreen extends HookWidget {
                       : "Dislike",
                 ),
                 iconWithBottomLabel(
-                  icon: Icons.share_outlined,
+                  icon: Ionicons.share_social_outline,
                   onPressed: () {
                     Share.share(video.url);
                   },
                   label: "Share",
                 ),
                 iconWithBottomLabel(
-                  icon: Icons.download_outlined,
+                  icon: Ionicons.download_outline,
+                  onPressed: () => showDownloadPopup(context, video),
                   label: "Download",
                 ),
                 iconWithBottomLabel(
@@ -165,25 +170,38 @@ class VideoScreen extends HookWidget {
           ListTile(
             onTap: () => showPopover(
               context,
-              isScrollControlled: false,
+              isScrollControlled: true,
+              isScrollable: false,
               builder: (ctx) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 6),
-                      child: Text("${(comments.value ?? []).length} comments",
-                          style: context.textTheme.bodyText1!
-                              .copyWith(fontWeight: FontWeight.w600)),
-                    ),
-                    for (Comment comment in comments.value ?? [])
-                      buildCommentBox(context, comment),
-                  ],
+                return Expanded(
+                  child: PageView.builder(
+                    controller: pageController,
+                    itemBuilder: (_, index) => [
+                      ListView(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 6),
+                            child: Text(
+                                "${(comments.value ?? []).length} comments",
+                                style: context.textTheme.bodyText1!
+                                    .copyWith(fontWeight: FontWeight.w600)),
+                          ),
+                          for (Comment comment in comments.value ?? [])
+                            buildCommentBox(context, comment, () {
+                              replyComment.value = comment;
+                              pageController.animateToPage(1,
+                                  duration: const Duration(milliseconds: 200),
+                                  curve: Curves.easeInBack);
+                            }),
+                        ],
+                      ),
+                      showReplies(replyComment.value),
+                    ][index],
+                  ),
                 );
               },
-            ),
+            ).whenComplete(() => currentIndex.value = 0),
             title: const Text("Comments"),
             trailing: Text("${(comments.value ?? []).length}"),
           ),
@@ -192,4 +210,8 @@ class VideoScreen extends HookWidget {
       ),
     );
   }
+}
+
+Widget showReplies(Comment? comment) {
+  return Text(comment != null ? comment.text : "");
 }

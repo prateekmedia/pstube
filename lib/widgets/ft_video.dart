@@ -141,11 +141,7 @@ class FTVideo extends HookWidget {
                     ),
                     IconButton(
                       onPressed: video != null
-                          ? () {
-                              showPopover(context, builder: (ctx) {
-                                return const FittedBox();
-                              });
-                            }
+                          ? () => showDownloadPopup(context, video)
                           : null,
                       icon: const Icon(Icons.save_alt_outlined),
                     )

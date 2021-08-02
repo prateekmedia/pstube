@@ -11,22 +11,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
   cached_network_image: ^3.0.0
-  # flutter_ffmpeg:
   flutter_hooks: ^0.18.0
   flutter_staggered_grid_view: ^0.4.0
   google_nav_bar: ^5.0.5
   hooks_riverpod: ^1.0.0-dev.5
   intl: ^0.17.0
-  # miniplayer: ^1.0.0+2
-  material_design_icons_flutter: ^5.0.5955-rc.1
+  ionicons: ^0.1.2
   path: ^1.8.0
   path_provider: ^2.0.2
   permission_handler: ^8.1.2
   readmore: ^2.1.0
   share_plus: ^2.1.4
-  # shared_preferences: ^2.0.6
   shimmer: ^2.0.0
   timeago: ^3.1.0
   youtube_explode_dart: ^1.10.0

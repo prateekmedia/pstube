@@ -5,7 +5,12 @@ import 'package:flutube/widgets/widgets.dart';
 import 'package:readmore/readmore.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-Widget buildCommentBox(BuildContext context, Comment comment) => Container(
+Widget buildCommentBox(
+  BuildContext context,
+  Comment comment,
+  VoidCallback onReplyTap,
+) =>
+    Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +73,7 @@ Widget buildCommentBox(BuildContext context, Comment comment) => Container(
                       TextButton.icon(
                           onPressed: () {},
                           style: TextButton.styleFrom(
-                              padding: const EdgeInsets.all(14),
+                              padding: kTabLabelPadding,
                               primary:
                                   context.isDark ? Colors.white : Colors.black),
                           icon: const Icon(
@@ -84,11 +89,12 @@ Widget buildCommentBox(BuildContext context, Comment comment) => Container(
                   ),
                   TextButton(
                       style: TextButton.styleFrom(
-                          primary: context.isDark
-                              ? const Color.fromARGB(255, 40, 170, 255)
-                              : const Color.fromARGB(255, 6, 95, 212),
-                          padding: const EdgeInsets.symmetric(horizontal: 16)),
-                      onPressed: comment.replyCount > 0 ? () {} : null,
+                        primary: context.isDark
+                            ? const Color.fromARGB(255, 40, 170, 255)
+                            : const Color.fromARGB(255, 6, 95, 212),
+                        padding: kTabLabelPadding,
+                      ),
+                      onPressed: comment.replyCount > 0 ? onReplyTap : null,
                       child: Text(
                           "${comment.replyCount} repl${comment.replyCount > 1 ? "ies" : "y"}"))
                 ],
