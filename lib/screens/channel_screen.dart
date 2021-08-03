@@ -22,8 +22,29 @@ class ChannelScreen extends HookWidget {
       body: channel.hasData && channel.data != null
           ? ListView(
               children: [
-                const SizedBox(height: 40),
-                ChannelInfo(channel: channel),
+                SizedBox(
+                  height: 100,
+                  child: ChannelInfo(channel: channel).center(),
+                ),
+                const Divider(),
+                FutureBuilder<ChannelUploadsList>(
+                  future: YoutubeExplode()
+                      .channels
+                      .getUploadsFromPage(channel.data!.id.value),
+                  builder: (ctx, snapshot) {
+                    return snapshot.hasData
+                        ? ListView.builder(
+                            shrinkWrap: true,
+                            primary: false,
+                            itemBuilder: (ctx, idx) => FTVideo(
+                              videoData: snapshot.data![idx],
+                              isRow: true,
+                            ),
+                            itemCount: 20,
+                          )
+                        : const Center(child: CircularProgressIndicator());
+                  },
+                )
               ],
             )
           : const CircularProgressIndicator().center(),

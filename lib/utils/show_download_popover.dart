@@ -60,7 +60,9 @@ Widget customListTile(dynamic stream) {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(stream.container.name.toUpperCase()),
+                Text(stream is AudioOnlyStreamInfo
+                    ? stream.audioCodec.split('.')[0].toUpperCase()
+                    : stream.container.name.toUpperCase()),
                 Text((stream.size.totalBytes as int).getFileSize()),
               ],
             ),

@@ -36,7 +36,7 @@ class FTVideo extends HookWidget {
                   : null,
               child: Row(children: [
                 SizedBox(
-                  height: 100,
+                  height: 90,
                   child: AspectRatio(
                     aspectRatio: 16 / 9,
                     child: video != null
@@ -67,7 +67,6 @@ class FTVideo extends HookWidget {
                           ),
                   ),
                 ),
-                const SizedBox(width: 10),
                 Flexible(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,7 +78,7 @@ class FTVideo extends HookWidget {
                               video != null ? video.title : "...",
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(fontSize: 16),
+                              style: const TextStyle(fontSize: 14),
                             ),
                           ),
                         ],
