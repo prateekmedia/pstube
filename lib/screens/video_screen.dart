@@ -10,12 +10,17 @@ import '../utils/utils.dart';
 
 class VideoScreen extends HookWidget {
   final Video video;
-  const VideoScreen({Key? key, required this.video}) : super(key: key);
+  final bool loadData;
+  const VideoScreen({Key? key, required this.video, this.loadData = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final channel = useFuture(useMemoized(
         () => YoutubeExplode().channels.get(video.channelId.value)));
+    final snapShot = useFuture(
+        useMemoized(() => YoutubeExplode().videos.get(video.id.value)));
+    final Video videoData = loadData ? snapShot.data ?? video : video;
     final isLiked = useState<int>(0);
     final replyComment = useState<Comment?>(null);
     final currentIndex = useState<int>(0);
@@ -39,7 +44,7 @@ class VideoScreen extends HookWidget {
                     image: DecorationImage(
                       fit: BoxFit.fill,
                       image: CachedNetworkImageProvider(
-                          video.thumbnails.mediumResUrl),
+                          videoData.thumbnails.mediumResUrl),
                     ),
                   ),
                 ),
@@ -73,7 +78,7 @@ class VideoScreen extends HookWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 4),
                         child: Text(
-                          video.description,
+                          videoData.description,
                           style: const TextStyle(fontSize: 16),
                         ),
                       ),
@@ -91,7 +96,7 @@ class VideoScreen extends HookWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          video.title,
+                          videoData.title,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: context.textTheme.headline6,
@@ -103,9 +108,10 @@ class VideoScreen extends HookWidget {
                   const SizedBox(height: 10),
                   Row(
                     children: [
-                      Text(video.engagement.viewCount.formatNumber + ' views'),
-                      Text(video.publishDate != null
-                          ? '  •  ' + timeago.format(video.publishDate!)
+                      Text(videoData.engagement.viewCount.formatNumber +
+                          ' views'),
+                      Text(videoData.publishDate != null
+                          ? '  •  ' + timeago.format(videoData.publishDate!)
                           : ''),
                     ],
                   ),
@@ -125,8 +131,8 @@ class VideoScreen extends HookWidget {
                   onPressed: () {
                     isLiked.value = isLiked.value != 1 ? 1 : 0;
                   },
-                  label: video.engagement.likeCount != null
-                      ? video.engagement.likeCount!.formatNumber
+                  label: videoData.engagement.likeCount != null
+                      ? videoData.engagement.likeCount!.formatNumber
                       : "Like",
                 ),
                 iconWithBottomLabel(
@@ -136,14 +142,14 @@ class VideoScreen extends HookWidget {
                   onPressed: () {
                     isLiked.value = isLiked.value != 2 ? 2 : 0;
                   },
-                  label: video.engagement.dislikeCount != null
-                      ? video.engagement.dislikeCount!.formatNumber
+                  label: videoData.engagement.dislikeCount != null
+                      ? videoData.engagement.dislikeCount!.formatNumber
                       : "Dislike",
                 ),
                 iconWithBottomLabel(
                   icon: Ionicons.share_social_outline,
                   onPressed: () {
-                    Share.share(video.url);
+                    Share.share(videoData.url);
                   },
                   label: "Share",
                 ),
@@ -166,7 +172,8 @@ class VideoScreen extends HookWidget {
           ),
           const Divider(),
           FutureBuilder<List?>(
-              future: getComments(),
+              future:
+                  (loadData && snapShot.data == null) ? null : getComments(),
               builder: (context, snapshot) {
                 return ListTile(
                   onTap: () => showPopover(

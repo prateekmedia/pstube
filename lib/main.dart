@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutube/screens/screens.dart';
+import 'package:flutube/utils/utils.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:ionicons/ionicons.dart';
@@ -42,27 +43,38 @@ class MyHomePage extends HookWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey[900]!,
-        title: TextField(
-          decoration: InputDecoration(
-            hintText: "Search",
-            isDense: true,
-            prefixIcon: const Icon(
-              Icons.search,
-              color: Colors.grey,
+        title: Hero(
+          tag: 'search',
+          child: Material(
+            type: MaterialType.transparency,
+            child: TextField(
+              onTap: () {
+                context.pushPage(const SearchScreen());
+              },
+              readOnly: true,
+              enableInteractiveSelection: false,
+              decoration: InputDecoration(
+                hintText: "Search",
+                isDense: true,
+                prefixIcon: const Icon(
+                  Icons.search,
+                  color: Colors.grey,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: BorderSide(color: Colors.grey[800]!, width: 0.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: BorderSide(color: Colors.grey[700]!, width: 0.0),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: BorderSide(color: Colors.grey[800]!, width: 0.0),
+                ),
+                filled: true,
+              ),
             ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20.0),
-              borderSide: BorderSide(color: Colors.grey[800]!, width: 0.0),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20.0),
-              borderSide: BorderSide(color: Colors.grey[700]!, width: 0.0),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20.0),
-              borderSide: BorderSide(color: Colors.grey[800]!, width: 0.0),
-            ),
-            filled: true,
           ),
         ),
         actions: [

@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen>
               ? 3
               : context.width > 900
                   ? 4
-                  : context.width > 700
+                  : context.width > 620
                       ? 6
                       : 12),
           crossAxisCount: 12,

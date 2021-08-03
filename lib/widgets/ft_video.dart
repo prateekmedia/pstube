@@ -10,71 +10,102 @@ import 'widgets.dart';
 import '../utils/utils.dart';
 
 class FTVideo extends HookWidget {
-  final String videoUrl;
+  final String? videoUrl;
+  final Video? videoData;
   final bool isRow;
 
-  const FTVideo({Key? key, required this.videoUrl, this.isRow = false})
+  const FTVideo({Key? key, this.videoUrl, this.videoData, this.isRow = false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final snapshot =
-        useFuture(useMemoized(() => YoutubeExplode().videos.get(videoUrl)));
-    Video? video = snapshot.data;
+    final snapshot = videoUrl != null
+        ? useFuture(useMemoized(() => YoutubeExplode().videos.get(videoUrl)))
+        : null;
+    Video? video = videoUrl != null ? snapshot!.data : videoData;
     return Container(
       padding: const EdgeInsets.all(16),
       width: context.width,
       child: isRow
-          ? Row(children: [
-              SizedBox(
-                height: 70,
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: video != null
-                      ? Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              fit: BoxFit.contain,
-                              image: CachedNetworkImageProvider(
-                                  video.thumbnails.lowResUrl),
+          ? GestureDetector(
+              onTap: video != null
+                  ? () => context.pushPage(VideoScreen(
+                        video: video,
+                        loadData: true,
+                      ))
+                  : null,
+              child: Row(children: [
+                SizedBox(
+                  height: 100,
+                  child: AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: video != null
+                        ? Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                fit: BoxFit.contain,
+                                image: CachedNetworkImageProvider(
+                                    video.thumbnails.lowResUrl),
+                              ),
                             ),
-                          ),
-                        )
-                      : Shimmer.fromColors(
-                          baseColor: Colors.grey[900]!,
-                          highlightColor: Colors.grey[800]!,
-                          child: Row(
-                            children: [
-                              Flexible(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.circular(10),
+                          )
+                        : Shimmer.fromColors(
+                            baseColor: Colors.grey[900]!,
+                            highlightColor: Colors.grey[800]!,
+                            child: Row(
+                              children: [
+                                Flexible(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.black,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
+                  ),
                 ),
-              ),
-              const SizedBox(width: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  iconWithLabel(video == null ? "Loading" : video.title,
-                      style:
-                          context.textTheme.bodyText2!.copyWith(fontSize: 12)),
-                  if (video != null)
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 14),
-                      child: Text(video.author,
-                          style: context.textTheme.bodyText2!
-                              .copyWith(fontSize: 12)),
-                    ),
-                ],
-              )
-            ])
+                const SizedBox(width: 10),
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Flexible(
+                            child: Text(
+                              video != null ? video.title : "...",
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: GestureDetector(
+                              onTap: (video != null)
+                                  ? () => context.pushPage(
+                                      ChannelScreen(id: video.channelId.value))
+                                  : null,
+                              child: iconWithLabel(
+                                video != null ? video.author : "Loading...",
+                                secColor: SecColor.dark,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              ]),
+            )
           : Column(
               children: [
                 Stack(
@@ -83,8 +114,10 @@ class FTVideo extends HookWidget {
                       aspectRatio: 16 / 9,
                       child: video != null
                           ? GestureDetector(
-                              onTap: () =>
-                                  context.pushPage(VideoScreen(video: video)),
+                              onTap: () => context.pushPage(VideoScreen(
+                                video: video,
+                                loadData: true,
+                              )),
                               child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
