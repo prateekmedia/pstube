@@ -25,3 +25,4 @@ jobs:
           file: build/app/outputs/apk/release/app*
           tag: ${{ github.ref }}
           overwrite: true
+          file_glob: true
