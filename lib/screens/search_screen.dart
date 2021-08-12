@@ -13,17 +13,17 @@ class SearchScreen extends HookWidget {
     final searchTextController = useTextEditingController();
     final sQuery = useState<String>('');
     final isSearching = useState<bool>(true);
+    final yt = YoutubeExplode();
 
     Future<List<String>> getSuggestions() async {
-      var suggestions =
-          YoutubeExplode().search.getQuerySuggestions(sQuery.value);
-      YoutubeExplode().close();
+      var suggestions = yt.search.getQuerySuggestions(sQuery.value);
+      yt.close();
       return suggestions;
     }
 
     Future<SearchList> getVideos() async {
-      var videos = YoutubeExplode().search.getVideos(sQuery.value);
-      YoutubeExplode().close();
+      var videos = yt.search.getVideos(sQuery.value);
+      yt.close();
       return videos;
     }
 

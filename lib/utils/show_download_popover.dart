@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutube/widgets/widgets.dart';
 import 'package:ionicons/ionicons.dart';
@@ -17,14 +18,14 @@ Future showDownloadPopup(BuildContext context, Video video) {
                     linksHeader(icon: Ionicons.musical_note, label: "Audio"),
                     const SizedBox(height: 14),
                     for (var audioStream in snapshot.data!.audioOnly.toList())
-                      customListTile(audioStream),
+                      customListTile(audioStream, video.title),
                     const SizedBox(height: 14),
                     linksHeader(icon: Ionicons.videocam, label: "Video"),
                     const SizedBox(height: 14),
                     for (var videoStream in snapshot.data!.video
                         .where((element) => element.tag > 100)
                         .toList())
-                      customListTile(videoStream),
+                      customListTile(videoStream, video.title),
                   ],
                 )
               : const SizedBox(
@@ -48,11 +49,21 @@ Widget linksHeader({required IconData icon, required String label}) {
   );
 }
 
-Widget customListTile(dynamic stream) {
+Widget customListTile(dynamic stream, String vidName) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 4),
     child: InkWell(
-      onTap: () => debugPrint("It's so cold outside!"),
+      onTap: () async => Dio().downloadUri(
+          stream.url,
+          (await FileUtils.appPath()) +
+              vidName +
+              '(' +
+              (stream is AudioOnlyStreamInfo
+                  ? stream.audioCodec.split('.')[0].toUpperCase()
+                  : '${stream.videoResolution.width}x${stream.videoResolution.height}') +
+              (stream is MuxedStreamInfo ? '.mp4' : '.m4a'),
+          onReceiveProgress: (downloaded, total) =>
+              debugPrint((downloaded / total).toString())),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
         child: Stack(

@@ -13,57 +13,15 @@ jobs:
           java-version: "12.x"
       - uses: subosito/flutter-action@master
         with:
-          channel: stable
-
-      # - name: Download Android keystore
-      #   id: android_keystore
-      #   uses: timheuer/base64-to-file@v1.0.4
-      #   with:
-      #     fileName: key.jks
-      #     encodedString: ${{ secrets.KEY_JKS }}
-
-      # - name: Create key.properties
-      #   run: |
-      #     echo "storeFile=${{ steps.android_keystore.outputs.filePath }}" > android/key.properties
-      #     echo "storePassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
-      #     echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
-      #     echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
-
+          channel: dev
       - name: Get Packages
         run: flutter pub get
-
-      #- name: Create Splash
-      #  run: flutter pub run flutter_native_splash:create
-
       - name: Build App
         run: flutter build apk --split-per-abi
-
       - name: Upload file to a GitHub release
         uses: svenstaro/upload-release-action@2.2.1
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/app/outputs/apk/release/app-arm64-v8a-release.apk
+          file: build/app/outputs/apk/release/app*
           tag: ${{ github.ref }}
           overwrite: true
-
-      - name: Upload files to a GitHub release
-        uses: svenstaro/upload-release-action@2.2.1
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/app/outputs/apk/release/app-armeabi-v7a-release.apk
-          tag: ${{ github.ref }}
-          overwrite: true
-
-      - name: Upload files to a GitHub release
-        uses: svenstaro/upload-release-action@2.2.1
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/app/outputs/apk/release/app-x86_64-release.apk
-          tag: ${{ github.ref }}
-          overwrite: true
-#      - name: Upload to Artifact
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: apk-release
-#          path: build/app/outputs/apk/release/*-release.apk
-

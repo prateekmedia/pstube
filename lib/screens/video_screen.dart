@@ -16,10 +16,11 @@ class VideoScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final channel = useFuture(useMemoized(
-        () => YoutubeExplode().channels.get(video.channelId.value)));
-    final snapShot = useFuture(
-        useMemoized(() => YoutubeExplode().videos.get(video.id.value)));
+    final yt = YoutubeExplode();
+    final channel =
+        useFuture(useMemoized(() => yt.channels.get(video.channelId.value)));
+    final snapShot =
+        useFuture(useMemoized(() => yt.videos.get(video.id.value)));
     final Video videoData = loadData ? snapShot.data ?? video : video;
     final isLiked = useState<int>(0);
     final replyComment = useState<Comment?>(null);
@@ -27,8 +28,8 @@ class VideoScreen extends HookWidget {
     final PageController pageController = usePageController();
 
     getComments() async {
-      var comments = YoutubeExplode().videos.commentsClient.getComments(video);
-      YoutubeExplode().close();
+      var comments = yt.videos.commentsClient.getComments(video);
+      yt.close();
       return comments;
     }
 
@@ -234,11 +235,11 @@ class VideoScreen extends HookWidget {
 }
 
 Widget showReplies(BuildContext context, Comment? comment) {
+  final yt = YoutubeExplode();
   getReplies() async {
     if (comment == null) return null;
-    var replies =
-        await YoutubeExplode().videos.commentsClient.getReplies(comment);
-    YoutubeExplode().close();
+    var replies = await yt.videos.commentsClient.getReplies(comment);
+    yt.close();
     return replies;
   }
 
