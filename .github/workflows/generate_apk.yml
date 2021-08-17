@@ -23,6 +23,6 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: build/app/outputs/apk/release/app*
-          tag: ${{ github.ref }}
+          tag: ${{ github.ref }}}-nightly
           overwrite: true
           file_glob: true
