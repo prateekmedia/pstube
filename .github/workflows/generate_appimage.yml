@@ -29,5 +29,5 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: flutube-x86_64.AppImage
-          tag: ${{ github.ref }}
+          tag: ${{ github.ref }}-nightly
           overwrite: true
