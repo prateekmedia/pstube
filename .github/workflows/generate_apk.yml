@@ -1,6 +1,11 @@
 name: FlutterApkCI
 
-on: [push, workflow_dispatch]
+on:
+  push:
+    paths-ignore:
+      - "README.md"
+      - "docs/**"
+  workflow_dispatch:
 
 jobs:
   build:
@@ -13,7 +18,7 @@ jobs:
           java-version: "12.x"
       - uses: subosito/flutter-action@master
         with:
-          channel: dev
+          channel: beta
       - name: Get Packages
         run: flutter pub get
       - name: Build App
@@ -24,5 +29,6 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: build/app/outputs/apk/release/app*
           tag: ${{ github.ref }}-nightly
+          body: Always up to date
           overwrite: true
           file_glob: true
