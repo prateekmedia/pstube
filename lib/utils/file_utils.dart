@@ -13,7 +13,7 @@ class FileUtils {
                 .sublist(1, 3)
                 .join("/") +
             "/FluTube/";
-    Directory(path).createSync();
+    if (!Directory(path).existsSync()) Directory(path).createSync();
     return path;
   }
 }
