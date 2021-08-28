@@ -25,19 +25,19 @@ class VideoScreen extends HookWidget {
     final isLiked = useState<int>(0);
     final replyComment = useState<Comment?>(null);
     final currentIndex = useState<int>(0);
-    final PageController pageController = usePageController();
-    final sidebarItems = useState<List<Widget>>(
-        [DescriptionWidget(videoData: videoData, isInsidePopup: false)]);
+    final commentSideWidget = useState<Widget?>(null);
+    final currentItem = useState<int>(0);
 
     return Scaffold(
       body: FutureBuilder<CommentsList?>(
           future: (loadData && videoSnapshot.data == null)
               ? null
               : yt.videos.commentsClient
-                  .getComments(video)
+                  .getComments(videoData)
                   .whenComplete(() => yt.close()),
           builder: (context, commentsSnapshot) {
             return Flex(
+              crossAxisAlignment: CrossAxisAlignment.start,
               direction: Axis.horizontal,
               children: [
                 Flexible(
@@ -169,31 +169,32 @@ class VideoScreen extends HookWidget {
                       ),
                       const Divider(),
                       ListTile(
-                        onTap: sidebarItems.value.length > 1
-                            ? sidebarItems.value.removeLast
-                            : context.width < mobileWidth
-                                ? () => showPopover(
-                                      context,
-                                      isScrollable: false,
-                                      builder: (ctx) {
-                                        return Expanded(
-                                          child: CommentsWidget(
-                                              snapshot: commentsSnapshot,
-                                              pageController: pageController,
-                                              replyComment: replyComment),
+                        onTap: commentsSnapshot.data == null
+                            ? null
+                            : currentItem.value == 1
+                                ? () => currentItem.value = 0
+                                : context.width < mobileWidth
+                                    ? () => showPopover(
+                                          context,
+                                          isScrollable: false,
+                                          builder: (ctx) {
+                                            return Expanded(
+                                              child: CommentsWidget(
+                                                  snapshot: commentsSnapshot,
+                                                  replyComment: replyComment),
+                                            );
+                                          },
+                                        ).whenComplete(
+                                            () => currentIndex.value = 0)
+                                    : () {
+                                        commentSideWidget.value =
+                                            CommentsWidget(
+                                          onClose: () => currentItem.value = 0,
+                                          replyComment: replyComment,
+                                          snapshot: commentsSnapshot,
                                         );
+                                        currentItem.value = 1;
                                       },
-                                    ).whenComplete(() => currentIndex.value = 0)
-                                : () {
-                                    sidebarItems.value = [
-                                      ...sidebarItems.value,
-                                      CommentsWidget(
-                                        pageController: pageController,
-                                        replyComment: replyComment,
-                                        snapshot: commentsSnapshot,
-                                      ),
-                                    ];
-                                  },
                         title: const Text("Comments"),
                         trailing: Text(
                           (commentsSnapshot.data != null
@@ -206,10 +207,19 @@ class VideoScreen extends HookWidget {
                     ],
                   ),
                 ),
-                Flexible(
-                  flex: 4,
-                  child: sidebarItems.value.last,
-                ),
+                if (context.width >= mobileWidth)
+                  Flexible(
+                    flex: 4,
+                    child: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12.0),
+                        child: DescriptionWidget(
+                            videoData: videoData, isInsidePopup: false),
+                      ),
+                      if (commentSideWidget.value != null)
+                        commentSideWidget.value!,
+                    ][currentItem.value],
+                  ),
               ],
             );
           }),
@@ -217,52 +227,93 @@ class VideoScreen extends HookWidget {
   }
 }
 
-class CommentsWidget extends StatelessWidget {
+class CommentsWidget extends HookWidget {
   const CommentsWidget({
     Key? key,
-    required this.pageController,
+    this.onClose,
     required this.replyComment,
     required this.snapshot,
   }) : super(key: key);
 
-  final PageController pageController;
   final ValueNotifier<Comment?> replyComment;
   final AsyncSnapshot<CommentsList?> snapshot;
+  final VoidCallback? onClose;
 
   @override
   Widget build(BuildContext context) {
-    return PageView.builder(
-      controller: pageController,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: 2,
-      itemBuilder: (_, index) => [
-        ListView(
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              child: Text("${(snapshot.data ?? []).length} comments",
-                  style: context.textTheme.bodyText1!
-                      .copyWith(fontWeight: FontWeight.w600)),
+    final PageController pageController = PageController();
+    final currentPage = useState<int>(0);
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: onClose != null ? 16 : 0),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                (currentPage.value == 1)
+                    ? IconButton(
+                        onPressed: () {
+                          pageController.animateToPage(0,
+                              duration: const Duration(milliseconds: 200),
+                              curve: Curves.easeInOut);
+                          replyComment.value = null;
+                        },
+                        icon: const Icon(Icons.chevron_left),
+                      )
+                    : const SizedBox(),
+                IconButton(
+                  onPressed: onClose ?? context.back,
+                  icon: const Icon(Icons.close),
+                ),
+              ],
             ),
-            for (Comment comment in snapshot.data ?? [])
-              buildCommentBox(context, comment, () {
-                replyComment.value = comment;
-                pageController.animateToPage(1,
-                    duration: const Duration(milliseconds: 200),
-                    curve: Curves.easeInOut);
-              }),
-          ],
-        ),
-        WillPopScope(
-            child: showReplies(context, replyComment.value),
-            onWillPop: () async {
-              await pageController.animateToPage(0,
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.easeInOut);
-              replyComment.value = null;
-              return false;
-            }),
-      ][index],
+          ),
+          Expanded(
+            child: PageView.builder(
+              onPageChanged: (index) => currentPage.value = index,
+              controller: pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: 2,
+              itemBuilder: (_, index) => [
+                ListView(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 6),
+                      child: Text(
+                          (snapshot.data != null
+                                      ? snapshot.data!.totalLength
+                                      : 0)
+                                  .formatNumber +
+                              " comments",
+                          style: context.textTheme.bodyText1!
+                              .copyWith(fontWeight: FontWeight.w600)),
+                    ),
+                    for (Comment comment in snapshot.data ?? [])
+                      buildCommentBox(context, comment, () {
+                        replyComment.value = comment;
+                        pageController.animateToPage(1,
+                            duration: const Duration(milliseconds: 200),
+                            curve: Curves.easeInOut);
+                      }),
+                  ],
+                ),
+                WillPopScope(
+                    child: showReplies(context, replyComment.value),
+                    onWillPop: () async {
+                      await pageController.animateToPage(0,
+                          duration: const Duration(milliseconds: 200),
+                          curve: Curves.easeInOut);
+                      replyComment.value = null;
+                      return false;
+                    }),
+              ][index],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -281,6 +332,7 @@ class DescriptionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      controller: ScrollController(),
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

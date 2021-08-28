@@ -15,17 +15,12 @@ class SearchScreen extends HookWidget {
     final isSearching = useState<bool>(true);
     final yt = YoutubeExplode();
 
-    Future<List<String>> getSuggestions() async {
-      var suggestions = yt.search.getQuerySuggestions(sQuery.value);
-      yt.close();
-      return suggestions;
-    }
+    Future<List<String>> getSuggestions() => yt.search
+        .getQuerySuggestions(sQuery.value)
+        .whenComplete(() => yt.close());
 
-    Future<SearchList> getVideos() async {
-      var videos = yt.search.getVideos(sQuery.value);
-      yt.close();
-      return videos;
-    }
+    Future<SearchList> getVideos() =>
+        yt.search.getVideos(sQuery.value).whenComplete(() => yt.close());
 
     return WillPopScope(
       onWillPop: () async {

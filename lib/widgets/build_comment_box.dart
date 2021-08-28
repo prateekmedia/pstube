@@ -66,25 +66,31 @@ Widget buildCommentBox(
                             moreStyle: const TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.bold),
                           )
-                        : Text(comment.text),
+                        : SelectableText(comment.text),
                   ),
                   Row(
                     children: [
                       TextButton.icon(
-                          onPressed: () {},
-                          style: TextButton.styleFrom(
-                              padding: kTabLabelPadding,
-                              primary:
-                                  context.isDark ? Colors.white : Colors.black),
-                          icon: const Icon(
-                            Icons.thumb_up,
-                            size: 18,
-                          ),
-                          label: Text(
-                            "${comment.likeCount.formatNumber}",
-                            style: context.textTheme.bodyText2!
-                                .copyWith(fontSize: 12),
-                          ))
+                        onPressed: () {},
+                        style: TextButton.styleFrom(
+                            padding: kTabLabelPadding,
+                            primary:
+                                context.isDark ? Colors.white : Colors.black),
+                        icon: const Icon(
+                          Icons.thumb_up,
+                          size: 18,
+                        ),
+                        label: Text(
+                          "${comment.likeCount.formatNumber}",
+                          style: context.textTheme.bodyText2!
+                              .copyWith(fontSize: 12),
+                        ),
+                      ),
+                      if (comment.isHearted)
+                        Icon(
+                          Icons.favorite_rounded,
+                          color: Colors.red[600],
+                        ),
                     ],
                   ),
                   if (!isInsideReply)
