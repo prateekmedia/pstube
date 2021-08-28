@@ -12,18 +12,19 @@ class ChannelLogo extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final chid =
-        useFuture(useMemoized(() => YoutubeExplode().channels.get(channelId)));
+    final chid = channelId != null
+        ? useFuture(useMemoized(() => YoutubeExplode().channels.get(channelId)))
+        : null;
     return Container(
       height: size,
       width: size,
       decoration: BoxDecoration(
         color: Colors.grey,
         borderRadius: BorderRadius.circular(1000),
-        image: channel != null || chid.hasData
+        image: channel != null || chid != null && chid.hasData
             ? DecorationImage(
-                image:
-                    CachedNetworkImageProvider((channel ?? chid.data)!.logoUrl),
+                image: CachedNetworkImageProvider(
+                    (channel ?? chid!.data)!.logoUrl),
                 fit: BoxFit.fitWidth,
               )
             : null,
