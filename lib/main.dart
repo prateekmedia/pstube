@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutube/screens/screens.dart';
 import 'package:flutube/utils/utils.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:ionicons/ionicons.dart';
 
@@ -155,32 +155,25 @@ class MyHomePage extends HookWidget {
             shape: const StadiumBorder(),
             color: Colors.grey[900]!,
           ),
-          child: GNav(
-            rippleColor: Colors.grey[300]!,
-            hoverColor: Colors.grey[100]!,
-            gap: 8,
-            activeColor: Colors.white,
-            iconSize: 24,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            duration: const Duration(milliseconds: 400),
-            tabBackgroundColor: Theme.of(context).primaryColor,
-            color: Colors.grey,
-            tabs: const [
-              GButton(
-                text: "Home",
-                icon: Ionicons.home,
+          child: SalomonBottomBar(
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Colors.grey,
+            items: [
+              SalomonBottomBarItem(
+                title: const Text("Home"),
+                icon: const Icon(Ionicons.home),
               ),
-              GButton(
-                text: "Downloads",
-                icon: Ionicons.download_outline,
+              SalomonBottomBarItem(
+                title: const Text("Downloads"),
+                icon: const Icon(Ionicons.download_outline),
               ),
-              GButton(
-                text: "Settings",
-                icon: Ionicons.settings_sharp,
+              SalomonBottomBarItem(
+                title: const Text("Settings"),
+                icon: const Icon(Ionicons.settings_sharp),
               ),
             ],
-            selectedIndex: _currentIndex.value,
-            onTabChange: (index) => _controller.animateToPage(index,
+            currentIndex: _currentIndex.value,
+            onTap: (index) => _controller.animateToPage(index,
                 duration: const Duration(milliseconds: 300),
                 curve: Curves.fastOutSlowIn),
           ),

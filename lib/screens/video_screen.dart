@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutube/widgets/widgets.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:share_plus/share_plus.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
@@ -67,9 +68,8 @@ class VideoScreen extends HookWidget {
                         GestureDetector(
                           onTap: context.width < mobileWidth
                               ? () {
-                                  showPopover(
-                                    context,
-                                    isScrollControlled: false,
+                                  showMaterialModalBottomSheet(
+                                    context: context,
                                     builder: (ctx) =>
                                         DescriptionWidget(videoData: videoData),
                                   );
@@ -171,9 +171,8 @@ class VideoScreen extends HookWidget {
                               : currentItem.value == 1
                                   ? () => currentItem.value = 0
                                   : context.width < mobileWidth
-                                      ? () => showPopover(
-                                            context,
-                                            isScrollable: false,
+                                      ? () => showMaterialModalBottomSheet(
+                                            context: context,
                                             builder: (ctx) {
                                               return Expanded(
                                                 child: CommentsWidget(
@@ -331,27 +330,24 @@ class DescriptionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return ListView(
       controller: ScrollController(),
       padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Description",
-            style: context.textTheme.bodyText2!.copyWith(
-                fontWeight: FontWeight.bold, fontSize: isInsidePopup ? 15 : 18),
+      children: [
+        Text(
+          "Description",
+          style: context.textTheme.bodyText2!.copyWith(
+              fontWeight: FontWeight.bold, fontSize: isInsidePopup ? 15 : 18),
+        ),
+        const SizedBox(height: 15),
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: SelectableText(
+            videoData.description,
+            style: TextStyle(fontSize: isInsidePopup ? 16 : 17),
           ),
-          const SizedBox(height: 15),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: SelectableText(
-              videoData.description,
-              style: TextStyle(fontSize: isInsidePopup ? 16 : 17),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

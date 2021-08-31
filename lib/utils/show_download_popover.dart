@@ -1,41 +1,53 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutube/widgets/widgets.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'utils.dart';
 
 Future showDownloadPopup(BuildContext context, Video video) {
-  return showPopover(context, builder: (ctx) {
-    return FutureBuilder<StreamManifest>(
-        future:
-            YoutubeExplode().videos.streamsClient.getManifest(video.id.value),
-        builder: (context, snapshot) {
-          return snapshot.hasData
-              ? Column(
-                  children: [
-                    const SizedBox(height: 6),
-                    linksHeader(icon: Ionicons.musical_note, label: "Audio"),
-                    const SizedBox(height: 14),
-                    for (var audioStream
-                        in snapshot.data!.audioOnly.toList().reversed)
-                      customListTile(audioStream, video.title),
-                    const SizedBox(height: 14),
-                    linksHeader(icon: Ionicons.videocam, label: "Video"),
-                    const SizedBox(height: 14),
-                    for (var videoStream in snapshot.data!.video
-                        .where((element) => element.tag < 100)
-                        .toList()
-                        .sortByVideoQuality())
-                      customListTile(videoStream, video.title),
-                  ],
-                )
-              : const SizedBox(
-                  height: 100,
-                  child: Center(child: CircularProgressIndicator()),
-                );
-        });
-  });
+  return showBarModalBottomSheet(
+      context: context,
+      builder: (ctx) {
+        return Material(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: FutureBuilder<StreamManifest>(
+                future: YoutubeExplode()
+                    .videos
+                    .streamsClient
+                    .getManifest(video.id.value),
+                builder: (context, snapshot) {
+                  return snapshot.hasData
+                      ? Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const SizedBox(height: 6),
+                            linksHeader(
+                                icon: Ionicons.musical_note, label: "Audio"),
+                            const SizedBox(height: 14),
+                            for (var audioStream
+                                in snapshot.data!.audioOnly.toList().reversed)
+                              customListTile(audioStream, video.title),
+                            const SizedBox(height: 14),
+                            linksHeader(
+                                icon: Ionicons.videocam, label: "Video"),
+                            const SizedBox(height: 14),
+                            for (var videoStream in snapshot.data!.video
+                                .where((element) => element.tag < 100)
+                                .toList()
+                                .sortByVideoQuality())
+                              customListTile(videoStream, video.title),
+                          ],
+                        )
+                      : const SizedBox(
+                          height: 100,
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                }),
+          ),
+        );
+      });
 }
 
 Widget linksHeader({required IconData icon, required String label}) {

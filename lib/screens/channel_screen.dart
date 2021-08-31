@@ -56,15 +56,21 @@ class ChannelScreen extends HookWidget {
                           ),
                           itemCount: snapshot.data!.length,
                         )
-                      : const CircularProgressIndicator().center();
+                      : getCircularProgressIndicator();
                 },
               ),
             )
           ] else
-            SliverToBoxAdapter(
-                child: const CircularProgressIndicator().center()),
+            SliverToBoxAdapter(child: getCircularProgressIndicator()),
         ],
       ),
+    );
+  }
+
+  Widget getCircularProgressIndicator() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 25),
+      child: const CircularProgressIndicator().center(),
     );
   }
 }
