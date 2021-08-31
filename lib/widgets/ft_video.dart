@@ -11,10 +11,16 @@ import '../utils/utils.dart';
 class FTVideo extends StatelessWidget {
   final String? videoUrl;
   final Video? videoData;
+  final bool isOnChannelScreen;
   final bool isRow;
 
-  const FTVideo({Key? key, this.videoUrl, this.videoData, this.isRow = false})
-      : super(key: key);
+  const FTVideo({
+    Key? key,
+    this.videoUrl,
+    this.videoData,
+    this.isRow = false,
+    this.isOnChannelScreen = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -90,24 +96,43 @@ class FTVideo extends StatelessWidget {
                               ],
                             ),
                             const SizedBox(height: 6),
-                            Row(
-                              children: [
-                                Flexible(
-                                  child: GestureDetector(
-                                    onTap: (video != null)
-                                        ? () => context.pushPage(ChannelScreen(
-                                            id: video.channelId.value))
-                                        : null,
-                                    child: iconWithLabel(
-                                      video != null
-                                          ? video.author
-                                          : "Loading...",
-                                      secColor: SecColor.dark,
+                            if (!isOnChannelScreen)
+                              Row(
+                                children: [
+                                  Flexible(
+                                    child: GestureDetector(
+                                      onTap: (video != null)
+                                          ? () => context.pushPage(
+                                              ChannelScreen(
+                                                  id: video.channelId.value))
+                                          : null,
+                                      child: iconWithLabel(
+                                        video != null
+                                            ? video.author
+                                            : "Loading...",
+                                        secColor: SecColor.dark,
+                                      ),
                                     ),
                                   ),
+                                ],
+                              ),
+                            Row(
+                              children: [
+                                iconWithLabel(
+                                  (video != null
+                                          ? video
+                                              .engagement.viewCount.formatNumber
+                                          : "0") +
+                                      " views",
+                                ),
+                                iconWithLabel(
+                                  video != null
+                                      ? timeago.format(
+                                          video.uploadDate ?? DateTime.now())
+                                      : "just now",
                                 ),
                               ],
-                            ),
+                            )
                           ],
                         ),
                       ),
@@ -197,23 +222,26 @@ class FTVideo extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                GestureDetector(
-                                  onTap: (video != null)
-                                      ? () => context.pushPage(ChannelScreen(
-                                          id: video.channelId.value))
-                                      : null,
-                                  child: iconWithLabel(
-                                    video != null ? video.author : "Loading...",
-                                    secColor: SecColor.dark,
+                          if (!isOnChannelScreen)
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  GestureDetector(
+                                    onTap: (video != null)
+                                        ? () => context.pushPage(ChannelScreen(
+                                            id: video.channelId.value))
+                                        : null,
+                                    child: iconWithLabel(
+                                      video != null
+                                          ? video.author
+                                          : "Loading...",
+                                      secColor: SecColor.dark,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
                           iconWithLabel(
                             (video != null
                                     ? video.engagement.viewCount.formatNumber

@@ -13,41 +13,58 @@ class ChannelScreen extends HookWidget {
     final channel =
         useFuture(useMemoized(() => YoutubeExplode().channels.get(id)));
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.chevron_left),
-          onPressed: context.back,
-        ),
-      ),
-      body: channel.hasData && channel.data != null
-          ? ListView(
-              children: [
-                SizedBox(
-                  height: 100,
-                  child: ChannelInfo(channel: channel).center(),
-                ),
-                const Divider(),
-                FutureBuilder<ChannelUploadsList>(
-                  future: YoutubeExplode()
-                      .channels
-                      .getUploadsFromPage(channel.data!.id.value),
-                  builder: (ctx, snapshot) {
-                    return snapshot.hasData
-                        ? ListView.builder(
-                            shrinkWrap: true,
-                            primary: false,
-                            itemBuilder: (ctx, idx) => FTVideo(
-                              videoData: snapshot.data![idx],
-                              isRow: true,
-                            ),
-                            itemCount: snapshot.data!.length,
-                          )
-                        : const Center(child: CircularProgressIndicator());
-                  },
-                )
-              ],
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 200,
+            pinned: true,
+            centerTitle: true,
+            title: Text(channel.data != null ? channel.data!.title : ""),
+            flexibleSpace: channel.data != null
+                ? FlexibleSpaceBar(
+                    background: Center(
+                      child: Container(
+                        color: context.isDark
+                            ? Colors.grey[900]
+                            : Colors.grey[200],
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ChannelInfo(channel: channel),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                : null,
+          ),
+          if (channel.hasData && channel.data != null) ...[
+            SliverToBoxAdapter(
+              child: FutureBuilder<ChannelUploadsList>(
+                future: YoutubeExplode()
+                    .channels
+                    .getUploadsFromPage(channel.data!.id.value),
+                builder: (ctx, snapshot) {
+                  return snapshot.hasData
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          primary: false,
+                          itemBuilder: (ctx, idx) => FTVideo(
+                            videoData: snapshot.data![idx],
+                            isOnChannelScreen: true,
+                            isRow: true,
+                          ),
+                          itemCount: snapshot.data!.length,
+                        )
+                      : const CircularProgressIndicator().center();
+                },
+              ),
             )
-          : const CircularProgressIndicator().center(),
+          ] else
+            SliverToBoxAdapter(
+                child: const CircularProgressIndicator().center()),
+        ],
+      ),
     );
   }
 }

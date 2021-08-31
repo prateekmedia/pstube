@@ -49,19 +49,17 @@ class SearchScreen extends HookWidget {
             child: FutureBuilder<List<String>>(
               future: getSuggestions(),
               builder: (ctx, snapshot) => snapshot.data != null
-                  ? Expanded(
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, idx) => ListTile(
-                                onTap: () {
-                                  searchTextController.close();
-                                  searchTextController.query =
-                                      snapshot.data![idx];
-                                  loadVideos();
-                                },
-                                title: Text(snapshot.data![idx]),
-                              )),
+                  ? ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, idx) => ListTile(
+                        onTap: () {
+                          searchTextController.close();
+                          searchTextController.query = snapshot.data![idx];
+                          loadVideos();
+                        },
+                        title: Text(snapshot.data![idx]),
+                      ),
                     )
                   : const CircularProgressIndicator().center(),
             ),
