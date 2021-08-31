@@ -1,8 +1,8 @@
-import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutube/widgets/ft_video.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import '../utils/utils.dart';
 
 class SearchScreen extends HookWidget {
@@ -10,108 +10,79 @@ class SearchScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final searchTextController = useTextEditingController();
-    final sQuery = useState<String>('');
-    final isSearching = useState<bool>(true);
+    final searchTextController = FloatingSearchBarController();
     final yt = YoutubeExplode();
+    final videosList = useState([]);
+    final searchModel = useState<String>('');
 
     Future<List<String>> getSuggestions() => yt.search
-        .getQuerySuggestions(sQuery.value)
+        .getQuerySuggestions(searchModel.value)
         .whenComplete(() => yt.close());
 
-    Future<SearchList> getVideos() =>
-        yt.search.getVideos(sQuery.value).whenComplete(() => yt.close());
+    void loadVideos() async {
+      videosList.value = [];
+      var yt = YoutubeExplode();
+      videosList.value = await yt.search
+          .getVideos(searchModel.value)
+          .whenComplete(() => yt.close());
+    }
 
-    return WillPopScope(
-      onWillPop: () async {
-        return true;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.grey[900]!,
-          leading: IconButton(
-            onPressed: context.back,
-            icon: const Icon(Icons.chevron_left),
-          ),
-          title: Hero(
-            tag: 'search',
-            child: Material(
-              type: MaterialType.transparency,
-              child: TextField(
-                controller: searchTextController,
-                autofocus: true,
-                onChanged: (query) {
-                  EasyDebounce.debounce(
-                      'query', const Duration(milliseconds: 100), () {
-                    sQuery.value = query;
-                  });
-                },
-                onSubmitted: (query) {
-                  isSearching.value = false;
-                },
-                decoration: InputDecoration(
-                  hintText: "Search",
-                  isDense: true,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                    borderSide:
-                        BorderSide(color: Colors.grey[800]!, width: 0.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                    borderSide:
-                        BorderSide(color: Colors.grey[700]!, width: 0.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                    borderSide:
-                        BorderSide(color: Colors.grey[800]!, width: 0.0),
-                  ),
-                  filled: true,
-                ),
-              ),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: FloatingSearchBar(
+        onQueryChanged: (query) => searchModel.value = query,
+        clearQueryOnClose: false,
+        onSubmitted: (query) {
+          searchTextController.close();
+          loadVideos();
+        },
+        controller: searchTextController,
+        transitionCurve: Curves.easeInOutCubic,
+        transition: CircularFloatingSearchBarTransition(),
+        physics: const BouncingScrollPhysics(),
+        scrollPadding: const EdgeInsets.all(4),
+        builder: (context, _) => Material(
+          elevation: 4.0,
+          borderRadius: BorderRadius.circular(8),
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: FutureBuilder<List<String>>(
+              future: getSuggestions(),
+              builder: (ctx, snapshot) => snapshot.data != null
+                  ? Expanded(
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, idx) => ListTile(
+                                onTap: () {
+                                  searchTextController.close();
+                                  searchTextController.query =
+                                      snapshot.data![idx];
+                                  loadVideos();
+                                },
+                                title: Text(snapshot.data![idx]),
+                              )),
+                    )
+                  : const CircularProgressIndicator().center(),
             ),
           ),
         ),
-        body: Column(
-          children: [
-            const Divider(),
-            isSearching.value
-                ? FutureBuilder<List<String>>(
-                    future: getSuggestions(),
-                    builder: (ctx, snapshot) => snapshot.data != null
-                        ? Expanded(
-                            child: ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: snapshot.data!.length,
-                                itemBuilder: (context, idx) => ListTile(
-                                      onTap: () {
-                                        searchTextController.text =
-                                            snapshot.data![idx];
-                                        isSearching.value = false;
-                                      },
-                                      title: Text(snapshot.data![idx]),
-                                    )),
-                          )
-                        : const CircularProgressIndicator().center(),
+        body: videosList.value.isNotEmpty
+            ? ListView.builder(
+                shrinkWrap: true,
+                padding: const EdgeInsets.only(top: 48),
+                controller: ScrollController(),
+                itemCount: videosList.value.length,
+                itemBuilder: (ctx, idx) => FTVideo(
+                  videoData: videosList.value[idx],
+                  isRow: context.width >= mobileWidth,
+                ),
+              )
+            : searchModel.value.isEmpty
+                ? const Center(
+                    child: Text("Tap the search bar to begin your search."),
                   )
-                : FutureBuilder<SearchList>(
-                    future: getVideos(),
-                    builder: (ctx, snapshot) => snapshot.data != null
-                        ? Expanded(
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (ctx, idx) => FTVideo(
-                                videoData: snapshot.data![idx],
-                                isRow: true,
-                              ),
-                            ),
-                          )
-                        : const CircularProgressIndicator().center(),
-                  )
-          ],
-        ),
+                : const Center(child: CircularProgressIndicator()),
       ),
     );
   }

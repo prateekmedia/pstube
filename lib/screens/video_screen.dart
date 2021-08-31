@@ -28,201 +28,200 @@ class VideoScreen extends HookWidget {
     final commentSideWidget = useState<Widget?>(null);
     final currentItem = useState<int>(0);
 
-    return Scaffold(
-      body: FutureBuilder<CommentsList?>(
-          future: (loadData && videoSnapshot.data == null)
-              ? null
-              : yt.videos.commentsClient
-                  .getComments(videoData)
-                  .whenComplete(() => yt.close()),
-          builder: (context, commentsSnapshot) {
-            return Flex(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              direction: Axis.horizontal,
-              children: [
-                Flexible(
-                  flex: 8,
-                  child: ListView(
-                    children: [
-                      Stack(
-                        children: [
-                          AspectRatio(
-                            aspectRatio: 16 / 9,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image: CachedNetworkImageProvider(
-                                      videoData.thumbnails.mediumResUrl),
-                                ),
+    return SafeArea(
+      child: Scaffold(
+        body: FutureBuilder<CommentsList?>(
+            future: (loadData && videoSnapshot.data == null)
+                ? null
+                : yt.videos.commentsClient
+                    .getComments(videoData)
+                    .whenComplete(() => yt.close()),
+            builder: (context, commentsSnapshot) {
+              return Flex(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                direction: Axis.horizontal,
+                children: [
+                  Flexible(
+                    flex: 8,
+                    child: ListView(
+                      children: [
+                        Stack(
+                          children: [
+                            AspectRatio(
+                              aspectRatio: 16 / 9,
+                              child: CachedNetworkImage(
+                                imageUrl: videoData.thumbnails.mediumResUrl,
+                                fit: BoxFit.fill,
                               ),
+                            ),
+                            Positioned(
+                                child: Align(
+                              alignment: Alignment.topLeft,
+                              child: IconButton(
+                                icon: const Icon(Icons.chevron_left),
+                                onPressed: context.back,
+                              ),
+                            ))
+                          ],
+                        ),
+                        GestureDetector(
+                          onTap: context.width < mobileWidth
+                              ? () {
+                                  showPopover(
+                                    context,
+                                    isScrollControlled: false,
+                                    builder: (ctx) =>
+                                        DescriptionWidget(videoData: videoData),
+                                  );
+                                }
+                              : null,
+                          child: Container(
+                            padding: const EdgeInsets.all(12),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        videoData.title,
+                                        style: context.textTheme.headline6,
+                                      ),
+                                    ),
+                                    if (context.isMobile)
+                                      const Icon(Icons.arrow_drop_down),
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Text(videoData
+                                            .engagement.viewCount.formatNumber +
+                                        ' views'),
+                                    Text(videoData.publishDate != null
+                                        ? '  •  ' +
+                                            timeago
+                                                .format(videoData.publishDate!)
+                                        : ''),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
-                          Positioned(
-                              child: Align(
-                            alignment: Alignment.topLeft,
-                            child: IconButton(
-                              icon: const Icon(Icons.chevron_left),
-                              onPressed: context.back,
-                            ),
-                          ))
-                        ],
-                      ),
-                      GestureDetector(
-                        onTap: context.width < mobileWidth
-                            ? () {
-                                showPopover(
-                                  context,
-                                  isScrollControlled: false,
-                                  builder: (ctx) =>
-                                      DescriptionWidget(videoData: videoData),
-                                );
-                              }
-                            : null,
-                        child: Container(
-                          padding: const EdgeInsets.all(12),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 2),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      videoData.title,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: context.textTheme.headline6,
-                                    ),
-                                  ),
-                                  const Icon(Icons.arrow_drop_down),
-                                ],
+                              iconWithBottomLabel(
+                                icon: isLiked.value == 1
+                                    ? Icons.thumb_up
+                                    : Icons.thumb_up_off_alt_outlined,
+                                onPressed: () {
+                                  isLiked.value = isLiked.value != 1 ? 1 : 0;
+                                },
+                                label: videoData.engagement.likeCount != null
+                                    ? videoData
+                                        .engagement.likeCount!.formatNumber
+                                    : "Like",
                               ),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  Text(videoData
-                                          .engagement.viewCount.formatNumber +
-                                      ' views'),
-                                  Text(videoData.publishDate != null
-                                      ? '  •  ' +
-                                          timeago.format(videoData.publishDate!)
-                                      : ''),
-                                ],
+                              iconWithBottomLabel(
+                                icon: isLiked.value == 2
+                                    ? Icons.thumb_down
+                                    : Icons.thumb_down_off_alt_outlined,
+                                onPressed: () {
+                                  isLiked.value = isLiked.value != 2 ? 2 : 0;
+                                },
+                                label: videoData.engagement.dislikeCount != null
+                                    ? videoData
+                                        .engagement.dislikeCount!.formatNumber
+                                    : "Dislike",
+                              ),
+                              iconWithBottomLabel(
+                                icon: Ionicons.share_social_outline,
+                                onPressed: () {
+                                  Share.share(videoData.url);
+                                },
+                                label: "Share",
+                              ),
+                              iconWithBottomLabel(
+                                icon: Ionicons.download_outline,
+                                onPressed: () =>
+                                    showDownloadPopup(context, video),
+                                label: "Download",
+                              ),
+                              iconWithBottomLabel(
+                                icon: Icons.playlist_add_outlined,
+                                label: "Save",
                               ),
                             ],
                           ),
                         ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 2),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            iconWithBottomLabel(
-                              icon: isLiked.value == 1
-                                  ? Icons.thumb_up
-                                  : Icons.thumb_up_off_alt_outlined,
-                              onPressed: () {
-                                isLiked.value = isLiked.value != 1 ? 1 : 0;
-                              },
-                              label: videoData.engagement.likeCount != null
-                                  ? videoData.engagement.likeCount!.formatNumber
-                                  : "Like",
-                            ),
-                            iconWithBottomLabel(
-                              icon: isLiked.value == 2
-                                  ? Icons.thumb_down
-                                  : Icons.thumb_down_off_alt_outlined,
-                              onPressed: () {
-                                isLiked.value = isLiked.value != 2 ? 2 : 0;
-                              },
-                              label: videoData.engagement.dislikeCount != null
-                                  ? videoData
-                                      .engagement.dislikeCount!.formatNumber
-                                  : "Dislike",
-                            ),
-                            iconWithBottomLabel(
-                              icon: Ionicons.share_social_outline,
-                              onPressed: () {
-                                Share.share(videoData.url);
-                              },
-                              label: "Share",
-                            ),
-                            iconWithBottomLabel(
-                              icon: Ionicons.download_outline,
-                              onPressed: () =>
-                                  showDownloadPopup(context, video),
-                              label: "Download",
-                            ),
-                            iconWithBottomLabel(
-                              icon: Icons.playlist_add_outlined,
-                              label: "Save",
-                            ),
-                          ],
+                        const Divider(),
+                        ChannelInfo(
+                          channel: channel,
+                          isOnVideo: true,
                         ),
-                      ),
-                      const Divider(),
-                      ChannelInfo(
-                        channel: channel,
-                        isOnVideo: true,
-                      ),
-                      const Divider(),
-                      ListTile(
-                        onTap: commentsSnapshot.data == null
-                            ? null
-                            : currentItem.value == 1
-                                ? () => currentItem.value = 0
-                                : context.width < mobileWidth
-                                    ? () => showPopover(
-                                          context,
-                                          isScrollable: false,
-                                          builder: (ctx) {
-                                            return Expanded(
-                                              child: CommentsWidget(
-                                                  snapshot: commentsSnapshot,
-                                                  replyComment: replyComment),
-                                            );
-                                          },
-                                        ).whenComplete(
-                                            () => currentIndex.value = 0)
-                                    : () {
-                                        commentSideWidget.value =
-                                            CommentsWidget(
-                                          onClose: () => currentItem.value = 0,
-                                          replyComment: replyComment,
-                                          snapshot: commentsSnapshot,
-                                        );
-                                        currentItem.value = 1;
-                                      },
-                        title: const Text("Comments"),
-                        trailing: Text(
-                          (commentsSnapshot.data != null
-                                  ? commentsSnapshot.data!.totalLength
-                                  : 0)
-                              .formatNumber,
+                        const Divider(),
+                        ListTile(
+                          onTap: commentsSnapshot.data == null
+                              ? null
+                              : currentItem.value == 1
+                                  ? () => currentItem.value = 0
+                                  : context.width < mobileWidth
+                                      ? () => showPopover(
+                                            context,
+                                            isScrollable: false,
+                                            builder: (ctx) {
+                                              return Expanded(
+                                                child: CommentsWidget(
+                                                    snapshot: commentsSnapshot,
+                                                    replyComment: replyComment),
+                                              );
+                                            },
+                                          ).whenComplete(
+                                              () => currentIndex.value = 0)
+                                      : () {
+                                          commentSideWidget.value =
+                                              CommentsWidget(
+                                            onClose: () =>
+                                                currentItem.value = 0,
+                                            replyComment: replyComment,
+                                            snapshot: commentsSnapshot,
+                                          );
+                                          currentItem.value = 1;
+                                        },
+                          title: const Text("Comments"),
+                          trailing: Text(
+                            (commentsSnapshot.data != null
+                                    ? commentsSnapshot.data!.totalLength
+                                    : 0)
+                                .formatNumber,
+                          ),
                         ),
-                      ),
-                      const Divider(),
-                    ],
+                        const Divider(),
+                      ],
+                    ),
                   ),
-                ),
-                if (context.width >= mobileWidth)
-                  Flexible(
-                    flex: 4,
-                    child: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12.0),
-                        child: DescriptionWidget(
-                            videoData: videoData, isInsidePopup: false),
-                      ),
-                      if (commentSideWidget.value != null)
-                        commentSideWidget.value!,
-                    ][currentItem.value],
-                  ),
-              ],
-            );
-          }),
+                  if (context.width >= mobileWidth)
+                    Flexible(
+                      flex: 4,
+                      child: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12.0),
+                          child: DescriptionWidget(
+                              videoData: videoData, isInsidePopup: false),
+                        ),
+                        if (commentSideWidget.value != null)
+                          commentSideWidget.value!,
+                      ][currentItem.value],
+                    ),
+                ],
+              );
+            }),
+      ),
     );
   }
 }
@@ -278,6 +277,7 @@ class CommentsWidget extends HookWidget {
               itemCount: 2,
               itemBuilder: (_, index) => [
                 ListView(
+                  controller: ScrollController(),
                   children: [
                     Container(
                       padding: const EdgeInsets.symmetric(
@@ -367,6 +367,7 @@ Widget showReplies(BuildContext context, Comment? comment) {
 
   return comment != null
       ? ListView(
+          controller: ScrollController(),
           children: [
             buildCommentBox(context, comment, null, isInsideReply: true),
             FutureBuilder<List?>(

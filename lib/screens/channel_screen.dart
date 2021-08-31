@@ -40,7 +40,7 @@ class ChannelScreen extends HookWidget {
                               videoData: snapshot.data![idx],
                               isRow: true,
                             ),
-                            itemCount: 20,
+                            itemCount: snapshot.data!.length,
                           )
                         : const Center(child: CircularProgressIndicator());
                   },

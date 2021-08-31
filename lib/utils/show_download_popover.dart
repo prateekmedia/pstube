@@ -17,14 +17,16 @@ Future showDownloadPopup(BuildContext context, Video video) {
                     const SizedBox(height: 6),
                     linksHeader(icon: Ionicons.musical_note, label: "Audio"),
                     const SizedBox(height: 14),
-                    for (var audioStream in snapshot.data!.audioOnly.toList())
+                    for (var audioStream
+                        in snapshot.data!.audioOnly.toList().reversed)
                       customListTile(audioStream, video.title),
                     const SizedBox(height: 14),
                     linksHeader(icon: Ionicons.videocam, label: "Video"),
                     const SizedBox(height: 14),
                     for (var videoStream in snapshot.data!.video
-                        .where((element) => element.tag > 100)
-                        .toList())
+                        .where((element) => element.tag < 100)
+                        .toList()
+                        .sortByVideoQuality())
                       customListTile(videoStream, video.title),
                   ],
                 )
@@ -72,7 +74,7 @@ Widget customListTile(dynamic stream, String vidName) {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(stream is AudioOnlyStreamInfo
-                    ? stream.audioCodec.split('.')[0].toUpperCase()
+                    ? "M4A"
                     : stream.container.name.toUpperCase()),
                 Text((stream.size.totalBytes as int).getFileSize()),
               ],

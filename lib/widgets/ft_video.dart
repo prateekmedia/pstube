@@ -38,15 +38,16 @@ class FTVideo extends StatelessWidget {
                             ))
                         : null,
                     child: Row(children: [
-                      SizedBox(
+                      Container(
                         height: 90,
+                        padding: const EdgeInsets.all(5),
                         child: AspectRatio(
                           aspectRatio: 16 / 9,
                           child: video != null
                               ? Container(
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      fit: BoxFit.contain,
+                                      fit: BoxFit.fitWidth,
                                       image: CachedNetworkImageProvider(
                                           video.thumbnails.lowResUrl),
                                     ),
@@ -71,6 +72,7 @@ class FTVideo extends StatelessWidget {
                                 ),
                         ),
                       ),
+                      const SizedBox(width: 6),
                       Flexible(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,6 +110,12 @@ class FTVideo extends StatelessWidget {
                             ),
                           ],
                         ),
+                      ),
+                      IconButton(
+                        onPressed: video != null
+                            ? () => showDownloadPopup(context, video)
+                            : null,
+                        icon: const Icon(Icons.save_alt_outlined),
                       )
                     ]),
                   )

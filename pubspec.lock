@@ -190,13 +190,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
-  easy_debounce:
-    dependency: "direct main"
-    description:
-      name: easy_debounce
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.1"
   ffi:
     dependency: transitive
     description:
@@ -403,6 +396,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.12.11"
+  material_floating_search_bar:
+    dependency: "direct main"
+    description:
+      name: material_floating_search_bar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.4"
   meta:
     dependency: transitive
     description:
