@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutube/providers/download_path.dart';
 import 'package:flutube/screens/screens.dart';
 import 'package:flutube/utils/utils.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:ionicons/ionicons.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await MyPrefs().init();
+  runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends HookConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    ref.read(downloadPathProvider).init();
     return MaterialApp(
       title: 'FluTube',
       theme: ThemeData(
@@ -56,51 +61,16 @@ class MyHomePage extends HookWidget {
               ),
               const SizedBox(width: 15),
             ],
-            Flexible(
-              child: Hero(
-                tag: 'search',
-                child: Material(
-                  type: MaterialType.transparency,
-                  child: TextField(
-                    onTap: () {
-                      context.pushPage(const SearchScreen());
-                    },
-                    readOnly: true,
-                    enableInteractiveSelection: false,
-                    decoration: InputDecoration(
-                      hintText: "Search",
-                      isDense: true,
-                      prefixIcon: const Icon(
-                        Icons.search,
-                        color: Colors.grey,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                        borderSide:
-                            BorderSide(color: Colors.grey[800]!, width: 0.0),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                        borderSide:
-                            BorderSide(color: Colors.grey[700]!, width: 0.0),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                        borderSide:
-                            BorderSide(color: Colors.grey[800]!, width: 0.0),
-                      ),
-                      filled: true,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            const Text('FluTube'),
           ],
         ),
         actions: [
           IconButton(
+              onPressed: () => context.pushPage(const SearchScreen()),
+              icon: const Icon(Ionicons.search, size: 20)),
+          IconButton(
             onPressed: () {},
-            icon: const Icon(Ionicons.person_outline),
+            icon: const Icon(Ionicons.person_outline, size: 20),
           ),
           const SizedBox(width: 10),
         ],
@@ -138,7 +108,7 @@ class MyHomePage extends HookWidget {
               itemBuilder: (context, index) => [
                 const HomeScreen(),
                 const SizedBox(child: Text("It's so cold outside.")),
-                const SizedBox(child: Text("It's so cold outside."))
+                const SettingsScreen(),
               ][index],
               onPageChanged: (index) => _currentIndex.value = index,
               itemCount: 3,

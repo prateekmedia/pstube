@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutube/providers/providers.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
@@ -28,7 +30,10 @@ Future showDownloadPopup(BuildContext context, Video video) {
                             const SizedBox(height: 14),
                             for (var audioStream
                                 in snapshot.data!.audioOnly.toList().reversed)
-                              customListTile(audioStream, video.title),
+                              CustomListTile(
+                                stream: audioStream,
+                                vidName: video.title,
+                              ),
                             const SizedBox(height: 14),
                             linksHeader(
                                 icon: Ionicons.videocam, label: "Video"),
@@ -37,7 +42,10 @@ Future showDownloadPopup(BuildContext context, Video video) {
                                 .where((element) => element.tag < 100)
                                 .toList()
                                 .sortByVideoQuality())
-                              customListTile(videoStream, video.title),
+                              CustomListTile(
+                                stream: videoStream,
+                                vidName: video.title,
+                              ),
                           ],
                         )
                       : const SizedBox(
@@ -63,48 +71,61 @@ Widget linksHeader({required IconData icon, required String label}) {
   );
 }
 
-Widget customListTile(dynamic stream, String vidName) {
-  return Container(
-    margin: const EdgeInsets.symmetric(vertical: 4),
-    child: InkWell(
-      onTap: () async => Dio().downloadUri(
-          stream.url,
-          (await FileUtils.appPath()) +
-              vidName +
-              '(' +
-              (stream is AudioOnlyStreamInfo
-                  ? stream.audioCodec.split('.')[0].toUpperCase()
-                  : '${stream.videoResolution.width}x${stream.videoResolution.height}') +
-              (stream is MuxedStreamInfo ? '.mp4' : '.m4a'),
-          onReceiveProgress: (downloaded, total) =>
-              debugPrint((downloaded / total).toString())),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-        child: Stack(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(stream is AudioOnlyStreamInfo
-                    ? "M4A"
-                    : stream.container.name.toUpperCase()),
-                Text((stream.size.totalBytes as int).getFileSize()),
-              ],
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                stream is VideoStreamInfo
-                    ? stream.videoQualityLabel
-                    : stream is AudioOnlyStreamInfo
-                        ? stream.bitrate.bitsPerSecond.getBitrate()
-                        : "",
-                textAlign: TextAlign.center,
+class CustomListTile extends ConsumerWidget {
+  final dynamic stream;
+  final String vidName;
+
+  const CustomListTile({
+    Key? key,
+    required this.stream,
+    required this.vidName,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, ref) {
+    final String path = ref.read(downloadPathProvider).path;
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      child: InkWell(
+        onTap: () async => Dio().downloadUri(
+            stream.url,
+            path +
+                vidName +
+                '(' +
+                (stream is AudioOnlyStreamInfo
+                    ? stream.audioCodec.split('.')[0].toUpperCase()
+                    : '${stream.videoResolution.width}x${stream.videoResolution.height}') +
+                (stream is MuxedStreamInfo ? '.mp4' : '.m4a'),
+            onReceiveProgress: (downloaded, total) =>
+                debugPrint((downloaded / total).toString())),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+          child: Stack(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(stream is AudioOnlyStreamInfo
+                      ? "M4A"
+                      : stream.container.name.toUpperCase()),
+                  Text((stream.size.totalBytes as int).getFileSize()),
+                ],
               ),
-            )
-          ],
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  stream is VideoStreamInfo
+                      ? stream.videoQualityLabel
+                      : stream is AudioOnlyStreamInfo
+                          ? stream.bitrate.bitsPerSecond.getBitrate()
+                          : "",
+                  textAlign: TextAlign.center,
+                ),
+              )
+            ],
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
