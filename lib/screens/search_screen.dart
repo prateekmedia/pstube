@@ -41,27 +41,29 @@ class SearchScreen extends HookWidget {
         transition: CircularFloatingSearchBarTransition(),
         physics: const BouncingScrollPhysics(),
         scrollPadding: const EdgeInsets.all(4),
-        builder: (context, _) => Material(
-          elevation: 4.0,
-          borderRadius: BorderRadius.circular(8),
-          child: Padding(
-            padding: const EdgeInsets.all(8),
-            child: FutureBuilder<List<String>>(
-              future: getSuggestions(),
-              builder: (ctx, snapshot) => snapshot.data != null
-                  ? ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, idx) => ListTile(
-                        onTap: () {
-                          searchTextController.close();
-                          searchTextController.query = snapshot.data![idx];
-                          loadVideos();
-                        },
-                        title: Text(snapshot.data![idx]),
-                      ),
-                    )
-                  : const CircularProgressIndicator().center(),
+        builder: (context, _) => SafeArea(
+          child: Material(
+            elevation: 4.0,
+            borderRadius: BorderRadius.circular(8),
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: FutureBuilder<List<String>>(
+                future: getSuggestions(),
+                builder: (ctx, snapshot) => snapshot.data != null
+                    ? ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, idx) => ListTile(
+                          onTap: () {
+                            searchTextController.close();
+                            searchTextController.query = snapshot.data![idx];
+                            loadVideos();
+                          },
+                          title: Text(snapshot.data![idx]),
+                        ),
+                      )
+                    : const CircularProgressIndicator().center(),
+              ),
             ),
           ),
         ),

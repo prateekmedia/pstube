@@ -1,9 +1,12 @@
-import 'package:dio/dio.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutube/models/models.dart';
 import 'package:flutube/providers/providers.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'utils.dart';
 
@@ -32,7 +35,7 @@ Future showDownloadPopup(BuildContext context, Video video) {
                                 in snapshot.data!.audioOnly.toList().reversed)
                               CustomListTile(
                                 stream: audioStream,
-                                vidName: video.title,
+                                video: video,
                               ),
                             const SizedBox(height: 14),
                             linksHeader(
@@ -44,7 +47,7 @@ Future showDownloadPopup(BuildContext context, Video video) {
                                 .sortByVideoQuality())
                               CustomListTile(
                                 stream: videoStream,
-                                vidName: video.title,
+                                video: video,
                               ),
                           ],
                         )
@@ -73,31 +76,31 @@ Widget linksHeader({required IconData icon, required String label}) {
 
 class CustomListTile extends ConsumerWidget {
   final dynamic stream;
-  final String vidName;
+  final Video video;
 
   const CustomListTile({
     Key? key,
     required this.stream,
-    required this.vidName,
+    required this.video,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, ref) {
-    final String path = ref.read(downloadPathProvider).path;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: InkWell(
-        onTap: () async => Dio().downloadUri(
-            stream.url,
-            path +
-                vidName +
-                '(' +
-                (stream is AudioOnlyStreamInfo
-                    ? stream.audioCodec.split('.')[0].toUpperCase()
-                    : '${stream.videoResolution.width}x${stream.videoResolution.height}') +
-                (stream is MuxedStreamInfo ? '.mp4' : '.m4a'),
-            onReceiveProgress: (downloaded, total) =>
-                debugPrint((downloaded / total).toString())),
+        onTap: () async {
+          if ((Platform.isAndroid || Platform.isIOS) &&
+              !await Permission.storage.request().isGranted) return;
+          ref.watch(downloadListProvider.notifier).addDownload(
+                DownloadItem.fromVideo(
+                  video,
+                  stream,
+                  ref.watch(downloadPathProvider).path,
+                ),
+              );
+          context.back();
+        },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
           child: Stack(
@@ -117,7 +120,7 @@ class CustomListTile extends ConsumerWidget {
                   stream is VideoStreamInfo
                       ? stream.videoQualityLabel
                       : stream is AudioOnlyStreamInfo
-                          ? stream.bitrate.bitsPerSecond.getBitrate()
+                          ? (stream.bitrate.bitsPerSecond as int).getBitrate()
                           : "",
                   textAlign: TextAlign.center,
                 ),

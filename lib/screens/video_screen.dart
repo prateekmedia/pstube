@@ -68,7 +68,7 @@ class VideoScreen extends HookWidget {
                         GestureDetector(
                           onTap: context.width < mobileWidth
                               ? () {
-                                  showMaterialModalBottomSheet(
+                                  showBarModalBottomSheet(
                                     context: context,
                                     builder: (ctx) =>
                                         DescriptionWidget(videoData: videoData),
@@ -171,7 +171,7 @@ class VideoScreen extends HookWidget {
                               : currentItem.value == 1
                                   ? () => currentItem.value = 0
                                   : context.width < mobileWidth
-                                      ? () => showMaterialModalBottomSheet(
+                                      ? () => showBarModalBottomSheet(
                                             context: context,
                                             builder: (ctx) {
                                               return Expanded(
@@ -208,11 +208,8 @@ class VideoScreen extends HookWidget {
                     Flexible(
                       flex: 4,
                       child: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 12.0),
-                          child: DescriptionWidget(
-                              videoData: videoData, isInsidePopup: false),
-                        ),
+                        DescriptionWidget(
+                            videoData: videoData, isInsidePopup: false),
                         if (commentSideWidget.value != null)
                           commentSideWidget.value!,
                       ][currentItem.value],
@@ -332,7 +329,7 @@ class DescriptionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       controller: ScrollController(),
-      padding: const EdgeInsets.symmetric(horizontal: 12),
+      padding: const EdgeInsets.all(15),
       children: [
         Text(
           "Description",

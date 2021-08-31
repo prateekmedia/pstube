@@ -107,7 +107,7 @@ class MyHomePage extends HookWidget {
               controller: _controller,
               itemBuilder: (context, index) => [
                 const HomeScreen(),
-                const SizedBox(child: Text("It's so cold outside.")),
+                const DownloadsScreen(),
                 const SettingsScreen(),
               ][index],
               onPageChanged: (index) => _currentIndex.value = index,
