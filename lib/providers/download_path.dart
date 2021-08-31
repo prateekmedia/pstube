@@ -27,7 +27,7 @@ class DownloadPathNotifier extends ChangeNotifier {
   init() async {
     _path = MyPrefs().prefs.getString('downloadPath') ??
         (Platform.isAndroid
-            ? "/storage/emulated/0/FluTube"
+            ? "/storage/emulated/0/FluTube/"
             : (await getDownloadsDirectory())!
                 .path
                 .replaceAll('Downloads', 'FluTube/'));
