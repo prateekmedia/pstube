@@ -46,4 +46,16 @@ class DownloadItem {
       cancelToken: cancelToken ?? this.cancelToken,
     );
   }
+
+  factory DownloadItem.fromJson(Map<String, dynamic> json) => DownloadItem(
+        downloaded: json["downloaded"],
+        total: json["total"],
+        queryVideo: QueryVideo.fromJson(json["queryVideo"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "downloaded": downloaded,
+        "total": total,
+        "queryVideo": queryVideo.toJson(),
+      };
 }

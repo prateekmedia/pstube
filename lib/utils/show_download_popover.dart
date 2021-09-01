@@ -32,10 +32,8 @@ Future showDownloadPopup(BuildContext context, Video video) {
                   const SizedBox(height: 14),
                   linksHeader(icon: Ionicons.videocam, label: "Video"),
                   const SizedBox(height: 14),
-                  for (var videoStream in snapshot.data!.video
-                      .where((element) => element.tag < 100)
-                      .toList()
-                      .sortByVideoQuality())
+                  for (var videoStream
+                      in snapshot.data!.video.toList().sortByVideoQuality())
                     CustomListTile(
                       stream: videoStream,
                       video: video,

@@ -48,6 +48,28 @@ class QueryVideo extends Equatable {
     );
   }
 
+  factory QueryVideo.fromJson(Map<String, dynamic> json) => QueryVideo(
+        name: json["name"],
+        id: json["id"],
+        path: json["path"],
+        url: json["url"],
+        author: json["author"],
+        duration: json["duration"],
+        quality: json["quality"],
+        thumbnail: json["thumbnail"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "id": id,
+        "path": path,
+        "url": url,
+        "author": author,
+        "duration": duration,
+        "quality": quality,
+        "thumbnail": thumbnail,
+      };
+
   @override
   List<Object?> get props => [name, id, quality, path];
 }

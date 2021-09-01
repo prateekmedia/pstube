@@ -66,7 +66,8 @@ class MyHomePage extends HookWidget {
         ),
         actions: [
           IconButton(
-              onPressed: () => context.pushPage(const SearchScreen()),
+              onPressed: () => showSearch(
+                  context: context, delegate: CustomSearchDelegate()),
               icon: const Icon(Ionicons.search, size: 20)),
           IconButton(
             onPressed: () {},
