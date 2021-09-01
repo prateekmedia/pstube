@@ -140,7 +140,7 @@ class Popover extends StatelessWidget {
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Container(
               margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 18),
               decoration: BoxDecoration(
                 color: theme.cardColor,
                 borderRadius: const BorderRadius.all(Radius.circular(16.0)),

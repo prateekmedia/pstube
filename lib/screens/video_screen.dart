@@ -247,17 +247,37 @@ class CommentsWidget extends HookWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                (currentPage.value == 1)
-                    ? IconButton(
-                        onPressed: () {
-                          pageController.animateToPage(0,
-                              duration: const Duration(milliseconds: 200),
-                              curve: Curves.easeInOut);
-                          replyComment.value = null;
-                        },
-                        icon: const Icon(Icons.chevron_left),
-                      )
-                    : const SizedBox(),
+                Expanded(
+                  child: Row(
+                    children: [
+                      (currentPage.value == 1)
+                          ? IconButton(
+                              onPressed: () {
+                                pageController.animateToPage(0,
+                                    duration: const Duration(milliseconds: 200),
+                                    curve: Curves.easeInOut);
+                                replyComment.value = null;
+                              },
+                              icon: const Icon(Icons.chevron_left),
+                            )
+                          : const SizedBox(),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 6),
+                        child: Text(
+                            (currentPage.value == 0)
+                                ? (snapshot.data != null
+                                            ? snapshot.data!.totalLength
+                                            : 0)
+                                        .formatNumber +
+                                    " comments"
+                                : "Replies",
+                            style: context.textTheme.bodyText1!
+                                .copyWith(fontWeight: FontWeight.w600)),
+                      ),
+                    ],
+                  ),
+                ),
                 IconButton(
                   onPressed: onClose ?? context.back,
                   icon: const Icon(Icons.close),
@@ -275,18 +295,6 @@ class CommentsWidget extends HookWidget {
                 ListView(
                   controller: ScrollController(),
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 6),
-                      child: Text(
-                          (snapshot.data != null
-                                      ? snapshot.data!.totalLength
-                                      : 0)
-                                  .formatNumber +
-                              " comments",
-                          style: context.textTheme.bodyText1!
-                              .copyWith(fontWeight: FontWeight.w600)),
-                    ),
                     for (Comment comment in snapshot.data ?? [])
                       buildCommentBox(context, comment, () {
                         replyComment.value = comment;
