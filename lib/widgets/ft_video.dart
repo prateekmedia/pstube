@@ -118,18 +118,22 @@ class FTVideo extends StatelessWidget {
                               ),
                             Row(
                               children: [
-                                iconWithLabel(
-                                  (video != null
-                                          ? video
-                                              .engagement.viewCount.formatNumber
-                                          : "0") +
-                                      " views",
+                                Flexible(
+                                  child: iconWithLabel(
+                                    (video != null
+                                            ? video.engagement.viewCount
+                                                .formatNumber
+                                            : "0") +
+                                        " views",
+                                  ),
                                 ),
-                                iconWithLabel(
-                                  video != null
-                                      ? timeago.format(
-                                          video.uploadDate ?? DateTime.now())
-                                      : "just now",
+                                Flexible(
+                                  child: iconWithLabel(
+                                    video != null
+                                        ? timeago.format(
+                                            video.uploadDate ?? DateTime.now())
+                                        : "just now",
+                                  ),
                                 ),
                               ],
                             )
