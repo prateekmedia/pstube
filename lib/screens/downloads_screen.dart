@@ -106,7 +106,10 @@ class DownloadItemBuilder extends StatelessWidget {
                       downloadListUtils.removeDownload(item.queryVideo);
                       context.back();
                     })
-                : item.cancelToken!.cancel,
+                : () {
+                    item.cancelToken!.cancel();
+                    downloadListUtils.refresh();
+                  },
             icon: Icon(
               item.cancelToken!.isCancelled
                   ? Icons.remove

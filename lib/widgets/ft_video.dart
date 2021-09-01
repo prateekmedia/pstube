@@ -203,14 +203,34 @@ class FTVideo extends StatelessWidget {
                       Row(
                         children: [
                           Expanded(
-                            child: video != null
-                                ? Text(
-                                    video.title,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(fontSize: 18),
-                                  )
-                                : Container(),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                video != null
+                                    ? Text(
+                                        video.title,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(fontSize: 18),
+                                      )
+                                    : Container(),
+                                if (!isOnChannelScreen)
+                                  GestureDetector(
+                                    onTap: (video != null)
+                                        ? () => context.pushPage(ChannelScreen(
+                                            id: video.channelId.value))
+                                        : null,
+                                    child: iconWithLabel(
+                                      video != null
+                                          ? video.author
+                                          : "Loading...",
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 0, vertical: 2),
+                                      secColor: SecColor.dark,
+                                    ),
+                                  ),
+                              ],
+                            ),
                           ),
                           IconButton(
                             onPressed: video != null
@@ -221,27 +241,8 @@ class FTVideo extends StatelessWidget {
                         ],
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          if (!isOnChannelScreen)
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  GestureDetector(
-                                    onTap: (video != null)
-                                        ? () => context.pushPage(ChannelScreen(
-                                            id: video.channelId.value))
-                                        : null,
-                                    child: iconWithLabel(
-                                      video != null
-                                          ? video.author
-                                          : "Loading...",
-                                      secColor: SecColor.dark,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
                           iconWithLabel(
                             (video != null
                                     ? video.engagement.viewCount.formatNumber

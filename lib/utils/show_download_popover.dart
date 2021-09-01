@@ -13,6 +13,7 @@ import 'utils.dart';
 Future showDownloadPopup(BuildContext context, Video video) {
   return showPopover(
     context: context,
+    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
     builder: (ctx) => FutureBuilder<StreamManifest>(
       future: YoutubeExplode().videos.streamsClient.getManifest(video.id.value),
       builder: (context, snapshot) {
@@ -20,20 +21,33 @@ Future showDownloadPopup(BuildContext context, Video video) {
             ? Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const SizedBox(height: 6),
-                  linksHeader(icon: Ionicons.musical_note, label: "Audio"),
-                  const SizedBox(height: 14),
+                  linksHeader(
+                    icon: Icons.perm_media,
+                    label: "Video + Audio",
+                    padding: const EdgeInsets.only(top: 6, bottom: 14),
+                  ),
+                  for (var videoStream
+                      in snapshot.data!.muxed.toList().sortByVideoQuality())
+                    CustomListTile(
+                      stream: videoStream,
+                      video: video,
+                    ),
+                  linksHeader(
+                    icon: Ionicons.musical_note,
+                    label: "Audio only",
+                  ),
                   for (var audioStream
                       in snapshot.data!.audioOnly.toList().reversed)
                     CustomListTile(
                       stream: audioStream,
                       video: video,
                     ),
-                  const SizedBox(height: 14),
-                  linksHeader(icon: Ionicons.videocam, label: "Video"),
-                  const SizedBox(height: 14),
+                  linksHeader(
+                    icon: Ionicons.videocam,
+                    label: "Video only",
+                  ),
                   for (var videoStream
-                      in snapshot.data!.video.toList().sortByVideoQuality())
+                      in snapshot.data!.videoOnly.toList().sortByVideoQuality())
                     CustomListTile(
                       stream: videoStream,
                       video: video,
@@ -49,16 +63,22 @@ Future showDownloadPopup(BuildContext context, Video video) {
   );
 }
 
-Widget linksHeader({required IconData icon, required String label}) {
-  return Row(
-    children: [
-      Icon(
-        icon,
-        size: 22,
-      ),
-      const SizedBox(width: 10),
-      Text("$label Download Links")
-    ],
+Widget linksHeader(
+    {required IconData icon,
+    required String label,
+    EdgeInsets padding = const EdgeInsets.symmetric(vertical: 14)}) {
+  return Padding(
+    padding: padding,
+    child: Row(
+      children: [
+        Icon(
+          icon,
+          size: 22,
+        ),
+        const SizedBox(width: 10),
+        Text(label)
+      ],
+    ),
   );
 }
 
@@ -96,9 +116,14 @@ class CustomListTile extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(stream is AudioOnlyStreamInfo
-                      ? "M4A"
-                      : stream.container.name.toUpperCase()),
+                  Text(
+                    (stream is AudioOnlyStreamInfo
+                            ? stream.audioCodec
+                                .split('.')[0]
+                                .replaceAll('mp4a', 'm4a')
+                            : stream.container.name)
+                        .toUpperCase(),
+                  ),
                   Text((stream.size.totalBytes as int).getFileSize()),
                 ],
               ),

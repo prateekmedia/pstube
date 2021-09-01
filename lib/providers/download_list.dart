@@ -24,6 +24,8 @@ class DownloadList extends ChangeNotifier {
     }, cancelToken: cancelToken);
   }
 
+  refresh() => notifyListeners();
+
   updateDownload(
     QueryVideo queryVideo, {
     required int downloaded,

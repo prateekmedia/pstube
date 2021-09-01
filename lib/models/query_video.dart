@@ -35,7 +35,10 @@ class QueryVideo extends Equatable {
               ? stream.bitrate.bitsPerSecond.getBitrate()
               : '${stream.videoResolution.width}x${stream.videoResolution.height}') +
           ')' +
-          (stream is MuxedStreamInfo ? '.' + stream.container.name : '.m4a'),
+          '.' +
+          (stream is AudioOnlyStreamInfo
+              ? stream.audioCodec.split('.')[0].replaceAll('mp4a', 'm4a')
+              : stream.container.name),
       id: video.id.value,
       path: path,
       url: stream.url.toString(),

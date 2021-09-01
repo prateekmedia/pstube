@@ -38,7 +38,7 @@ Widget buildCommentBox(
                               },
                               child: iconWithLabel(
                                 comment.author,
-                                spacing: 0,
+                                margin: EdgeInsets.zero,
                                 secColor: SecColor.dark,
                               ),
                             ),

@@ -4,12 +4,12 @@ enum SecColor { dark, light }
 
 Widget iconWithLabel(
   String label, {
-  SecColor secColor = SecColor.light,
-  double spacing = 2,
   TextStyle? style,
+  SecColor secColor = SecColor.light,
+  EdgeInsets margin = const EdgeInsets.symmetric(horizontal: 2),
 }) {
   return Container(
-    margin: EdgeInsets.symmetric(horizontal: spacing),
+    margin: margin,
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
     decoration: BoxDecoration(
       color: Colors.black.withOpacity(secColor == SecColor.light ? 0.18 : 1),

@@ -5,6 +5,7 @@ Future<T?> showPopover<T>({
   required BuildContext context,
   required Widget Function(BuildContext) builder,
   bool isScrollControlled = true,
+  EdgeInsets? padding = const EdgeInsets.symmetric(horizontal: 8),
   bool isScrollable = true,
 }) {
   return showModalBottomSheet<T>(
@@ -14,6 +15,7 @@ Future<T?> showPopover<T>({
     constraints: const BoxConstraints(maxWidth: 600),
     builder: (ctx) => Popover(
       isScrollable: isScrollable,
+      padding: padding,
       child: builder(ctx),
     ),
   );
@@ -29,6 +31,7 @@ Future<T?> showPopoverWB<T>({
   RegExp? customValidator,
   String? Function(String?)? validator,
   bool isScrollControlled = true,
+  EdgeInsets? padding,
   String confirmText = "OK",
   GlobalKey<FormState>? key,
   bool isScrollable = true,
@@ -37,6 +40,7 @@ Future<T?> showPopoverWB<T>({
   final _formKey = key ?? GlobalKey<FormState>();
   return showPopover<T>(
     context: context,
+    padding: padding,
     isScrollControlled: isScrollControlled,
     builder: (ctx) => Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -118,10 +122,12 @@ class Popover extends StatelessWidget {
   const Popover({
     Key? key,
     required this.child,
+    required this.padding,
     this.isScrollable = true,
   }) : super(key: key);
 
   final Widget child;
+  final EdgeInsets? padding;
   final bool isScrollable;
 
   @override
@@ -147,7 +153,7 @@ class Popover extends StatelessWidget {
               ),
               child: isScrollable
                   ? SingleChildScrollView(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      padding: padding,
                       child: child,
                     )
                   : child,
