@@ -101,9 +101,9 @@ jobs:
 
       - if: github.event_name == 'release'
         run: |
-          rm -rf ./AppDir/usr/
-          rm -rf ./AppDir/AppRun
-          rm -rf ./AppDir/.DirIcon
+          sudo rm -rf ./AppDir/usr/
+          sudo rm -rf ./AppDir/AppRun
+          sudo rm -rf ./AppDir/.DirIcon
 
       - name: Compress AppDir
         if: github.event_name == 'release'
