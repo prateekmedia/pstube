@@ -15,15 +15,19 @@ class DownloadItem {
     required this.total,
   });
 
-  static DownloadItem fromVideo(
-    Video video,
-    String path,
-    stream, {
+  static DownloadItem fromVideo({
+    required Video video,
+    required stream,
+    required String path,
     int downloaded = 0,
     int total = 0,
   }) {
     return DownloadItem(
-      queryVideo: QueryVideo.fromVideo(video, stream, path),
+      queryVideo: QueryVideo.fromVideo(
+        video: video,
+        stream: stream,
+        path: path,
+      ),
       downloaded: downloaded,
       total: total,
     );

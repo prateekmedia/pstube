@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutube/widgets/widgets.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:share_plus/share_plus.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
@@ -68,8 +67,10 @@ class VideoScreen extends HookWidget {
                         GestureDetector(
                           onTap: context.width < mobileWidth
                               ? () {
-                                  showBarModalBottomSheet(
+                                  showPopover(
                                     context: context,
+                                    isScrollable: false,
+                                    isScrollControlled: false,
                                     builder: (ctx) =>
                                         DescriptionWidget(videoData: videoData),
                                   );
@@ -171,14 +172,13 @@ class VideoScreen extends HookWidget {
                               : currentItem.value == 1
                                   ? () => currentItem.value = 0
                                   : context.width < mobileWidth
-                                      ? () => showBarModalBottomSheet(
+                                      ? () => showPopover(
                                             context: context,
+                                            isScrollable: false,
                                             builder: (ctx) {
-                                              return Expanded(
-                                                child: CommentsWidget(
-                                                    snapshot: commentsSnapshot,
-                                                    replyComment: replyComment),
-                                              );
+                                              return CommentsWidget(
+                                                  snapshot: commentsSnapshot,
+                                                  replyComment: replyComment);
                                             },
                                           ).whenComplete(
                                               () => currentIndex.value = 0)

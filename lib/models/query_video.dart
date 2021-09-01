@@ -23,13 +23,18 @@ class QueryVideo extends Equatable {
     required this.thumbnail,
   });
 
-  static QueryVideo fromVideo(Video video, stream, String path) {
+  static QueryVideo fromVideo({
+    required Video video,
+    required stream,
+    required String path,
+  }) {
     return QueryVideo(
       name: video.title +
           '(' +
           (stream is AudioOnlyStreamInfo
               ? stream.bitrate.bitsPerSecond.getBitrate()
               : '${stream.videoResolution.width}x${stream.videoResolution.height}') +
+          ')' +
           (stream is MuxedStreamInfo ? '.' + stream.container.name : '.m4a'),
       id: video.id.value,
       path: path,
@@ -44,6 +49,5 @@ class QueryVideo extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [name, url, id, author, quality, duration, thumbnail, path];
+  List<Object?> get props => [name, id, quality, path];
 }

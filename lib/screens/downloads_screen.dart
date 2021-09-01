@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutube/screens/screens.dart';
+import 'package:flutube/widgets/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +26,8 @@ class DownloadsScreen extends ConsumerWidget {
           const Text('No Downloads found').center()
         else
           for (DownloadItem item in downloadList)
-            DownloadItemBuilder(item: item),
+            DownloadItemBuilder(
+                item: item, downloadListUtils: downloadListUtils),
       ],
     );
   }
@@ -33,9 +37,11 @@ class DownloadItemBuilder extends StatelessWidget {
   const DownloadItemBuilder({
     Key? key,
     required this.item,
+    required this.downloadListUtils,
   }) : super(key: key);
 
   final DownloadItem item;
+  final DownloadList downloadListUtils;
 
   @override
   Widget build(BuildContext context) {
@@ -85,13 +91,28 @@ class DownloadItemBuilder extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () => item.total != 0 && item.total != item.downloaded
-                ? item.cancelToken!.cancel()
-                : null,
+            onPressed: item.cancelToken!.isCancelled ||
+                    item.total == 0 ||
+                    item.total == item.downloaded
+                ? () => showPopoverWB(
+                    context: context,
+                    title: "Are you Sure?",
+                    onConfirm: () {
+                      if (File(item.queryVideo.path + item.queryVideo.name)
+                          .existsSync()) {
+                        File(item.queryVideo.path + item.queryVideo.name)
+                            .deleteSync();
+                      }
+                      downloadListUtils.removeDownload(item.queryVideo);
+                      context.back();
+                    })
+                : item.cancelToken!.cancel,
             icon: Icon(
-              item.total != 0 && item.total != item.downloaded
-                  ? Icons.close
-                  : Icons.delete,
+              item.cancelToken!.isCancelled
+                  ? Icons.remove
+                  : item.total != 0 && item.total != item.downloaded
+                      ? Icons.close
+                      : Icons.delete,
             ),
           )
         ],

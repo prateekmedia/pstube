@@ -131,15 +131,18 @@ class MyHomePage extends HookWidget {
             items: [
               SalomonBottomBarItem(
                 title: const Text("Home"),
-                icon: const Icon(Ionicons.home),
+                icon: const Icon(Ionicons.home_outline, size: 20),
+                activeIcon: const Icon(Ionicons.home_sharp, size: 20),
               ),
               SalomonBottomBarItem(
                 title: const Text("Downloads"),
-                icon: const Icon(Ionicons.download_outline),
+                icon: const Icon(Ionicons.download_outline, size: 20),
+                activeIcon: const Icon(Ionicons.download_sharp, size: 20),
               ),
               SalomonBottomBarItem(
                 title: const Text("Settings"),
-                icon: const Icon(Ionicons.settings_sharp),
+                icon: const Icon(Ionicons.settings_outline, size: 20),
+                activeIcon: const Icon(Ionicons.settings_sharp, size: 20),
               ),
             ],
             currentIndex: _currentIndex.value,

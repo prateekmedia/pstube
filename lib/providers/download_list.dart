@@ -35,4 +35,13 @@ class DownloadList extends ChangeNotifier {
         .copyWith(downloaded: downloaded, total: total);
     notifyListeners();
   }
+
+  removeDownload(
+    QueryVideo queryVideo,
+  ) {
+    var currentItemIndex =
+        downloadList.indexWhere((e) => e.queryVideo == queryVideo);
+    downloadList.removeAt(currentItemIndex);
+    notifyListeners();
+  }
 }

@@ -3,62 +3,52 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutube/models/models.dart';
 import 'package:flutube/providers/providers.dart';
+import 'package:flutube/widgets/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'utils.dart';
 
 Future showDownloadPopup(BuildContext context, Video video) {
-  return showBarModalBottomSheet(
-      context: context,
-      builder: (ctx) {
-        return Material(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: FutureBuilder<StreamManifest>(
-                future: YoutubeExplode()
-                    .videos
-                    .streamsClient
-                    .getManifest(video.id.value),
-                builder: (context, snapshot) {
-                  return snapshot.hasData
-                      ? Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const SizedBox(height: 6),
-                            linksHeader(
-                                icon: Ionicons.musical_note, label: "Audio"),
-                            const SizedBox(height: 14),
-                            for (var audioStream
-                                in snapshot.data!.audioOnly.toList().reversed)
-                              CustomListTile(
-                                stream: audioStream,
-                                video: video,
-                              ),
-                            const SizedBox(height: 14),
-                            linksHeader(
-                                icon: Ionicons.videocam, label: "Video"),
-                            const SizedBox(height: 14),
-                            for (var videoStream in snapshot.data!.video
-                                .where((element) => element.tag < 100)
-                                .toList()
-                                .sortByVideoQuality())
-                              CustomListTile(
-                                stream: videoStream,
-                                video: video,
-                              ),
-                          ],
-                        )
-                      : const SizedBox(
-                          height: 100,
-                          child: Center(child: CircularProgressIndicator()),
-                        );
-                }),
-          ),
-        );
-      });
+  return showPopover(
+    context: context,
+    builder: (ctx) => FutureBuilder<StreamManifest>(
+      future: YoutubeExplode().videos.streamsClient.getManifest(video.id.value),
+      builder: (context, snapshot) {
+        return snapshot.hasData
+            ? Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(height: 6),
+                  linksHeader(icon: Ionicons.musical_note, label: "Audio"),
+                  const SizedBox(height: 14),
+                  for (var audioStream
+                      in snapshot.data!.audioOnly.toList().reversed)
+                    CustomListTile(
+                      stream: audioStream,
+                      video: video,
+                    ),
+                  const SizedBox(height: 14),
+                  linksHeader(icon: Ionicons.videocam, label: "Video"),
+                  const SizedBox(height: 14),
+                  for (var videoStream in snapshot.data!.video
+                      .where((element) => element.tag < 100)
+                      .toList()
+                      .sortByVideoQuality())
+                    CustomListTile(
+                      stream: videoStream,
+                      video: video,
+                    ),
+                ],
+              )
+            : const SizedBox(
+                height: 100,
+                child: Center(child: CircularProgressIndicator()),
+              );
+      },
+    ),
+  );
 }
 
 Widget linksHeader({required IconData icon, required String label}) {
@@ -94,9 +84,9 @@ class CustomListTile extends ConsumerWidget {
               !await Permission.storage.request().isGranted) return;
           ref.watch(downloadListProvider.notifier).addDownload(
                 DownloadItem.fromVideo(
-                  video,
-                  stream,
-                  ref.watch(downloadPathProvider).path,
+                  video: video,
+                  stream: stream,
+                  path: ref.watch(downloadPathProvider).path,
                 ),
               );
           context.back();
