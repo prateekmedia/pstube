@@ -11,6 +11,7 @@
 .svn/
 .*hidden*
 .metadata
+*.keystore
 
 # IntelliJ related
 *.iml
@@ -23,7 +24,6 @@
 
 # AppImage Related
 *AppDir/*
-!*AppDir/AppRun
 *AppImage
 
 # Flutter/Dart/Pub related
