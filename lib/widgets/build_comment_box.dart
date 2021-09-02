@@ -7,9 +7,7 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class BuildCommentBox extends StatelessWidget {
   final bool isInsideReply;
-
   final VoidCallback? onReplyTap;
-
   final Comment comment;
 
   const BuildCommentBox({
@@ -76,8 +74,10 @@ class BuildCommentBox extends StatelessWidget {
                             trimMode: TrimMode.Line,
                             trimCollapsedText: '\nRead more',
                             trimExpandedText: '\nShow less',
-                            moreStyle: const TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.bold),
+                            moreStyle: context.textTheme.bodyText1!.copyWith(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
                           )
                         : SelectableText(comment.text),
                   ),
