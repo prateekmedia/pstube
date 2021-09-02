@@ -24,13 +24,15 @@ class MyApp extends HookConsumerWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
         primaryColor: Colors.red,
+        fontFamily: 'Roboto',
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
         primaryColor: Colors.red,
         primarySwatch: Colors.red,
+        fontFamily: 'Roboto',
       ),
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       home: MyHomePage(),
     );

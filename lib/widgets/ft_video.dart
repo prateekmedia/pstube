@@ -84,8 +84,8 @@ class FTVideo extends StatelessWidget {
                             Positioned.fill(
                               child: Align(
                                 alignment: const Alignment(0.90, 0.90),
-                                child: iconWithLabel(
-                                    (video.duration ??
+                                child: IconWithLabel(
+                                    label: (video.duration ??
                                             const Duration(seconds: 0))
                                         .format(),
                                     secColor: SecColor.dark),
@@ -121,8 +121,8 @@ class FTVideo extends StatelessWidget {
                                               ChannelScreen(
                                                   id: video.channelId.value))
                                           : null,
-                                      child: iconWithLabel(
-                                        video != null
+                                      child: IconWithLabel(
+                                        label: video != null
                                             ? video.author
                                             : "Loading...",
                                         secColor: SecColor.dark,
@@ -134,8 +134,8 @@ class FTVideo extends StatelessWidget {
                             Row(
                               children: [
                                 Flexible(
-                                  child: iconWithLabel(
-                                    (video != null
+                                  child: IconWithLabel(
+                                    label: (video != null
                                             ? video.engagement.viewCount
                                                 .formatNumber
                                             : "0") +
@@ -143,8 +143,8 @@ class FTVideo extends StatelessWidget {
                                   ),
                                 ),
                                 Flexible(
-                                  child: iconWithLabel(
-                                    video != null
+                                  child: IconWithLabel(
+                                    label: video != null
                                         ? timeago.format(
                                             video.uploadDate ?? DateTime.now())
                                         : "just now",
@@ -209,8 +209,8 @@ class FTVideo extends StatelessWidget {
                             Positioned.fill(
                               child: Align(
                                 alignment: const Alignment(0.98, 0.94),
-                                child: iconWithLabel(
-                                    (video.duration ??
+                                child: IconWithLabel(
+                                    label: (video.duration ??
                                             const Duration(seconds: 0))
                                         .format(),
                                     secColor: SecColor.dark),
@@ -239,8 +239,8 @@ class FTVideo extends StatelessWidget {
                                         ? () => context.pushPage(ChannelScreen(
                                             id: video.channelId.value))
                                         : null,
-                                    child: iconWithLabel(
-                                      video != null
+                                    child: IconWithLabel(
+                                      label: video != null
                                           ? video.author
                                           : "Loading...",
                                       margin: const EdgeInsets.symmetric(
@@ -262,14 +262,14 @@ class FTVideo extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          iconWithLabel(
-                            (video != null
+                          IconWithLabel(
+                            label: (video != null
                                     ? video.engagement.viewCount.formatNumber
                                     : "0") +
                                 " views",
                           ),
-                          iconWithLabel(
-                            video != null
+                          IconWithLabel(
+                            label: video != null
                                 ? timeago
                                     .format(video.uploadDate ?? DateTime.now())
                                 : "just now",

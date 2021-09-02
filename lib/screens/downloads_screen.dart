@@ -22,9 +22,12 @@ class DownloadsScreen extends ConsumerWidget {
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       children: [
-        if (downloadList.isEmpty)
+        if (downloadList.isEmpty) ...[
+          const SizedBox(height: 60),
+          const Icon(Icons.file_download_off_outlined, size: 30),
+          const SizedBox(height: 10),
           const Text('No Downloads found').center()
-        else
+        ] else
           for (DownloadItem item in downloadList)
             DownloadItemBuilder(
                 item: item, downloadListUtils: downloadListUtils),
@@ -84,8 +87,10 @@ class DownloadItemBuilder extends StatelessWidget {
                 Positioned.fill(
                   child: Align(
                     alignment: const Alignment(0.98, 0.94),
-                    child: iconWithLabel(item.queryVideo.duration.format(),
-                        secColor: SecColor.dark),
+                    child: IconWithLabel(
+                      label: item.queryVideo.duration.format(),
+                      secColor: SecColor.dark,
+                    ),
                   ),
                 )
               ],

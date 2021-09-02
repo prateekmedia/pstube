@@ -18,21 +18,20 @@ class ChannelScreen extends HookWidget {
           SliverAppBar(
             expandedHeight: 200,
             pinned: true,
+            leading: IconButton(
+              icon: const Icon(Icons.chevron_left),
+              onPressed: context.back,
+            ),
             centerTitle: true,
             title: Text(channel.data != null ? channel.data!.title : ""),
             flexibleSpace: channel.data != null
                 ? FlexibleSpaceBar(
                     background: Center(
-                      child: Container(
-                        color: context.isDark
-                            ? Colors.grey[900]
-                            : Colors.grey[200],
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ChannelInfo(channel: channel),
-                          ],
-                        ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ChannelInfo(channel: channel),
+                        ],
                       ),
                     ),
                   )

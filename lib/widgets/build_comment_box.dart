@@ -49,8 +49,8 @@ class BuildCommentBox extends StatelessWidget {
                                 context.pushPage(
                                     ChannelScreen(id: comment.channelId.value));
                               },
-                              child: iconWithLabel(
-                                comment.author,
+                              child: IconWithLabel(
+                                label: comment.author,
                                 margin: EdgeInsets.zero,
                                 secColor: SecColor.dark,
                               ),
@@ -59,8 +59,8 @@ class BuildCommentBox extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      iconWithLabel(
-                        comment.publishedTime,
+                      IconWithLabel(
+                        label: comment.publishedTime,
                         style:
                             context.textTheme.bodyText2!.copyWith(fontSize: 12),
                       ),

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:custom_text/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutube/widgets/widgets.dart';
@@ -6,7 +7,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:share_plus/share_plus.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
-import 'package:flutter_linkify/flutter_linkify.dart';
+
 import '../utils/utils.dart';
 
 class VideoScreen extends HookWidget {
@@ -156,21 +157,31 @@ class VideoScreen extends HookWidget {
                                         ? () =>
                                             showDownloadPopup(context, video)
                                         : () {
+                                            commentSideWidget.value = null;
                                             downloadsSideWidget.value = Column(
                                               children: [
                                                 Row(
                                                   children: [
                                                     const SizedBox(width: 15),
                                                     Expanded(
-                                                      child: Text(
-                                                        'Download links',
-                                                        style: context.textTheme
-                                                            .bodyText2!
-                                                            .copyWith(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontSize: 18),
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                          horizontal: 4,
+                                                          vertical: 16,
+                                                        ),
+                                                        child: Text(
+                                                          'Download links',
+                                                          style: context
+                                                              .textTheme
+                                                              .bodyText2!
+                                                              .copyWith(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 18),
+                                                        ),
                                                       ),
                                                     ),
                                                     IconButton(
@@ -179,7 +190,8 @@ class VideoScreen extends HookWidget {
                                                         onPressed: () {
                                                           downloadsSideWidget
                                                               .value = null;
-                                                        })
+                                                        }),
+                                                    const SizedBox(width: 16),
                                                   ],
                                                 ),
                                                 Expanded(
@@ -293,7 +305,7 @@ class CommentsWidget extends HookWidget {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            padding: const EdgeInsets.symmetric(vertical: 6),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -305,7 +317,8 @@ class CommentsWidget extends HookWidget {
                               curve: Curves.easeInOut);
                           replyComment.value = null;
                         },
-                        icon: const Icon(Icons.chevron_left),
+                        icon:
+                            const Icon(Icons.chevron_left, color: Colors.white),
                       )
                     : const SizedBox(),
                 Expanded(
@@ -442,9 +455,17 @@ class DescriptionWidget extends StatelessWidget {
         const SizedBox(height: 15),
         Container(
           padding: const EdgeInsets.symmetric(vertical: 4),
-          child: Linkify(
-            onOpen: (link) => link.url.launchIt(),
-            text: videoData.description,
+          child: CustomText(
+            videoData.description,
+            onTap: (Type type, link) => link.launchIt(),
+            definitions: const [
+              TextDefinition(matcher: UrlMatcher()),
+              TextDefinition(matcher: EmailMatcher()),
+            ],
+            matchStyle: const TextStyle(color: Colors.lightBlue),
+            // `tapStyle` is not used if both `onTap` and `onLongPress`
+            // are null or not set.
+            tapStyle: const TextStyle(color: Colors.yellow),
             style: TextStyle(fontSize: isInsidePopup ? 16 : 17),
           ),
         ),

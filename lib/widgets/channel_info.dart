@@ -35,7 +35,8 @@ class ChannelInfo extends StatelessWidget {
                 children: [
                   Text(
                     channel.data != null ? channel.data!.title : "",
-                    style: context.textTheme.headline6,
+                    style: context.textTheme.headline6!
+                        .copyWith(color: Colors.white),
                   ),
                   Text(
                     channel.data != null
@@ -44,7 +45,8 @@ class ChannelInfo extends StatelessWidget {
                             : channel.data!.subscribersCount!.formatNumber +
                                 " subscribers"
                         : "",
-                    style: context.textTheme.bodyText1,
+                    style: context.textTheme.bodyText1!
+                        .copyWith(color: Colors.white),
                   ),
                 ],
               ),
