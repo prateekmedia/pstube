@@ -43,7 +43,7 @@ jobs:
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
 
       - name: Build Flutter app
-        run: flutter build apk --split-per-abi
+        run: flutter build apk
 
       - name: Upload apk to a release
         uses: svenstaro/upload-release-action@master
