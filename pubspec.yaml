@@ -10,17 +10,22 @@ environment:
 
 dependencies:
   cached_network_image: ^3.0.0
+  # dart_vlc: ^0.1.7
   dio: ^4.0.0
   equatable: ^2.0.3
   file_picker: ^4.0.1
   flutter:
     sdk: flutter
   flutter_hooks: ^0.18.0
+  flutter_linkify: ^5.0.2
   flutter_staggered_grid_view: ^0.4.0
   hooks_riverpod: ^1.0.0-dev.7
   intl: ^0.17.0
   ionicons: ^0.1.2
-  open_file: ^3.2.1
+  # Upgrade to pub.dev when package > 3.2.1
+  open_file:
+    git:
+      url: https://github.com/crazecoder/open_file.git
   path: ^1.8.0
   path_provider: ^2.0.2
   permission_handler: ^8.1.2

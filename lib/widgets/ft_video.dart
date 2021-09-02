@@ -44,39 +44,54 @@ class FTVideo extends StatelessWidget {
                             ))
                         : null,
                     child: Row(children: [
-                      Container(
-                        height: 90,
-                        padding: const EdgeInsets.all(5),
-                        child: AspectRatio(
-                          aspectRatio: 16 / 9,
-                          child: video != null
-                              ? Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      fit: BoxFit.fitWidth,
-                                      image: CachedNetworkImageProvider(
-                                          video.thumbnails.lowResUrl),
-                                    ),
-                                  ),
-                                )
-                              : Shimmer.fromColors(
-                                  baseColor: Colors.grey[900]!,
-                                  highlightColor: Colors.grey[800]!,
-                                  child: Row(
-                                    children: [
-                                      Flexible(
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.black,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
+                      Stack(
+                        children: [
+                          Container(
+                            height: 90,
+                            padding: const EdgeInsets.all(5),
+                            child: AspectRatio(
+                              aspectRatio: 16 / 9,
+                              child: video != null
+                                  ? Container(
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          fit: BoxFit.fitWidth,
+                                          image: CachedNetworkImageProvider(
+                                              video.thumbnails.lowResUrl),
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                        ),
+                                    )
+                                  : Shimmer.fromColors(
+                                      baseColor: Colors.grey[900]!,
+                                      highlightColor: Colors.grey[800]!,
+                                      child: Row(
+                                        children: [
+                                          Flexible(
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                            ),
+                          ),
+                          if (video != null)
+                            Positioned.fill(
+                              child: Align(
+                                alignment: const Alignment(0.90, 0.90),
+                                child: iconWithLabel(
+                                    (video.duration ??
+                                            const Duration(seconds: 0))
+                                        .format(),
+                                    secColor: SecColor.dark),
+                              ),
+                            ),
+                        ],
                       ),
                       const SizedBox(width: 6),
                       Flexible(

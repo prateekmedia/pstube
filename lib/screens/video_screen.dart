@@ -6,6 +6,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:share_plus/share_plus.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import '../utils/utils.dart';
 
 class VideoScreen extends HookWidget {
@@ -26,7 +27,7 @@ class VideoScreen extends HookWidget {
     final replyComment = useState<Comment?>(null);
     final currentIndex = useState<int>(0);
     final commentSideWidget = useState<Widget?>(null);
-    final currentItem = useState<int>(0);
+    final downloadsSideWidget = useState<Widget?>(null);
 
     return SafeArea(
       child: Scaffold(
@@ -149,8 +150,55 @@ class VideoScreen extends HookWidget {
                               ),
                               iconWithBottomLabel(
                                 icon: Ionicons.download_outline,
-                                onPressed: () =>
-                                    showDownloadPopup(context, video),
+                                onPressed: downloadsSideWidget.value != null
+                                    ? () => downloadsSideWidget.value = null
+                                    : context.isMobile
+                                        ? () =>
+                                            showDownloadPopup(context, video)
+                                        : () {
+                                            downloadsSideWidget.value = Column(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    const SizedBox(width: 15),
+                                                    Expanded(
+                                                      child: Text(
+                                                        'Download links',
+                                                        style: context.textTheme
+                                                            .bodyText2!
+                                                            .copyWith(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 18),
+                                                      ),
+                                                    ),
+                                                    IconButton(
+                                                        icon: const Icon(
+                                                            Icons.close),
+                                                        onPressed: () {
+                                                          downloadsSideWidget
+                                                              .value = null;
+                                                        })
+                                                  ],
+                                                ),
+                                                Expanded(
+                                                  child: SingleChildScrollView(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 15,
+                                                        vertical: 12),
+                                                    child: DownloadsWidget(
+                                                      video: video,
+                                                      onClose: () =>
+                                                          downloadsSideWidget
+                                                              .value = null,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
                                 label: "Download",
                               ),
                               iconWithBottomLabel(
@@ -169,8 +217,8 @@ class VideoScreen extends HookWidget {
                         ListTile(
                           onTap: commentsSnapshot.data == null
                               ? null
-                              : currentItem.value == 1
-                                  ? () => currentItem.value = 0
+                              : commentSideWidget.value != null
+                                  ? () => commentSideWidget.value = null
                                   : context.width < mobileWidth
                                       ? () => showPopover(
                                             context: context,
@@ -183,14 +231,14 @@ class VideoScreen extends HookWidget {
                                           ).whenComplete(
                                               () => currentIndex.value = 0)
                                       : () {
+                                          downloadsSideWidget.value = null;
                                           commentSideWidget.value =
                                               CommentsWidget(
                                             onClose: () =>
-                                                currentItem.value = 0,
+                                                commentSideWidget.value = null,
                                             replyComment: replyComment,
                                             snapshot: commentsSnapshot,
                                           );
-                                          currentItem.value = 1;
                                         },
                           title: const Text("Comments"),
                           trailing: Text(
@@ -212,7 +260,9 @@ class VideoScreen extends HookWidget {
                             videoData: videoData, isInsidePopup: false),
                         if (commentSideWidget.value != null)
                           commentSideWidget.value!,
-                      ][currentItem.value],
+                        if (downloadsSideWidget.value != null)
+                          downloadsSideWidget.value!,
+                      ].last,
                     ),
                 ],
               );
@@ -247,35 +297,31 @@ class CommentsWidget extends HookWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                (currentPage.value == 1)
+                    ? IconButton(
+                        onPressed: () {
+                          pageController.animateToPage(0,
+                              duration: const Duration(milliseconds: 200),
+                              curve: Curves.easeInOut);
+                          replyComment.value = null;
+                        },
+                        icon: const Icon(Icons.chevron_left),
+                      )
+                    : const SizedBox(),
                 Expanded(
-                  child: Row(
-                    children: [
-                      (currentPage.value == 1)
-                          ? IconButton(
-                              onPressed: () {
-                                pageController.animateToPage(0,
-                                    duration: const Duration(milliseconds: 200),
-                                    curve: Curves.easeInOut);
-                                replyComment.value = null;
-                              },
-                              icon: const Icon(Icons.chevron_left),
-                            )
-                          : const SizedBox(),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 6),
-                        child: Text(
-                            (currentPage.value == 0)
-                                ? (snapshot.data != null
-                                            ? snapshot.data!.totalLength
-                                            : 0)
-                                        .formatNumber +
-                                    " comments"
-                                : "Replies",
-                            style: context.textTheme.bodyText1!
-                                .copyWith(fontWeight: FontWeight.w600)),
-                      ),
-                    ],
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+                    child: Text(
+                        (currentPage.value == 0)
+                            ? (snapshot.data != null
+                                        ? snapshot.data!.totalLength
+                                        : 0)
+                                    .formatNumber +
+                                " comments"
+                            : "Replies",
+                        style: context.textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.bold, fontSize: 18)),
                   ),
                 ),
                 IconButton(
@@ -296,12 +342,15 @@ class CommentsWidget extends HookWidget {
                   controller: ScrollController(),
                   children: [
                     for (Comment comment in snapshot.data ?? [])
-                      buildCommentBox(context, comment, () {
-                        replyComment.value = comment;
-                        pageController.animateToPage(1,
-                            duration: const Duration(milliseconds: 200),
-                            curve: Curves.easeInOut);
-                      }),
+                      BuildCommentBox(
+                        comment: comment,
+                        onReplyTap: () {
+                          replyComment.value = comment;
+                          pageController.animateToPage(1,
+                              duration: const Duration(milliseconds: 200),
+                              curve: Curves.easeInOut);
+                        },
+                      )
                   ],
                 ),
                 WillPopScope(
@@ -320,6 +369,52 @@ class CommentsWidget extends HookWidget {
       ),
     );
   }
+}
+
+Widget showReplies(BuildContext context, Comment? comment) {
+  final yt = YoutubeExplode();
+  getReplies() async {
+    if (comment == null) return null;
+    var replies = await yt.videos.commentsClient.getReplies(comment);
+    yt.close();
+    return replies;
+  }
+
+  return comment != null
+      ? ListView(
+          controller: ScrollController(),
+          children: [
+            BuildCommentBox(
+              comment: comment,
+              onReplyTap: null,
+              isInsideReply: true,
+            ),
+            FutureBuilder<List?>(
+                future: getReplies(),
+                builder: (context, snapshot) {
+                  return snapshot.data != null
+                      ? Container(
+                          padding: const EdgeInsets.only(left: 50),
+                          child: Column(
+                            children: [
+                              for (Comment reply in snapshot.data!)
+                                BuildCommentBox(
+                                  comment: reply,
+                                  onReplyTap: null,
+                                  isInsideReply: true,
+                                ),
+                            ],
+                          ),
+                        )
+                      : const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                }),
+          ],
+        )
+      : const Center(
+          child: CircularProgressIndicator(),
+        );
 }
 
 class DescriptionWidget extends StatelessWidget {
@@ -341,57 +436,19 @@ class DescriptionWidget extends StatelessWidget {
       children: [
         Text(
           "Description",
-          style: context.textTheme.bodyText2!.copyWith(
+          style: context.textTheme.bodyText1!.copyWith(
               fontWeight: FontWeight.bold, fontSize: isInsidePopup ? 15 : 18),
         ),
         const SizedBox(height: 15),
         Container(
           padding: const EdgeInsets.symmetric(vertical: 4),
-          child: SelectableText(
-            videoData.description,
+          child: Linkify(
+            onOpen: (link) => link.url.launchIt(),
+            text: videoData.description,
             style: TextStyle(fontSize: isInsidePopup ? 16 : 17),
           ),
         ),
       ],
     );
   }
-}
-
-Widget showReplies(BuildContext context, Comment? comment) {
-  final yt = YoutubeExplode();
-  getReplies() async {
-    if (comment == null) return null;
-    var replies = await yt.videos.commentsClient.getReplies(comment);
-    yt.close();
-    return replies;
-  }
-
-  return comment != null
-      ? ListView(
-          controller: ScrollController(),
-          children: [
-            buildCommentBox(context, comment, null, isInsideReply: true),
-            FutureBuilder<List?>(
-                future: getReplies(),
-                builder: (context, snapshot) {
-                  return snapshot.data != null
-                      ? Container(
-                          padding: const EdgeInsets.only(left: 50),
-                          child: Column(
-                            children: [
-                              for (Comment reply in snapshot.data!)
-                                buildCommentBox(context, reply, null,
-                                    isInsideReply: true)
-                            ],
-                          ),
-                        )
-                      : const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                }),
-          ],
-        )
-      : const Center(
-          child: CircularProgressIndicator(),
-        );
 }

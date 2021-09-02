@@ -72,10 +72,24 @@ class DownloadItemBuilder extends StatelessWidget {
                             body: const CircularProgressIndicator().center());
                   }));
             },
-            child: Container(
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                child: CachedNetworkImage(imageUrl: item.queryVideo.thumbnail)),
+            child: Stack(
+              children: [
+                Container(
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(15)),
+                    child: CachedNetworkImage(
+                      imageUrl: item.queryVideo.thumbnail,
+                      fit: BoxFit.fill,
+                    )),
+                Positioned.fill(
+                  child: Align(
+                    alignment: const Alignment(0.98, 0.94),
+                    child: iconWithLabel(item.queryVideo.duration.format(),
+                        secColor: SecColor.dark),
+                  ),
+                )
+              ],
+            ),
           ),
           Expanded(
             child: Padding(

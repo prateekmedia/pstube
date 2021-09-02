@@ -5,10 +5,23 @@ import 'package:flutube/widgets/widgets.dart';
 import 'package:readmore/readmore.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-Widget buildCommentBox(
-        BuildContext context, Comment comment, VoidCallback? onReplyTap,
-        {bool isInsideReply = false}) =>
-    Container(
+class BuildCommentBox extends StatelessWidget {
+  final bool isInsideReply;
+
+  final VoidCallback? onReplyTap;
+
+  final Comment comment;
+
+  const BuildCommentBox({
+    Key? key,
+    required this.comment,
+    required this.onReplyTap,
+    this.isInsideReply = false,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,10 +89,7 @@ Widget buildCommentBox(
                             padding: kTabLabelPadding,
                             primary:
                                 context.isDark ? Colors.white : Colors.black),
-                        icon: const Icon(
-                          Icons.thumb_up,
-                          size: 18,
-                        ),
+                        icon: const Icon(Icons.thumb_up, size: 18),
                         label: Text(
                           "${comment.likeCount.formatNumber}",
                           style: context.textTheme.bodyText2!
@@ -111,3 +121,5 @@ Widget buildCommentBox(
         ],
       ),
     );
+  }
+}

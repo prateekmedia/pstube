@@ -14,7 +14,23 @@ Future showDownloadPopup(BuildContext context, Video video) {
   return showPopover(
     context: context,
     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-    builder: (ctx) => FutureBuilder<StreamManifest>(
+    builder: (ctx) => DownloadsWidget(video: video),
+  );
+}
+
+class DownloadsWidget extends StatelessWidget {
+  final Video video;
+  final VoidCallback? onClose;
+
+  const DownloadsWidget({
+    Key? key,
+    required this.video,
+    this.onClose,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<StreamManifest>(
       future: YoutubeExplode().videos.streamsClient.getManifest(video.id.value),
       builder: (context, snapshot) {
         return snapshot.hasData
@@ -31,6 +47,7 @@ Future showDownloadPopup(BuildContext context, Video video) {
                     CustomListTile(
                       stream: videoStream,
                       video: video,
+                      onClose: onClose,
                     ),
                   linksHeader(
                     icon: Ionicons.musical_note,
@@ -41,6 +58,7 @@ Future showDownloadPopup(BuildContext context, Video video) {
                     CustomListTile(
                       stream: audioStream,
                       video: video,
+                      onClose: onClose,
                     ),
                   linksHeader(
                     icon: Ionicons.videocam,
@@ -51,6 +69,7 @@ Future showDownloadPopup(BuildContext context, Video video) {
                     CustomListTile(
                       stream: videoStream,
                       video: video,
+                      onClose: onClose,
                     ),
                 ],
               )
@@ -59,8 +78,8 @@ Future showDownloadPopup(BuildContext context, Video video) {
                 child: Center(child: CircularProgressIndicator()),
               );
       },
-    ),
-  );
+    );
+  }
 }
 
 Widget linksHeader(
@@ -85,11 +104,13 @@ Widget linksHeader(
 class CustomListTile extends ConsumerWidget {
   final dynamic stream;
   final Video video;
+  final VoidCallback? onClose;
 
   const CustomListTile({
     Key? key,
     required this.stream,
     required this.video,
+    this.onClose,
   }) : super(key: key);
 
   @override
@@ -107,7 +128,7 @@ class CustomListTile extends ConsumerWidget {
                   path: ref.watch(downloadPathProvider).path,
                 ),
               );
-          context.back();
+          onClose != null ? onClose!() : context.back();
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
