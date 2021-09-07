@@ -142,10 +142,7 @@ jobs:
         run: flutter config --enable-windows-desktop
 
       - name: Build Flutter app
-        run: |
-          flutter pub get
-          flutter doctor
-          flutter build windows
+        run: flutter build windows
 
       - uses: papeloto/action-zip@v1
         with:
