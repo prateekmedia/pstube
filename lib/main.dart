@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutube/providers/download_path.dart';
-import 'package:flutube/screens/screens.dart';
-import 'package:flutube/utils/utils.dart';
+import 'package:ionicons/ionicons.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:ionicons/ionicons.dart';
+
+import 'package:flutube/utils/utils.dart';
+import 'package:flutube/screens/screens.dart';
+import 'package:flutube/providers/providers.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +33,7 @@ class MyApp extends HookConsumerWidget {
         primarySwatch: Colors.red,
         fontFamily: 'Roboto',
       ),
-      themeMode: ThemeMode.system,
+      themeMode: ref.watch(themeTypeProvider),
       debugShowCheckedModeBanner: false,
       home: MyHomePage(),
     );
@@ -50,7 +51,8 @@ class MyHomePage extends HookWidget {
     final extendedRail = useState<bool>(false);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey[900]!,
+        foregroundColor: context.textTheme.bodyText1!.color,
+        backgroundColor: context.isDark ? Colors.grey[900]! : Colors.grey[300]!,
         title: Row(
           children: [
             if (context.width >= mobileWidth) ...[
@@ -68,8 +70,7 @@ class MyHomePage extends HookWidget {
         ),
         actions: [
           IconButton(
-              onPressed: () => showSearch(
-                  context: context, delegate: CustomSearchDelegate()),
+              onPressed: () => showSearch(context: context, delegate: CustomSearchDelegate()),
               icon: const Icon(Ionicons.search, size: 20)),
           IconButton(
             onPressed: () {},
@@ -85,25 +86,25 @@ class MyHomePage extends HookWidget {
               destinations: [
                 NavigationRailDestination(
                   label: Text("Home", style: context.textTheme.bodyText1),
-                  icon: const Icon(Ionicons.home, color: Colors.white),
+                  icon: const Icon(Ionicons.home_outline),
+                  selectedIcon: const Icon(Ionicons.home),
                 ),
                 NavigationRailDestination(
                   label: Text("Downloads", style: context.textTheme.bodyText1),
-                  icon: const Icon(Ionicons.download_outline,
-                      color: Colors.white),
+                  icon: const Icon(Ionicons.download_outline),
+                  selectedIcon: const Icon(Ionicons.download),
                 ),
                 NavigationRailDestination(
                   label: Text("Settings", style: context.textTheme.bodyText1),
-                  icon:
-                      const Icon(Ionicons.settings_sharp, color: Colors.white),
+                  icon: const Icon(Ionicons.settings_outline),
+                  selectedIcon: const Icon(Ionicons.settings_sharp),
                 ),
               ],
               extended: extendedRail.value,
-              backgroundColor: Colors.grey[900]!,
+              backgroundColor: context.isDark ? Colors.grey[900]! : Colors.grey[300]!,
               selectedIndex: _currentIndex.value,
               onDestinationSelected: (index) => _controller.animateToPage(index,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.fastOutSlowIn),
+                  duration: const Duration(milliseconds: 300), curve: Curves.fastOutSlowIn),
             ),
           Flexible(
             child: PageView.builder(
@@ -150,8 +151,7 @@ class MyHomePage extends HookWidget {
             ],
             currentIndex: _currentIndex.value,
             onTap: (index) => _controller.animateToPage(index,
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.fastOutSlowIn),
+                duration: const Duration(milliseconds: 300), curve: Curves.fastOutSlowIn),
           ),
         ),
       ),

@@ -42,8 +42,7 @@ class DownloadsWidget extends StatelessWidget {
                     label: "Video + Audio",
                     padding: const EdgeInsets.only(top: 6, bottom: 14),
                   ),
-                  for (var videoStream
-                      in snapshot.data!.muxed.toList().sortByVideoQuality())
+                  for (var videoStream in snapshot.data!.muxed.toList().sortByVideoQuality())
                     CustomListTile(
                       stream: videoStream,
                       video: video,
@@ -53,8 +52,7 @@ class DownloadsWidget extends StatelessWidget {
                     icon: Ionicons.musical_note,
                     label: "Audio only",
                   ),
-                  for (var audioStream
-                      in snapshot.data!.audioOnly.toList().reversed)
+                  for (var audioStream in snapshot.data!.audioOnly.toList().reversed)
                     CustomListTile(
                       stream: audioStream,
                       video: video,
@@ -64,8 +62,7 @@ class DownloadsWidget extends StatelessWidget {
                     icon: Ionicons.videocam,
                     label: "Video only",
                   ),
-                  for (var videoStream
-                      in snapshot.data!.videoOnly.toList().sortByVideoQuality())
+                  for (var videoStream in snapshot.data!.videoOnly.toList().sortByVideoQuality())
                     CustomListTile(
                       stream: videoStream,
                       video: video,
@@ -83,9 +80,7 @@ class DownloadsWidget extends StatelessWidget {
 }
 
 Widget linksHeader(
-    {required IconData icon,
-    required String label,
-    EdgeInsets padding = const EdgeInsets.symmetric(vertical: 14)}) {
+    {required IconData icon, required String label, EdgeInsets padding = const EdgeInsets.symmetric(vertical: 14)}) {
   return Padding(
     padding: padding,
     child: Row(
@@ -119,8 +114,7 @@ class CustomListTile extends ConsumerWidget {
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: InkWell(
         onTap: () async {
-          if ((Platform.isAndroid || Platform.isIOS) &&
-              !await Permission.storage.request().isGranted) return;
+          if ((Platform.isAndroid || Platform.isIOS) && !await Permission.storage.request().isGranted) return;
           ref.watch(downloadListProvider.notifier).addDownload(
                 DownloadItem.fromVideo(
                   video: video,
@@ -139,9 +133,7 @@ class CustomListTile extends ConsumerWidget {
                 children: [
                   Text(
                     (stream is AudioOnlyStreamInfo
-                            ? stream.audioCodec
-                                .split('.')[0]
-                                .replaceAll('mp4a', 'm4a')
+                            ? stream.audioCodec.split('.')[0].replaceAll('mp4a', 'm4a')
                             : stream.container.name)
                         .toUpperCase(),
                   ),

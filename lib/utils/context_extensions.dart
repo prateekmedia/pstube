@@ -10,11 +10,9 @@ extension ContextExtensions on BuildContext {
     Navigator.of(this).pop();
   }
 
-  pushPage(Widget page) =>
-      Navigator.of(this).push(MaterialPageRoute(builder: (ctx) => page));
+  pushPage(Widget page) => Navigator.of(this).push(MaterialPageRoute(builder: (ctx) => page));
 
-  Color get getBackgroundColor =>
-      isDark ? Colors.grey[800]! : Colors.grey[200]!;
+  Color get getBackgroundColor => isDark ? Colors.grey[800]! : Colors.grey[200]!;
 
   bool get isMobile => width < mobileWidth;
 

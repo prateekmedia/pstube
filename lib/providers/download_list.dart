@@ -16,11 +16,9 @@ class DownloadList extends ChangeNotifier {
 
     downloadList.add(downloadItem.copyWith(cancelToken: cancelToken));
     notifyListeners();
-    await Dio().download(downloadItem.queryVideo.url,
-        downloadItem.queryVideo.path + downloadItem.queryVideo.name,
+    await Dio().download(downloadItem.queryVideo.url, downloadItem.queryVideo.path + downloadItem.queryVideo.name,
         onReceiveProgress: (downloaded, total) {
-      updateDownload(downloadItem.queryVideo,
-          downloaded: downloaded, total: total);
+      updateDownload(downloadItem.queryVideo, downloaded: downloaded, total: total);
     }, cancelToken: cancelToken);
   }
 
@@ -31,18 +29,15 @@ class DownloadList extends ChangeNotifier {
     required int downloaded,
     int? total,
   }) {
-    var currentItemIndex =
-        downloadList.indexWhere((e) => e.queryVideo == queryVideo);
-    downloadList[currentItemIndex] = downloadList[currentItemIndex]
-        .copyWith(downloaded: downloaded, total: total);
+    var currentItemIndex = downloadList.indexWhere((e) => e.queryVideo == queryVideo);
+    downloadList[currentItemIndex] = downloadList[currentItemIndex].copyWith(downloaded: downloaded, total: total);
     notifyListeners();
   }
 
   removeDownload(
     QueryVideo queryVideo,
   ) {
-    var currentItemIndex =
-        downloadList.indexWhere((e) => e.queryVideo == queryVideo);
+    var currentItemIndex = downloadList.indexWhere((e) => e.queryVideo == queryVideo);
     downloadList.removeAt(currentItemIndex);
     notifyListeners();
   }

@@ -50,9 +50,7 @@ Future<T?> showPopoverWB<T>({
         if (title != null)
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
-            child: Text(title,
-                style: context.textTheme.headline6!
-                    .copyWith(fontWeight: FontWeight.w600)),
+            child: Text(title, style: context.textTheme.headline6!.copyWith(fontWeight: FontWeight.w600)),
           ),
         if (builder != null) builder(ctx),
         if (controller != null)
@@ -70,9 +68,8 @@ Future<T?> showPopoverWB<T>({
               },
               style: context.textTheme.bodyText1,
               decoration: InputDecoration(
-                hintStyle: context.textTheme.bodyText1!.copyWith(
-                    color:
-                        context.isDark ? Colors.grey[300] : Colors.grey[800]),
+                hintStyle:
+                    context.textTheme.bodyText1!.copyWith(color: context.isDark ? Colors.grey[300] : Colors.grey[800]),
               ),
               validator: validator,
               inputFormatters: const [
@@ -87,8 +84,7 @@ Future<T?> showPopoverWB<T>({
             TextButton(
               style: TextButton.styleFrom(
                 primary: context.textTheme.bodyText2!.color,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               ),
               child: const Text("CANCEL"),
               onPressed: () {
@@ -99,8 +95,7 @@ Future<T?> showPopoverWB<T>({
             TextButton(
                 style: TextButton.styleFrom(
                   primary: context.textTheme.bodyText1!.color,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 ),
                 child: Text(confirmText),
                 onPressed: controller != null
@@ -142,8 +137,7 @@ class Popover extends StatelessWidget {
         Flexible(
           fit: FlexFit.loose,
           child: Padding(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
+            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Container(
               margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               padding: const EdgeInsets.symmetric(horizontal: 18),

@@ -12,8 +12,7 @@ class SettingsScreen extends ConsumerStatefulWidget {
   ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-class _SettingsScreenState extends ConsumerState<SettingsScreen>
-    with AutomaticKeepAliveClientMixin {
+class _SettingsScreenState extends ConsumerState<SettingsScreen> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -27,18 +26,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
             Expanded(
               child: GestureDetector(
                 onTap: () async => ref.read(downloadPathProvider).path =
-                    await FilePicker.platform.getDirectoryPath(
-                        dialogTitle: 'Choose Download Folder'),
+                    await FilePicker.platform.getDirectoryPath(dialogTitle: 'Choose Download Folder'),
                 child: Container(
                   margin: const EdgeInsets.symmetric(vertical: 6),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                   decoration: BoxDecoration(
                     color: context.isDark ? Colors.grey[900] : Colors.grey[200],
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                        color: context.textTheme.bodyText1!.color!
-                            .withOpacity(0.3)),
+                    border: Border.all(color: context.textTheme.bodyText1!.color!.withOpacity(0.3)),
                   ),
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -49,6 +44,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
             ),
           ],
         ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('Dark Mode'),
+            Switch(
+                value: context.isDark,
+                onChanged: (value) {
+                  ref.read(themeTypeProvider.notifier).themeType = context.isDark ? 1 : 0;
+                })
+          ],
+        )
       ],
     );
   }

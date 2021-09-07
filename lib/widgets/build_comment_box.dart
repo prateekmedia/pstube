@@ -70,10 +70,12 @@ class BuildCommentBox extends StatelessWidget {
                     child: !isInsideReply
                         ? ReadMoreText(
                             comment.text,
+							style: context.textTheme.bodyText1,
                             trimLines: 4,
                             trimMode: TrimMode.Line,
                             trimCollapsedText: '\nRead more',
                             trimExpandedText: '\nShow less',
+                            lessStyle: context.textTheme.bodyText1!.copyWith(fontSize: 14),
                             moreStyle: context.textTheme.bodyText1!.copyWith(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
