@@ -14,7 +14,9 @@ on:
 
 jobs:
   build-android:
+    name: Android
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
 
@@ -63,12 +65,13 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: build/app/outputs/apk/release/app*
           tag: ${{ github.ref }}
-          body: Always up to date
           overwrite: true
           file_glob: true
 
   build-linux:
+    name: Linux
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
 
@@ -121,5 +124,47 @@ jobs:
           file: ./flutube-x86_64*
           file_glob: true
           tag: ${{github.ref}}
+          overwrite: true
+
+  build_windows:
+    name: Windows
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup flutter
+        uses: subosito/flutter-action@master
+        with:
+          channel: beta
+
+      - name: Enable desktop support
+        run: flutter config --enable-windows-desktop
+
+      - name: Build Flutter app
+        run: |
+          flutter pub get
+          flutter doctor
+          flutter build windows
+
+      - uses: papeloto/action-zip@v1
+        with:
+          files: build/windows/runner/release/
+          dest: flutube-windows.zip
+      
+      - uses: svenstaro/upload-release-action@master
+        if: github.event_name != 'release'
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: flutube-windows.zip
+          tag: ${{github.ref}}-nightly
           body: Always up to date
+          overwrite: true
+      
+      - uses: svenstaro/upload-release-action@master
+        if: github.event_name == 'release'
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: flutube-windows.zip
+          tag: ${{github.ref}}
           overwrite: true
