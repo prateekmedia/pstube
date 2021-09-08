@@ -45,14 +45,14 @@ jobs:
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
 
       - name: Build Flutter app
-        run: flutter build apk
+        run: flutter build apk --split-per-abi
 
       - name: Upload apk to a release
         uses: svenstaro/upload-release-action@master
         if: github.event_name != 'release'
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/app/outputs/apk/release/app*
+          file: build/app/outputs/apk/release/flutube-*
           tag: ${{ github.ref }}-nightly
           body: Always up to date
           overwrite: true
@@ -63,7 +63,7 @@ jobs:
         if: github.event_name == 'release'
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/app/outputs/apk/release/app*
+          file: build/app/outputs/apk/release/flutube-*
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true

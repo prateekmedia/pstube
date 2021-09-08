@@ -63,6 +63,26 @@ android {
         release {
             signingConfig signingConfigs.release
         }
+
+        applicationVariants.all{
+            // this method is use to rename your release apk only
+            variant ->
+                variant.outputs.each{
+                    // on below line we are setting a name to our apk
+                    output->
+                        // on below line we are specifying our app name.
+                        project.ext { appName = 'flutube' }
+                        // on below line we are creating a new name for our apk.
+                        def newName = output.outputFile.name
+                        // on below line we are replacing our previous name with our app name.
+                        newName = newName.replace("app-", "$project.ext.appName-")
+                        newName = newName.replace("-arm64-v8a", "-arm64")
+                        newName = newName.replace("-armeabi-v7a", "-arm")
+                        newName = newName.replace("-release", "")
+                        // at last we are setting our apk name to it.
+                        output.outputFileName  = newName
+                }
+        }
     }
 }
 
