@@ -10,7 +10,8 @@ on:
       - "docs/**"
   workflow_dispatch:
   release:
-    types: created
+    types:
+      - created
 
 jobs:
   build-android:
@@ -49,24 +50,13 @@ jobs:
 
       - name: Upload apk to a release
         uses: svenstaro/upload-release-action@master
-        if: github.event_name != 'release'
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: build/app/outputs/apk/release/flutube-*
-          tag: ${{ github.ref }}-nightly
-          body: Always up to date
-          overwrite: true
           file_glob: true
-
-      - name: Upload apk to a release
-        uses: svenstaro/upload-release-action@master
-        if: github.event_name == 'release'
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/app/outputs/apk/release/flutube-*
-          tag: ${{ github.ref }}
+          tag: ${{ github.ref }}${{ github.event_name == 'release' && '' || '-nightly' }}
+          body: ${{ github.event_name == 'release' && '' || 'Always up to date' }}
           overwrite: true
-          file_glob: true
 
   build-linux:
     name: Linux
@@ -92,38 +82,24 @@ jobs:
       - name: Build AppImage
         run: ./create_appimage.sh
 
-      - name: Upload AppImage to release
-        uses: svenstaro/upload-release-action@master
-        if: github.event_name != 'release'
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: flutube-x86_64.AppImage
-          tag: ${{ github.ref }}-nightly
-          body: Always up to date
-          overwrite: true
-
-      - if: github.event_name == 'release'
-        run: |
+      - run: |
           sudo rm -rf ./AppDir/usr/
           sudo rm -rf ./AppDir/AppRun
           sudo rm -rf ./AppDir/.DirIcon
 
       - name: Compress AppDir
-        if: github.event_name == 'release'
-        uses: master-atul/tar-action@master
-        id: compress
-        with:
-          command: c
-          files: ./AppDir/*
-          outPath: flutube-x86_64.tar.gz
+        run: tar czf flutube-x86_64.tar.gz -C AppDir/ .
+
+      - name: App tar sha256 sum
+        run: sha256sum flutube-x86_64.tar.gz
 
       - uses: svenstaro/upload-release-action@master
-        if: github.event_name == 'release'
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ./flutube-x86_64*
           file_glob: true
-          tag: ${{github.ref}}
+          tag: ${{ github.ref }}${{ github.event_name == 'release' && '' || '-nightly' }}
+          body: ${{ github.event_name == 'release' && '' || 'Always up to date' }}
           overwrite: true
 
   build_windows:
@@ -148,20 +124,11 @@ jobs:
         with:
           files: build/windows/runner/release/
           dest: flutube-windows.zip
-      
+
       - uses: svenstaro/upload-release-action@master
-        if: github.event_name != 'release'
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: flutube-windows.zip
-          tag: ${{github.ref}}-nightly
-          body: Always up to date
-          overwrite: true
-      
-      - uses: svenstaro/upload-release-action@master
-        if: github.event_name == 'release'
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: flutube-windows.zip
-          tag: ${{github.ref}}
+          tag: ${{ github.ref }}${{ github.event_name == 'release' && '' || '-nightly' }}
+          body: ${{ github.event_name == 'release' && '' || 'Always up to date' }}
           overwrite: true
