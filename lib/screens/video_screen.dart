@@ -3,6 +3,7 @@ import 'package:custom_text/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutube/widgets/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:share_plus/share_plus.dart';
@@ -68,7 +69,7 @@ class VideoScreen extends HookWidget {
                                     context: context,
                                     isScrollable: false,
                                     isScrollControlled: false,
-                                    builder: (ctx) => DescriptionWidget(videoData: videoData),
+                                    builder: (ctx) => DescriptionWidget(video: videoData),
                                   );
                                 }
                               : null,
@@ -227,7 +228,7 @@ class VideoScreen extends HookWidget {
                     Flexible(
                       flex: 4,
                       child: [
-                        DescriptionWidget(videoData: videoData, isInsidePopup: false),
+                        DescriptionWidget(video: videoData, isInsidePopup: false),
                         if (commentSideWidget.value != null) commentSideWidget.value!,
                         if (downloadsSideWidget.value != null) downloadsSideWidget.value!,
                       ].last,
@@ -381,11 +382,11 @@ class DescriptionWidget extends StatelessWidget {
 
   const DescriptionWidget({
     Key? key,
-    required this.videoData,
+    required this.video,
     this.isInsidePopup = true,
   }) : super(key: key);
 
-  final Video videoData;
+  final Video video;
 
   @override
   Widget build(BuildContext context) {
@@ -398,10 +399,32 @@ class DescriptionWidget extends StatelessWidget {
           style: context.textTheme.bodyText1!.copyWith(fontWeight: FontWeight.bold, fontSize: isInsidePopup ? 15 : 18),
         ),
         const SizedBox(height: 15),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            DescriptionInfoWidget(
+              title: (((video.engagement.likeCount ?? 0) /
+                              ((video.engagement.likeCount ?? 0) + (video.engagement.dislikeCount ?? 0))) *
+                          100)
+                      .toStringAsFixed(0) +
+                  '%',
+              body: 'Like ratio',
+            ),
+            DescriptionInfoWidget(
+              title: video.engagement.viewCount.addCommas,
+              body: 'views',
+            ),
+            DescriptionInfoWidget(
+              title: DateFormat('dd MMM yyy').format(video.publishDate ?? DateTime.now()),
+              body: 'Upload date',
+            ),
+          ],
+        ),
+        const SizedBox(height: 15),
         Container(
           padding: const EdgeInsets.symmetric(vertical: 4),
           child: CustomText(
-            videoData.description,
+            video.description,
             onTap: (Type type, link) => link.launchIt(),
             definitions: const [
               TextDefinition(matcher: UrlMatcher()),
@@ -414,6 +437,27 @@ class DescriptionWidget extends StatelessWidget {
             style: TextStyle(fontSize: isInsidePopup ? 16 : 17),
           ),
         ),
+      ],
+    );
+  }
+}
+
+class DescriptionInfoWidget extends StatelessWidget {
+  const DescriptionInfoWidget({
+    Key? key,
+    required this.title,
+    required this.body,
+  }) : super(key: key);
+
+  final String title;
+  final String body;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(title, style: context.textTheme.headline6!),
+        Text(body),
       ],
     );
   }

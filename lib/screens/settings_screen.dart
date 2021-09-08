@@ -44,17 +44,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with AutomaticK
             ),
           ],
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text('Dark Mode'),
-            Switch(
-                value: context.isDark,
-                onChanged: (value) {
-                  ref.read(themeTypeProvider.notifier).themeType = context.isDark ? 1 : 0;
-                })
-          ],
-        )
+        SwitchListTile(
+          title: const Text('Dark mode'),
+          value: context.isDark,
+          onChanged: (bool value) => ref.read(themeTypeProvider.notifier).themeType = value ? 0 : 1,
+        ),
       ],
     );
   }

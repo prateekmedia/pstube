@@ -7,7 +7,8 @@ import '../utils/utils.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
   @override
-  TextStyle? get searchFieldStyle => const TextStyle(fontSize: 18);
+  TextStyle? get searchFieldStyle => const TextStyle(fontSize: 16);
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -58,8 +59,7 @@ class SearchResult extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var yt = YoutubeExplode();
-    Future<SearchList> loadVideos() async =>
-        await yt.search.getVideos(query).whenComplete(() => yt.close());
+    Future<SearchList> loadVideos() async => await yt.search.getVideos(query).whenComplete(() => yt.close());
 
     return FutureBuilder<SearchList>(
         future: loadVideos(),
@@ -93,8 +93,7 @@ class SuggestionList extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final yt = YoutubeExplode();
-    Future<List<String>> getSuggestions() =>
-        yt.search.getQuerySuggestions(query).whenComplete(() => yt.close());
+    Future<List<String>> getSuggestions() => yt.search.getQuerySuggestions(query).whenComplete(() => yt.close());
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(8),

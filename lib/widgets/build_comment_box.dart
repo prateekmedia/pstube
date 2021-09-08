@@ -44,8 +44,7 @@ class BuildCommentBox extends StatelessWidget {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                context.pushPage(
-                                    ChannelScreen(id: comment.channelId.value));
+                                context.pushPage(ChannelScreen(id: comment.channelId.value));
                               },
                               child: IconWithLabel(
                                 label: comment.author,
@@ -59,8 +58,7 @@ class BuildCommentBox extends StatelessWidget {
                       const SizedBox(width: 10),
                       IconWithLabel(
                         label: comment.publishedTime,
-                        style:
-                            context.textTheme.bodyText2!.copyWith(fontSize: 12),
+                        style: context.textTheme.bodyText2!.copyWith(fontSize: 12),
                       ),
                     ],
                   ),
@@ -70,7 +68,7 @@ class BuildCommentBox extends StatelessWidget {
                     child: !isInsideReply
                         ? ReadMoreText(
                             comment.text,
-							style: context.textTheme.bodyText1,
+                            style: context.textTheme.bodyText1,
                             trimLines: 4,
                             trimMode: TrimMode.Line,
                             trimCollapsedText: '\nRead more',
@@ -88,14 +86,11 @@ class BuildCommentBox extends StatelessWidget {
                       TextButton.icon(
                         onPressed: () {},
                         style: TextButton.styleFrom(
-                            padding: kTabLabelPadding,
-                            primary:
-                                context.isDark ? Colors.white : Colors.black),
+                            padding: kTabLabelPadding, primary: context.isDark ? Colors.white : Colors.black),
                         icon: const Icon(Icons.thumb_up, size: 18),
                         label: Text(
-                          "${comment.likeCount.formatNumber}",
-                          style: context.textTheme.bodyText2!
-                              .copyWith(fontSize: 12),
+                          comment.likeCount.formatNumber,
+                          style: context.textTheme.bodyText2!.copyWith(fontSize: 12),
                         ),
                       ),
                       if (comment.isHearted)
@@ -114,8 +109,7 @@ class BuildCommentBox extends StatelessWidget {
                           padding: kTabLabelPadding,
                         ),
                         onPressed: comment.replyCount > 0 ? onReplyTap : null,
-                        child: Text(
-                            "${comment.replyCount} repl${comment.replyCount > 1 ? "ies" : "y"}"))
+                        child: Text("${comment.replyCount} repl${comment.replyCount > 1 ? "ies" : "y"}"))
                 ],
               ),
             ),

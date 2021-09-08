@@ -208,9 +208,9 @@ class FTVideo extends StatelessWidget {
                                 video != null
                                     ? Text(
                                         video.title,
-                                        maxLines: 1,
+                                        maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(fontSize: 18),
+                                        style: const TextStyle(fontSize: 15),
                                       )
                                     : Container(),
                                 if (!isOnChannelScreen)

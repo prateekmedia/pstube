@@ -16,4 +16,8 @@ class ThemeTypeNotifier extends StateNotifier<ThemeMode> {
     state = ThemeMode.values.firstWhere((element) => element.index == newThemeType);
     MyPrefs().prefs.setInt('themeType', state.index);
   }
+
+  reset() {
+    MyPrefs().prefs.remove('themeType').whenComplete(() => state = ThemeMode.system);
+  }
 }

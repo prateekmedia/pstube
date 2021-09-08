@@ -29,4 +29,8 @@ class DownloadPathNotifier extends ChangeNotifier {
             : (await getDownloadsDirectory())!.path.replaceAll('Downloads', 'FluTube/'));
     if (!await Directory(path).exists()) await Directory(path).create();
   }
+
+  void reset() {
+    MyPrefs().prefs.remove('downloadPath').whenComplete(() => init());
+  }
 }

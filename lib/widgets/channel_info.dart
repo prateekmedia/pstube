@@ -8,11 +8,13 @@ class ChannelInfo extends StatelessWidget {
   const ChannelInfo({
     Key? key,
     required this.channel,
+    this.textColor,
     this.isOnVideo = false,
   }) : super(key: key);
 
   final AsyncSnapshot<Channel> channel;
   final bool isOnVideo;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -35,17 +37,15 @@ class ChannelInfo extends StatelessWidget {
                 children: [
                   Text(
                     channel.data != null ? channel.data!.title : "",
-                    style: context.textTheme.headline6,
+                    style: context.textTheme.headline6!.copyWith(color: textColor),
                   ),
                   Text(
                     channel.data != null
                         ? channel.data!.subscribersCount == null
                             ? "Hidden"
-                            : channel.data!.subscribersCount!.formatNumber +
-                                " subscribers"
+                            : channel.data!.subscribersCount!.formatNumber + " subscribers"
                         : "",
-                    style: context.textTheme.bodyText1!
-                        .copyWith(color: Colors.white),
+                    style: context.textTheme.bodyText1!.copyWith(color: textColor),
                   ),
                 ],
               ),

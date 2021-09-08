@@ -28,9 +28,7 @@ class DownloadsScreen extends ConsumerWidget {
           const SizedBox(height: 10),
           const Text('No Downloads found').center()
         ] else
-          for (DownloadItem item in downloadList)
-            DownloadItemBuilder(
-                item: item, downloadListUtils: downloadListUtils),
+          for (DownloadItem item in downloadList) DownloadItemBuilder(item: item, downloadListUtils: downloadListUtils),
       ],
     );
   }
@@ -51,93 +49,105 @@ class DownloadItemBuilder extends StatelessWidget {
     var yt = YoutubeExplode();
     return GestureDetector(
       onTap: () => OpenFile.open(item.queryVideo.path + item.queryVideo.name),
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: () {
-              context.pushPage(FutureBuilder<Video>(
-                  future: yt.videos
-                      .get(item.queryVideo.id)
-                      .whenComplete(() => yt.close()),
-                  builder: (context, snapshot) {
-                    return snapshot.hasData
-                        ? VideoScreen(
-                            video: snapshot.data!,
-                            loadData: true,
-                          )
-                        : Scaffold(
-                            appBar: AppBar(
-                              leading: IconButton(
-                                icon: const Icon(Icons.chevron_left),
-                                onPressed: context.back,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                context.pushPage(FutureBuilder<Video>(
+                    future: yt.videos.get(item.queryVideo.id).whenComplete(() => yt.close()),
+                    builder: (context, snapshot) {
+                      return snapshot.hasData
+                          ? VideoScreen(
+                              video: snapshot.data!,
+                              loadData: true,
+                            )
+                          : Scaffold(
+                              appBar: AppBar(
+                                leading: IconButton(
+                                  icon: const Icon(Icons.chevron_left),
+                                  onPressed: context.back,
+                                ),
                               ),
-                            ),
-                            body: const CircularProgressIndicator().center());
-                  }));
-            },
-            child: Stack(
-              children: [
-                Container(
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                    child: CachedNetworkImage(
-                      imageUrl: item.queryVideo.thumbnail,
-                      fit: BoxFit.fill,
-                    )),
-                Positioned.fill(
-                  child: Align(
-                    alignment: const Alignment(0.98, 0.94),
-                    child: IconWithLabel(
-                      label: item.queryVideo.duration.format(),
-                      secColor: SecColor.dark,
+                              body: const CircularProgressIndicator().center());
+                    }));
+              },
+              child: Stack(
+                children: [
+                  Container(
+                    height: 80,
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
+                    child: AspectRatio(
+                      aspectRatio: 16 / 9,
+                      child: CachedNetworkImage(
+                        imageUrl: item.queryVideo.thumbnail,
+                        fit: BoxFit.fitWidth,
+                      ),
                     ),
                   ),
-                )
-              ],
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(item.queryVideo.name),
-                  Text(
-                      '${((item.downloaded / item.total) * 100).toStringAsFixed(1)}% • ${item.total.getFileSize()}')
+                  Positioned.fill(
+                    child: Align(
+                      alignment: const Alignment(0.98, 0.94),
+                      child: IconWithLabel(
+                        label: item.queryVideo.duration.format(),
+                        secColor: SecColor.dark,
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
-          ),
-          IconButton(
-            onPressed: item.cancelToken!.isCancelled ||
-                    item.total == 0 ||
-                    item.total == item.downloaded
-                ? () => showPopoverWB(
-                    context: context,
-                    title: "Are you Sure?",
-                    onConfirm: () {
-                      if (File(item.queryVideo.path + item.queryVideo.name)
-                          .existsSync()) {
-                        File(item.queryVideo.path + item.queryVideo.name)
-                            .deleteSync();
-                      }
-                      downloadListUtils.removeDownload(item.queryVideo);
-                      context.back();
-                    })
-                : () {
-                    item.cancelToken!.cancel();
-                    downloadListUtils.refresh();
-                  },
-            icon: Icon(
-              item.cancelToken!.isCancelled
-                  ? Icons.remove
-                  : item.total != 0 && item.total != item.downloaded
-                      ? Icons.close
-                      : Icons.delete,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      item.queryVideo.name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                    const SizedBox(height: 5),
+                    Row(
+                      children: [
+                        IconWithLabel(label: '${((item.downloaded / item.total) * 100).toStringAsFixed(1)}%'),
+                        const SizedBox(width: 5),
+                        IconWithLabel(label: item.total.getFileSize()),
+                      ],
+                    )
+                  ],
+                ),
+              ),
             ),
-          )
-        ],
+            IconButton(
+              onPressed: item.cancelToken!.isCancelled || item.total == 0 || item.total == item.downloaded
+                  ? () => showPopoverWB(
+                      context: context,
+                      title: "Are you Sure?",
+                      onConfirm: () {
+                        if (File(item.queryVideo.path + item.queryVideo.name).existsSync()) {
+                          File(item.queryVideo.path + item.queryVideo.name).deleteSync();
+                        }
+                        downloadListUtils.removeDownload(item.queryVideo);
+                        context.back();
+                      })
+                  : () {
+                      item.cancelToken!.cancel();
+                      downloadListUtils.refresh();
+                    },
+              icon: Icon(
+                item.cancelToken!.isCancelled
+                    ? Icons.remove
+                    : item.total != 0 && item.total != item.downloaded
+                        ? Icons.close
+                        : Icons.delete,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

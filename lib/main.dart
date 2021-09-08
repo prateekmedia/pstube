@@ -51,6 +51,7 @@ class MyHomePage extends HookWidget {
     final extendedRail = useState<bool>(false);
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         foregroundColor: context.textTheme.bodyText1!.color,
         backgroundColor: context.isDark ? Colors.grey[900]! : Colors.grey[300]!,
         title: Row(
@@ -70,12 +71,22 @@ class MyHomePage extends HookWidget {
         ),
         actions: [
           IconButton(
-              onPressed: () => showSearch(context: context, delegate: CustomSearchDelegate()),
-              icon: const Icon(Ionicons.search, size: 20)),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Ionicons.person_outline, size: 20),
+            onPressed: () => showSearch(context: context, delegate: CustomSearchDelegate()),
+            icon: const Icon(Ionicons.search, size: 20),
           ),
+          if (_currentIndex.value == 2)
+            Consumer(builder: (context, ref, _) {
+              return PopupMenuButton(
+                itemBuilder: (context) {
+                  return [
+                    PopupMenuItem(
+                      child: const Text('Reset default'),
+                      onTap: () => resetDefaults(ref),
+                    )
+                  ];
+                },
+              );
+            }),
           const SizedBox(width: 10),
         ],
       ),
@@ -127,11 +138,11 @@ class MyHomePage extends HookWidget {
           padding: const EdgeInsets.all(6),
           decoration: ShapeDecoration(
             shape: const StadiumBorder(),
-            color: Colors.grey[900]!,
+            color: context.isDark ? Colors.grey[900]! : Colors.grey[300]!,
           ),
           child: SalomonBottomBar(
-            selectedItemColor: Colors.white,
-            unselectedItemColor: Colors.grey,
+            selectedItemColor: context.textTheme.bodyText1!.color,
+            unselectedItemColor: context.isDark ? Colors.grey[400] : Colors.grey[600]!,
             items: [
               SalomonBottomBarItem(
                 title: const Text("Home"),

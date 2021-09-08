@@ -10,8 +10,7 @@ class ChannelScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final channel =
-        useFuture(useMemoized(() => YoutubeExplode().channels.get(id)));
+    final channel = useFuture(useMemoized(() => YoutubeExplode().channels.get(id)));
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -30,7 +29,7 @@ class ChannelScreen extends HookWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          ChannelInfo(channel: channel),
+                          ChannelInfo(channel: channel, textColor: Colors.white),
                         ],
                       ),
                     ),
@@ -40,9 +39,7 @@ class ChannelScreen extends HookWidget {
           if (channel.hasData && channel.data != null) ...[
             SliverToBoxAdapter(
               child: FutureBuilder<ChannelUploadsList>(
-                future: YoutubeExplode()
-                    .channels
-                    .getUploadsFromPage(channel.data!.id.value),
+                future: YoutubeExplode().channels.getUploadsFromPage(channel.data!.id.value),
                 builder: (ctx, snapshot) {
                   return snapshot.hasData
                       ? ListView.builder(

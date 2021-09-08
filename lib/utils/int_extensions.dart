@@ -3,7 +3,9 @@ import 'dart:math';
 import 'package:intl/intl.dart';
 
 extension IntExtension on int {
-  get formatNumber => NumberFormat.compact().format(this);
+  String get addCommas => NumberFormat("###,###", "en_US").format(this);
+
+  String get formatNumber => NumberFormat.compact().format(this);
 
   String getFileSize({int decimals = 1}) {
     if (this <= 0) return "0.0 KB";
