@@ -81,16 +81,23 @@ class BuildCommentBox extends StatelessWidget {
                           )
                         : SelectableText(comment.text),
                   ),
+                  const SizedBox(height: 4),
                   Row(
                     children: [
-                      TextButton.icon(
-                        onPressed: () {},
-                        style: TextButton.styleFrom(
-                            padding: kTabLabelPadding, primary: context.isDark ? Colors.white : Colors.black),
-                        icon: const Icon(Icons.thumb_up, size: 18),
-                        label: Text(
-                          comment.likeCount.formatNumber,
-                          style: context.textTheme.bodyText2!.copyWith(fontSize: 12),
+                      GestureDetector(
+                        onTap: () {},
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: kTabLabelPadding.left, vertical: 4),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.thumb_up, size: 18),
+                              const SizedBox(width: 8),
+                              Text(
+                                comment.likeCount.formatNumber,
+                                style: context.textTheme.bodyText2!.copyWith(fontSize: 12),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       if (comment.isHearted)
@@ -100,16 +107,22 @@ class BuildCommentBox extends StatelessWidget {
                         ),
                     ],
                   ),
+                  const SizedBox(height: 2),
                   if (!isInsideReply)
-                    TextButton(
-                        style: TextButton.styleFrom(
-                          primary: context.isDark
-                              ? const Color.fromARGB(255, 40, 170, 255)
-                              : const Color.fromARGB(255, 6, 95, 212),
-                          padding: kTabLabelPadding,
+                    InkWell(
+                      onTap: comment.replyCount > 0 ? onReplyTap : null,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: kTabLabelPadding.left, vertical: 4),
+                        child: Text(
+                          "${comment.replyCount} repl${comment.replyCount > 1 ? "ies" : "y"}",
+                          style: TextStyle(
+                            color: context.isDark
+                                ? const Color.fromARGB(255, 40, 170, 255)
+                                : const Color.fromARGB(255, 6, 95, 212),
+                          ),
                         ),
-                        onPressed: comment.replyCount > 0 ? onReplyTap : null,
-                        child: Text("${comment.replyCount} repl${comment.replyCount > 1 ? "ies" : "y"}"))
+                      ),
+                    ),
                 ],
               ),
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
@@ -20,8 +21,15 @@ class MyApp extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     ref.read(downloadPathProvider).init();
+    final botToastBuilder = BotToastInit();
     return MaterialApp(
       title: 'FluTube',
+      builder: (context, child) {
+        // child = myBuilder(context,child);  //do something
+        child = botToastBuilder(context, child);
+        return child;
+      },
+      navigatorObservers: [BotToastNavigatorObserver()],
       theme: ThemeData(
         primarySwatch: Colors.red,
         primaryColor: Colors.red,
@@ -53,7 +61,7 @@ class MyHomePage extends HookWidget {
       appBar: AppBar(
         elevation: 0,
         foregroundColor: context.textTheme.bodyText1!.color,
-        backgroundColor: context.isDark ? Colors.grey[900]! : Colors.grey[300]!,
+        backgroundColor: context.getAltBackgroundColor,
         title: Row(
           children: [
             if (context.width >= mobileWidth) ...[
@@ -112,7 +120,7 @@ class MyHomePage extends HookWidget {
                 ),
               ],
               extended: extendedRail.value,
-              backgroundColor: context.isDark ? Colors.grey[900]! : Colors.grey[300]!,
+              backgroundColor: context.getAltBackgroundColor,
               selectedIndex: _currentIndex.value,
               onDestinationSelected: (index) => _controller.animateToPage(index,
                   duration: const Duration(milliseconds: 300), curve: Curves.fastOutSlowIn),
@@ -138,11 +146,11 @@ class MyHomePage extends HookWidget {
           padding: const EdgeInsets.all(6),
           decoration: ShapeDecoration(
             shape: const StadiumBorder(),
-            color: context.isDark ? Colors.grey[900]! : Colors.grey[300]!,
+            color: context.getAltBackgroundColor,
           ),
           child: SalomonBottomBar(
             selectedItemColor: context.textTheme.bodyText1!.color,
-            unselectedItemColor: context.isDark ? Colors.grey[400] : Colors.grey[600]!,
+            unselectedItemColor: context.getAlt2BackgroundColor,
             items: [
               SalomonBottomBarItem(
                 title: const Text("Home"),

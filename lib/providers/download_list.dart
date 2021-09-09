@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutube/models/models.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -16,10 +17,12 @@ class DownloadList extends ChangeNotifier {
 
     downloadList.add(downloadItem.copyWith(cancelToken: cancelToken));
     notifyListeners();
+    BotToast.showText(text: "Download started!");
     await Dio().download(downloadItem.queryVideo.url, downloadItem.queryVideo.path + downloadItem.queryVideo.name,
         onReceiveProgress: (downloaded, total) {
       updateDownload(downloadItem.queryVideo, downloaded: downloaded, total: total);
     }, cancelToken: cancelToken);
+    BotToast.showText(text: "Download finished!");
   }
 
   refresh() => notifyListeners();

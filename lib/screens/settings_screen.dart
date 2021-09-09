@@ -31,7 +31,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with AutomaticK
                   margin: const EdgeInsets.symmetric(vertical: 6),
                   padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                   decoration: BoxDecoration(
-                    color: context.isDark ? Colors.grey[900] : Colors.grey[200],
+                    color: context.getAltBackgroundColor,
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(color: context.textTheme.bodyText1!.color!.withOpacity(0.3)),
                   ),

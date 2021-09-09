@@ -13,6 +13,8 @@ extension ContextExtensions on BuildContext {
   pushPage(Widget page) => Navigator.of(this).push(MaterialPageRoute(builder: (ctx) => page));
 
   Color get getBackgroundColor => isDark ? Colors.grey[800]! : Colors.grey[200]!;
+  Color get getAltBackgroundColor => isDark ? Colors.grey[900]! : Colors.grey[300]!;
+  Color get getAlt2BackgroundColor => isDark ? Colors.grey[400]! : Colors.grey[600]!;
 
   bool get isMobile => width < mobileWidth;
 

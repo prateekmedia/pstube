@@ -23,7 +23,7 @@ class IconWithLabel extends StatelessWidget {
       margin: margin,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.grey[context.isDark ? 900 : 300]!.withOpacity(secColor == SecColor.light ? 0.18 : 1),
+        color: context.getAltBackgroundColor.withOpacity(secColor == SecColor.light ? 0.18 : 1),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Text(

@@ -60,8 +60,8 @@ class FTVideo extends StatelessWidget {
                                       ),
                                     )
                                   : Shimmer.fromColors(
-                                      baseColor: Colors.grey[900]!,
-                                      highlightColor: Colors.grey[800]!,
+                                      baseColor: context.getAltBackgroundColor,
+                                      highlightColor: context.getBackgroundColor,
                                       child: Row(
                                         children: [
                                           Flexible(
@@ -171,8 +171,8 @@ class FTVideo extends StatelessWidget {
                                     ),
                                   )
                                 : Shimmer.fromColors(
-                                    baseColor: Colors.grey[900]!,
-                                    highlightColor: Colors.grey[800]!,
+                                    baseColor: context.getAltBackgroundColor,
+                                    highlightColor: context.getBackgroundColor,
                                     child: Row(
                                       children: [
                                         Flexible(

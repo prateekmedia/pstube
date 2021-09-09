@@ -117,7 +117,15 @@ class DownloadItemBuilder extends StatelessWidget {
                         const SizedBox(width: 5),
                         IconWithLabel(label: item.total.getFileSize()),
                       ],
-                    )
+                    ),
+                    const SizedBox(height: 4),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: LinearProgressIndicator(
+                        value: item.total != 0 ? item.downloaded / item.total : 0,
+                        minHeight: 10,
+                      ),
+                    ),
                   ],
                 ),
               ),
