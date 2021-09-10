@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutube/providers/providers.dart';
 import 'package:flutube/screens/screens.dart';
 import 'package:flutube/utils/utils.dart';
 import 'package:flutube/widgets/widgets.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:readmore/readmore.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-class BuildCommentBox extends StatelessWidget {
+class BuildCommentBox extends HookConsumerWidget {
   final bool isInsideReply;
   final VoidCallback? onReplyTap;
   final Comment comment;
@@ -18,7 +21,20 @@ class BuildCommentBox extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    final likedList = ref.watch(likedListProvider);
+    final isLiked = useState<bool>(likedList.likedCommentList.contains(comment));
+
+    updateLike() {
+      isLiked.value = !isLiked.value;
+
+      if (isLiked.value) {
+        likedList.addComment(comment);
+      } else {
+        likedList.removeComment(comment);
+      }
+    }
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Row(
@@ -85,12 +101,12 @@ class BuildCommentBox extends StatelessWidget {
                   Row(
                     children: [
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () => updateLike(),
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: kTabLabelPadding.left, vertical: 4),
                           child: Row(
                             children: [
-                              const Icon(Icons.thumb_up, size: 18),
+                              Icon(Icons.thumb_up, size: 18, color: isLiked.value ? Colors.blue : null),
                               const SizedBox(width: 8),
                               Text(
                                 comment.likeCount.formatNumber,

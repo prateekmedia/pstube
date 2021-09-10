@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:custom_text/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutube/providers/providers.dart';
 import 'package:flutube/widgets/widgets.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -11,22 +13,34 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import '../utils/utils.dart';
 
-class VideoScreen extends HookWidget {
+class VideoScreen extends HookConsumerWidget {
   final Video video;
   final bool loadData;
   const VideoScreen({Key? key, required this.video, this.loadData = false}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     final yt = YoutubeExplode();
     final channel = useFuture(useMemoized(() => yt.channels.get(video.channelId.value)));
     final videoSnapshot = useFuture(useMemoized(() => yt.videos.get(video.id.value)));
     final Video videoData = loadData ? videoSnapshot.data ?? video : video;
-    final isLiked = useState<int>(0);
     final replyComment = useState<Comment?>(null);
     final currentIndex = useState<int>(0);
     final commentSideWidget = useState<Widget?>(null);
     final downloadsSideWidget = useState<Widget?>(null);
+
+    final likedList = ref.watch(likedListProvider);
+    final isLiked = useState<int>(likedList.likedVideoList.contains(videoData.url) ? 1 : 0);
+
+    updateLike(int value) {
+      isLiked.value = isLiked.value != value ? value : 0;
+
+      if (isLiked.value == 1) {
+        likedList.addVideo(videoData.url);
+      } else {
+        likedList.removeVideo(videoData.url);
+      }
+    }
 
     return SafeArea(
       child: Scaffold(
@@ -109,18 +123,14 @@ class VideoScreen extends HookWidget {
                             children: [
                               iconWithBottomLabel(
                                 icon: isLiked.value == 1 ? Icons.thumb_up : Icons.thumb_up_off_alt_outlined,
-                                onPressed: () {
-                                  isLiked.value = isLiked.value != 1 ? 1 : 0;
-                                },
+                                onPressed: () => updateLike(1),
                                 label: videoData.engagement.likeCount != null
                                     ? videoData.engagement.likeCount!.formatNumber
                                     : "Like",
                               ),
                               iconWithBottomLabel(
                                 icon: isLiked.value == 2 ? Icons.thumb_down : Icons.thumb_down_off_alt_outlined,
-                                onPressed: () {
-                                  isLiked.value = isLiked.value != 2 ? 2 : 0;
-                                },
+                                onPressed: () => updateLike(2),
                                 label: videoData.engagement.dislikeCount != null
                                     ? videoData.engagement.dislikeCount!.formatNumber
                                     : "Dislike",

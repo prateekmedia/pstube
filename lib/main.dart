@@ -57,6 +57,21 @@ class MyHomePage extends HookWidget {
   Widget build(BuildContext context) {
     final _currentIndex = useState<int>(0);
     final extendedRail = useState<bool>(false);
+
+    final mainScreens = [
+      const HomeScreen(),
+      const LikedScreen(),
+      const DownloadsScreen(),
+      const SettingsScreen(),
+    ];
+
+    final Map<String, List<IconData>> navItems = {
+      "Home": [Ionicons.home_outline, Ionicons.home],
+      "Liked": [Icons.thumb_up_outlined, Icons.thumb_up],
+      "Downloads": [Ionicons.download_outline, Ionicons.download],
+      "Settings": [Ionicons.settings_outline, Ionicons.settings_sharp],
+    };
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -82,7 +97,7 @@ class MyHomePage extends HookWidget {
             onPressed: () => showSearch(context: context, delegate: CustomSearchDelegate()),
             icon: const Icon(Ionicons.search, size: 20),
           ),
-          if (_currentIndex.value == 2)
+          if (_currentIndex.value == 3)
             Consumer(builder: (context, ref, _) {
               return PopupMenuButton(
                 itemBuilder: (context) {
@@ -103,21 +118,12 @@ class MyHomePage extends HookWidget {
           if (context.width >= mobileWidth)
             NavigationRail(
               destinations: [
-                NavigationRailDestination(
-                  label: Text("Home", style: context.textTheme.bodyText1),
-                  icon: const Icon(Ionicons.home_outline),
-                  selectedIcon: const Icon(Ionicons.home),
-                ),
-                NavigationRailDestination(
-                  label: Text("Downloads", style: context.textTheme.bodyText1),
-                  icon: const Icon(Ionicons.download_outline),
-                  selectedIcon: const Icon(Ionicons.download),
-                ),
-                NavigationRailDestination(
-                  label: Text("Settings", style: context.textTheme.bodyText1),
-                  icon: const Icon(Ionicons.settings_outline),
-                  selectedIcon: const Icon(Ionicons.settings_sharp),
-                ),
+                for (var item in navItems.entries)
+                  NavigationRailDestination(
+                    label: Text(item.key, style: context.textTheme.bodyText1),
+                    icon: Icon(item.value[0]),
+                    selectedIcon: Icon(item.value[1]),
+                  ),
               ],
               extended: extendedRail.value,
               backgroundColor: context.getAltBackgroundColor,
@@ -128,13 +134,9 @@ class MyHomePage extends HookWidget {
           Flexible(
             child: PageView.builder(
               controller: _controller,
-              itemBuilder: (context, index) => [
-                const HomeScreen(),
-                const DownloadsScreen(),
-                const SettingsScreen(),
-              ][index],
+              itemBuilder: (context, index) => mainScreens[index],
               onPageChanged: (index) => _currentIndex.value = index,
-              itemCount: 3,
+              itemCount: mainScreens.length,
             ),
           ),
         ],
@@ -152,21 +154,12 @@ class MyHomePage extends HookWidget {
             selectedItemColor: context.textTheme.bodyText1!.color,
             unselectedItemColor: context.getAlt2BackgroundColor,
             items: [
-              SalomonBottomBarItem(
-                title: const Text("Home"),
-                icon: const Icon(Ionicons.home_outline, size: 20),
-                activeIcon: const Icon(Ionicons.home_sharp, size: 20),
-              ),
-              SalomonBottomBarItem(
-                title: const Text("Downloads"),
-                icon: const Icon(Ionicons.download_outline, size: 20),
-                activeIcon: const Icon(Ionicons.download_sharp, size: 20),
-              ),
-              SalomonBottomBarItem(
-                title: const Text("Settings"),
-                icon: const Icon(Ionicons.settings_outline, size: 20),
-                activeIcon: const Icon(Ionicons.settings_sharp, size: 20),
-              ),
+              for (var item in navItems.entries)
+                SalomonBottomBarItem(
+                  title: Text(item.key),
+                  icon: Icon(item.value[0], size: 20),
+                  activeIcon: Icon(item.value[1], size: 20),
+                ),
             ],
             currentIndex: _currentIndex.value,
             onTap: (index) => _controller.animateToPage(index,
