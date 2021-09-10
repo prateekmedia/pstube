@@ -32,9 +32,9 @@ class LikedList extends ChangeNotifier {
     }
   }
 
-  removeComment(Comment comemnt) {
-    if (likedCommentList.contains(comemnt)) {
-      likedCommentList.remove(comemnt);
+  removeComment(Comment comment) {
+    if (likedCommentList.contains(comment)) {
+      likedCommentList.remove(comment);
       refresh();
     }
   }
