@@ -75,29 +75,31 @@ class DownloadItemBuilder extends StatelessWidget {
                               body: const CircularProgressIndicator().center());
                     }));
               },
-              child: Stack(
-                children: [
-                  Container(
-                    height: 80,
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                    child: AspectRatio(
-                      aspectRatio: 16 / 9,
-                      child: CachedNetworkImage(
-                        imageUrl: item.queryVideo.thumbnail,
-                        fit: BoxFit.fitWidth,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Stack(
+                  children: [
+                    SizedBox(
+                      height: 80,
+                      child: AspectRatio(
+                        aspectRatio: 16 / 9,
+                        child: CachedNetworkImage(
+                          imageUrl: item.queryVideo.thumbnail,
+                          fit: BoxFit.fitWidth,
+                        ),
                       ),
                     ),
-                  ),
-                  Positioned.fill(
-                    child: Align(
-                      alignment: const Alignment(0.98, 0.94),
-                      child: IconWithLabel(
-                        label: item.queryVideo.duration.parseDuration().format(),
-                        secColor: SecColor.dark,
+                    Positioned.fill(
+                      child: Align(
+                        alignment: const Alignment(0.98, 0.94),
+                        child: IconWithLabel(
+                          label: item.queryVideo.duration.parseDuration().format(),
+                          secColor: SecColor.dark,
+                        ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
             Expanded(

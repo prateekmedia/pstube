@@ -17,6 +17,7 @@ void main() async {
   Hive.registerAdapter(LikedCommentAdapter());
   Hive.registerAdapter(QueryVideoAdapter());
   await Hive.initFlutter();
+  await Hive.openBox('playlist');
   await Hive.openBox('likedList');
   await Hive.openBox('downloadList');
   runApp(const ProviderScope(child: MyApp()));

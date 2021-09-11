@@ -47,6 +47,7 @@ class FTVideo extends StatelessWidget {
                         children: [
                           Container(
                             height: 90,
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
                             padding: const EdgeInsets.all(5),
                             child: AspectRatio(
                               aspectRatio: 16 / 9,
