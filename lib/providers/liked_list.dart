@@ -1,43 +1,55 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutube/models/models.dart';
+import 'package:hive/hive.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 final likedListProvider = ChangeNotifierProvider((ref) => LikedList(ref));
+
+final box = Hive.box('likedList');
 
 class LikedList extends ChangeNotifier {
   final ProviderRefBase ref;
   LikedList(this.ref);
 
-  List<String> likedVideoList = [];
-  List<Comment> likedCommentList = [];
+  List likedVideoList = box.get('likedVideoList', defaultValue: []);
+  List likedCommentList = box.get('likedCommentList', defaultValue: []);
 
   addVideo(String url) {
     if (!likedVideoList.contains(url)) {
       likedVideoList.add(url);
-      refresh();
+      refresh(true);
     }
   }
 
   removeVideo(String url) {
     if (likedVideoList.contains(url)) {
       likedVideoList.remove(url);
-      refresh();
+      refresh(true);
     }
   }
 
-  addComment(Comment comment) {
+  addComment(LikedComment comment) {
     if (!likedCommentList.contains(comment)) {
       likedCommentList.add(comment);
-      refresh();
+      refresh(false);
     }
   }
 
-  removeComment(Comment comment) {
+  removeComment(LikedComment comment) {
     if (likedCommentList.contains(comment)) {
       likedCommentList.remove(comment);
-      refresh();
+      refresh(false);
     }
   }
 
-  refresh() => notifyListeners();
+  refresh([bool? value]) {
+    notifyListeners();
+    if (value != null) {
+      if (value) {
+        box.put('likedVideoList', likedVideoList);
+      } else {
+        box.put('likedCommentList', likedCommentList);
+      }
+    }
+  }
 }

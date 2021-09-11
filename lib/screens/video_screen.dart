@@ -76,44 +76,25 @@ class VideoScreen extends HookConsumerWidget {
                             ))
                           ],
                         ),
-                        GestureDetector(
-                          onTap: context.width < mobileWidth
-                              ? () {
-                                  showPopover(
-                                    context: context,
-                                    isScrollable: false,
-                                    isScrollControlled: false,
-                                    builder: (ctx) => DescriptionWidget(video: videoData),
-                                  );
-                                }
-                              : null,
-                          child: Container(
-                            padding: const EdgeInsets.all(12),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        videoData.title,
-                                        style: context.textTheme.headline6,
-                                      ),
-                                    ),
-                                    if (context.isMobile) const Icon(Icons.arrow_drop_down),
-                                  ],
-                                ),
-                                const SizedBox(height: 10),
-                                Row(
-                                  children: [
-                                    Text(videoData.engagement.viewCount.formatNumber + ' views'),
-                                    Text(videoData.publishDate != null
-                                        ? '  •  ' + timeago.format(videoData.publishDate!)
-                                        : ''),
-                                  ],
-                                ),
-                              ],
-                            ),
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                videoData.title,
+                                style: context.textTheme.headline6,
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Text(videoData.engagement.viewCount.formatNumber + ' views'),
+                                  Text(videoData.publishDate != null
+                                      ? '  •  ' + timeago.format(videoData.publishDate!)
+                                      : ''),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
                         Container(
@@ -231,6 +212,7 @@ class VideoScreen extends HookConsumerWidget {
                           ),
                         ),
                         const Divider(),
+                        if (context.width < mobileWidth) DescriptionWidget(video: videoData),
                       ],
                     ),
                   ),
@@ -401,6 +383,7 @@ class DescriptionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
+      shrinkWrap: true,
       controller: ScrollController(),
       padding: const EdgeInsets.all(15),
       children: [

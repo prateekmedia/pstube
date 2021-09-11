@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutube/models/models.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -12,6 +14,9 @@ import 'package:flutube/providers/providers.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await MyPrefs().init();
+  Hive.registerAdapter(LikedCommentAdapter());
+  await Hive.initFlutter();
+  await Hive.openBox('likedList');
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -61,6 +66,7 @@ class MyHomePage extends HookWidget {
     final mainScreens = [
       const HomeScreen(),
       const LikedScreen(),
+      const PlaylistScreen(),
       const DownloadsScreen(),
       const SettingsScreen(),
     ];
@@ -68,6 +74,7 @@ class MyHomePage extends HookWidget {
     final Map<String, List<IconData>> navItems = {
       "Home": [Ionicons.home_outline, Ionicons.home],
       "Liked": [Icons.thumb_up_outlined, Icons.thumb_up],
+      "Playlist": [Icons.playlist_add_outlined, Icons.playlist_add],
       "Downloads": [Ionicons.download_outline, Ionicons.download],
       "Settings": [Ionicons.settings_outline, Ionicons.settings_sharp],
     };
@@ -134,9 +141,9 @@ class MyHomePage extends HookWidget {
           Flexible(
             child: PageView.builder(
               controller: _controller,
+              itemCount: mainScreens.length,
               itemBuilder: (context, index) => mainScreens[index],
               onPageChanged: (index) => _currentIndex.value = index,
-              itemCount: mainScreens.length,
             ),
           ),
         ],

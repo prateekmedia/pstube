@@ -8,7 +8,7 @@ import 'package:flutube/utils/utils.dart';
 
 class ChannelLogo extends HookWidget {
   final Channel? channel;
-  final ChannelId? channelId;
+  final String? channelId;
   final double size;
   const ChannelLogo({Key? key, this.channel, this.size = 60, this.channelId}) : super(key: key);
 
