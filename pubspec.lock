@@ -463,9 +463,9 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: HEAD
-      resolved-ref: "2cadda6d282935afce8b02aefe41a198f0c49c0c"
-      url: "https://github.com/crazecoder/open_file.git"
+      ref: no_system
+      resolved-ref: "810dff2b6a624ee96118a1c8a6757ce64a1c8c2c"
+      url: "https://github.com/miDeb/open_file.git"
     source: git
     version: "3.2.1"
   package_config:

@@ -5,14 +5,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final likedListProvider = ChangeNotifierProvider((ref) => LikedList(ref));
 
-final box = Hive.box('likedList');
+final _box = Hive.box('likedList');
 
 class LikedList extends ChangeNotifier {
   final ProviderRefBase ref;
   LikedList(this.ref);
 
-  List likedVideoList = box.get('likedVideoList', defaultValue: []);
-  List likedCommentList = box.get('likedCommentList', defaultValue: []);
+  List likedVideoList = _box.get('likedVideoList', defaultValue: []);
+  List likedCommentList = _box.get('likedCommentList', defaultValue: []);
 
   addVideo(String url) {
     if (!likedVideoList.contains(url)) {
@@ -46,9 +46,9 @@ class LikedList extends ChangeNotifier {
     notifyListeners();
     if (value != null) {
       if (value) {
-        box.put('likedVideoList', likedVideoList);
+        _box.put('likedVideoList', likedVideoList);
       } else {
-        box.put('likedCommentList', likedCommentList);
+        _box.put('likedCommentList', likedCommentList);
       }
     }
   }

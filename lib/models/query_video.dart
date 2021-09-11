@@ -1,15 +1,34 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutube/utils/int_extensions.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-class QueryVideo extends Equatable {
+import 'package:flutube/utils/utils.dart';
+
+part 'query_video.g.dart';
+
+@HiveType(typeId: 1)
+class QueryVideo {
+  @HiveField(0)
   final String name;
+
+  @HiveField(1)
   final String id;
+
+  @HiveField(2)
   final String path;
+
+  @HiveField(3)
   final String author;
-  final Duration duration;
+
+  @HiveField(4)
+  final String duration;
+
+  @HiveField(5)
   final String thumbnail;
+
+  @HiveField(6)
   final String quality;
+
+  @HiveField(7)
   final String url;
 
   const QueryVideo({
@@ -46,7 +65,7 @@ class QueryVideo extends Equatable {
       quality: stream is AudioOnlyStreamInfo
           ? stream.bitrate.bitsPerSecond.getBitrate()
           : '${stream.videoResolution.width}x${stream.videoResolution.height}',
-      duration: video.duration ?? const Duration(seconds: 0),
+      duration: (video.duration ?? Duration.zero).toString(),
       thumbnail: video.thumbnails.lowResUrl,
     );
   }
@@ -72,7 +91,4 @@ class QueryVideo extends Equatable {
         "quality": quality,
         "thumbnail": thumbnail,
       };
-
-  @override
-  List<Object?> get props => [name, id, quality, path];
 }

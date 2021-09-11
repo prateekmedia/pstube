@@ -48,7 +48,9 @@ class DownloadItemBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     var yt = YoutubeExplode();
     return GestureDetector(
-      onTap: () => OpenFile.open(item.queryVideo.path + item.queryVideo.name),
+      onTap: item.total != 0 && item.total == item.downloaded
+          ? () => OpenFile.open(item.queryVideo.path + item.queryVideo.name)
+          : null,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
@@ -90,7 +92,7 @@ class DownloadItemBuilder extends StatelessWidget {
                     child: Align(
                       alignment: const Alignment(0.98, 0.94),
                       child: IconWithLabel(
-                        label: item.queryVideo.duration.format(),
+                        label: item.queryVideo.duration.parseDuration().format(),
                         secColor: SecColor.dark,
                       ),
                     ),
@@ -131,7 +133,9 @@ class DownloadItemBuilder extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: item.cancelToken!.isCancelled || item.total == 0 || item.total == item.downloaded
+              onPressed: item.total == 0 ||
+                      item.total == item.downloaded ||
+                      item.cancelToken != null && item.cancelToken!.isCancelled
                   ? () => showPopoverWB(
                       context: context,
                       title: "Are you Sure?",
@@ -147,7 +151,7 @@ class DownloadItemBuilder extends StatelessWidget {
                       downloadListUtils.refresh();
                     },
               icon: Icon(
-                item.cancelToken!.isCancelled
+                item.cancelToken != null && item.cancelToken!.isCancelled
                     ? Icons.remove
                     : item.total != 0 && item.total != item.downloaded
                         ? Icons.close
