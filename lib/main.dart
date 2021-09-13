@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutube/controller/internet_connectivity.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -9,17 +10,25 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:flutube/utils/utils.dart';
 import 'package:flutube/models/models.dart';
 import 'package:flutube/screens/screens.dart';
+import 'package:flutube/widgets/widgets.dart';
 import 'package:flutube/providers/providers.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Connectivity check stream initialised.
+  InternetConnectivity.networkStatusService();
+
+  // Initialize SharedPreferences
   await MyPrefs().init();
+
+  // Initialize Hive database
   Hive.registerAdapter(LikedCommentAdapter());
   Hive.registerAdapter(QueryVideoAdapter());
   await Hive.initFlutter();
   await Hive.openBox('playlist');
   await Hive.openBox('likedList');
   await Hive.openBox('downloadList');
+
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -142,11 +151,13 @@ class MyHomePage extends HookWidget {
                   duration: const Duration(milliseconds: 300), curve: Curves.fastOutSlowIn),
             ),
           Flexible(
-            child: PageView.builder(
-              controller: _controller,
-              itemCount: mainScreens.length,
-              itemBuilder: (context, index) => mainScreens[index],
-              onPageChanged: (index) => _currentIndex.value = index,
+            child: FtBody(
+              child: PageView.builder(
+                controller: _controller,
+                itemCount: mainScreens.length,
+                itemBuilder: (context, index) => mainScreens[index],
+                onPageChanged: (index) => _currentIndex.value = index,
+              ),
             ),
           ),
         ],

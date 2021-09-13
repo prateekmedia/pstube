@@ -1,16 +1,15 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutube/screens/screens.dart';
-import 'package:flutube/widgets/widgets.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:open_file/open_file.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutube/utils/utils.dart';
 import 'package:flutube/models/models.dart';
+import 'package:flutube/screens/screens.dart';
+import 'package:flutube/widgets/widgets.dart';
 import 'package:flutube/providers/providers.dart';
-import 'package:open_file/open_file.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class DownloadsScreen extends ConsumerWidget {
   const DownloadsScreen({Key? key}) : super(key: key);
@@ -46,7 +45,6 @@ class DownloadItemBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var yt = YoutubeExplode();
     return GestureDetector(
       onTap: item.total != 0 && item.total == item.downloaded
           ? () => OpenFile.open(item.queryVideo.path + item.queryVideo.name)
@@ -57,23 +55,10 @@ class DownloadItemBuilder extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-                context.pushPage(FutureBuilder<Video>(
-                    future: yt.videos.get(item.queryVideo.id).whenComplete(() => yt.close()),
-                    builder: (context, snapshot) {
-                      return snapshot.hasData
-                          ? VideoScreen(
-                              video: snapshot.data!,
-                              loadData: true,
-                            )
-                          : Scaffold(
-                              appBar: AppBar(
-                                leading: IconButton(
-                                  icon: const Icon(Icons.chevron_left),
-                                  onPressed: context.back,
-                                ),
-                              ),
-                              body: const CircularProgressIndicator().center());
-                    }));
+                context.pushPage(VideoScreen(
+                  video: null,
+                  videoId: item.queryVideo.id,
+                ));
               },
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),

@@ -36,10 +36,13 @@ class ChannelScreen extends HookWidget {
                   )
                 : null,
           ),
-          if (channel.hasData && channel.data != null) ...[
-            SliverToBoxAdapter(
+          SliverToBoxAdapter(
+            child: FtBody(
+              expanded: false,
               child: FutureBuilder<ChannelUploadsList>(
-                future: YoutubeExplode().channels.getUploadsFromPage(channel.data!.id.value),
+                future: channel.hasData && channel.data != null
+                    ? YoutubeExplode().channels.getUploadsFromPage(channel.data!.id.value)
+                    : null,
                 builder: (ctx, snapshot) {
                   return snapshot.hasData
                       ? ListView.builder(
@@ -55,18 +58,10 @@ class ChannelScreen extends HookWidget {
                       : getCircularProgressIndicator();
                 },
               ),
-            )
-          ] else
-            SliverToBoxAdapter(child: getCircularProgressIndicator()),
+            ),
+          ),
         ],
       ),
-    );
-  }
-
-  Widget getCircularProgressIndicator() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 25),
-      child: const CircularProgressIndicator().center(),
     );
   }
 }

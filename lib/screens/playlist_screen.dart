@@ -78,10 +78,15 @@ class PlaylistSubScreen extends StatelessWidget {
           onPressed: context.back,
         ),
       ),
-      body: ListView(
-        children: [
-          for (var videoUrl in currentPlaylist.value) FTVideo(videoUrl: videoUrl),
-        ],
+      body: FtBody(
+        expanded: false,
+        child: currentPlaylist.value.isNotEmpty
+            ? ListView(
+                children: [
+                  for (var videoUrl in currentPlaylist.value) FTVideo(videoUrl: videoUrl),
+                ],
+              )
+            : const Center(child: Text("No videos found!")),
       ),
     );
   }

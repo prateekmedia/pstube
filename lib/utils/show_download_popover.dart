@@ -70,9 +70,9 @@ class DownloadsWidget extends StatelessWidget {
                     ),
                 ],
               )
-            : const SizedBox(
+            : SizedBox(
                 height: 100,
-                child: Center(child: CircularProgressIndicator()),
+                child: getCircularProgressIndicator(),
               );
       },
     );

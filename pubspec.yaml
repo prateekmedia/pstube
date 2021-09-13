@@ -11,6 +11,7 @@ environment:
 dependencies:
   bot_toast: ^4.0.1
   cached_network_image: ^3.0.0
+  connectivity_plus: ^1.1.0
   custom_text: ^0.5.0
   # dart_vlc: ^0.1.7
   dio: ^4.0.0

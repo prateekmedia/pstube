@@ -14,220 +14,243 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import '../utils/utils.dart';
 
 class VideoScreen extends HookConsumerWidget {
-  final Video video;
+  final Video? video;
+  final String? videoId;
   final bool loadData;
-  const VideoScreen({Key? key, required this.video, this.loadData = false}) : super(key: key);
+  const VideoScreen({
+    Key? key,
+    required this.video,
+    this.videoId,
+    this.loadData = false,
+  })  : assert(videoId != null || video != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context, ref) {
     final yt = YoutubeExplode();
-    final channel = useFuture(useMemoized(() => yt.channels.get(video.channelId.value)));
-    final videoSnapshot = useFuture(useMemoized(() => yt.videos.get(video.id.value)));
-    final Video videoData = loadData ? videoSnapshot.data ?? video : video;
+    final videoSnapshot =
+        loadData || videoId != null ? useFuture(useMemoized(() => yt.videos.get(videoId ?? video!.id.value))) : null;
+    final Video? videoData = videoSnapshot != null && videoSnapshot.data != null ? videoSnapshot.data : video;
     final replyComment = useState<Comment?>(null);
     final currentIndex = useState<int>(0);
     final commentSideWidget = useState<Widget?>(null);
     final downloadsSideWidget = useState<Widget?>(null);
 
     final likedList = ref.watch(likedListProvider);
-    final isLiked = useState<int>(likedList.likedVideoList.contains(videoData.url) ? 1 : 0);
+    final isLiked = videoData != null ? useState<int>(likedList.likedVideoList.contains(videoData.url) ? 1 : 0) : null;
 
     updateLike(int value) {
-      isLiked.value = isLiked.value != value ? value : 0;
+      isLiked!.value = isLiked.value != value ? value : 0;
 
       if (isLiked.value == 1) {
-        likedList.addVideo(videoData.url);
+        likedList.addVideo(videoData!.url);
       } else {
-        likedList.removeVideo(videoData.url);
+        likedList.removeVideo(videoData!.url);
       }
     }
 
     return SafeArea(
       child: Scaffold(
-        body: FutureBuilder<CommentsList?>(
-            future: (loadData && videoSnapshot.data == null)
-                ? null
-                : yt.videos.commentsClient.getComments(videoData).whenComplete(() => yt.close()),
-            builder: (context, commentsSnapshot) {
-              return Flex(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                direction: Axis.horizontal,
-                children: [
-                  Flexible(
-                    flex: 8,
-                    child: ListView(
-                      children: [
-                        Stack(
-                          children: [
-                            AspectRatio(
-                              aspectRatio: 16 / 9,
-                              child: CachedNetworkImage(
-                                imageUrl: videoData.thumbnails.mediumResUrl,
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                            Positioned(
-                                child: Align(
-                              alignment: Alignment.topLeft,
-                              child: IconButton(
-                                icon: const Icon(Icons.chevron_left),
-                                onPressed: context.back,
-                              ),
-                            ))
-                          ],
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                videoData.title,
-                                style: context.textTheme.headline6,
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
+        appBar: video == null && videoSnapshot == null || videoData == null
+            ? AppBar(
+                leading: IconButton(
+                    onPressed: context.back,
+                    icon: const Icon(
+                      Icons.chevron_left,
+                    )))
+            : null,
+        body: video == null && videoSnapshot == null
+            ? const Center(child: Text('Video not found!'))
+            : videoData == null
+                ? getCircularProgressIndicator()
+                : FutureBuilder<CommentsList?>(
+                    future: yt.videos.commentsClient.getComments(videoData).whenComplete(() => yt.close()),
+                    builder: (context, commentsSnapshot) {
+                      return Flex(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        direction: Axis.horizontal,
+                        children: [
+                          Flexible(
+                            flex: 8,
+                            child: FtBody(
+                              child: ListView(
                                 children: [
-                                  Text(videoData.engagement.viewCount.formatNumber + ' views'),
-                                  Text(videoData.publishDate != null
-                                      ? '  •  ' + timeago.format(videoData.publishDate!)
-                                      : ''),
+                                  Stack(
+                                    children: [
+                                      AspectRatio(
+                                        aspectRatio: 16 / 9,
+                                        child: CachedNetworkImage(
+                                          imageUrl: videoData.thumbnails.mediumResUrl,
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
+                                      Positioned(
+                                          child: Align(
+                                        alignment: Alignment.topLeft,
+                                        child: IconButton(
+                                          icon: const Icon(Icons.chevron_left),
+                                          onPressed: context.back,
+                                        ),
+                                      ))
+                                    ],
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.all(12),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          videoData.title,
+                                          style: context.textTheme.headline6,
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Row(
+                                          children: [
+                                            Text(videoData.engagement.viewCount.formatNumber + ' views'),
+                                            Text(videoData.publishDate != null
+                                                ? '  •  ' + timeago.format(videoData.publishDate!)
+                                                : ''),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        iconWithBottomLabel(
+                                          icon: isLiked!.value == 1 ? Icons.thumb_up : Icons.thumb_up_off_alt_outlined,
+                                          onPressed: () => updateLike(1),
+                                          label: videoData.engagement.likeCount != null
+                                              ? videoData.engagement.likeCount!.formatNumber
+                                              : "Like",
+                                        ),
+                                        iconWithBottomLabel(
+                                          icon:
+                                              isLiked.value == 2 ? Icons.thumb_down : Icons.thumb_down_off_alt_outlined,
+                                          onPressed: () => updateLike(2),
+                                          label: videoData.engagement.dislikeCount != null
+                                              ? videoData.engagement.dislikeCount!.formatNumber
+                                              : "Dislike",
+                                        ),
+                                        iconWithBottomLabel(
+                                          icon: Ionicons.share_social_outline,
+                                          onPressed: () {
+                                            Share.share(videoData.url);
+                                          },
+                                          label: "Share",
+                                        ),
+                                        iconWithBottomLabel(
+                                          icon: Ionicons.download_outline,
+                                          onPressed: downloadsSideWidget.value != null
+                                              ? () => downloadsSideWidget.value = null
+                                              : context.isMobile
+                                                  ? () => showDownloadPopup(context, videoData)
+                                                  : () {
+                                                      commentSideWidget.value = null;
+                                                      downloadsSideWidget.value = Column(
+                                                        children: [
+                                                          Row(
+                                                            children: [
+                                                              const SizedBox(width: 15),
+                                                              Expanded(
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets.symmetric(
+                                                                    horizontal: 4,
+                                                                    vertical: 16,
+                                                                  ),
+                                                                  child: Text(
+                                                                    'Download links',
+                                                                    style: context.textTheme.bodyText2!.copyWith(
+                                                                        fontWeight: FontWeight.bold, fontSize: 18),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              IconButton(
+                                                                  icon: const Icon(Icons.close),
+                                                                  onPressed: () {
+                                                                    downloadsSideWidget.value = null;
+                                                                  }),
+                                                              const SizedBox(width: 16),
+                                                            ],
+                                                          ),
+                                                          Expanded(
+                                                            child: SingleChildScrollView(
+                                                              padding: const EdgeInsets.symmetric(
+                                                                  horizontal: 15, vertical: 12),
+                                                              child: DownloadsWidget(
+                                                                video: videoData,
+                                                                onClose: () => downloadsSideWidget.value = null,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                          label: "Download",
+                                        ),
+                                        iconWithBottomLabel(
+                                          icon: Icons.playlist_add_outlined,
+                                          label: "Save",
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const Divider(),
+                                  ChannelInfo(
+                                    channel: null,
+                                    channelId: videoData.channelId.value,
+                                    isOnVideo: true,
+                                  ),
+                                  const Divider(),
+                                  ListTile(
+                                    onTap: commentsSnapshot.data == null
+                                        ? null
+                                        : commentSideWidget.value != null
+                                            ? () => commentSideWidget.value = null
+                                            : context.width < mobileWidth
+                                                ? () => showPopover(
+                                                      context: context,
+                                                      isScrollable: false,
+                                                      builder: (ctx) {
+                                                        return CommentsWidget(
+                                                            snapshot: commentsSnapshot, replyComment: replyComment);
+                                                      },
+                                                    ).whenComplete(() => currentIndex.value = 0)
+                                                : () {
+                                                    downloadsSideWidget.value = null;
+                                                    commentSideWidget.value = CommentsWidget(
+                                                      onClose: () => commentSideWidget.value = null,
+                                                      replyComment: replyComment,
+                                                      snapshot: commentsSnapshot,
+                                                    );
+                                                  },
+                                    title: const Text("Comments"),
+                                    trailing: Text(
+                                      (commentsSnapshot.data != null ? commentsSnapshot.data!.totalLength : 0)
+                                          .formatNumber,
+                                    ),
+                                  ),
+                                  const Divider(),
+                                  if (context.width < mobileWidth) DescriptionWidget(video: videoData),
                                 ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              iconWithBottomLabel(
-                                icon: isLiked.value == 1 ? Icons.thumb_up : Icons.thumb_up_off_alt_outlined,
-                                onPressed: () => updateLike(1),
-                                label: videoData.engagement.likeCount != null
-                                    ? videoData.engagement.likeCount!.formatNumber
-                                    : "Like",
-                              ),
-                              iconWithBottomLabel(
-                                icon: isLiked.value == 2 ? Icons.thumb_down : Icons.thumb_down_off_alt_outlined,
-                                onPressed: () => updateLike(2),
-                                label: videoData.engagement.dislikeCount != null
-                                    ? videoData.engagement.dislikeCount!.formatNumber
-                                    : "Dislike",
-                              ),
-                              iconWithBottomLabel(
-                                icon: Ionicons.share_social_outline,
-                                onPressed: () {
-                                  Share.share(videoData.url);
-                                },
-                                label: "Share",
-                              ),
-                              iconWithBottomLabel(
-                                icon: Ionicons.download_outline,
-                                onPressed: downloadsSideWidget.value != null
-                                    ? () => downloadsSideWidget.value = null
-                                    : context.isMobile
-                                        ? () => showDownloadPopup(context, video)
-                                        : () {
-                                            commentSideWidget.value = null;
-                                            downloadsSideWidget.value = Column(
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    const SizedBox(width: 15),
-                                                    Expanded(
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.symmetric(
-                                                          horizontal: 4,
-                                                          vertical: 16,
-                                                        ),
-                                                        child: Text(
-                                                          'Download links',
-                                                          style: context.textTheme.bodyText2!
-                                                              .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    IconButton(
-                                                        icon: const Icon(Icons.close),
-                                                        onPressed: () {
-                                                          downloadsSideWidget.value = null;
-                                                        }),
-                                                    const SizedBox(width: 16),
-                                                  ],
-                                                ),
-                                                Expanded(
-                                                  child: SingleChildScrollView(
-                                                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-                                                    child: DownloadsWidget(
-                                                      video: video,
-                                                      onClose: () => downloadsSideWidget.value = null,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                label: "Download",
-                              ),
-                              iconWithBottomLabel(
-                                icon: Icons.playlist_add_outlined,
-                                label: "Save",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Divider(),
-                        ChannelInfo(
-                          channel: channel,
-                          isOnVideo: true,
-                        ),
-                        const Divider(),
-                        ListTile(
-                          onTap: commentsSnapshot.data == null
-                              ? null
-                              : commentSideWidget.value != null
-                                  ? () => commentSideWidget.value = null
-                                  : context.width < mobileWidth
-                                      ? () => showPopover(
-                                            context: context,
-                                            isScrollable: false,
-                                            builder: (ctx) {
-                                              return CommentsWidget(
-                                                  snapshot: commentsSnapshot, replyComment: replyComment);
-                                            },
-                                          ).whenComplete(() => currentIndex.value = 0)
-                                      : () {
-                                          downloadsSideWidget.value = null;
-                                          commentSideWidget.value = CommentsWidget(
-                                            onClose: () => commentSideWidget.value = null,
-                                            replyComment: replyComment,
-                                            snapshot: commentsSnapshot,
-                                          );
-                                        },
-                          title: const Text("Comments"),
-                          trailing: Text(
-                            (commentsSnapshot.data != null ? commentsSnapshot.data!.totalLength : 0).formatNumber,
-                          ),
-                        ),
-                        const Divider(),
-                        if (context.width < mobileWidth) DescriptionWidget(video: videoData),
-                      ],
-                    ),
-                  ),
-                  if (context.width >= mobileWidth)
-                    Flexible(
-                      flex: 4,
-                      child: [
-                        DescriptionWidget(video: videoData, isInsidePopup: false),
-                        if (commentSideWidget.value != null) commentSideWidget.value!,
-                        if (downloadsSideWidget.value != null) downloadsSideWidget.value!,
-                      ].last,
-                    ),
-                ],
-              );
-            }),
+                          if (context.width >= mobileWidth)
+                            Flexible(
+                              flex: 4,
+                              child: [
+                                DescriptionWidget(video: videoData, isInsidePopup: false),
+                                if (commentSideWidget.value != null) commentSideWidget.value!,
+                                if (downloadsSideWidget.value != null) downloadsSideWidget.value!,
+                              ].last,
+                            ),
+                        ],
+                      );
+                    }),
       ),
     );
   }
@@ -358,15 +381,11 @@ Widget showReplies(BuildContext context, Comment? comment) {
                             ],
                           ),
                         )
-                      : const Center(
-                          child: CircularProgressIndicator(),
-                        );
+                      : getCircularProgressIndicator();
                 }),
           ],
         )
-      : const Center(
-          child: CircularProgressIndicator(),
-        );
+      : getCircularProgressIndicator();
 }
 
 class DescriptionWidget extends StatelessWidget {

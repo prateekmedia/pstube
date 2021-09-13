@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutube/widgets/ft_video.dart';
+import 'package:flutube/widgets/widgets.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import '../utils/utils.dart';
@@ -75,7 +76,7 @@ class SearchResult extends HookWidget {
                     isRow: context.width >= mobileWidth,
                   ),
                 )
-              : const CircularProgressIndicator().center();
+              : getCircularProgressIndicator();
         });
   }
 }
@@ -108,7 +109,7 @@ class SuggestionList extends HookWidget {
                     title: Text(snapshot.data![idx]),
                   ),
                 )
-              : const CircularProgressIndicator().center(),
+              : getCircularProgressIndicator(),
         ),
       ),
     );
