@@ -2,6 +2,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import 'package:flutube/utils/utils.dart';
+import 'package:flutube/models/models.dart';
 
 part 'query_video.g.dart';
 
@@ -50,21 +51,27 @@ class QueryVideo {
     return QueryVideo(
       name: video.title +
           '(' +
-          (stream is AudioOnlyStreamInfo
-              ? stream.bitrate.bitsPerSecond.getBitrate()
-              : '${stream.videoResolution.width}x${stream.videoResolution.height}') +
+          (stream is ThumbnailStreamInfo
+              ? stream.name
+              : stream is AudioOnlyStreamInfo
+                  ? stream.bitrate.bitsPerSecond.getBitrate()
+                  : '${stream.videoResolution.width}x${stream.videoResolution.height}') +
           ')' +
           '.' +
-          (stream is AudioOnlyStreamInfo
-              ? stream.audioCodec.split('.')[0].replaceAll('mp4a', 'm4a')
-              : stream.container.name),
+          (stream is ThumbnailStreamInfo
+              ? stream.containerName
+              : stream is AudioOnlyStreamInfo
+                  ? stream.audioCodec.split('.')[0].replaceAll('mp4a', 'm4a')
+                  : stream.container.name),
       id: video.id.value,
       path: path,
       url: stream.url.toString(),
       author: video.author,
-      quality: stream is AudioOnlyStreamInfo
-          ? stream.bitrate.bitsPerSecond.getBitrate()
-          : '${stream.videoResolution.width}x${stream.videoResolution.height}',
+      quality: stream is ThumbnailStreamInfo
+          ? stream.name
+          : stream is AudioOnlyStreamInfo
+              ? stream.bitrate.bitsPerSecond.getBitrate()
+              : '${stream.videoResolution.width}x${stream.videoResolution.height}',
       duration: (video.duration ?? Duration.zero).toString(),
       thumbnail: video.thumbnails.lowResUrl,
     );

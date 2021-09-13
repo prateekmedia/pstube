@@ -51,8 +51,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with AutomaticK
         ),
         SwitchListTile(
           title: const Text('Thumbnail downloader'),
-          value: context.isDark,
-          onChanged: (bool value) => ref.read(themeTypeProvider.notifier).themeType = value ? 2 : 1,
+          value: ref.watch(thumbnailDownloaderProvider),
+          onChanged: (bool value) => ref.read(thumbnailDownloaderProvider.notifier).value = value,
         ),
       ],
     );

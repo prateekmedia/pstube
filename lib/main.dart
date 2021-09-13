@@ -116,7 +116,7 @@ class MyHomePage extends HookWidget {
             onPressed: () => showSearch(context: context, delegate: CustomSearchDelegate()),
             icon: const Icon(Ionicons.search, size: 20),
           ),
-          if (_currentIndex.value == 3)
+          if (_currentIndex.value == 4)
             Consumer(builder: (context, ref, _) {
               return PopupMenuButton(
                 itemBuilder: (context) {

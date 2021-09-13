@@ -18,7 +18,7 @@ Future showDownloadPopup(BuildContext context, Video video) {
   );
 }
 
-class DownloadsWidget extends StatelessWidget {
+class DownloadsWidget extends ConsumerWidget {
   final Video video;
   final VoidCallback? onClose;
 
@@ -29,7 +29,7 @@ class DownloadsWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(context, ref) {
     return FutureBuilder<StreamManifest>(
       future: YoutubeExplode().videos.streamsClient.getManifest(video.id.value),
       builder: (context, snapshot) {
@@ -37,6 +37,19 @@ class DownloadsWidget extends StatelessWidget {
             ? Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  if (ref.watch(thumbnailDownloaderProvider)) ...[
+                    linksHeader(
+                      icon: Icons.image,
+                      label: "Thumbnail",
+                      padding: const EdgeInsets.only(top: 6, bottom: 14),
+                    ),
+                    for (var thumbnail in video.thumbnails.toStreamInfo)
+                      CustomListTile(
+                        stream: thumbnail,
+                        video: video,
+                        onClose: onClose,
+                      ),
+                  ],
                   linksHeader(
                     icon: Icons.perm_media,
                     label: "Video + Audio",
@@ -132,12 +145,14 @@ class CustomListTile extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    (stream is AudioOnlyStreamInfo
-                            ? stream.audioCodec.split('.')[0].replaceAll('mp4a', 'm4a')
-                            : stream.container.name)
+                    (stream is ThumbnailStreamInfo
+                            ? stream.containerName
+                            : stream is AudioOnlyStreamInfo
+                                ? stream.audioCodec.split('.')[0].replaceAll('mp4a', 'm4a')
+                                : stream.container.name)
                         .toUpperCase(),
                   ),
-                  Text((stream.size.totalBytes as int).getFileSize()),
+                  Text(stream is ThumbnailStreamInfo ? "" : (stream.size.totalBytes as int).getFileSize()),
                 ],
               ),
               Align(
@@ -147,7 +162,9 @@ class CustomListTile extends ConsumerWidget {
                       ? stream.videoQualityLabel
                       : stream is AudioOnlyStreamInfo
                           ? (stream.bitrate.bitsPerSecond as int).getBitrate()
-                          : "",
+                          : stream is ThumbnailStreamInfo
+                              ? stream.name
+                              : "",
                   textAlign: TextAlign.center,
                 ),
               )

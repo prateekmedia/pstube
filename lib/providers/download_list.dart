@@ -27,7 +27,8 @@ class DownloadList extends ChangeNotifier {
         onReceiveProgress: (downloaded, total) {
       updateDownload(downloadItem.queryVideo, downloaded: downloaded, total: total);
     }, cancelToken: cancelToken);
-    if (downloadItem.downloaded == downloadItem.total && downloadItem.total != 0) refresh(true);
+    DownloadItem currentItem = downloadList.firstWhere((e) => e.queryVideo == downloadItem.queryVideo);
+    if (currentItem.downloaded == currentItem.total && currentItem.total != 0) refresh(true);
     BotToast.showText(text: "Download finished!");
   }
 
@@ -45,7 +46,7 @@ class DownloadList extends ChangeNotifier {
   }) {
     var currentItemIndex = downloadList.indexWhere((e) => e.queryVideo == queryVideo);
     downloadList[currentItemIndex] = downloadList[currentItemIndex].copyWith(downloaded: downloaded, total: total);
-    refresh();
+    notifyListeners();
   }
 
   removeDownload(
