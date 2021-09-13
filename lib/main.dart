@@ -98,7 +98,7 @@ class MyHomePage extends HookWidget {
         backgroundColor: context.getAltBackgroundColor,
         title: Row(
           children: [
-            if (context.width >= mobileWidth) ...[
+            if (!context.isMobile) ...[
               GestureDetector(
                 onTap: () => extendedRail.value = !extendedRail.value,
                 child: const Padding(
@@ -134,7 +134,7 @@ class MyHomePage extends HookWidget {
       ),
       body: Row(
         children: [
-          if (context.width >= mobileWidth)
+          if (!context.isMobile)
             NavigationRail(
               destinations: [
                 for (var item in navItems.entries)
@@ -163,7 +163,7 @@ class MyHomePage extends HookWidget {
         ],
       ),
       bottomNavigationBar: Visibility(
-        visible: (context.width < mobileWidth),
+        visible: context.isMobile,
         child: Container(
           margin: const EdgeInsets.fromLTRB(4, 0, 4, 4),
           padding: const EdgeInsets.all(6),

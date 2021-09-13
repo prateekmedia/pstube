@@ -60,24 +60,38 @@ class SearchResult extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var yt = YoutubeExplode();
-    Future<SearchList> loadVideos() async => await yt.search.getVideos(query).whenComplete(() => yt.close());
+    final _currentPage = useState<SearchList?>(null);
+    void loadVideos() async => _currentPage.value = await yt.search.getVideos(query).whenComplete(() => yt.close());
+    final controller = useScrollController();
 
-    return FutureBuilder<SearchList>(
-        future: loadVideos(),
-        builder: (context, snapshot) {
-          final videosList = snapshot.data;
-          return snapshot.hasData && videosList != null
-              ? ListView.builder(
-                  shrinkWrap: true,
-                  controller: ScrollController(),
-                  itemCount: videosList.length,
-                  itemBuilder: (ctx, idx) => FTVideo(
-                    videoData: videosList[idx],
-                    isRow: context.width >= mobileWidth,
+    void _getMoreData() async {
+      if (controller.position.pixels == controller.position.maxScrollExtent) {
+        final page = _currentPage.value != null ? await (_currentPage.value)?.nextPage() : null;
+        if (page == null) return;
+
+        _currentPage.value = page;
+      }
+    }
+
+    useEffect(() {
+      loadVideos();
+      controller.addListener(_getMoreData);
+      return () => controller.removeListener(_getMoreData);
+    }, [controller]);
+
+    return _currentPage.value != null
+        ? ListView.builder(
+            shrinkWrap: true,
+            controller: controller,
+            itemCount: _currentPage.value!.length + 1,
+            itemBuilder: (ctx, idx) => idx == _currentPage.value!.length
+                ? getCircularProgressIndicator()
+                : FTVideo(
+                    videoData: _currentPage.value![idx],
+                    isRow: !context.isMobile,
                   ),
-                )
-              : getCircularProgressIndicator();
-        });
+          )
+        : getCircularProgressIndicator();
   }
 }
 

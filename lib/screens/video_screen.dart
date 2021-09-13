@@ -210,7 +210,7 @@ class VideoScreen extends HookConsumerWidget {
                                         ? null
                                         : commentSideWidget.value != null
                                             ? () => commentSideWidget.value = null
-                                            : context.width < mobileWidth
+                                            : context.isMobile
                                                 ? () => showPopover(
                                                       context: context,
                                                       isScrollable: false,
@@ -234,12 +234,12 @@ class VideoScreen extends HookConsumerWidget {
                                     ),
                                   ),
                                   const Divider(),
-                                  if (context.width < mobileWidth) DescriptionWidget(video: videoData),
+                                  if (context.isMobile) DescriptionWidget(video: videoData),
                                 ],
                               ),
                             ),
                           ),
-                          if (context.width >= mobileWidth)
+                          if (!context.isMobile)
                             Flexible(
                               flex: 4,
                               child: [
@@ -272,81 +272,76 @@ class CommentsWidget extends HookWidget {
   Widget build(BuildContext context) {
     final PageController pageController = PageController();
     final currentPage = useState<int>(0);
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: onClose != null ? 16 : 0),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 6),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                (currentPage.value == 1)
-                    ? IconButton(
-                        onPressed: () {
-                          pageController.animateToPage(0,
-                              duration: const Duration(milliseconds: 200), curve: Curves.easeInOut);
-                          replyComment.value = null;
-                        },
-                        icon: Icon(Icons.chevron_left, color: context.textTheme.bodyText1!.color),
-                      )
-                    : const SizedBox(),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
-                    child: Text(
-                        (currentPage.value == 0)
-                            ? (snapshot.data != null ? snapshot.data!.totalLength : 0).formatNumber + " comments"
-                            : "Replies",
-                        style: context.textTheme.bodyText2!.copyWith(fontWeight: FontWeight.bold, fontSize: 18)),
+    return Column(
+      children: [
+        AppBar(
+          backgroundColor: context.getAltBackgroundColor,
+          leading: (currentPage.value == 1)
+              ? IconButton(
+                  onPressed: () {
+                    pageController.animateToPage(0,
+                        duration: const Duration(milliseconds: 200), curve: Curves.easeInOut);
+                    replyComment.value = null;
+                  },
+                  icon: Icon(Icons.chevron_left, color: context.textTheme.bodyText1!.color),
+                )
+              : const SizedBox(),
+          centerTitle: true,
+          title: Text(
+              (currentPage.value == 0)
+                  ? (snapshot.data != null ? snapshot.data!.totalLength : 0).formatNumber + " comments"
+                  : "Replies",
+              style: context.textTheme.bodyText2!.copyWith(fontWeight: FontWeight.bold, fontSize: 18)),
+          actions: [
+            IconButton(
+              onPressed: onClose ?? context.back,
+              icon: Icon(Icons.close, color: context.textTheme.bodyText1!.color),
+            )
+          ],
+        ),
+        Expanded(
+          child: PageView.builder(
+            onPageChanged: (index) => currentPage.value = index,
+            controller: pageController,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: 2,
+            itemBuilder: (_, index) => [
+              ListView(
+                controller: ScrollController(),
+                padding: EdgeInsets.symmetric(horizontal: onClose != null ? 16 : 0),
+                children: [
+                  for (Comment comment in snapshot.data ?? [])
+                    BuildCommentBox(
+                      comment: comment,
+                      onReplyTap: () {
+                        replyComment.value = comment;
+                        pageController.animateToPage(1,
+                            duration: const Duration(milliseconds: 200), curve: Curves.easeInOut);
+                      },
+                    )
+                ],
+              ),
+              WillPopScope(
+                  child: showReplies(
+                    context,
+                    replyComment.value,
+                    EdgeInsets.symmetric(horizontal: onClose != null ? 16 : 0),
                   ),
-                ),
-                IconButton(
-                  onPressed: onClose ?? context.back,
-                  icon: const Icon(Icons.close),
-                ),
-              ],
-            ),
+                  onWillPop: () async {
+                    await pageController.animateToPage(0,
+                        duration: const Duration(milliseconds: 200), curve: Curves.easeInOut);
+                    replyComment.value = null;
+                    return false;
+                  }),
+            ][index],
           ),
-          Expanded(
-            child: PageView.builder(
-              onPageChanged: (index) => currentPage.value = index,
-              controller: pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 2,
-              itemBuilder: (_, index) => [
-                ListView(
-                  controller: ScrollController(),
-                  children: [
-                    for (Comment comment in snapshot.data ?? [])
-                      BuildCommentBox(
-                        comment: comment,
-                        onReplyTap: () {
-                          replyComment.value = comment;
-                          pageController.animateToPage(1,
-                              duration: const Duration(milliseconds: 200), curve: Curves.easeInOut);
-                        },
-                      )
-                  ],
-                ),
-                WillPopScope(
-                    child: showReplies(context, replyComment.value),
-                    onWillPop: () async {
-                      await pageController.animateToPage(0,
-                          duration: const Duration(milliseconds: 200), curve: Curves.easeInOut);
-                      replyComment.value = null;
-                      return false;
-                    }),
-              ][index],
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
 
-Widget showReplies(BuildContext context, Comment? comment) {
+Widget showReplies(BuildContext context, Comment? comment, EdgeInsets padding) {
   final yt = YoutubeExplode();
   getReplies() async {
     if (comment == null) return null;
@@ -358,6 +353,7 @@ Widget showReplies(BuildContext context, Comment? comment) {
   return comment != null
       ? ListView(
           controller: ScrollController(),
+          padding: padding,
           children: [
             BuildCommentBox(
               comment: comment,

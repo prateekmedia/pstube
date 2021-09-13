@@ -16,9 +16,10 @@ extension ContextExtensions on BuildContext {
   Color get getAltBackgroundColor => isDark ? Colors.grey[900]! : Colors.grey[300]!;
   Color get getAlt2BackgroundColor => isDark ? Colors.grey[400]! : Colors.grey[600]!;
 
-  bool get isMobile => width < mobileWidth;
+  bool get isMobile => !isLandscape && width < mobileWidth;
 
-  get queryData => MediaQuery.of(this);
+  MediaQueryData get queryData => MediaQuery.of(this);
+  get isLandscape => queryData.orientation == Orientation.landscape;
   get width => queryData.size.width;
   get height => queryData.size.height;
 }
