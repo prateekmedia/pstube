@@ -79,19 +79,18 @@ jobs:
       - name: Build Flutter app
         run: flutter build linux
 
-      - name: Build .deb executable
+      - name: Build .deb
         run: |
           mkdir linux/debian/usr/local
           cp -R build/linux/x64/release/bundle linux/debian/usr/local/bin -f
           dpkg-deb --build --root-owner-group linux/debian
           cp linux/*.deb flutube-linux-x86_64.deb
 
-      - name: Build Tarball executable
+      - name: Build Tarball
         run: |
           cp -aR linux/debian/usr/ AppDir/
           ln -s linux/debian/usr/local/bin/flutube AppDir/flutube
           tar czf flutube-linux-x86_64.tar.gz -C AppDir/ .
-          rm AppDir/flutube.appdata.xml
 
       - name: Build AppImage
         run: |
@@ -99,7 +98,7 @@ jobs:
           cd "$(dirname "$0")"
           exec ./flutube' > AppDir/AppRun
           chmod +x AppDir/AppRun
-          ln -s linux/debian/usr/share/pixmaps/flutube.png AppDir/flutube.png
+          cp linux/debian/usr/share/pixmaps/flutube.png AppDir/flutube.png
           cp linux/debian/usr/share/applications/flutube.desktop AppDir/flutube.desktop
           curl -L https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -o appimagetool-x86_64.AppImage
           chmod +x appimagetool-x86_64.AppImage
@@ -108,7 +107,7 @@ jobs:
       - uses: svenstaro/upload-release-action@master
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./flutube-x86_64*
+          file: ./flutube-linux-x86_64*
           file_glob: true
           tag: ${{ github.ref }}${{ github.event_name == 'release' && '' || '-nightly' }}
           body: ${{ github.event_name == 'release' && '' || 'Always up to date' }}
