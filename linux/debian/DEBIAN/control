@@ -1,0 +1,9 @@
+Package: flutube
+Version: 0.1.5-1
+Section: base
+Priority: optional
+Homepage: https://github.com/prateekmedia/flutube
+Architecture: amd64
+Maintainer: Prateek SU <pankajsunal123@gmail.com>
+Description: FluTube
+ Youtube video client made using flutter

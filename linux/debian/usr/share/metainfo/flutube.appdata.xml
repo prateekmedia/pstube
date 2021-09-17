@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+	<id>flutube</id>
+	<name>FluTube</name>
+	<summary></summary>
+	<metadata_license>CC0-1.0</metadata_license>
+	<project_license>GPL-3.0-only</project_license>
+	<recommends>
+		<control>pointing</control>
+		<control>keyboard</control>
+		<control>touch</control>
+	</recommends>
+	<developer_name>Prateek SU</developer_name>
+	<url type="homepage">https://github.com/prateekmedia/flutube</url>
+	<description>
+		<p>Youtube video client made using flutter</p>
+		<h4>Features:</h4>
+		<ul>
+			<li>Beautiful user interface</li>
+			<li>Lightweight and fast</li>
+            <li>No Login Required</li>
+			<li>Keep your liked videos and comments</li>
+			<li>Playlists support</li>
+			<li>Download videos, audios and thumbnails</li>
+			<li>Ads free forever</li>
+			<li>Free libre and open source (FLOSS)</li>
+		</ul>
+	</description>
+	<screenshots>
+		<screenshot>
+			<image type="source">https://raw.githubusercontent.com/prateekmedia/flutube/assets/linux_0.jpg</image>
+			<image type="source">https://raw.githubusercontent.com/prateekmedia/flutube/assets/linux_1.jpg</image>
+		</screenshot>
+	</screenshots>
+	<launchable type="desktop-id">flutube.desktop</launchable>
+	<releases>
+		<release version="0.1.4" date="2021-09-17"/>
+	</releases>
+	<content_rating type="oars-1.0" />
+	<update_contact>pankajsunal123@gmail.com</update_contact>
+</component>
