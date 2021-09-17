@@ -7,6 +7,10 @@
 <a href="https://github.com/prateekmedia/flutube/releases"><img alt="GitHub release" src="https://img.shields.io/github/v/release/prateekmedia/flutube"/></a> <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/prateekmedia/flutube?color=blue"/></a> <a href="#build-from-source"><img alt="Build from source" src="https://img.shields.io/badge/Install Manually-git-blue"/></a>
 </p>
 
+| ![](https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_0.jpg?raw=true) | ![](https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_1.jpg?raw=true) |
+| ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| ![](https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_2.jpg?raw=true) | ![](https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_3.jpg?raw=true) |
+
 <h4>Features:</h4>
 <ul>
     <li>Beautiful user interface</li>

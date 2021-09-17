@@ -28,8 +28,10 @@
 	</description>
 	<screenshots>
 		<screenshot>
-			<image type="source">https://raw.githubusercontent.com/prateekmedia/flutube/assets/linux_0.jpg</image>
-			<image type="source">https://raw.githubusercontent.com/prateekmedia/flutube/assets/linux_1.jpg</image>
+			<image type="source">https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_0.jpg?raw=true</image>
+			<image type="source">https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_1.jpg?raw=true</image>
+			<image type="source">https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_2.jpg?raw=true</image>
+			<image type="source">https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_3.jpg?raw=true</image>
 		</screenshot>
 	</screenshots>
 	<launchable type="desktop-id">flutube.desktop</launchable>
