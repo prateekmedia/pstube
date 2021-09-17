@@ -12,6 +12,7 @@
 .*hidden*
 .metadata
 *.keystore
+linux/debian/usr/local/
 
 # IntelliJ related
 *.iml

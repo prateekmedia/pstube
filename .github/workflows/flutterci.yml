@@ -52,7 +52,7 @@ jobs:
         uses: svenstaro/upload-release-action@master
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/app/outputs/apk/release/flutube-*
+          file: build/app/outputs/apk/release/flutube-android-*
           file_glob: true
           tag: ${{ github.ref }}${{ github.event_name == 'release' && '' || '-nightly' }}
           body: ${{ github.event_name == 'release' && '' || 'Always up to date' }}
@@ -77,19 +77,20 @@ jobs:
         run: flutter config --enable-linux-desktop
 
       - name: Build Flutter app
-        run: flutter build linux
+        run: flutter build linux -v
 
       - name: Build .deb
         run: |
           mkdir linux/debian/usr/local
-          cp -R build/linux/x64/release/bundle linux/debian/usr/local/bin -f
+          cp -fr build/linux/x64/release/bundle linux/debian/usr/local/bin
           dpkg-deb --build --root-owner-group linux/debian
           cp linux/*.deb flutube-linux-x86_64.deb
 
       - name: Build Tarball
         run: |
-          cp -aR linux/debian/usr/ AppDir/
-          ln -s linux/debian/usr/local/bin/flutube AppDir/flutube
+          mkdir -p AppDir/
+          cp -r linux/debian/usr AppDir/
+          ln -sr AppDir/usr/local/bin/flutube AppDir/flutube
           tar czf flutube-linux-x86_64.tar.gz -C AppDir/ .
 
       - name: Build AppImage
@@ -98,8 +99,8 @@ jobs:
           cd "$(dirname "$0")"
           exec ./flutube' > AppDir/AppRun
           chmod +x AppDir/AppRun
-          cp linux/debian/usr/share/pixmaps/flutube.png AppDir/flutube.png
-          cp linux/debian/usr/share/applications/flutube.desktop AppDir/flutube.desktop
+          ln -sr AppDir/usr/share/pixmaps/flutube.png AppDir/flutube.png
+          cp AppDir/usr/share/applications/flutube.desktop AppDir/flutube.desktop
           curl -L https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -o appimagetool-x86_64.AppImage
           chmod +x appimagetool-x86_64.AppImage
           ARCH=x86_64 ./appimagetool-x86_64.AppImage AppDir/ flutube-linux-x86_64.AppImage
