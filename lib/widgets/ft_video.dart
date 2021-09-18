@@ -11,7 +11,7 @@ import '../utils/utils.dart';
 class FTVideo extends StatelessWidget {
   final String? videoUrl;
   final Video? videoData;
-  final bool isOnChannelScreen;
+  final bool loadData;
   final bool isRow;
 
   const FTVideo({
@@ -19,7 +19,7 @@ class FTVideo extends StatelessWidget {
     this.videoUrl,
     this.videoData,
     this.isRow = false,
-    this.isOnChannelScreen = false,
+    this.loadData = false,
   }) : super(key: key);
 
   @override
@@ -39,7 +39,7 @@ class FTVideo extends StatelessWidget {
                     onTap: video != null
                         ? () => context.pushPage(VideoScreen(
                               video: video,
-                              loadData: true,
+                              loadData: loadData,
                             ))
                         : null,
                     child: Row(children: [
@@ -107,7 +107,7 @@ class FTVideo extends StatelessWidget {
                               ],
                             ),
                             const SizedBox(height: 6),
-                            if (!isOnChannelScreen)
+                            if (!loadData)
                               Row(
                                 children: [
                                   Flexible(
@@ -155,10 +155,7 @@ class FTVideo extends StatelessWidget {
                             aspectRatio: 16 / 9,
                             child: video != null
                                 ? GestureDetector(
-                                    onTap: () => context.pushPage(VideoScreen(
-                                      video: video,
-                                      loadData: true,
-                                    )),
+                                    onTap: () => context.pushPage(VideoScreen(video: video, loadData: loadData)),
                                     child: Container(
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
@@ -214,7 +211,7 @@ class FTVideo extends StatelessWidget {
                                         style: const TextStyle(fontSize: 15),
                                       )
                                     : Container(),
-                                if (!isOnChannelScreen)
+                                if (!loadData)
                                   GestureDetector(
                                     onTap: (video != null)
                                         ? () => context.pushPage(ChannelScreen(id: video.channelId.value))

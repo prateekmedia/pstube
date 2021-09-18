@@ -89,6 +89,7 @@ class SearchResult extends HookWidget {
                 : FTVideo(
                     videoData: _currentPage.value![idx],
                     isRow: !context.isMobile,
+                    loadData: true,
                   ),
           )
         : getCircularProgressIndicator();

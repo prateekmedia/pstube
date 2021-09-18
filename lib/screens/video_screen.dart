@@ -28,9 +28,10 @@ class VideoScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final yt = YoutubeExplode();
-    final videoSnapshot =
-        loadData || videoId != null ? useFuture(useMemoized(() => yt.videos.get(videoId ?? video!.id.value))) : null;
-    final Video? videoData = videoSnapshot != null && videoSnapshot.hasData ? videoSnapshot.data : video;
+    final videoSnapshot = loadData || videoId != null
+        ? useFuture(useMemoized(() => yt.videos.get(videoId ?? video!.id.value).whenComplete(() => yt.close())))
+        : null;
+    final Video? videoData = videoSnapshot != null ? videoSnapshot.data : video;
     final replyComment = useState<Comment?>(null);
     final currentIndex = useState<int>(0);
     final commentSideWidget = useState<Widget?>(null);

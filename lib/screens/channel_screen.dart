@@ -50,7 +50,7 @@ class ChannelScreen extends HookWidget {
                           primary: false,
                           itemBuilder: (ctx, idx) => FTVideo(
                             videoData: snapshot.data![idx],
-                            isOnChannelScreen: true,
+                            loadData: true,
                             isRow: true,
                           ),
                           itemCount: snapshot.data!.length,
