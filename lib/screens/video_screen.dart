@@ -30,7 +30,7 @@ class VideoScreen extends HookConsumerWidget {
     final yt = YoutubeExplode();
     final videoSnapshot =
         loadData || videoId != null ? useFuture(useMemoized(() => yt.videos.get(videoId ?? video!.id.value))) : null;
-    final Video? videoData = videoSnapshot != null && videoSnapshot.data != null ? videoSnapshot.data : video;
+    final Video? videoData = videoSnapshot != null && videoSnapshot.hasData ? videoSnapshot.data : video;
     final replyComment = useState<Comment?>(null);
     final currentIndex = useState<int>(0);
     final commentSideWidget = useState<Widget?>(null);
@@ -214,9 +214,12 @@ class VideoScreen extends HookConsumerWidget {
                                                 ? () => showPopover(
                                                       context: context,
                                                       isScrollable: false,
+                                                      padding: EdgeInsets.zero,
                                                       builder: (ctx) {
                                                         return CommentsWidget(
-                                                            snapshot: commentsSnapshot, replyComment: replyComment);
+                                                          snapshot: commentsSnapshot,
+                                                          replyComment: replyComment,
+                                                        );
                                                       },
                                                     ).whenComplete(() => currentIndex.value = 0)
                                                 : () {
@@ -308,7 +311,7 @@ class CommentsWidget extends HookWidget {
             itemBuilder: (_, index) => [
               ListView(
                 controller: ScrollController(),
-                padding: EdgeInsets.symmetric(horizontal: onClose != null ? 16 : 0),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 children: [
                   for (Comment comment in snapshot.data ?? [])
                     BuildCommentBox(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutube/models/models.dart';
 import 'package:flutube/screens/screens.dart';
 import 'package:flutube/utils/utils.dart';
@@ -25,6 +26,8 @@ class CommentBox extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
+    final yt = YoutubeExplode();
+    final channelData = useFuture(useMemoized(() => yt.channels.get(comment.channelId), [comment.channelId]));
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Row(
@@ -34,7 +37,7 @@ class CommentBox extends HookConsumerWidget {
               onTap: () {
                 context.pushPage(ChannelScreen(id: comment.channelId.toString()));
               },
-              child: ChannelLogo(channelId: comment.channelId.toString(), size: 40)),
+              child: ChannelLogo(channel: channelData, size: 40)),
           Flexible(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10),
