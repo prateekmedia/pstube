@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutube/screens/screens.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:flutube/utils/utils.dart';
 import 'package:flutube/providers/providers.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -13,6 +18,19 @@ class SettingsScreen extends ConsumerStatefulWidget {
 }
 
 class _SettingsScreenState extends ConsumerState<SettingsScreen> with AutomaticKeepAliveClientMixin {
+  late String version = '';
+
+  @override
+  void initState() {
+    super.initState();
+    http.get(Uri.parse('https://api.github.com/repos/prateekmedia/flutube/releases')).then((http.Response response) {
+      setState(() {
+        List<dynamic> json = jsonDecode(response.body);
+        version = json.first['tag_name'];
+      });
+    }).catchError((exception) {});
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -20,6 +38,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with AutomaticK
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       children: [
+        ListTile(
+          title: const Text("About"),
+          onTap: () => context.pushPage(const AboutScreen()),
+          subtitle: const Text('Info about the app & the developers'),
+        ),
         ListTile(
           title: const Text("Download folder"),
           subtitle: Text(path),
@@ -38,10 +61,20 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with AutomaticK
           value: ref.watch(thumbnailDownloaderProvider),
           onChanged: (bool value) => ref.read(thumbnailDownloaderProvider.notifier).value = value,
         ),
-        const ListTile(
-          title: Text("About"),
-          subtitle: Text('Information about the app & the developers'),
-        ),
+        FutureBuilder<PackageInfo>(
+            future: PackageInfo.fromPlatform(),
+            builder: (context, snapshot) {
+              bool hasData = snapshot.hasData && snapshot.data != null;
+              bool? isLatest = hasData && version.isNotEmpty ? version == snapshot.data!.version : null;
+              return ListTile(
+                title: const Text("Update"),
+                onTap:
+                    hasData && isLatest != null ? (isLatest ? null : (myApp.url + '/releases/latest').launchIt) : null,
+                subtitle: hasData && isLatest != null
+                    ? Text(isLatest ? 'You are using the latest version' : '$version is available')
+                    : const LinearProgressIndicator(),
+              );
+            }),
       ],
     );
   }

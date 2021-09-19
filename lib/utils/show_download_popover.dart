@@ -13,7 +13,8 @@ import 'utils.dart';
 Future showDownloadPopup(BuildContext context, Video video) {
   return showPopover(
     context: context,
-    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+    padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 12),
+    innerPadding: EdgeInsets.zero,
     builder: (ctx) => DownloadsWidget(video: video),
   );
 }

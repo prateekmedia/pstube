@@ -14,6 +14,15 @@ extension ContextExtensions on BuildContext {
 
   pushPage(Widget page) => Navigator.of(this).push(MaterialPageRoute(builder: (ctx) => page));
 
+  Widget get backLeading => IconButton(
+        icon: const Icon(Icons.chevron_left),
+        splashColor: Colors.transparent,
+        focusColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        hoverColor: Colors.transparent,
+        onPressed: back,
+      );
+
   Color get getBackgroundColor => isDark ? Colors.grey[800]! : Colors.grey[200]!;
   Color get getAltBackgroundColor => isDark ? Colors.grey[900]! : Colors.grey[300]!;
   Color get getAlt2BackgroundColor => isDark ? Colors.grey[400]! : Colors.grey[600]!;

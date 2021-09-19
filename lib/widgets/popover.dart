@@ -6,6 +6,7 @@ Future<T?> showPopover<T>({
   required Widget Function(BuildContext) builder,
   bool isScrollControlled = true,
   EdgeInsets? padding = const EdgeInsets.symmetric(horizontal: 8),
+  EdgeInsets? innerPadding = const EdgeInsets.symmetric(horizontal: 18),
   bool isScrollable = true,
 }) {
   return showModalBottomSheet<T>(
@@ -15,6 +16,7 @@ Future<T?> showPopover<T>({
     constraints: const BoxConstraints(maxWidth: 600),
     builder: (ctx) => Popover(
       isScrollable: isScrollable,
+      innerPadding: innerPadding,
       padding: padding,
       child: builder(ctx),
     ),
@@ -32,6 +34,7 @@ Future<T?> showPopoverWB<T>({
   void Function()? onCancel,
   String? Function(String?)? validator,
   EdgeInsets padding = const EdgeInsets.symmetric(horizontal: 8),
+  EdgeInsets innerPadding = const EdgeInsets.symmetric(horizontal: 18),
   String cancelText = "CANCEL",
   String confirmText = "OK",
   bool isScrollControlled = true,
@@ -42,6 +45,7 @@ Future<T?> showPopoverWB<T>({
   return showPopover<T>(
     context: context,
     padding: padding,
+    innerPadding: innerPadding,
     isScrollControlled: isScrollControlled,
     builder: (ctx) => Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -107,11 +111,13 @@ class Popover extends StatelessWidget {
     Key? key,
     required this.child,
     required this.padding,
+    required this.innerPadding,
     this.isScrollable = true,
   }) : super(key: key);
 
   final Widget child;
   final EdgeInsets? padding;
+  final EdgeInsets? innerPadding;
   final bool isScrollable;
 
   @override
@@ -129,17 +135,12 @@ class Popover extends StatelessWidget {
             padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Container(
               margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              padding: padding == EdgeInsets.zero ? padding : const EdgeInsets.symmetric(horizontal: 18),
+              padding: innerPadding,
               decoration: BoxDecoration(
                 color: theme.cardColor,
                 borderRadius: const BorderRadius.all(Radius.circular(16.0)),
               ),
-              child: isScrollable
-                  ? SingleChildScrollView(
-                      padding: padding,
-                      child: child,
-                    )
-                  : child,
+              child: isScrollable ? SingleChildScrollView(padding: padding, child: child) : child,
             ),
           ),
         ),

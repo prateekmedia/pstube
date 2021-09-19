@@ -6,11 +6,13 @@ extension WidgetExtension on Widget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [this],
       );
-  center() => Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [this],
-        ),
-      );
+  center([bool center = true]) => center
+      ? Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [this],
+          ),
+        )
+      : this;
 }

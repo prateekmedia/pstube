@@ -25,12 +25,10 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> with AutomaticK
       children: [
         for (var entry in playlist.entries)
           GestureDetector(
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => PlaylistSubScreen(
-                  currentPlaylist: entry,
-                  playlistP: playlistP,
-                ),
+            onTap: () => context.pushPage(
+              PlaylistSubScreen(
+                currentPlaylist: entry,
+                playlistP: playlistP,
               ),
             ),
             child: Padding(
@@ -101,11 +99,7 @@ class PlaylistSubScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(currentPlaylist.key),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.chevron_left),
-          onPressed: context.back,
-        ),
+        leading: context.backLeading,
       ),
       body: FtBody(
         child: currentPlaylist.value.isNotEmpty

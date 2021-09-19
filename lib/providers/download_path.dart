@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutube/utils/shared_prefs.dart';
+import 'package:flutube/utils/utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -25,8 +26,8 @@ class DownloadPathNotifier extends ChangeNotifier {
   init() async {
     _path = MyPrefs().prefs.getString('downloadPath') ??
         (Platform.isAndroid
-            ? "/storage/emulated/0/FluTube/"
-            : (await getDownloadsDirectory())!.path.replaceAll('Downloads', 'FluTube/'));
+            ? "/storage/emulated/0/${myApp.name}/"
+            : (await getDownloadsDirectory())!.path.replaceAll('Downloads', '${myApp.name}/'));
     if (!await Directory(path).exists()) await Directory(path).create();
   }
 

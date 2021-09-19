@@ -7,9 +7,21 @@
 <a href="https://github.com/prateekmedia/flutube/releases"><img alt="GitHub release" src="https://img.shields.io/github/v/release/prateekmedia/flutube"/></a> <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/prateekmedia/flutube?color=blue"/></a> <a href="#build-from-source"><img alt="Build from source" src="https://img.shields.io/badge/Install Manually-git-blue"/></a>
 </p>
 
-| ![](https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_0.jpg?raw=true) | ![](https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_1.jpg?raw=true) |
-| ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| ![](https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_2.jpg?raw=true) | ![](https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_3.jpg?raw=true) |
+<table>
+    <tr>
+        <td colspan=2>
+            <img src="https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_2.jpg?raw=true"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+        <img src="https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_1.jpg?raw=true"/>
+        </td>
+        <td>
+        <img src="https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_3.jpg?raw=true"/>
+        </td>
+    </tr>
+</table>
 
 <h4>Features:</h4>
 <ul>

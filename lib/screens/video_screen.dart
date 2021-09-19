@@ -232,7 +232,7 @@ class VideoScreen extends HookConsumerWidget {
                                                 ? () => showPopover(
                                                       context: context,
                                                       isScrollable: false,
-                                                      padding: EdgeInsets.zero,
+                                                      innerPadding: EdgeInsets.zero,
                                                       builder: (ctx) {
                                                         return CommentsWidget(
                                                           snapshot: commentsSnapshot,

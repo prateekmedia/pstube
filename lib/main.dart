@@ -40,7 +40,7 @@ class MyApp extends HookConsumerWidget {
     ref.read(downloadPathProvider).init();
     final botToastBuilder = BotToastInit();
     return MaterialApp(
-      title: 'FluTube',
+      title: myApp.name,
       builder: (context, child) {
         // child = myBuilder(context,child);  //do something
         child = botToastBuilder(context, child);
@@ -108,7 +108,7 @@ class MyHomePage extends HookWidget {
               ),
               const SizedBox(width: 15),
             ],
-            const Text('FluTube'),
+            Text(myApp.name),
           ],
         ),
         actions: [
@@ -144,6 +144,7 @@ class MyHomePage extends HookWidget {
                     selectedIcon: Icon(item.value[1]),
                   ),
               ],
+              minExtendedWidth: 200,
               extended: extendedRail.value,
               backgroundColor: context.getAltBackgroundColor,
               selectedIndex: _currentIndex.value,
