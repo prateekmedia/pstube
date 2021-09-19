@@ -1,17 +1,26 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:flutube/utils/utils.dart';
 import 'package:flutube/widgets/widgets.dart';
 import 'package:flutube/providers/providers.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-class PlaylistScreen extends ConsumerWidget {
+class PlaylistScreen extends ConsumerStatefulWidget {
   const PlaylistScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(context, ref) {
+  ConsumerState<PlaylistScreen> createState() => _PlaylistScreenState();
+}
+
+class _PlaylistScreenState extends ConsumerState<PlaylistScreen> with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(context) {
+    super.build(context);
     final playlist = ref.watch(playlistProvider);
     final playlistP = ref.watch(playlistProvider.notifier);
+    final yt = YoutubeExplode();
     return ListView(
       children: [
         for (var entry in playlist.entries)
@@ -31,13 +40,25 @@ class PlaylistScreen extends ConsumerWidget {
                   Stack(
                     children: [
                       Container(
-                        height: 80,
+                        height: 81,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           color: Colors.grey,
                         ),
-                        width: 141,
+                        width: 144,
                         margin: const EdgeInsets.symmetric(horizontal: 8),
+                        child: entry.value.isNotEmpty
+                            ? FutureBuilder<Video>(
+                                future: yt.videos.get(entry.value.first).whenComplete(() => yt.close()),
+                                builder: (context, snapshot) {
+                                  return snapshot.hasData
+                                      ? CachedNetworkImage(
+                                          imageUrl: snapshot.data!.thumbnails.mediumResUrl,
+                                          fit: BoxFit.fitWidth,
+                                        )
+                                      : const SizedBox();
+                                })
+                            : null,
                       ),
                       Positioned.fill(
                         child: Align(
@@ -50,7 +71,12 @@ class PlaylistScreen extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  Text(entry.key),
+                  Expanded(child: Text(entry.key)),
+                  IconButton(
+                      onPressed: () {
+                        playlistP.removePlaylist(entry.key);
+                      },
+                      icon: const Icon(Icons.delete_forever_outlined)),
                 ],
               ),
             ),
@@ -58,6 +84,9 @@ class PlaylistScreen extends ConsumerWidget {
       ],
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class PlaylistSubScreen extends StatelessWidget {
@@ -79,11 +108,10 @@ class PlaylistSubScreen extends StatelessWidget {
         ),
       ),
       body: FtBody(
-        expanded: false,
         child: currentPlaylist.value.isNotEmpty
             ? ListView(
                 children: [
-                  for (var videoUrl in currentPlaylist.value) FTVideo(videoUrl: videoUrl),
+                  for (var videoUrl in currentPlaylist.value) FTVideo(isRow: !context.isMobile, videoUrl: videoUrl),
                 ],
               )
             : const Center(child: Text("No videos found!")),

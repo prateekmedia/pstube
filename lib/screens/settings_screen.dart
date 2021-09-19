@@ -20,39 +20,27 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with AutomaticK
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       children: [
-        const Text("Download path"),
-        Row(
-          children: [
-            Expanded(
-              child: GestureDetector(
-                onTap: () async => ref.read(downloadPathProvider).path =
-                    await FilePicker.platform.getDirectoryPath(dialogTitle: 'Choose Download Folder'),
-                child: Container(
-                  margin: const EdgeInsets.symmetric(vertical: 6),
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-                  decoration: BoxDecoration(
-                    color: context.getAltBackgroundColor,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: context.textTheme.bodyText1!.color!.withOpacity(0.3)),
-                  ),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: SelectableText(path),
-                  ),
-                ),
-              ),
-            ),
-          ],
+        ListTile(
+          title: const Text("Download folder"),
+          subtitle: Text(path),
+          onTap: () async => ref.read(downloadPathProvider).path =
+              await FilePicker.platform.getDirectoryPath(dialogTitle: 'Choose Download Folder'),
         ),
         SwitchListTile(
           title: const Text('Dark mode'),
+          subtitle: const Text('Cause light attract bugs'),
           value: context.isDark,
           onChanged: (bool value) => ref.read(themeTypeProvider.notifier).themeType = value ? 2 : 1,
         ),
         SwitchListTile(
           title: const Text('Thumbnail downloader'),
+          subtitle: const Text('Show thumbnail downloader in download popup'),
           value: ref.watch(thumbnailDownloaderProvider),
           onChanged: (bool value) => ref.read(thumbnailDownloaderProvider.notifier).value = value,
+        ),
+        const ListTile(
+          title: Text("About"),
+          subtitle: Text('Information about the app & the developers'),
         ),
       ],
     );

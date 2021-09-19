@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutube/utils/constants.dart';
 
@@ -16,7 +18,7 @@ extension ContextExtensions on BuildContext {
   Color get getAltBackgroundColor => isDark ? Colors.grey[900]! : Colors.grey[300]!;
   Color get getAlt2BackgroundColor => isDark ? Colors.grey[400]! : Colors.grey[600]!;
 
-  bool get isMobile => !isLandscape && width < mobileWidth;
+  bool get isMobile => (Platform.isAndroid && !isLandscape) || width < mobileWidth;
 
   MediaQueryData get queryData => MediaQuery.of(this);
   get isLandscape => queryData.orientation == Orientation.landscape;

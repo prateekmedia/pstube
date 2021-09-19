@@ -23,17 +23,18 @@ Future<T?> showPopover<T>({
 
 Future<T?> showPopoverWB<T>({
   required BuildContext context,
+  GlobalKey<FormState>? key,
   String? title,
   Widget Function(BuildContext)? builder,
-  required void Function() onConfirm,
+  required void Function()? onConfirm,
   TextEditingController? controller,
+  String hint = "",
   void Function()? onCancel,
-  RegExp? customValidator,
   String? Function(String?)? validator,
-  bool isScrollControlled = true,
-  EdgeInsets? padding,
+  EdgeInsets padding = const EdgeInsets.symmetric(horizontal: 8),
+  String cancelText = "CANCEL",
   String confirmText = "OK",
-  GlobalKey<FormState>? key,
+  bool isScrollControlled = true,
   bool isScrollable = true,
 }) {
   assert(title != null || builder != null);
@@ -54,27 +55,21 @@ Future<T?> showPopoverWB<T>({
           ),
         if (builder != null) builder(ctx),
         if (controller != null)
-          Form(
-            key: _formKey,
-            child: TextFormField(
-              autofocus: true,
-              controller: controller,
-              onFieldSubmitted: (val) {
-                if (_formKey.currentState!.validate()) {
-                  if (_formKey.currentState!.validate()) {
-                    onConfirm();
-                  }
-                }
-              },
-              style: context.textTheme.bodyText1,
-              decoration: InputDecoration(
-                hintStyle:
-                    context.textTheme.bodyText1!.copyWith(color: context.isDark ? Colors.grey[300] : Colors.grey[800]),
+          Padding(
+            padding: padding,
+            child: Form(
+              key: _formKey,
+              child: TextFormField(
+                autofocus: true,
+                controller: controller,
+                onFieldSubmitted: (val) {
+                  onConfirm?.call();
+                },
+                style: context.textTheme.bodyText1,
+                decoration: InputDecoration(
+                  hintText: hint,
+                ),
               ),
-              validator: validator,
-              inputFormatters: const [
-                // ValidatorInputFormatter(editingValidator: NameValidator()),
-              ],
             ),
           ),
         const SizedBox(height: 20),
@@ -86,7 +81,7 @@ Future<T?> showPopoverWB<T>({
                 primary: context.textTheme.bodyText2!.color,
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               ),
-              child: const Text("CANCEL"),
+              child: Text(cancelText),
               onPressed: () {
                 context.back();
                 if (onCancel != null) onCancel();
@@ -98,13 +93,7 @@ Future<T?> showPopoverWB<T>({
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 ),
                 child: Text(confirmText),
-                onPressed: controller != null
-                    ? () {
-                        if (_formKey.currentState!.validate()) {
-                          onConfirm();
-                        }
-                      }
-                    : onConfirm)
+                onPressed: onConfirm)
           ],
         ),
         const SizedBox(height: 10),
