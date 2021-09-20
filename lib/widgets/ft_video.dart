@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutube/screens/screens.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
-import 'package:shimmer/shimmer.dart';
 
 import 'widgets.dart';
 import '../utils/utils.dart';
@@ -28,7 +27,8 @@ class FTVideo extends StatelessWidget {
     Future<Video?> getVideo() => yt.videos.get(videoUrl!);
 
     return FutureBuilder<Video?>(
-        future: videoUrl != null ? getVideo().whenComplete(() => yt.close()) : null,
+        future:
+            videoUrl != null ? getVideo().whenComplete(() => yt.close()) : null,
         builder: (context, snapshot) {
           final Video? video = snapshot.data ?? videoData;
           return Container(
@@ -47,7 +47,8 @@ class FTVideo extends StatelessWidget {
                         children: [
                           Container(
                             height: 90,
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15)),
                             padding: const EdgeInsets.all(5),
                             child: AspectRatio(
                               aspectRatio: 16 / 9,
@@ -56,25 +57,26 @@ class FTVideo extends StatelessWidget {
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
                                           fit: BoxFit.fitWidth,
-                                          image: CachedNetworkImageProvider(video.thumbnails.lowResUrl),
+                                          image: CachedNetworkImageProvider(
+                                              video.thumbnails.lowResUrl),
                                         ),
                                       ),
                                     )
-                                  : Shimmer.fromColors(
-                                      baseColor: context.getAltBackgroundColor,
-                                      highlightColor: context.getBackgroundColor,
-                                      child: Row(
-                                        children: [
-                                          Flexible(
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.black,
-                                                borderRadius: BorderRadius.circular(10),
-                                              ),
+                                  : Row(
+                                      children: [
+                                        Flexible(
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(colors: [
+                                                context.getAltBackgroundColor,
+                                                context.getBackgroundColor
+                                              ]),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
                                             ),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
                             ),
                           ),
@@ -83,7 +85,9 @@ class FTVideo extends StatelessWidget {
                               child: Align(
                                 alignment: const Alignment(0.90, 0.90),
                                 child: IconWithLabel(
-                                    label: (video.duration ?? const Duration(seconds: 0)).format(),
+                                    label: (video.duration ??
+                                            const Duration(seconds: 0))
+                                        .format(),
                                     secColor: SecColor.dark),
                               ),
                             ),
@@ -113,10 +117,14 @@ class FTVideo extends StatelessWidget {
                                   Flexible(
                                     child: GestureDetector(
                                       onTap: (video != null)
-                                          ? () => context.pushPage(ChannelScreen(id: video.channelId.value))
+                                          ? () => context.pushPage(
+                                              ChannelScreen(
+                                                  id: video.channelId.value))
                                           : null,
                                       child: IconWithLabel(
-                                        label: video != null ? video.author : "Loading...",
+                                        label: video != null
+                                            ? video.author
+                                            : "Loading...",
                                         secColor: SecColor.dark,
                                       ),
                                     ),
@@ -127,13 +135,19 @@ class FTVideo extends StatelessWidget {
                               children: [
                                 Flexible(
                                   child: IconWithLabel(
-                                    label: (video != null ? video.engagement.viewCount.formatNumber : "0") + " views",
+                                    label: (video != null
+                                            ? video.engagement.viewCount
+                                                .formatNumber
+                                            : "0") +
+                                        " views",
                                   ),
                                 ),
                                 Flexible(
                                   child: IconWithLabel(
-                                    label:
-                                        video != null ? timeago.format(video.uploadDate ?? DateTime.now()) : "just now",
+                                    label: video != null
+                                        ? timeago.format(
+                                            video.uploadDate ?? DateTime.now())
+                                        : "just now",
                                   ),
                                 ),
                               ],
@@ -142,7 +156,9 @@ class FTVideo extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                        onPressed: video != null ? () => showDownloadPopup(context, video) : null,
+                        onPressed: video != null
+                            ? () => showDownloadPopup(context, video)
+                            : null,
                         icon: const Icon(Icons.save_alt_outlined),
                       )
                     ]),
@@ -155,7 +171,8 @@ class FTVideo extends StatelessWidget {
                             aspectRatio: 16 / 9,
                             child: video != null
                                 ? GestureDetector(
-                                    onTap: () => context.pushPage(VideoScreen(video: video, loadData: loadData)),
+                                    onTap: () => context.pushPage(VideoScreen(
+                                        video: video, loadData: loadData)),
                                     child: Container(
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
@@ -168,21 +185,21 @@ class FTVideo extends StatelessWidget {
                                       ),
                                     ),
                                   )
-                                : Shimmer.fromColors(
-                                    baseColor: context.getAltBackgroundColor,
-                                    highlightColor: context.getBackgroundColor,
-                                    child: Row(
-                                      children: [
-                                        Flexible(
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.black,
-                                              borderRadius: BorderRadius.circular(10),
-                                            ),
+                                : Row(
+                                    children: [
+                                      Flexible(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(colors: [
+                                              context.getAltBackgroundColor,
+                                              context.getBackgroundColor
+                                            ]),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                           ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                           ),
                           if (video != null)
@@ -190,7 +207,9 @@ class FTVideo extends StatelessWidget {
                               child: Align(
                                 alignment: const Alignment(0.98, 0.94),
                                 child: IconWithLabel(
-                                    label: (video.duration ?? const Duration(seconds: 0)).format(),
+                                    label: (video.duration ??
+                                            const Duration(seconds: 0))
+                                        .format(),
                                     secColor: SecColor.dark),
                               ),
                             )
@@ -214,11 +233,15 @@ class FTVideo extends StatelessWidget {
                                 if (!loadData)
                                   GestureDetector(
                                     onTap: (video != null)
-                                        ? () => context.pushPage(ChannelScreen(id: video.channelId.value))
+                                        ? () => context.pushPage(ChannelScreen(
+                                            id: video.channelId.value))
                                         : null,
                                     child: IconWithLabel(
-                                      label: video != null ? video.author : "Loading...",
-                                      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 2),
+                                      label: video != null
+                                          ? video.author
+                                          : "Loading...",
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 0, vertical: 2),
                                       secColor: SecColor.dark,
                                     ),
                                   ),
@@ -226,7 +249,9 @@ class FTVideo extends StatelessWidget {
                             ),
                           ),
                           IconButton(
-                            onPressed: video != null ? () => showDownloadPopup(context, video) : null,
+                            onPressed: video != null
+                                ? () => showDownloadPopup(context, video)
+                                : null,
                             icon: const Icon(Icons.save_alt_outlined),
                           )
                         ],
@@ -235,10 +260,16 @@ class FTVideo extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           IconWithLabel(
-                            label: (video != null ? video.engagement.viewCount.formatNumber : "0") + " views",
+                            label: (video != null
+                                    ? video.engagement.viewCount.formatNumber
+                                    : "0") +
+                                " views",
                           ),
                           IconWithLabel(
-                            label: video != null ? timeago.format(video.uploadDate ?? DateTime.now()) : "just now",
+                            label: video != null
+                                ? timeago
+                                    .format(video.uploadDate ?? DateTime.now())
+                                : "just now",
                           ),
                         ],
                       )
