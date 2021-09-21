@@ -13,6 +13,7 @@ class FTVideo extends StatelessWidget {
   final bool loadData;
   final bool isRow;
   final bool showChannel;
+  final List<Widget> actions;
 
   const FTVideo({
     Key? key,
@@ -21,6 +22,7 @@ class FTVideo extends StatelessWidget {
     this.isRow = false,
     this.showChannel = true,
     this.loadData = false,
+    this.actions = const [],
   }) : super(key: key);
 
   @override
@@ -142,7 +144,8 @@ class FTVideo extends StatelessWidget {
                       IconButton(
                         onPressed: video != null ? () => showDownloadPopup(context, video) : null,
                         icon: const Icon(Icons.save_alt_outlined),
-                      )
+                      ),
+                      ...actions,
                     ]),
                   )
                 : Column(
@@ -223,7 +226,8 @@ class FTVideo extends StatelessWidget {
                           IconButton(
                             onPressed: video != null ? () => showDownloadPopup(context, video) : null,
                             icon: const Icon(Icons.save_alt_outlined),
-                          )
+                          ),
+                          ...actions,
                         ],
                       ),
                       Row(

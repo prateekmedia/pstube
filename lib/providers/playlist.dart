@@ -48,9 +48,8 @@ class PlaylistNotifier extends StateNotifier<Map<String, List<String>>> {
           .firstWhere((entry) => entry.key == playlist && entry.value.contains(videoUrl))
           .value
           .remove(videoUrl);
-
-      refresh();
     }
+    refresh();
   }
 
   void refresh() {

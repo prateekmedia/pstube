@@ -154,22 +154,16 @@ class VideoScreen extends HookConsumerWidget {
                                                       commentSideWidget.value = null;
                                                       downloadsSideWidget.value = Column(
                                                         children: [
-                                                          Row(
-                                                            children: [
-                                                              const SizedBox(width: 15),
-                                                              Expanded(
-                                                                child: Padding(
-                                                                  padding: const EdgeInsets.symmetric(
-                                                                    horizontal: 4,
-                                                                    vertical: 16,
-                                                                  ),
-                                                                  child: Text(
-                                                                    'Download links',
-                                                                    style: context.textTheme.bodyText2!.copyWith(
-                                                                        fontWeight: FontWeight.bold, fontSize: 18),
-                                                                  ),
-                                                                ),
-                                                              ),
+                                                          AppBar(
+                                                            backgroundColor: context.getAltBackgroundColor,
+                                                            leading: const SizedBox(),
+                                                            centerTitle: true,
+                                                            title: Text(
+                                                              'Download links',
+                                                              style: context.textTheme.bodyText2!
+                                                                  .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
+                                                            ),
+                                                            actions: [
                                                               IconButton(
                                                                   icon: const Icon(Icons.close),
                                                                   onPressed: () {
@@ -180,6 +174,7 @@ class VideoScreen extends HookConsumerWidget {
                                                           ),
                                                           Expanded(
                                                             child: SingleChildScrollView(
+                                                              controller: ScrollController(),
                                                               padding: const EdgeInsets.symmetric(
                                                                   horizontal: 15, vertical: 12),
                                                               child: DownloadsWidget(
