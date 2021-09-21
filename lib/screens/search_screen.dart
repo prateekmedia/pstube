@@ -59,13 +59,14 @@ class SearchResult extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isMounted = useIsMounted();
     var yt = YoutubeExplode();
     final _currentPage = useState<SearchList?>(null);
     void loadVideos() async => _currentPage.value = await yt.search.getVideos(query).whenComplete(() => yt.close());
     final controller = useScrollController();
 
     void _getMoreData() async {
-      if (controller.position.pixels == controller.position.maxScrollExtent) {
+      if (isMounted() && controller.position.pixels == controller.position.maxScrollExtent) {
         final page = _currentPage.value != null ? await (_currentPage.value)?.nextPage() : null;
         if (page == null) return;
 

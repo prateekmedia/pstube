@@ -46,11 +46,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with AutomaticK
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       children: [
         ListTile(
-          title: const Text("About"),
-          onTap: () => context.pushPage(const AboutScreen()),
-          subtitle: const Text('Info about the app & the developers'),
-        ),
-        ListTile(
           title: const Text("Download folder"),
           subtitle: Text(path),
           onTap: () async => ref.read(downloadPathProvider).path =
@@ -82,6 +77,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with AutomaticK
                     : const LinearProgressIndicator(),
               );
             }),
+        ListTile(
+          title: Text("About ${myApp.name}"),
+          onTap: () => context.pushPage(const AboutScreen()),
+          subtitle: const Text('Info about the app & the developers'),
+        ),
       ],
     );
   }
