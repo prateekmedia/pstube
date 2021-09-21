@@ -47,7 +47,5 @@ class LikedCommentAdapter extends TypeAdapter<LikedComment> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is LikedCommentAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+      other is LikedCommentAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }
