@@ -520,7 +520,7 @@ packages:
     description:
       path: "."
       ref: no_system
-      resolved-ref: "810dff2b6a624ee96118a1c8a6757ce64a1c8c2c"
+      resolved-ref: e404897e55f7b595ac8af1ee3e2eceb74d790de9
       url: "https://github.com/miDeb/open_file.git"
     source: git
     version: "3.2.1"

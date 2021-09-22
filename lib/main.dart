@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutube/controller/internet_connectivity.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -74,6 +75,7 @@ class MyHomePage extends HookWidget {
   Widget build(BuildContext context) {
     final _currentIndex = useState<int>(0);
     final extendedRail = useState<bool>(false);
+    final _addDownloadController = TextEditingController();
 
     final mainScreens = [
       const HomeScreen(),
@@ -148,8 +150,7 @@ class MyHomePage extends HookWidget {
               extended: extendedRail.value,
               backgroundColor: context.getAltBackgroundColor,
               selectedIndex: _currentIndex.value,
-              onDestinationSelected: (index) => _controller.animateToPage(index,
-                  duration: const Duration(milliseconds: 300), curve: Curves.fastOutSlowIn),
+              onDestinationSelected: (index) => _controller.jumpToPage(index),
             ),
           Flexible(
             child: FtBody(
@@ -163,6 +164,33 @@ class MyHomePage extends HookWidget {
           ),
         ],
       ),
+      floatingActionButton: _currentIndex.value == 0
+          ? FloatingActionButton(
+              onPressed: () async {
+                if (_addDownloadController.text.isEmpty) {
+                  var clipboard = await Clipboard.getData(Clipboard.kTextPlain);
+                  var youtubeRegEx = RegExp(
+                      r"^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$");
+                  if (clipboard != null && clipboard.text != null && youtubeRegEx.hasMatch(clipboard.text!)) {
+                    _addDownloadController.text = clipboard.text!;
+                  }
+                }
+                showPopoverWB(
+                  context: context,
+                  onConfirm: () {
+                    context.back();
+                    if (_addDownloadController.value.text.isNotEmpty) {
+                      showDownloadPopup(context, videoUrl: _addDownloadController.text);
+                    }
+                  },
+                  hint: "https://youtube.com/watch?v=***********",
+                  title: "Download from video url",
+                  controller: _addDownloadController,
+                );
+              },
+              child: const Icon(Icons.add),
+            )
+          : null,
       bottomNavigationBar: Visibility(
         visible: context.isMobile,
         child: Container(
@@ -184,8 +212,7 @@ class MyHomePage extends HookWidget {
                 ),
             ],
             currentIndex: _currentIndex.value,
-            onTap: (index) => _controller.animateToPage(index,
-                duration: const Duration(milliseconds: 300), curve: Curves.fastOutSlowIn),
+            onTap: (index) => _controller.jumpToPage(index),
           ),
         ),
       ),

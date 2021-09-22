@@ -12,6 +12,7 @@ class FTVideo extends StatelessWidget {
   final Video? videoData;
   final bool loadData;
   final bool isRow;
+  final bool isInsideDownloadPopup;
   final bool showChannel;
   final List<Widget> actions;
 
@@ -21,6 +22,7 @@ class FTVideo extends StatelessWidget {
     this.videoData,
     this.isRow = false,
     this.showChannel = true,
+    this.isInsideDownloadPopup = false,
     this.loadData = false,
     this.actions = const [],
   }) : super(key: key);
@@ -35,7 +37,7 @@ class FTVideo extends StatelessWidget {
         builder: (context, snapshot) {
           final Video? video = snapshot.data ?? videoData;
           return Container(
-            padding: const EdgeInsets.all(16),
+            padding: isInsideDownloadPopup ? EdgeInsets.zero : const EdgeInsets.all(16),
             width: context.width,
             child: isRow
                 ? GestureDetector(
@@ -141,10 +143,12 @@ class FTVideo extends StatelessWidget {
                           ],
                         ),
                       ),
-                      IconButton(
-                        onPressed: video != null ? () => showDownloadPopup(context, video) : null,
-                        icon: const Icon(Icons.save_alt_outlined),
-                      ),
+                      if (!isInsideDownloadPopup) ...[
+                        IconButton(
+                          onPressed: video != null ? () => showDownloadPopup(context, video: video) : null,
+                          icon: const Icon(Icons.save_alt_outlined),
+                        ),
+                      ],
                       ...actions,
                     ]),
                   )
@@ -223,10 +227,12 @@ class FTVideo extends StatelessWidget {
                               ],
                             ),
                           ),
-                          IconButton(
-                            onPressed: video != null ? () => showDownloadPopup(context, video) : null,
-                            icon: const Icon(Icons.save_alt_outlined),
-                          ),
+                          if (!isInsideDownloadPopup) ...[
+                            IconButton(
+                              onPressed: video != null ? () => showDownloadPopup(context, video: video) : null,
+                              icon: const Icon(Icons.save_alt_outlined),
+                            ),
+                          ],
                           ...actions,
                         ],
                       ),

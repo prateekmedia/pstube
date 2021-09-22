@@ -10,12 +10,28 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'utils.dart';
 
-Future showDownloadPopup(BuildContext context, Video video) {
+final Widget _progressIndicator = SizedBox(
+  height: 100,
+  child: getCircularProgressIndicator(),
+);
+
+Future showDownloadPopup(BuildContext context, {Video? video, String? videoUrl}) {
+  assert(video != null || videoUrl != null);
+  final yt = YoutubeExplode();
+  Future<Video?> getVideo() => yt.videos.get(videoUrl!);
   return showPopover(
     context: context,
     padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 12),
     innerPadding: EdgeInsets.zero,
-    builder: (ctx) => DownloadsWidget(video: video),
+    builder: (ctx) => FutureBuilder<Video?>(
+        future: videoUrl != null ? getVideo().whenComplete(() => yt.close()) : null,
+        builder: (context, snapshot) {
+          return video != null || snapshot.hasData && snapshot.data != null
+              ? DownloadsWidget(video: video ?? snapshot.data!)
+              : snapshot.hasError
+                  ? const Text("Error")
+                  : _progressIndicator;
+        }),
   );
 }
 
@@ -38,6 +54,12 @@ class DownloadsWidget extends ConsumerWidget {
             ? Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  if (onClose == null)
+                    FTVideo(
+                      isRow: true,
+                      videoData: video,
+                      isInsideDownloadPopup: true,
+                    ),
                   if (ref.watch(thumbnailDownloaderProvider)) ...[
                     linksHeader(
                       icon: Icons.image,
@@ -84,10 +106,7 @@ class DownloadsWidget extends ConsumerWidget {
                     ),
                 ],
               )
-            : SizedBox(
-                height: 100,
-                child: getCircularProgressIndicator(),
-              );
+            : _progressIndicator;
       },
     );
   }

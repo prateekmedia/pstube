@@ -149,7 +149,7 @@ class VideoScreen extends HookConsumerWidget {
                                           onPressed: downloadsSideWidget.value != null
                                               ? () => downloadsSideWidget.value = null
                                               : context.isMobile
-                                                  ? () => showDownloadPopup(context, videoData)
+                                                  ? () => showDownloadPopup(context, video: videoData)
                                                   : () {
                                                       commentSideWidget.value = null;
                                                       downloadsSideWidget.value = Column(
@@ -196,6 +196,7 @@ class VideoScreen extends HookConsumerWidget {
                                               cancelText: "DONE",
                                               confirmText: "CREATE",
                                               controller: _textController,
+                                              title: 'Save to...',
                                               hint: "Create New",
                                               onConfirm: () {
                                                 ref
@@ -285,8 +286,6 @@ class PlaylistPopup extends ConsumerWidget {
     final playlist = ref.watch(playlistProvider);
     final playlistP = ref.read(playlistProvider.notifier);
     return Column(children: [
-      Text('Save to...', style: context.textTheme.headline6!.copyWith(fontSize: 17, fontWeight: FontWeight.w700)),
-      const Divider(),
       for (var entry in playlist.entries)
         CheckboxListTile(
           value: entry.value.contains(videoData.url),

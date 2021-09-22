@@ -39,6 +39,7 @@ Future<T?> showPopoverWB<T>({
   String confirmText = "OK",
   bool isScrollControlled = true,
   bool isScrollable = true,
+  bool disableOnNoConfirm = false,
 }) {
   assert(title != null || builder != null);
   final _formKey = key ?? GlobalKey<FormState>();
@@ -52,11 +53,10 @@ Future<T?> showPopoverWB<T>({
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 8),
-        if (title != null)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Text(title, style: context.textTheme.headline6!.copyWith(fontWeight: FontWeight.w600)),
-          ),
+        if (title != null) ...[
+          Text(title, style: context.textTheme.headline6!.copyWith(fontSize: 17, fontWeight: FontWeight.w700)),
+          const Divider(),
+        ],
         if (builder != null) builder(ctx),
         if (controller != null)
           Padding(
@@ -92,12 +92,13 @@ Future<T?> showPopoverWB<T>({
               },
             ),
             TextButton(
-                style: TextButton.styleFrom(
-                  primary: context.textTheme.bodyText1!.color,
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                ),
-                child: Text(confirmText),
-                onPressed: onConfirm)
+              style: TextButton.styleFrom(
+                primary: context.textTheme.bodyText1!.color,
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              ),
+              child: Text(confirmText),
+              onPressed: disableOnNoConfirm && controller != null && controller.value.text.isEmpty ? null : onConfirm,
+            ),
           ],
         ),
         const SizedBox(height: 10),
