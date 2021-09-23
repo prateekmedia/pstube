@@ -3,24 +3,28 @@ import 'package:flutube/utils/utils.dart';
 import 'package:flutube/models/models.dart';
 
 const mobileWidth = 650;
+final primaryColor = Colors.red;
 
 ThemeData getThemeData(BuildContext context, Brightness brightness) {
   return ThemeData(
-    primarySwatch: Colors.red,
-    primaryColor: Colors.red,
-    fontFamily: 'Roboto',
-    colorScheme: ColorScheme.fromSwatch(
-      brightness: brightness,
-      primarySwatch: Colors.red,
-    ),
-    appBarTheme: AppBarTheme(
-      backgroundColor: brightness.getAltBackgroundColor,
-      foregroundColor: brightness.textColor,
-    ),
-    navigationRailTheme: NavigationRailThemeData(
-      backgroundColor: brightness.getAltBackgroundColor,
-    ),
-  );
+      primarySwatch: primaryColor,
+      primaryColor: primaryColor,
+      fontFamily: 'Roboto',
+      colorScheme: ColorScheme.fromSwatch(
+        brightness: brightness,
+        primarySwatch: primaryColor,
+      ),
+      appBarTheme: AppBarTheme(
+        backgroundColor: brightness.getAltBackgroundColor,
+        foregroundColor: brightness.textColor,
+      ),
+      navigationRailTheme: NavigationRailThemeData(
+        backgroundColor: brightness.getAltBackgroundColor,
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: primaryColor,
+        foregroundColor: Colors.white,
+      ));
 }
 
 final myApp = FTInfo(
