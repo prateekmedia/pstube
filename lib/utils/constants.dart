@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutube/utils/utils.dart';
 import 'package:flutube/models/models.dart';
 
 const mobileWidth = 650;
-final primaryColor = Colors.red;
+const primaryColor = Colors.red;
 
 ThemeData getThemeData(BuildContext context, Brightness brightness) {
   return ThemeData(
@@ -17,11 +18,15 @@ ThemeData getThemeData(BuildContext context, Brightness brightness) {
       appBarTheme: AppBarTheme(
         backgroundColor: brightness.getAltBackgroundColor,
         foregroundColor: brightness.textColor,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.red,
+          statusBarColor: Colors.red,
+        ),
       ),
       navigationRailTheme: NavigationRailThemeData(
         backgroundColor: brightness.getAltBackgroundColor,
       ),
-      floatingActionButtonTheme: FloatingActionButtonThemeData(
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: primaryColor,
         foregroundColor: Colors.white,
       ));
