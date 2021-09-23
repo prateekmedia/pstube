@@ -28,6 +28,7 @@ class _LikedScreenState extends State<LikedScreen> with AutomaticKeepAliveClient
           TabBar(
             indicatorSize: TabBarIndicatorSize.label,
             controller: tabController,
+            labelColor: context.textTheme.bodyText1!.color,
             tabs: const [
               Tab(text: "Videos"),
               Tab(text: "Comments"),

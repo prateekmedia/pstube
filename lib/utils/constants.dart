@@ -1,6 +1,27 @@
+import 'package:flutter/material.dart';
+import 'package:flutube/utils/utils.dart';
 import 'package:flutube/models/models.dart';
 
 const mobileWidth = 650;
+
+ThemeData getThemeData(BuildContext context, Brightness brightness) {
+  return ThemeData(
+    primarySwatch: Colors.red,
+    primaryColor: Colors.red,
+    fontFamily: 'Roboto',
+    colorScheme: ColorScheme.fromSwatch(
+      brightness: brightness,
+      primarySwatch: Colors.red,
+    ),
+    appBarTheme: AppBarTheme(
+      backgroundColor: brightness.getAltBackgroundColor,
+      foregroundColor: brightness.textColor,
+    ),
+    navigationRailTheme: NavigationRailThemeData(
+      backgroundColor: brightness.getAltBackgroundColor,
+    ),
+  );
+}
 
 final myApp = FTInfo(
   name: 'FluTube',

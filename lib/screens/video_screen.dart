@@ -155,7 +155,6 @@ class VideoScreen extends HookConsumerWidget {
                                                       downloadsSideWidget.value = Column(
                                                         children: [
                                                           AppBar(
-                                                            backgroundColor: context.getAltBackgroundColor,
                                                             leading: const SizedBox(),
                                                             centerTitle: true,
                                                             title: Text(
@@ -321,7 +320,6 @@ class CommentsWidget extends HookWidget {
     return Column(
       children: [
         AppBar(
-          backgroundColor: context.getAltBackgroundColor,
           leading: (currentPage.value == 1)
               ? IconButton(
                   onPressed: () {

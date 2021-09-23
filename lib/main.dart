@@ -48,17 +48,8 @@ class MyApp extends HookConsumerWidget {
         return child;
       },
       navigatorObservers: [BotToastNavigatorObserver()],
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-        primaryColor: Colors.red,
-        fontFamily: 'Roboto',
-      ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        primaryColor: Colors.red,
-        primarySwatch: Colors.red,
-        fontFamily: 'Roboto',
-      ),
+      theme: getThemeData(context, Brightness.light),
+      darkTheme: getThemeData(context, Brightness.dark),
       themeMode: ref.watch(themeTypeProvider),
       debugShowCheckedModeBanner: false,
       home: MyHomePage(),
@@ -96,8 +87,6 @@ class MyHomePage extends HookWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        foregroundColor: context.textTheme.bodyText1!.color,
-        backgroundColor: context.getAltBackgroundColor,
         title: Row(
           children: [
             if (!context.isMobile) ...[
@@ -148,7 +137,6 @@ class MyHomePage extends HookWidget {
               ],
               minExtendedWidth: 200,
               extended: extendedRail.value,
-              backgroundColor: context.getAltBackgroundColor,
               selectedIndex: _currentIndex.value,
               onDestinationSelected: (index) => _controller.jumpToPage(index),
             ),
