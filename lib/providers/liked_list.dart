@@ -29,7 +29,9 @@ class LikedList extends ChangeNotifier {
   }
 
   addComment(LikedComment comment) {
-    if (!likedCommentList.contains(comment)) {
+    if (likedCommentList
+        .where((element) => (element.author == comment.author) && (element.text == comment.text))
+        .isEmpty) {
       likedCommentList.add(comment);
       refresh(false);
     }

@@ -99,6 +99,7 @@ class CommentBox extends HookConsumerWidget {
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: kTabLabelPadding.left, vertical: 4),
                           child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Icon(LucideIcons.thumbsUp,
                                   size: 18, color: comment is LikedComment || isLiked ? Colors.blue : null),
