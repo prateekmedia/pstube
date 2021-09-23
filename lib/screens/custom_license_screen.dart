@@ -14,7 +14,7 @@ class CustomLicensePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: context.backLeading,
+        leading: context.backLeading(),
         title: Text(
           "Licenses",
           style: context.textTheme.headline6,
@@ -77,7 +77,7 @@ class LicenseInfoPage extends StatelessWidget {
     final cParagraph = paragraph ?? (arguments != null ? arguments['paragraph'] : null);
     return Scaffold(
       appBar: AppBar(
-        leading: context.backLeading,
+        leading: context.backLeading(),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

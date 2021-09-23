@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutube/controller/internet_connectivity.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import 'package:flutube/utils/utils.dart';
@@ -86,11 +86,11 @@ class MyHomePage extends HookWidget {
     ];
 
     final Map<String, List<IconData>> navItems = {
-      "Home": [Ionicons.home_outline, Ionicons.home],
-      "Liked": [Icons.thumb_up_outlined, Icons.thumb_up],
-      "Playlist": [Icons.playlist_add_outlined, Icons.playlist_add],
-      "Downloads": [Ionicons.download_outline, Ionicons.download],
-      "Settings": [Ionicons.settings_outline, Ionicons.settings_sharp],
+      "Home": [LucideIcons.home],
+      "Liked": [LucideIcons.thumbsUp],
+      "Playlist": [Icons.playlist_add],
+      "Downloads": [LucideIcons.download],
+      "Settings": [LucideIcons.settings],
     };
 
     return Scaffold(
@@ -105,7 +105,7 @@ class MyHomePage extends HookWidget {
                 onTap: () => extendedRail.value = !extendedRail.value,
                 child: const Padding(
                   padding: EdgeInsets.all(10.0),
-                  child: Icon(Icons.menu),
+                  child: Icon(LucideIcons.menu),
                 ),
               ),
               const SizedBox(width: 15),
@@ -116,7 +116,7 @@ class MyHomePage extends HookWidget {
         actions: [
           IconButton(
             onPressed: () => showSearch(context: context, delegate: CustomSearchDelegate()),
-            icon: const Icon(Ionicons.search, size: 20),
+            icon: const Icon(LucideIcons.search, size: 20),
           ),
           if (_currentIndex.value == 4)
             Consumer(builder: (context, ref, _) {
@@ -143,7 +143,7 @@ class MyHomePage extends HookWidget {
                   NavigationRailDestination(
                     label: Text(item.key, style: context.textTheme.bodyText1),
                     icon: Icon(item.value[0]),
-                    selectedIcon: Icon(item.value[1]),
+                    selectedIcon: Icon(item.value.length == 2 ? item.value[1] : item.value[0]),
                   ),
               ],
               minExtendedWidth: 200,
@@ -188,7 +188,7 @@ class MyHomePage extends HookWidget {
                   controller: _addDownloadController,
                 );
               },
-              child: const Icon(Icons.add),
+              child: const Icon(LucideIcons.plus),
             )
           : null,
       bottomNavigationBar: Visibility(
@@ -208,7 +208,7 @@ class MyHomePage extends HookWidget {
                 SalomonBottomBarItem(
                   title: Text(item.key),
                   icon: Icon(item.value[0], size: 20),
-                  activeIcon: Icon(item.value[1], size: 20),
+                  activeIcon: Icon(item.value.length == 2 ? item.value[1] : item.value[0], size: 20),
                 ),
             ],
             currentIndex: _currentIndex.value,

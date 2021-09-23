@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutube/utils/constants.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 extension ContextExtensions on BuildContext {
   TextTheme get textTheme => Theme.of(this).textTheme;
@@ -14,13 +15,13 @@ extension ContextExtensions on BuildContext {
 
   pushPage(Widget page) => Navigator.of(this).push(MaterialPageRoute(builder: (ctx) => page));
 
-  Widget get backLeading => IconButton(
-        icon: const Icon(Icons.chevron_left),
+  Widget backLeading([VoidCallback? onBack]) => IconButton(
+        icon: const Icon(LucideIcons.chevronLeft),
         splashColor: Colors.transparent,
         focusColor: Colors.transparent,
         highlightColor: Colors.transparent,
         hoverColor: Colors.transparent,
-        onPressed: back,
+        onPressed: onBack ?? back,
       );
 
   Color get getBackgroundColor => isDark ? Colors.grey[800]! : Colors.grey[200]!;

@@ -445,13 +445,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
-  ionicons:
-    dependency: "direct main"
-    description:
-      name: ionicons
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.2"
   js:
     dependency: transitive
     description:
@@ -480,6 +473,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  lucide_icons:
+    dependency: "direct main"
+    description:
+      name: lucide_icons
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.15.30"
   matcher:
     dependency: transitive
     description:

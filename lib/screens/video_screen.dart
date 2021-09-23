@@ -6,7 +6,7 @@ import 'package:flutube/providers/providers.dart';
 import 'package:flutube/widgets/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:ionicons/ionicons.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:share_plus/share_plus.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
@@ -58,7 +58,7 @@ class VideoScreen extends HookConsumerWidget {
                 leading: IconButton(
                     onPressed: context.back,
                     icon: const Icon(
-                      Icons.chevron_left,
+                      LucideIcons.chevronLeft,
                     )))
             : null,
         body: video == null && videoSnapshot == null
@@ -90,7 +90,7 @@ class VideoScreen extends HookConsumerWidget {
                                           child: Align(
                                         alignment: Alignment.topLeft,
                                         child: IconButton(
-                                          icon: const Icon(Icons.chevron_left),
+                                          icon: const Icon(LucideIcons.chevronLeft),
                                           onPressed: context.back,
                                         ),
                                       ))
@@ -138,14 +138,14 @@ class VideoScreen extends HookConsumerWidget {
                                               : "Dislike",
                                         ),
                                         iconWithBottomLabel(
-                                          icon: Ionicons.share_social_outline,
+                                          icon: LucideIcons.share2,
                                           onPressed: () {
                                             Share.share(videoData.url);
                                           },
                                           label: "Share",
                                         ),
                                         iconWithBottomLabel(
-                                          icon: Ionicons.download_outline,
+                                          icon: LucideIcons.download,
                                           onPressed: downloadsSideWidget.value != null
                                               ? () => downloadsSideWidget.value = null
                                               : context.isMobile
@@ -165,7 +165,7 @@ class VideoScreen extends HookConsumerWidget {
                                                             ),
                                                             actions: [
                                                               IconButton(
-                                                                  icon: const Icon(Icons.close),
+                                                                  icon: const Icon(LucideIcons.x),
                                                                   onPressed: () {
                                                                     downloadsSideWidget.value = null;
                                                                   }),
@@ -329,7 +329,7 @@ class CommentsWidget extends HookWidget {
                         duration: const Duration(milliseconds: 200), curve: Curves.easeInOut);
                     replyComment.value = null;
                   },
-                  icon: Icon(Icons.chevron_left, color: context.textTheme.bodyText1!.color),
+                  icon: Icon(LucideIcons.chevronLeft, color: context.textTheme.bodyText1!.color),
                 )
               : const SizedBox(),
           centerTitle: true,
@@ -341,7 +341,7 @@ class CommentsWidget extends HookWidget {
           actions: [
             IconButton(
               onPressed: onClose ?? context.back,
-              icon: Icon(Icons.close, color: context.textTheme.bodyText1!.color),
+              icon: Icon(LucideIcons.x, color: context.textTheme.bodyText1!.color),
             )
           ],
         ),

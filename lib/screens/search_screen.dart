@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutube/widgets/ft_video.dart';
 import 'package:flutube/widgets/widgets.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import '../utils/utils.dart';
@@ -11,26 +12,17 @@ class CustomSearchDelegate extends SearchDelegate {
   TextStyle? get searchFieldStyle => const TextStyle(fontSize: 16);
 
   @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-        icon: const Icon(Icons.clear, size: 22),
-        onPressed: () {
-          query = '';
-        },
-      ),
-    ];
-  }
+  List<Widget> buildActions(BuildContext context) => [
+        IconButton(
+          icon: const Icon(LucideIcons.x, size: 22),
+          onPressed: () {
+            query = '';
+          },
+        ),
+      ];
 
   @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.chevron_left, size: 22),
-      onPressed: () {
-        close(context, null);
-      },
-    );
-  }
+  Widget buildLeading(BuildContext context) => context.backLeading(() => close(context, null));
 
   @override
   Widget buildResults(BuildContext context) {

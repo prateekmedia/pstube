@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutube/utils/utils.dart';
 import 'package:flutube/widgets/widgets.dart';
 import 'package:flutube/providers/providers.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class PlaylistScreen extends ConsumerStatefulWidget {
@@ -75,7 +76,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> with AutomaticK
                           onPressed: () {
                             playlistP.removePlaylist(entry.key);
                           },
-                          icon: const Icon(Icons.delete_forever_outlined),
+                          icon: const Icon(LucideIcons.trash2),
                         ),
                       ],
                     ),
@@ -103,7 +104,7 @@ class PlaylistSubScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(playlistName),
-        leading: context.backLeading,
+        leading: context.backLeading(),
       ),
       body: FtBody(
         child: videos.isNotEmpty
@@ -118,7 +119,7 @@ class PlaylistSubScreen extends StatelessWidget {
                           onPressed: () {
                             playlistP.removeVideo(playlistName, videoUrl);
                           },
-                          icon: const Icon(Icons.delete_forever_outlined),
+                          icon: const Icon(LucideIcons.trash2),
                         ),
                       ],
                     ),

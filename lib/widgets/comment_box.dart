@@ -5,6 +5,7 @@ import 'package:flutube/screens/screens.dart';
 import 'package:flutube/utils/utils.dart';
 import 'package:flutube/widgets/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:readmore/readmore.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
@@ -99,7 +100,7 @@ class CommentBox extends HookConsumerWidget {
                           padding: EdgeInsets.symmetric(horizontal: kTabLabelPadding.left, vertical: 4),
                           child: Row(
                             children: [
-                              Icon(Icons.thumb_up,
+                              Icon(LucideIcons.thumbsUp,
                                   size: 18, color: comment is LikedComment || isLiked ? Colors.blue : null),
                               const SizedBox(width: 8),
                               Text(
@@ -112,7 +113,7 @@ class CommentBox extends HookConsumerWidget {
                       ),
                       if (comment is Comment && comment.isHearted)
                         Icon(
-                          Icons.favorite_rounded,
+                          LucideIcons.heart,
                           color: Colors.red[600],
                         ),
                     ],

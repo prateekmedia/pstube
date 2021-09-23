@@ -5,7 +5,7 @@ import 'package:flutube/models/models.dart';
 import 'package:flutube/providers/providers.dart';
 import 'package:flutube/widgets/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:ionicons/ionicons.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'utils.dart';
@@ -62,7 +62,7 @@ class DownloadsWidget extends ConsumerWidget {
                     ),
                   if (ref.watch(thumbnailDownloaderProvider)) ...[
                     linksHeader(
-                      icon: Icons.image,
+                      icon: LucideIcons.image,
                       label: "Thumbnail",
                       padding: const EdgeInsets.only(top: 6, bottom: 14),
                     ),
@@ -74,7 +74,7 @@ class DownloadsWidget extends ConsumerWidget {
                       ),
                   ],
                   linksHeader(
-                    icon: Icons.perm_media,
+                    icon: LucideIcons.film,
                     label: "Video + Audio",
                     padding: const EdgeInsets.only(top: 6, bottom: 14),
                   ),
@@ -85,7 +85,7 @@ class DownloadsWidget extends ConsumerWidget {
                       onClose: onClose,
                     ),
                   linksHeader(
-                    icon: Ionicons.musical_note,
+                    icon: LucideIcons.music,
                     label: "Audio only",
                   ),
                   for (var audioStream in snapshot.data!.audioOnly.toList().reversed)
@@ -95,7 +95,7 @@ class DownloadsWidget extends ConsumerWidget {
                       onClose: onClose,
                     ),
                   linksHeader(
-                    icon: Ionicons.videocam,
+                    icon: LucideIcons.video,
                     label: "Video only",
                   ),
                   for (var videoStream in snapshot.data!.videoOnly.toList().sortByVideoQuality())

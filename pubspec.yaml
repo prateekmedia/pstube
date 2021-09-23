@@ -25,24 +25,24 @@ dependencies:
   hive_flutter: ^1.1.0
   hooks_riverpod: ^1.0.0-dev.7
   intl: ^0.17.0
-  ionicons: ^0.1.2
+  lucide_icons: ^0.15.30
   # Upgrade to pub.dev when package > 3.2.1
   open_file:
     git:
       url: https://github.com/miDeb/open_file.git
       ref: no_system
+  package_info_plus: ^1.0.6
   path: ^1.8.0
   path_provider: ^2.0.2
-  package_info_plus: ^1.0.6
   permission_handler: ^8.1.2
   readmore: ^2.1.0
   salomon_bottom_bar: ^3.1.0
   share_plus: ^2.1.4
   shared_preferences: ^2.0.7
+  sticky_headers: ^0.2.0
   timeago: ^3.1.0
   url_launcher: ^6.0.11
   youtube_explode_dart: ^1.10.7-dev.1
-  sticky_headers: ^0.2.0
 
 dev_dependencies:
   build_runner: ^2.1.2
