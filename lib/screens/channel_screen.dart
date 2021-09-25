@@ -11,7 +11,35 @@ class ChannelScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final channel = useFuture(useMemoized(() => YoutubeExplode().channels.get(id)));
+    var isMounted = useIsMounted();
+    final yt = YoutubeExplode();
+    final channel = useState<Channel?>(null);
+    final _currentVidPage = useState<ChannelUploadsList?>(null);
+    final controller = useScrollController();
+
+    loadInitData() async {
+      channel.value = await yt.channels.get(id);
+      if (channel.value != null) {
+        _currentVidPage.value = await yt.channels.getUploadsFromPage(channel.value!.id.value);
+      }
+    }
+
+    void _getMoreData() async {
+      if (isMounted() &&
+          controller.position.pixels == controller.position.maxScrollExtent &&
+          _currentVidPage.value != null) {
+        final page = await (_currentVidPage.value)!.nextPage();
+        if (page == null || page.isEmpty) return;
+        _currentVidPage.value = page;
+      }
+    }
+
+    useEffect(() {
+      loadInitData();
+      controller.addListener(_getMoreData);
+      return () => controller.removeListener(_getMoreData);
+    }, [controller]);
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -23,14 +51,17 @@ class ChannelScreen extends HookWidget {
               onPressed: context.back,
             ),
             centerTitle: true,
-            title: Text(channel.data != null ? channel.data!.title : ""),
-            flexibleSpace: channel.data != null
+            title: Text(channel.value?.title ?? ""),
+            flexibleSpace: channel.value != null
                 ? FlexibleSpaceBar(
                     background: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          ChannelInfo(channel: channel, textColor: Colors.white),
+                          ChannelInfo(
+                            channel: AsyncSnapshot.withData(ConnectionState.done, channel.value!),
+                            textColor: Colors.white,
+                          ),
                         ],
                       ),
                     ),
@@ -40,26 +71,22 @@ class ChannelScreen extends HookWidget {
           SliverToBoxAdapter(
             child: FtBody(
               expanded: false,
-              child: FutureBuilder<ChannelUploadsList>(
-                future: channel.hasData && channel.data != null
-                    ? YoutubeExplode().channels.getUploadsFromPage(channel.data!.id.value)
-                    : null,
-                builder: (ctx, snapshot) {
-                  return snapshot.hasData
-                      ? ListView.builder(
-                          shrinkWrap: true,
-                          primary: false,
-                          itemBuilder: (ctx, idx) => FTVideo(
-                            videoData: snapshot.data![idx],
-                            loadData: true,
-                            showChannel: false,
-                            isRow: true,
-                          ),
-                          itemCount: snapshot.data!.length,
-                        )
-                      : getCircularProgressIndicator();
-                },
-              ),
+              child: _currentVidPage.value != null
+                  ? ListView.builder(
+                      controller: controller,
+                      shrinkWrap: true,
+                      primary: false,
+                      itemBuilder: (ctx, idx) => idx == _currentVidPage.value!.length
+                          ? getCircularProgressIndicator()
+                          : FTVideo(
+                              videoData: _currentVidPage.value![idx],
+                              loadData: true,
+                              showChannel: false,
+                              isRow: true,
+                            ),
+                      itemCount: _currentVidPage.value!.length + 1,
+                    )
+                  : getCircularProgressIndicator(),
             ),
           ),
         ],

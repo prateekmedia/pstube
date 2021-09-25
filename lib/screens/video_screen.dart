@@ -66,7 +66,7 @@ class VideoScreen extends HookConsumerWidget {
             : videoData == null
                 ? getCircularProgressIndicator()
                 : FutureBuilder<CommentsList?>(
-                    future: yt.videos.commentsClient.getComments(videoData).whenComplete(() => yt.close()),
+                    future: yt.videos.commentsClient.getComments(videoData),
                     builder: (context, commentsSnapshot) {
                       return Flex(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -315,8 +315,28 @@ class CommentsWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isMounted = useIsMounted();
     final PageController pageController = PageController();
+    final _currentPage = useState<CommentsList?>(snapshot.data);
+    final controller = useScrollController();
     final currentPage = useState<int>(0);
+
+    void _getMoreData() async {
+      if (isMounted() &&
+          controller.position.pixels == controller.position.maxScrollExtent &&
+          _currentPage.value != null) {
+        final page = await (_currentPage.value)!.nextPage();
+        if (page == null || page.isEmpty) return;
+
+        _currentPage.value = page;
+      }
+    }
+
+    useEffect(() {
+      controller.addListener(_getMoreData);
+      return () => controller.removeListener(_getMoreData);
+    }, [controller]);
+
     return Column(
       children: [
         AppBar(
@@ -350,20 +370,23 @@ class CommentsWidget extends HookWidget {
             physics: const NeverScrollableScrollPhysics(),
             itemCount: 2,
             itemBuilder: (_, index) => [
-              ListView(
-                controller: ScrollController(),
+              ListView.builder(
+                controller: controller,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                children: [
-                  for (Comment comment in snapshot.data ?? [])
-                    BuildCommentBox(
-                      comment: comment,
-                      onReplyTap: () {
-                        replyComment.value = comment;
-                        pageController.animateToPage(1,
-                            duration: const Duration(milliseconds: 200), curve: Curves.easeInOut);
-                      },
-                    )
-                ],
+                itemCount: _currentPage.value!.length + 1,
+                itemBuilder: (ctx, idx) {
+                  final comment = idx != _currentPage.value!.length ? _currentPage.value![idx] : null;
+                  return idx == _currentPage.value!.length
+                      ? getCircularProgressIndicator()
+                      : BuildCommentBox(
+                          comment: comment!,
+                          onReplyTap: () {
+                            replyComment.value = comment;
+                            pageController.animateToPage(1,
+                                duration: const Duration(milliseconds: 200), curve: Curves.easeInOut);
+                          },
+                        );
+                },
               ),
               WillPopScope(
                   child: showReplies(

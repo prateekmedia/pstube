@@ -1036,9 +1036,11 @@ packages:
   youtube_explode_dart:
     dependency: "direct main"
     description:
-      name: youtube_explode_dart
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: incomplete_data
+      resolved-ref: "09b28a7bebe34d164e826ef2a9cec05f36c4930d"
+      url: "https://github.com/vi-k/youtube_explode_dart"
+    source: git
     version: "1.10.7-dev.1"
 sdks:
   dart: ">=2.14.0 <3.0.0"

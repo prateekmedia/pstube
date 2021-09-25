@@ -54,13 +54,15 @@ class SearchResult extends HookWidget {
     var isMounted = useIsMounted();
     var yt = YoutubeExplode();
     final _currentPage = useState<SearchList?>(null);
-    void loadVideos() async => _currentPage.value = await yt.search.getVideos(query).whenComplete(() => yt.close());
+    void loadVideos() async => _currentPage.value = await yt.search.getVideos(query);
     final controller = useScrollController();
 
     void _getMoreData() async {
-      if (isMounted() && controller.position.pixels == controller.position.maxScrollExtent) {
-        final page = _currentPage.value != null ? await (_currentPage.value)?.nextPage() : null;
-        if (page == null) return;
+      if (isMounted() &&
+          controller.position.pixels == controller.position.maxScrollExtent &&
+          _currentPage.value != null) {
+        final page = await (_currentPage.value)!.nextPage();
+        if (page == null || page.isEmpty) return;
 
         _currentPage.value = page;
       }
