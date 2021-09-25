@@ -18,9 +18,9 @@ ThemeData getThemeData(BuildContext context, Brightness brightness) {
       appBarTheme: AppBarTheme(
         backgroundColor: brightness.getAltBackgroundColor,
         foregroundColor: brightness.textColor,
-        systemOverlayStyle: const SystemUiOverlayStyle(
-          systemNavigationBarColor: Colors.red,
-          statusBarColor: Colors.red,
+        systemOverlayStyle: SystemUiOverlayStyle(
+          systemNavigationBarColor: brightness.getBackgroundColor,
+          statusBarColor: brightness.getBackgroundColor,
         ),
       ),
       navigationRailTheme: NavigationRailThemeData(
