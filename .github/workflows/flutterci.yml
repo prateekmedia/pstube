@@ -28,7 +28,7 @@ jobs:
           java-version: "12.x"
 
       - name: Setup flutter
-        uses: subosito/flutter-action@master
+        uses: subosito/flutter-action@latest
         with:
           channel: beta
 
@@ -49,16 +49,23 @@ jobs:
       - name: Build Flutter app
         run: flutter build apk --split-per-abi
 
+      - uses: dev-drprasad/delete-tag-and-release@latest
+        if: {{ github.event_name != 'release' }}
+        with:
+          delete_release: true
+          tag_name: continuous
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload apk to the release
-        uses: marvinpinto/action-automatic-releases@latest
+      - uses: svenstaro/upload-release-action@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: ${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}
+          file: build/app/outputs/apk/release/flutube-android-*
+          file_glob: true
           prerelease: ${{ github.event_name != 'release' }}
-          title: ${{ github.event_name == 'release' && github.event.release.name || 'Development Build' }}
-          files: |
-            build/app/outputs/apk/release/flutube-android-*
+          release_name: ${{ github.event_name == 'release' && github.event.release.name || 'Development Build' }}
+          tag: ${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}
+          overwrite: true
 
   build-linux:
     name: Linux
@@ -68,7 +75,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Setup flutter
-        uses: subosito/flutter-action@master
+        uses: subosito/flutter-action@latest
         with:
           channel: beta
 
@@ -106,15 +113,23 @@ jobs:
           chmod +x appimagetool-x86_64.AppImage
           ARCH=x86_64 ./appimagetool-x86_64.AppImage AppDir/ flutube-linux-x86_64.AppImage
 
-      - name: Upload linux builds to the release
-        uses: marvinpinto/action-automatic-releases@latest
+      - uses: dev-drprasad/delete-tag-and-release@latest
+        if: {{ github.event_name != 'release' }}
+        with:
+          delete_release: true
+          tag_name: continuous
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: svenstaro/upload-release-action@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: ${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}
+          file: ./flutube-linux-x86_64*
+          file_glob: true
           prerelease: ${{ github.event_name != 'release' }}
-          title: ${{ github.event_name == 'release' && github.event.release.name || 'Development Build' }}
-          files: |
-            ./flutube-linux-x86_64*
+          release_name: ${{ github.event_name == 'release' && github.event.release.name || 'Development Build' }}
+          tag: ${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}
+          overwrite: true
 
   build_windows:
     name: Windows
@@ -124,7 +139,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Setup flutter
-        uses: subosito/flutter-action@master
+        uses: subosito/flutter-action@latest
         with:
           channel: beta
 
@@ -134,17 +149,24 @@ jobs:
       - name: Build Flutter app
         run: flutter build windows
 
-      - uses: papeloto/action-zip@v1
+      - uses: papeloto/action-zip@latest
         with:
           files: build/windows/runner/release/
           dest: flutube-windows.zip
 
-      - name: Upload windows builds to the release
-        uses: marvinpinto/action-automatic-releases@latest
+      - uses: dev-drprasad/delete-tag-and-release@latest
+        if: {{ github.event_name != 'release' }}
+        with:
+          delete_release: true
+          tag_name: continuous
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: svenstaro/upload-release-action@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: ${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}
+          file: flutube-windows.zip
           prerelease: ${{ github.event_name != 'release' }}
-          title: ${{ github.event_name == 'release' && github.event.release.name || 'Development Build' }}
-          files: |
-            flutube-windows.zip
+          release_name: ${{ github.event_name == 'release' && github.event.release.name || 'Development Build' }}
+          tag: ${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}
+          overwrite: true
