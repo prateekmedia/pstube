@@ -48,7 +48,7 @@ jobs:
       - name: Build Flutter app
         run: flutter build apk --split-per-abi
 
-      - uses: actions/github-script@latest
+      - uses: actions/github-script@main
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -115,7 +115,7 @@ jobs:
           chmod +x appimagetool-x86_64.AppImage
           ARCH=x86_64 ./appimagetool-x86_64.AppImage AppDir/ flutube-linux-x86_64.AppImage
 
-      - uses: actions/github-script@latest
+      - uses: actions/github-script@main
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -159,7 +159,7 @@ jobs:
           files: build/windows/runner/release/
           dest: flutube-windows.zip
 
-      - uses: actions/github-script@latest
+      - uses: actions/github-script@main
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
