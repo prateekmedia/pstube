@@ -124,16 +124,36 @@ class DownloadItemBuilder extends StatelessWidget {
               onPressed: item.total == 0 ||
                       item.total == item.downloaded ||
                       item.cancelToken != null && item.cancelToken!.isCancelled
-                  ? () => showPopoverWB(
-                      context: context,
-                      title: "Are you Sure?",
-                      onConfirm: () {
-                        if (File(item.queryVideo.path + item.queryVideo.name).existsSync()) {
-                          File(item.queryVideo.path + item.queryVideo.name).deleteSync();
-                        }
-                        downloadListUtils.removeDownload(item.queryVideo);
-                        context.back();
-                      })
+                  ? () {
+                      final deleteFromStorage = ValueNotifier<bool>(true);
+                      showPopoverWB(
+                          context: context,
+                          title: "Confirm!",
+                          builder: (ctx) => ValueListenableBuilder<bool>(
+                              valueListenable: deleteFromStorage,
+                              builder: (_, value, ___) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Clear item from download list?', style: context.textTheme.bodyText1),
+                                    CheckboxListTile(
+                                      value: value,
+                                      onChanged: (val) => deleteFromStorage.value = val!,
+                                      title: const Text("Also delete from storage"),
+                                    ),
+                                  ],
+                                );
+                              }),
+                          confirmText: "Yes",
+                          onConfirm: () {
+                            if (File(item.queryVideo.path + item.queryVideo.name).existsSync() &&
+                                deleteFromStorage.value) {
+                              File(item.queryVideo.path + item.queryVideo.name).deleteSync();
+                            }
+                            downloadListUtils.removeDownload(item.queryVideo);
+                            context.back();
+                          });
+                    }
                   : () {
                       item.cancelToken!.cancel();
                       downloadListUtils.refresh();
@@ -143,7 +163,7 @@ class DownloadItemBuilder extends StatelessWidget {
                     ? LucideIcons.fileMinus
                     : item.total != 0 && item.total != item.downloaded
                         ? LucideIcons.x
-                        : LucideIcons.trash2,
+                        : LucideIcons.trash,
               ),
             )
           ],

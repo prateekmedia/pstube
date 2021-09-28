@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutube/controller/internet_connectivity.dart';
@@ -57,13 +59,13 @@ class MyApp extends HookConsumerWidget {
   }
 }
 
-class MyHomePage extends HookWidget {
+class MyHomePage extends HookConsumerWidget {
   MyHomePage({Key? key}) : super(key: key);
 
   final PageController _controller = PageController();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(context, ref) {
     final _currentIndex = useState<int>(0);
     final extendedRail = useState<bool>(false);
     final _addDownloadController = TextEditingController();
@@ -104,19 +106,55 @@ class MyHomePage extends HookWidget {
         ),
         actions: [
           buildSearchButton(context),
+          if (_currentIndex.value == 3)
+            IconButton(
+              icon: const Icon(LucideIcons.trash2),
+              onPressed: () {
+                final deleteFromStorage = ValueNotifier<bool>(false);
+                showPopoverWB(
+                  context: context,
+                  builder: (ctx) => ValueListenableBuilder<bool>(
+                      valueListenable: deleteFromStorage,
+                      builder: (_, value, ___) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Clear all items from download list?', style: context.textTheme.bodyText1),
+                            CheckboxListTile(
+                              value: value,
+                              onChanged: (val) => deleteFromStorage.value = val!,
+                              title: const Text("Also delete them from storage"),
+                            ),
+                          ],
+                        );
+                      }),
+                  onConfirm: () {
+                    final downloadListUtils = ref.read(downloadListProvider);
+                    for (DownloadItem item in downloadListUtils.downloadList) {
+                      if (File(item.queryVideo.path + item.queryVideo.name).existsSync() && deleteFromStorage.value) {
+                        File(item.queryVideo.path + item.queryVideo.name).deleteSync();
+                      }
+                    }
+                    downloadListUtils.clearAll();
+                    context.back();
+                  },
+                  confirmText: "Yes",
+                  title: "Confirm!",
+                );
+              },
+              tooltip: "Clear all",
+            ),
           if (_currentIndex.value == 4)
-            Consumer(builder: (context, ref, _) {
-              return PopupMenuButton(
-                itemBuilder: (context) {
-                  return [
-                    PopupMenuItem(
-                      child: const Text('Reset default'),
-                      onTap: () => resetDefaults(ref),
-                    )
-                  ];
-                },
-              );
-            }),
+            PopupMenuButton(
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem(
+                    child: const Text('Reset default'),
+                    onTap: () => resetDefaults(ref),
+                  )
+                ];
+              },
+            ),
           const SizedBox(width: 10),
         ],
       ),

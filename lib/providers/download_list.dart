@@ -56,4 +56,9 @@ class DownloadList extends ChangeNotifier {
     downloadList.removeAt(currentItemIndex);
     refresh(true);
   }
+
+  clearAll() {
+    downloadList = [];
+    refresh(true);
+  }
 }
