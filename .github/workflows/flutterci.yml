@@ -53,9 +53,9 @@ jobs:
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: ${{ github.event_name == 'release' && ${{ github.ref }} || 'continuous' }}
+          automatic_release_tag: ${{ github.event_name == 'release' && github.ref || 'continuous' }}
           prerelease: ${{ github.event_name != 'release' }}
-          title: ${{ github.event_name == 'release' && ${{ github.event.release.name }} || 'Development Build' }}
+          title: ${{ github.event_name == 'release' && github.event.release.name || 'Development Build' }}
           files: |
             build/app/outputs/apk/release/flutube-android-*
 
@@ -109,9 +109,9 @@ jobs:
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: ${{ github.event_name == 'release' && ${{ github.ref }} || 'continuous' }}
+          automatic_release_tag: ${{ github.event_name == 'release' && github.ref || 'continuous' }}
           prerelease: ${{ github.event_name != 'release' }}
-          title: ${{ github.event_name == 'release' && ${{ github.event.release.name }} || 'Development Build' }}
+          title: ${{ github.event_name == 'release' && github.event.release.name || 'Development Build' }}
           files: |
             ./flutube-linux-x86_64*
 
@@ -142,8 +142,8 @@ jobs:
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: ${{ github.event_name == 'release' && ${{ github.ref }} || 'continuous' }}
+          automatic_release_tag: ${{ github.event_name == 'release' && github.ref || 'continuous' }}
           prerelease: ${{ github.event_name != 'release' }}
-          title: ${{ github.event_name == 'release' && ${{ github.event.release.name }} || 'Development Build' }}
+          title: ${{ github.event_name == 'release' && github.event.release.name || 'Development Build' }}
           files: |
             flutube-windows.zip
