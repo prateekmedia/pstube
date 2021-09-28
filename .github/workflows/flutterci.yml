@@ -82,14 +82,14 @@ jobs:
 
       - name: Build .deb
         run: |
-          cp -fr build/linux/x64/release/bundle linux/debian/usr/bin
-          dpkg-deb --build --root-owner-group linux/debian
+          cp -fr build/linux/x64/release/bundle linux/packaging/usr/bin
+          dpkg-deb --build --root-owner-group linux/packaging
           cp linux/*.deb flutube-linux-x86_64.deb
 
       - name: Build Tarball
         run: |
           mkdir -p AppDir/
-          cp -r linux/debian/usr AppDir/
+          cp -r linux/packaging/usr AppDir/
           ln -sr AppDir/usr/bin/flutube AppDir/flutube
           tar czf flutube-linux-x86_64.tar.gz -C AppDir/ .
 
