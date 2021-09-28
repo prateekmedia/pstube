@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 project(flutube LANGUAGES CXX)
 
 set(BINARY_NAME "flutube")
+set(APPLICATION_ID "com.prateekmedia.flutube")
 
 cmake_policy(SET CMP0063 NEW)
 

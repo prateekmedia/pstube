@@ -1,4 +1,4 @@
-package com.psu.flutube
+package com.prateekmedia.flutube
 
 import io.flutter.embedding.android.FlutterActivity
 

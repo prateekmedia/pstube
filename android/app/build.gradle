@@ -39,7 +39,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.psu.flutube"
+        applicationId "com.prateekmedia.flutube"
         minSdkVersion 24
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()

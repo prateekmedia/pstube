@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.psu.flutube"
+    package="com.prateekmedia.flutube"
     xmlns:tools="http://schemas.android.com/tools">
     <application
         tools:replace="android:label"
