@@ -48,15 +48,16 @@ jobs:
       - name: Build Flutter app
         run: flutter build apk --split-per-abi
 
-      - name: Upload apk to a release
-        uses: svenstaro/upload-release-action@master
+
+      - name: Upload apk to the release
+        uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/app/outputs/apk/release/flutube-android-*
-          file_glob: true
-          tag: ${{ github.ref }}${{ github.event_name == 'release' && '' || '-nightly' }}
-          body: ${{ github.event_name == 'release' && '' || 'Always up to date' }}
-          overwrite: true
+          automatic_release_tag: ${{ github.event_name == 'release' && ${{ github.ref }} || 'continuous' }}
+          prerelease: ${{ github.event_name != 'release' }}
+          title: ${{ github.event_name == 'release' && ${{ github.event.release.name }} || 'Development Build' }}
+          files: |
+            build/app/outputs/apk/release/flutube-android-*
 
   build-linux:
     name: Linux
@@ -104,14 +105,15 @@ jobs:
           chmod +x appimagetool-x86_64.AppImage
           ARCH=x86_64 ./appimagetool-x86_64.AppImage AppDir/ flutube-linux-x86_64.AppImage
 
-      - uses: svenstaro/upload-release-action@master
+      - name: Upload linux builds to the release
+        uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./flutube-linux-x86_64*
-          file_glob: true
-          tag: ${{ github.ref }}${{ github.event_name == 'release' && '' || '-nightly' }}
-          body: ${{ github.event_name == 'release' && '' || 'Always up to date' }}
-          overwrite: true
+          automatic_release_tag: ${{ github.event_name == 'release' && ${{ github.ref }} || 'continuous' }}
+          prerelease: ${{ github.event_name != 'release' }}
+          title: ${{ github.event_name == 'release' && ${{ github.event.release.name }} || 'Development Build' }}
+          files: |
+            ./flutube-linux-x86_64*
 
   build_windows:
     name: Windows
@@ -136,10 +138,12 @@ jobs:
           files: build/windows/runner/release/
           dest: flutube-windows.zip
 
-      - uses: svenstaro/upload-release-action@master
+      - name: Upload windows builds to the release
+        uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: flutube-windows.zip
-          tag: ${{ github.ref }}${{ github.event_name == 'release' && '' || '-nightly' }}
-          body: ${{ github.event_name == 'release' && '' || 'Always up to date' }}
-          overwrite: true
+          automatic_release_tag: ${{ github.event_name == 'release' && ${{ github.ref }} || 'continuous' }}
+          prerelease: ${{ github.event_name != 'release' }}
+          title: ${{ github.event_name == 'release' && ${{ github.event.release.name }} || 'Development Build' }}
+          files: |
+            flutube-windows.zip

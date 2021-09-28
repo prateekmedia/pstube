@@ -37,7 +37,7 @@
 
 ### Direct app download
 
-<a href="https://github.com/prateekmedia/flutube/releases/latest/"><img src="https://img.shields.io/badge/Download from Github-indigo?style=for-the-badge&logo=Github"/></a>
+<a href="https://github.com/prateekmedia/flutube/releases/latest/"><img src="https://img.shields.io/badge/Download latest version-indigo?style=for-the-badge&logo=Github"/></a>  <a href="https://github.com/prateekmedia/flutube/releases/continuous/"><img src="https://img.shields.io/badge/Download nightly build-157?style=for-the-badge&logo=Github"/></a>
 
 ---
 

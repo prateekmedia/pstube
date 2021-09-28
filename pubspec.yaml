@@ -3,7 +3,7 @@ description: Youtube video downloader made using flutter.
 
 publish_to: "none"
 
-version: 1.0.0+1
+version: 0.4.0
 
 environment:
   sdk: ">=2.12.0 <3.0.0"

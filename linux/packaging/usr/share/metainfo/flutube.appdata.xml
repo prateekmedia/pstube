@@ -35,7 +35,7 @@
 	</screenshots>
 	<launchable type="desktop-id">flutube.desktop</launchable>
 	<releases>
-		<release version="0.1.4" date="2021-09-17"/>
+		<release version="0.4.0" date="2021-09-28"/>
 	</releases>
 	<content_rating type="oars-1.0" />
 	<update_contact>pankajsunal123@gmail.com</update_contact>
