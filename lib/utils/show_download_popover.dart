@@ -62,6 +62,7 @@ class DownloadsWidget extends ConsumerWidget {
                     ),
                   if (ref.watch(thumbnailDownloaderProvider)) ...[
                     linksHeader(
+                      context,
                       icon: LucideIcons.image,
                       label: "Thumbnail",
                       padding: const EdgeInsets.only(top: 6, bottom: 14),
@@ -74,6 +75,7 @@ class DownloadsWidget extends ConsumerWidget {
                       ),
                   ],
                   linksHeader(
+                    context,
                     icon: LucideIcons.film,
                     label: "Video + Audio",
                     padding: const EdgeInsets.only(top: 6, bottom: 14),
@@ -85,6 +87,7 @@ class DownloadsWidget extends ConsumerWidget {
                       onClose: onClose,
                     ),
                   linksHeader(
+                    context,
                     icon: LucideIcons.music,
                     label: "Audio only",
                   ),
@@ -95,6 +98,7 @@ class DownloadsWidget extends ConsumerWidget {
                       onClose: onClose,
                     ),
                   linksHeader(
+                    context,
                     icon: LucideIcons.video,
                     label: "Video only",
                   ),
@@ -113,7 +117,11 @@ class DownloadsWidget extends ConsumerWidget {
 }
 
 Widget linksHeader(
-    {required IconData icon, required String label, EdgeInsets padding = const EdgeInsets.symmetric(vertical: 14)}) {
+  BuildContext context, {
+  required IconData icon,
+  required String label,
+  EdgeInsets padding = const EdgeInsets.symmetric(vertical: 14),
+}) {
   return Padding(
     padding: padding,
     child: Row(
@@ -123,7 +131,10 @@ Widget linksHeader(
           size: 22,
         ),
         const SizedBox(width: 10),
-        Text(label)
+        Text(
+          label,
+          style: context.textTheme.headline5,
+        )
       ],
     ),
   );
@@ -185,6 +196,7 @@ class CustomListTile extends ConsumerWidget {
                           : stream is ThumbnailStreamInfo
                               ? stream.name
                               : "",
+                  style: context.textTheme.headline5,
                   textAlign: TextAlign.center,
                 ),
               )

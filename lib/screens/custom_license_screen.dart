@@ -78,7 +78,10 @@ class LicenseInfoPage extends StatelessWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(currentPackage.name),
+            Text(
+              currentPackage.name,
+              style: context.textTheme.headline4,
+            ),
             Text('${currentPackage.count} ${currentPackage.count > 1 ? "Licenses" : "License"}',
                 style: context.textTheme.bodyText2),
           ],

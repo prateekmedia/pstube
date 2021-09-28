@@ -15,9 +15,7 @@ class CustomSearchDelegate extends SearchDelegate {
   List<Widget> buildActions(BuildContext context) => [
         IconButton(
           icon: const Icon(LucideIcons.x, size: 22),
-          onPressed: () {
-            query = '';
-          },
+          onPressed: () => query = '',
         ),
       ];
 
@@ -62,7 +60,7 @@ class SearchResult extends HookWidget {
           controller.position.pixels == controller.position.maxScrollExtent &&
           _currentPage.value != null) {
         final page = await (_currentPage.value)!.nextPage();
-        if (page == null || page.isEmpty) return;
+        if (page == null || page.isEmpty && !isMounted()) return;
 
         _currentPage.value = page;
       }
@@ -119,7 +117,9 @@ class SuggestionList extends HookWidget {
                     title: Text(snapshot.data![idx]),
                   ),
                 )
-              : getCircularProgressIndicator(),
+              : query.isNotEmpty
+                  ? getCircularProgressIndicator()
+                  : const SizedBox(),
         ),
       ),
     );

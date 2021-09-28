@@ -43,7 +43,7 @@ class ChannelInfo extends HookWidget {
                 children: [
                   Text(
                     data != null ? data.title : "",
-                    style: context.textTheme.headline6!.copyWith(color: textColor),
+                    style: context.textTheme.headline4,
                   ),
                   Text(
                     data != null
@@ -51,7 +51,7 @@ class ChannelInfo extends HookWidget {
                             ? "Hidden"
                             : data.subscribersCount!.formatNumber + " subscribers"
                         : "",
-                    style: context.textTheme.bodyText1!.copyWith(color: textColor),
+                    style: context.textTheme.bodyText2,
                   ),
                 ],
               ),

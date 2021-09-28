@@ -15,6 +15,7 @@ ThemeData getThemeData(BuildContext context, Brightness brightness) {
         brightness: brightness,
         primarySwatch: primaryColor,
       ),
+      textTheme: brightness.textTheme,
       appBarTheme: AppBarTheme(
         backgroundColor: brightness.getAltBackgroundColor,
         foregroundColor: brightness.textColor,
@@ -22,7 +23,9 @@ ThemeData getThemeData(BuildContext context, Brightness brightness) {
           systemNavigationBarColor: brightness.getBackgroundColor,
           statusBarColor: brightness.getBackgroundColor,
         ),
+        titleTextStyle: brightness.textTheme.headline3,
       ),
+      indicatorColor: primaryColor,
       navigationRailTheme: NavigationRailThemeData(
         backgroundColor: brightness.getAltBackgroundColor,
       ),

@@ -1037,9 +1037,9 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: incomplete_data
-      resolved-ref: "09b28a7bebe34d164e826ef2a9cec05f36c4930d"
-      url: "https://github.com/vi-k/youtube_explode_dart"
+      ref: HEAD
+      resolved-ref: "70531a0632d54784f288938e3dfb766cbfe6d6dc"
+      url: "https://github.com/Hexer10/youtube_explode_dart"
     source: git
     version: "1.10.7-dev.1"
 sdks:

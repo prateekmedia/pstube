@@ -1,5 +1,6 @@
 export 'build_column_or_row.dart';
 export 'build_comment_box.dart';
+export 'build_search_button.dart';
 export 'comment_box.dart';
 export 'channel_logo.dart';
 export 'channel_info.dart';

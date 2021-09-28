@@ -103,10 +103,7 @@ class MyHomePage extends HookWidget {
           ],
         ),
         actions: [
-          IconButton(
-            onPressed: () => showSearch(context: context, delegate: CustomSearchDelegate()),
-            icon: const Icon(LucideIcons.search, size: 20),
-          ),
+          buildSearchButton(context),
           if (_currentIndex.value == 4)
             Consumer(builder: (context, ref, _) {
               return PopupMenuButton(
@@ -194,7 +191,7 @@ class MyHomePage extends HookWidget {
             items: [
               for (var item in navItems.entries)
                 SalomonBottomBarItem(
-                  title: Text(item.key),
+                  title: Text(item.key, style: context.textTheme.bodyText1!.copyWith(fontSize: 15)),
                   icon: Icon(item.value[0], size: 20),
                   activeIcon: Icon(item.value.length == 2 ? item.value[1] : item.value[0], size: 20),
                 ),

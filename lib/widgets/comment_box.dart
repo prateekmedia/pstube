@@ -78,12 +78,15 @@ class CommentBox extends HookConsumerWidget {
                     child: !isInsideReply
                         ? ReadMoreText(
                             comment.text,
-                            style: context.textTheme.bodyText1,
+                            style: context.textTheme.bodyText2!.copyWith(color: context.brightness.textColor),
                             trimLines: 4,
                             trimMode: TrimMode.Line,
                             trimCollapsedText: '\nRead more',
                             trimExpandedText: '\nShow less',
-                            lessStyle: context.textTheme.bodyText1!.copyWith(fontSize: 14),
+                            lessStyle: context.textTheme.bodyText1!.copyWith(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
                             moreStyle: context.textTheme.bodyText1!.copyWith(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,

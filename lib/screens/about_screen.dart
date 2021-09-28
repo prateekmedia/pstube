@@ -32,7 +32,7 @@ class AboutScreen extends StatelessWidget {
                       children: [
                         Text(
                           myApp.name,
-                          style: context.textTheme.headline6!.copyWith(fontWeight: FontWeight.w600),
+                          style: context.textTheme.headline3,
                         ),
                         const Divider(height: 6),
                         Text(
@@ -66,11 +66,8 @@ class AboutScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                  child: Text(
-                    'Developer',
-                    style: context.textTheme.headline6!.copyWith(fontWeight: FontWeight.w600),
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  child: Text('Developer', style: context.textTheme.headline4),
                 ),
                 for (var ftinfo in developerInfos) ...[
                   const Divider(),
@@ -87,7 +84,7 @@ class AboutScreen extends StatelessWidget {
                             children: [
                               Text(
                                 ftinfo.name,
-                                style: context.textTheme.headline6!.copyWith(fontWeight: FontWeight.w600),
+                                style: context.textTheme.headline3,
                               ),
                               const Divider(height: 6),
                               Text(

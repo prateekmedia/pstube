@@ -103,7 +103,7 @@ class VideoScreen extends HookConsumerWidget {
                                       children: [
                                         Text(
                                           videoData.title,
-                                          style: context.textTheme.headline6,
+                                          style: context.textTheme.headline3,
                                         ),
                                         const SizedBox(height: 10),
                                         Row(
@@ -157,11 +157,7 @@ class VideoScreen extends HookConsumerWidget {
                                                           AppBar(
                                                             leading: const SizedBox(),
                                                             centerTitle: true,
-                                                            title: Text(
-                                                              'Download links',
-                                                              style: context.textTheme.bodyText2!
-                                                                  .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
-                                                            ),
+                                                            title: const Text('Download links'),
                                                             actions: [
                                                               IconButton(
                                                                   icon: const Icon(LucideIcons.x),
@@ -326,7 +322,7 @@ class CommentsWidget extends HookWidget {
           controller.position.pixels == controller.position.maxScrollExtent &&
           _currentPage.value != null) {
         final page = await (_currentPage.value)!.nextPage();
-        if (page == null || page.isEmpty) return;
+        if (page == null || page.isEmpty && !isMounted()) return;
 
         _currentPage.value = page;
       }
@@ -351,11 +347,9 @@ class CommentsWidget extends HookWidget {
                 )
               : const SizedBox(),
           centerTitle: true,
-          title: Text(
-              (currentPage.value == 0)
-                  ? (snapshot.data != null ? snapshot.data!.totalLength : 0).formatNumber + " comments"
-                  : "Replies",
-              style: context.textTheme.bodyText2!.copyWith(fontWeight: FontWeight.bold, fontSize: 18)),
+          title: Text((currentPage.value == 0)
+              ? (snapshot.data != null ? snapshot.data!.totalLength : 0).formatNumber + " comments"
+              : "Replies"),
           actions: [
             IconButton(
               onPressed: onClose ?? context.back,
@@ -471,7 +465,7 @@ class DescriptionWidget extends StatelessWidget {
       children: [
         Text(
           "Description",
-          style: context.textTheme.bodyText1!.copyWith(fontWeight: FontWeight.bold, fontSize: isInsidePopup ? 15 : 18),
+          style: context.textTheme.bodyText1!.copyWith(fontWeight: FontWeight.bold, fontSize: isInsidePopup ? 16 : 18),
         ),
         const SizedBox(height: 15),
         Row(
@@ -531,7 +525,7 @@ class DescriptionInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(title, style: context.textTheme.headline6!),
+        Text(title, style: context.textTheme.headline3!),
         Text(body),
       ],
     );
