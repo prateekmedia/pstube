@@ -2,7 +2,7 @@
 <component type="desktop-application">
 	<id>flutube</id>
 	<name>FluTube</name>
-	<summary></summary>
+	<summary>Youtube video client made using flutter</summary>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-only</project_license>
 	<recommends>
@@ -13,7 +13,6 @@
 	<developer_name>Prateek SU</developer_name>
 	<url type="homepage">https://github.com/prateekmedia/flutube</url>
 	<description>
-		<p>Youtube video client made using flutter</p>
 		<p>Features:</p>
 		<ul>
 			<li>Beautiful user interface</li>
