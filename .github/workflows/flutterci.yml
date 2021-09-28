@@ -12,6 +12,7 @@ on:
   release:
     types:
       - created
+      - edited
 
 jobs:
   build-android:
@@ -53,7 +54,7 @@ jobs:
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: ${{ github.event_name == 'release' && github.ref || 'continuous' }}
+          automatic_release_tag: ${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}
           prerelease: ${{ github.event_name != 'release' }}
           title: ${{ github.event_name == 'release' && github.event.release.name || 'Development Build' }}
           files: |
@@ -109,7 +110,7 @@ jobs:
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: ${{ github.event_name == 'release' && github.ref || 'continuous' }}
+          automatic_release_tag: ${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}
           prerelease: ${{ github.event_name != 'release' }}
           title: ${{ github.event_name == 'release' && github.event.release.name || 'Development Build' }}
           files: |
@@ -142,7 +143,7 @@ jobs:
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: ${{ github.event_name == 'release' && github.ref || 'continuous' }}
+          automatic_release_tag: ${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}
           prerelease: ${{ github.event_name != 'release' }}
           title: ${{ github.event_name == 'release' && github.event.release.name || 'Development Build' }}
           files: |
