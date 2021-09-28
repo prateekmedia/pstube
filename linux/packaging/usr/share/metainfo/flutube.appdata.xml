@@ -13,6 +13,7 @@
 	<developer_name>Prateek SU</developer_name>
 	<url type="homepage">https://github.com/prateekmedia/flutube</url>
 	<description>
+		<p>Youtube video client made using flutter</p>
 		<p>Features:</p>
 		<ul>
 			<li>Beautiful user interface</li>
