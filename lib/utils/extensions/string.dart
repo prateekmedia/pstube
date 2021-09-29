@@ -1,7 +1,7 @@
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 extension UrlLauncher on String {
-  launchIt() async => await canLaunch(this) ? await launch(this) : throw 'Could not launch $this';
+  launchIt() async => await url_launcher.launch(this);
 
   Duration parseDuration() {
     int hours = 0;
