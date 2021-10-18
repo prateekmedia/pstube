@@ -31,7 +31,12 @@ class CustomSearchDelegate extends SearchDelegate {
   Widget buildSuggestions(BuildContext context) {
     return SuggestionList(
       query: query,
-      showResults: () async => query.isNotEmpty ? showResults(context) : true,
+      showResults: () async => query.isNotEmpty
+          ? () {
+              showResults(context);
+              return false;
+            }
+          : true,
       onTap: (value) {
         query = value;
         showResults(context);
@@ -107,10 +112,7 @@ class SuggestionList extends HookWidget {
     final yt = YoutubeExplode();
     Future<List<String>> getSuggestions() => yt.search.getQuerySuggestions(query).whenComplete(() => yt.close());
     return WillPopScope(
-      onWillPop: () async {
-        await showResults();
-        return false;
-      },
+      onWillPop: () async => await showResults(),
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8),
