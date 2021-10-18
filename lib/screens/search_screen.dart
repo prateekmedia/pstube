@@ -9,7 +9,7 @@ import '../utils/utils.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
   @override
-  TextStyle? get searchFieldStyle => const TextStyle(fontSize: 16);
+  TextStyle get searchFieldStyle => const TextStyle(fontSize: 16);
 
   @override
   List<Widget> buildActions(BuildContext context) => [
@@ -31,6 +31,7 @@ class CustomSearchDelegate extends SearchDelegate {
   Widget buildSuggestions(BuildContext context) {
     return SuggestionList(
       query: query,
+      showResults: () async => query.isNotEmpty ? showResults(context) : true,
       onTap: (value) {
         query = value;
         showResults(context);
@@ -92,34 +93,42 @@ class SearchResult extends HookWidget {
 class SuggestionList extends HookWidget {
   final Function(String value) onTap;
   final String query;
+  final Function() showResults;
 
   const SuggestionList({
     Key? key,
     required this.query,
     required this.onTap,
+    required this.showResults,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final yt = YoutubeExplode();
     Future<List<String>> getSuggestions() => yt.search.getQuerySuggestions(query).whenComplete(() => yt.close());
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: FutureBuilder<List<String>>(
-          future: getSuggestions(),
-          builder: (ctx, snapshot) => snapshot.data != null
-              ? ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, idx) => ListTile(
-                    onTap: () => onTap(snapshot.data![idx]),
-                    title: Text(snapshot.data![idx]),
-                  ),
-                )
-              : query.isNotEmpty
-                  ? getCircularProgressIndicator()
-                  : const SizedBox(),
+    return WillPopScope(
+      onWillPop: () async {
+        await showResults();
+        return false;
+      },
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: FutureBuilder<List<String>>(
+            future: getSuggestions(),
+            builder: (ctx, snapshot) => snapshot.data != null
+                ? ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, idx) => ListTile(
+                      onTap: () => onTap(snapshot.data![idx]),
+                      title: Text(snapshot.data![idx]),
+                    ),
+                  )
+                : query.isNotEmpty
+                    ? getCircularProgressIndicator()
+                    : const SizedBox(),
+          ),
         ),
       ),
     );
