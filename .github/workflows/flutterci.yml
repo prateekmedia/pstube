@@ -12,6 +12,7 @@ on:
   release:
     types:
       - created
+      - edited
 
 jobs:
   build-android:
