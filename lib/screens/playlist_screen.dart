@@ -76,7 +76,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> with AutomaticK
                           onPressed: () {
                             playlistP.removePlaylist(entry.key);
                           },
-                          icon: const Icon(LucideIcons.trash2),
+                          icon: const Icon(LucideIcons.listMinus),
                         ),
                       ],
                     ),

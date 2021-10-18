@@ -8,6 +8,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import 'package:flutube/utils/utils.dart';
@@ -27,7 +28,10 @@ void main() async {
   // Initialize Hive database
   Hive.registerAdapter(LikedCommentAdapter());
   Hive.registerAdapter(QueryVideoAdapter());
-  await Hive.initFlutter();
+  await Hive.initFlutter(Platform.isAndroid || Platform.isIOS || Platform.isMacOS
+      ? (await getApplicationDocumentsDirectory()).path
+      : (await getDownloadsDirectory())!.path.replaceFirst('Downloads', '.flutube') +
+          (Platform.isWindows ? '\\' : '/'));
   await Hive.openBox('playlist');
   await Hive.openBox('likedList');
   await Hive.openBox('downloadList');
@@ -81,7 +85,7 @@ class MyHomePage extends HookConsumerWidget {
     final Map<String, List<IconData>> navItems = {
       "Home": [LucideIcons.home],
       "Liked": [LucideIcons.thumbsUp],
-      "Playlist": [Icons.playlist_add],
+      "Playlist": [LucideIcons.listPlus],
       "Downloads": [LucideIcons.download],
       "Settings": [LucideIcons.settings],
     };

@@ -184,7 +184,7 @@ class VideoScreen extends HookConsumerWidget {
                                           label: "Download",
                                         ),
                                         iconWithBottomLabel(
-                                          icon: Icons.playlist_add_outlined,
+                                          icon: LucideIcons.listPlus,
                                           onPressed: () {
                                             showPopoverWB(
                                               context: context,
