@@ -40,7 +40,7 @@ android {
 
     defaultConfig {
         applicationId "com.prateekmedia.flutube"
-        minSdkVersion 24
+        minSdkVersion 16
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -54,7 +54,7 @@ android {
             storePassword keyProps['storePassword']
         }
     }
-
+    
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
