@@ -30,8 +30,7 @@ void main() async {
   Hive.registerAdapter(QueryVideoAdapter());
   await Hive.initFlutter(Platform.isAndroid || Platform.isIOS || Platform.isMacOS
       ? (await getApplicationDocumentsDirectory()).path
-      : (await getDownloadsDirectory())!.path.replaceFirst('Downloads', '.flutube') +
-          (Platform.isWindows ? '\\' : '/'));
+      : (await getDownloadsDirectory())!.path.replaceFirst('Downloads', '.flutube'));
   await Hive.openBox('playlist');
   await Hive.openBox('likedList');
   await Hive.openBox('downloadList');
