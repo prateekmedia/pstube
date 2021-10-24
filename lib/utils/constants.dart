@@ -22,8 +22,8 @@ ThemeData getThemeData(BuildContext context, Brightness brightness) {
         systemOverlayStyle: SystemUiOverlayStyle(
           systemNavigationBarColor: brightness.getBackgroundColor,
           statusBarColor: brightness.getBackgroundColor,
-          statusBarIconBrightness: brightness,
-          statusBarBrightness: brightness,
+          statusBarIconBrightness: brightness.reverse,
+          statusBarBrightness: brightness.reverse,
         ),
         titleTextStyle: brightness.textTheme.headline3,
       ),
