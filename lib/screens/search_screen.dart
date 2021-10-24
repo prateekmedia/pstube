@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutube/widgets/ft_video.dart';
-import 'package:flutube/widgets/widgets.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-import '../utils/utils.dart';
+import 'package:flutube/utils/utils.dart';
+import 'package:flutube/widgets/widgets.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
   @override

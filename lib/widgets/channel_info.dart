@@ -3,7 +3,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutube/screens/screens.dart';
 import 'package:flutube/widgets/widgets.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
-import '../utils/utils.dart';
+
+import 'package:flutube/utils/utils.dart';
 
 class ChannelInfo extends HookWidget {
   const ChannelInfo({

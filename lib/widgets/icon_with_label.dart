@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../utils/utils.dart';
+import 'package:flutube/utils/utils.dart';
 
 enum SecColor { dark, light }
 

@@ -5,8 +5,8 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-import 'widgets.dart';
-import '../utils/utils.dart';
+import 'package:flutube/utils/utils.dart';
+import 'package:flutube/widgets/widgets.dart';
 
 class FTVideo extends StatelessWidget {
   final String? videoUrl;

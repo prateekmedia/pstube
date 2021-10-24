@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
-import '../utils/utils.dart';
-import '../widgets/widgets.dart';
+
+import 'package:flutube/utils/utils.dart';
+import 'package:flutube/widgets/widgets.dart';
 
 class ChannelScreen extends HookWidget {
   final String id;

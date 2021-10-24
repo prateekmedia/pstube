@@ -11,7 +11,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:share_plus/share_plus.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-import '../utils/utils.dart';
+import 'package:flutube/utils/utils.dart';
 
 class VideoScreen extends HookConsumerWidget {
   final Video? video;
