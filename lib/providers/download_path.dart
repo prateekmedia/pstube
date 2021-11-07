@@ -27,7 +27,7 @@ class DownloadPathNotifier extends ChangeNotifier {
   init() async {
     _path = MyPrefs().prefs.getString('downloadPath') ??
         (Platform.isAndroid
-            ? "/storage/emulated/0/Downloads/${myApp.name}/"
+            ? "/storage/emulated/0/Download/${myApp.name}/"
             : p.join((await getDownloadsDirectory())!.path, myApp.name) + (Platform.isWindows ? '\\' : '/'));
     if (!await Directory(path).exists()) await Directory(path).create();
   }
