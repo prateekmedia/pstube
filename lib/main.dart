@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
@@ -23,9 +24,12 @@ void main() async {
   // Initialize Hive database
   Hive.registerAdapter(LikedCommentAdapter());
   Hive.registerAdapter(QueryVideoAdapter());
-  await Hive.initFlutter(Platform.isAndroid || Platform.isIOS || Platform.isMacOS
-      ? (await getApplicationDocumentsDirectory()).path
-      : (await getDownloadsDirectory())!.path.replaceFirst('Downloads', '.flutube'));
+  await Hive.initFlutter(
+      Platform.isAndroid || Platform.isIOS || Platform.isMacOS
+          ? (await getApplicationDocumentsDirectory()).path
+          : (await getDownloadsDirectory())!
+              .path
+              .replaceFirst('Downloads', '.flutube'));
   await Hive.openBox('playlist');
   await Hive.openBox('likedList');
   await Hive.openBox('downloadList');
@@ -48,6 +52,11 @@ class MyApp extends HookConsumerWidget {
         return child;
       },
       navigatorObservers: [BotToastNavigatorObserver()],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       theme: getThemeData(context, Brightness.light),
       darkTheme: getThemeData(context, Brightness.dark),
       themeMode: ref.watch(themeTypeProvider),

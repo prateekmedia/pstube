@@ -28,7 +28,9 @@ class DownloadsScreen extends ConsumerWidget {
           const SizedBox(height: 10),
           const Text('No Downloads found').center()
         ] else
-          for (DownloadItem item in downloadList) DownloadItemBuilder(item: item, downloadListUtils: downloadListUtils),
+          for (DownloadItem item in downloadList)
+            DownloadItemBuilder(
+                item: item, downloadListUtils: downloadListUtils),
       ],
     );
   }
@@ -79,7 +81,8 @@ class DownloadItemBuilder extends StatelessWidget {
                       child: Align(
                         alignment: const Alignment(0.98, 0.94),
                         child: IconWithLabel(
-                          label: item.queryVideo.duration.parseDuration().format(),
+                          label:
+                              item.queryVideo.duration.parseDuration().format(),
                           secColor: SecColor.dark,
                         ),
                       ),
@@ -103,7 +106,9 @@ class DownloadItemBuilder extends StatelessWidget {
                     const SizedBox(height: 5),
                     Row(
                       children: [
-                        IconWithLabel(label: '${((item.downloaded / item.total) * 100).toStringAsFixed(1)}%'),
+                        IconWithLabel(
+                            label:
+                                '${((item.downloaded / item.total) * 100).toStringAsFixed(1)}%'),
                         const SizedBox(width: 5),
                         IconWithLabel(label: item.total.getFileSize()),
                       ],
@@ -112,7 +117,8 @@ class DownloadItemBuilder extends StatelessWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(15),
                       child: LinearProgressIndicator(
-                        value: item.total != 0 ? item.downloaded / item.total : 0,
+                        value:
+                            item.total != 0 ? item.downloaded / item.total : 0,
                         minHeight: 10,
                       ),
                     ),
@@ -135,20 +141,26 @@ class DownloadItemBuilder extends StatelessWidget {
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Clear item from download list?', style: context.textTheme.bodyText1),
+                                    Text('Clear item from download list?',
+                                        style: context.textTheme.bodyText1),
                                     CheckboxListTile(
                                       value: value,
-                                      onChanged: (val) => deleteFromStorage.value = val!,
-                                      title: const Text("Also delete from storage"),
+                                      onChanged: (val) =>
+                                          deleteFromStorage.value = val!,
+                                      title: const Text(
+                                          "Also delete from storage"),
                                     ),
                                   ],
                                 );
                               }),
                           confirmText: "Yes",
                           onConfirm: () {
-                            if (File(item.queryVideo.path + item.queryVideo.name).existsSync() &&
+                            if (File(item.queryVideo.path +
+                                        item.queryVideo.name)
+                                    .existsSync() &&
                                 deleteFromStorage.value) {
-                              File(item.queryVideo.path + item.queryVideo.name).deleteSync();
+                              File(item.queryVideo.path + item.queryVideo.name)
+                                  .deleteSync();
                             }
                             downloadListUtils.removeDownload(item.queryVideo);
                             context.back();

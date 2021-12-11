@@ -15,7 +15,8 @@ class ChannelLogo extends HookWidget {
   Widget build(BuildContext context) {
     final bool channelHasData = channel != null && channel!.hasData;
     final Channel? channelData = channelHasData ? channel!.data : null;
-    final Color bgColor = Colors.primaries[Random().nextInt(Colors.primaries.length)];
+    final Color bgColor =
+        Colors.primaries[Random().nextInt(Colors.primaries.length)];
 
     final Widget defaultPlaceholder = Container(
       width: size,
@@ -26,7 +27,8 @@ class ChannelLogo extends HookWidget {
           channelHasData ? channelData!.title.characters.first : "...",
           style: context.textTheme.headline5!.copyWith(
             fontWeight: FontWeight.w500,
-            color: bgColor.computeLuminance() > 0.5 ? Colors.black : Colors.white,
+            color:
+                bgColor.computeLuminance() > 0.5 ? Colors.black : Colors.white,
           ),
         ),
       ),

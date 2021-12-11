@@ -83,7 +83,8 @@ Future<T?> showPopoverWB<T>({
             TextButton(
               style: TextButton.styleFrom(
                 primary: context.textTheme.bodyText2!.color,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               ),
               child: Text(cancelText),
               onPressed: () {
@@ -94,10 +95,15 @@ Future<T?> showPopoverWB<T>({
             TextButton(
               style: TextButton.styleFrom(
                 primary: context.textTheme.bodyText1!.color,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               ),
               child: Text(confirmText),
-              onPressed: disableOnNoConfirm && controller != null && controller.value.text.isEmpty ? null : onConfirm,
+              onPressed: disableOnNoConfirm &&
+                      controller != null &&
+                      controller.value.text.isEmpty
+                  ? null
+                  : onConfirm,
             ),
           ],
         ),
@@ -133,7 +139,8 @@ class Popover extends StatelessWidget {
         Flexible(
           fit: FlexFit.loose,
           child: Padding(
-            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Container(
               margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               padding: innerPadding,
@@ -141,7 +148,9 @@ class Popover extends StatelessWidget {
                 color: theme.cardColor,
                 borderRadius: const BorderRadius.all(Radius.circular(16.0)),
               ),
-              child: isScrollable ? SingleChildScrollView(padding: padding, child: child) : child,
+              child: isScrollable
+                  ? SingleChildScrollView(padding: padding, child: child)
+                  : child,
             ),
           ),
         ),

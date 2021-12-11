@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutube/screens/custom_license_screen.dart';
 
 import 'package:flutube/utils/utils.dart';
+import 'package:flutube/screens/screens.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({Key? key}) : super(key: key);
@@ -18,9 +18,9 @@ class AboutScreen extends StatelessWidget {
       ),
       body: MasonryGridView(
         gridDelegate: SliverMasonryGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: context.width > 750 ? 2 : 1,),
+          crossAxisCount: context.width > 750 ? 2 : 1,
+        ),
         mainAxisSpacing: 6,
-        
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
         crossAxisSpacing: 10,
         children: [
@@ -31,7 +31,8 @@ class AboutScreen extends StatelessWidget {
                 Image.memory(base64Decode(myApp.logoBase64)),
                 Flexible(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
@@ -50,12 +51,19 @@ class AboutScreen extends StatelessWidget {
                           children: [
                             ElevatedButton(
                               onPressed: myApp.url.launchIt,
-                              child: const Text('Star on github'),
+                              child: const Text(
+                                'Star on github',
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ),
                             const SizedBox(width: 8),
                             ElevatedButton(
-                              onPressed: () => context.pushPage(const CustomLicensePage()),
-                              child: const Text('Licenses'),
+                              onPressed: () =>
+                                  context.pushPage(const CustomLicensePage()),
+                              child: const Text(
+                                'Licenses',
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ),
                           ],
                         ),
@@ -72,7 +80,8 @@ class AboutScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                   child: Text('Developer', style: context.textTheme.headline4),
                 ),
                 for (var ftinfo in developerInfos) ...[
@@ -83,7 +92,8 @@ class AboutScreen extends StatelessWidget {
                       Image.memory(base64Decode(ftinfo.logoBase64)),
                       Flexible(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 5, vertical: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
@@ -100,7 +110,10 @@ class AboutScreen extends StatelessWidget {
                               const SizedBox(height: 8),
                               ElevatedButton(
                                 onPressed: ftinfo.url.launchIt,
-                                child: const Text('Follow on github'),
+                                child: const Text(
+                                  'Follow on github',
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
                             ],
                           ),

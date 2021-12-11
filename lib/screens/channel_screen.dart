@@ -29,24 +29,23 @@ class ChannelScreen extends HookWidget {
               ),
             ),
             const Divider(height: 26),
-            Text("Joined " + channelInfo.value!.joinDate, style: context.textTheme.bodyText2),
+            Text("Joined " + channelInfo.value!.joinDate,
+                style: context.textTheme.bodyText2),
             const Divider(height: 26),
-            Text(channelInfo.value!.viewCount.addCommas + " views", style: context.textTheme.bodyText2),
+            Text(channelInfo.value!.viewCount.addCommas + " views",
+                style: context.textTheme.bodyText2),
             const Divider(height: 26),
             Text(channelInfo.value!.country),
           ]
         : [];
 
     loadInitData() async {
-      await Future.wait<void>([
-        (() async {
-          channel.value = await yt.channels.get(id);
-          if (channel.value != null) {
-            _currentVidPage.value = await yt.channels.getUploadsFromPage(channel.value!.id.value);
-          }
-        })(),
-        (() async => channelInfo.value = await yt.channels.getAboutPage(id))(),
-      ]);
+      channel.value = await yt.channels.get(id);
+      if (channel.value != null) {
+        _currentVidPage.value =
+            await yt.channels.getUploadsFromPage(channel.value!.id.value);
+      }
+      channelInfo.value = await yt.channels.getAboutPage(id);
 
       // channelInfo.value!.channelLinks
     }
@@ -75,7 +74,8 @@ class ChannelScreen extends HookWidget {
               icon: const FaIcon(FontAwesomeIcons.chevronLeft),
               onPressed: context.back,
             ),
-            title: Text(channel.value?.title ?? "", style: context.textTheme.headline5),
+            title: Text(channel.value?.title ?? "",
+                style: context.textTheme.headline5),
             bottom: TabBar(
               controller: tabController,
               indicatorSize: TabBarIndicatorSize.label,
@@ -96,14 +96,15 @@ class ChannelScreen extends HookWidget {
                       controller: controller,
                       shrinkWrap: true,
                       primary: false,
-                      itemBuilder: (ctx, idx) => idx == _currentVidPage.value!.length
-                          ? getCircularProgressIndicator()
-                          : FTVideo(
-                              videoData: _currentVidPage.value![idx],
-                              loadData: true,
-                              showChannel: false,
-                              isRow: true,
-                            ),
+                      itemBuilder: (ctx, idx) =>
+                          idx == _currentVidPage.value!.length
+                              ? getCircularProgressIndicator()
+                              : FTVideo(
+                                  videoData: _currentVidPage.value![idx],
+                                  loadData: true,
+                                  showChannel: false,
+                                  isRow: true,
+                                ),
                       itemCount: _currentVidPage.value!.length + 1,
                     )
                   : getCircularProgressIndicator(),
@@ -118,7 +119,8 @@ class ChannelScreen extends HookWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             children: [
                               Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
                                 child: Text(
                                   "Description  ",
                                   style: context.textTheme.headline5!,
@@ -127,7 +129,8 @@ class ChannelScreen extends HookWidget {
                               SelectableText(channelInfo.value!.description),
                               const Divider(),
                               Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
                                 child: Text(
                                   "Links",
                                   style: context.textTheme.headline5!,
@@ -135,7 +138,8 @@ class ChannelScreen extends HookWidget {
                               ),
                               Wrap(
                                 children: [
-                                  for (ChannelLink link in channelInfo.value!.channelLinks)
+                                  for (ChannelLink link
+                                      in channelInfo.value!.channelLinks)
                                     GestureDetector(
                                       onTap: link.url.toString().launchIt,
                                       child: Chip(

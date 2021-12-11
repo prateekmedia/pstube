@@ -29,7 +29,9 @@ class VideoScreen extends HookConsumerWidget {
   Widget build(BuildContext context, ref) {
     final yt = YoutubeExplode();
     final videoSnapshot = loadData || videoId != null
-        ? useFuture(useMemoized(() => yt.videos.get(videoId ?? video!.id.value).whenComplete(() => yt.close())))
+        ? useFuture(useMemoized(() => yt.videos
+            .get(videoId ?? video!.id.value)
+            .whenComplete(() => yt.close())))
         : null;
     final Video? videoData = videoSnapshot != null ? videoSnapshot.data : video;
     final replyComment = useState<Comment?>(null);
@@ -39,7 +41,10 @@ class VideoScreen extends HookConsumerWidget {
     final _textController = TextEditingController();
 
     final likedList = ref.watch(likedListProvider);
-    final isLiked = videoData != null ? useState<int>(likedList.likedVideoList.contains(videoData.url) ? 1 : 0) : null;
+    final isLiked = videoData != null
+        ? useState<int>(
+            likedList.likedVideoList.contains(videoData.url) ? 1 : 0)
+        : null;
 
     updateLike(int value) {
       isLiked!.value = isLiked.value != value ? value : 0;
@@ -82,7 +87,8 @@ class VideoScreen extends HookConsumerWidget {
                                       AspectRatio(
                                         aspectRatio: 16 / 9,
                                         child: CachedNetworkImage(
-                                          imageUrl: videoData.thumbnails.mediumResUrl,
+                                          imageUrl:
+                                              videoData.thumbnails.mediumResUrl,
                                           fit: BoxFit.fill,
                                         ),
                                       ),
@@ -90,7 +96,8 @@ class VideoScreen extends HookConsumerWidget {
                                           child: Align(
                                         alignment: Alignment.topLeft,
                                         child: IconButton(
-                                          icon: const FaIcon(FontAwesomeIcons.chevronLeft),
+                                          icon: const FaIcon(
+                                              FontAwesomeIcons.chevronLeft),
                                           onPressed: context.back,
                                         ),
                                       ))
@@ -99,7 +106,8 @@ class VideoScreen extends HookConsumerWidget {
                                   Container(
                                     padding: const EdgeInsets.all(12),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           videoData.title,
@@ -108,9 +116,13 @@ class VideoScreen extends HookConsumerWidget {
                                         const SizedBox(height: 10),
                                         Row(
                                           children: [
-                                            Text(videoData.engagement.viewCount.formatNumber + ' views'),
+                                            Text(videoData.engagement.viewCount
+                                                    .formatNumber +
+                                                ' views'),
                                             Text(videoData.publishDate != null
-                                                ? '  •  ' + timeago.format(videoData.publishDate!)
+                                                ? '  •  ' +
+                                                    timeago.format(
+                                                        videoData.publishDate!)
                                                 : ''),
                                           ],
                                         ),
@@ -118,21 +130,28 @@ class VideoScreen extends HookConsumerWidget {
                                     ),
                                   ),
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 2),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         iconWithBottomLabel(
-                                          icon:
-                                              isLiked!.value == 1 ? FontAwesomeIcons.solidThumbsUp : FontAwesomeIcons.thumbsUp,
+                                          icon: isLiked!.value == 1
+                                              ? FontAwesomeIcons.solidThumbsUp
+                                              : FontAwesomeIcons.thumbsUp,
                                           onPressed: () => updateLike(1),
-                                          label: videoData.engagement.likeCount != null
-                                              ? videoData.engagement.likeCount!.formatNumber
-                                              : "Like",
+                                          label:
+                                              videoData.engagement.likeCount !=
+                                                      null
+                                                  ? videoData.engagement
+                                                      .likeCount!.formatNumber
+                                                  : "Like",
                                         ),
                                         iconWithBottomLabel(
-                                          icon:
-                                              isLiked.value == 2 ? FontAwesomeIcons.solidThumbsDown : FontAwesomeIcons.thumbsDown,
+                                          icon: isLiked.value == 2
+                                              ? FontAwesomeIcons.solidThumbsDown
+                                              : FontAwesomeIcons.thumbsDown,
                                           onPressed: () => updateLike(2),
                                           label: "Dislike",
                                         ),
@@ -145,35 +164,60 @@ class VideoScreen extends HookConsumerWidget {
                                         ),
                                         iconWithBottomLabel(
                                           icon: FontAwesomeIcons.download,
-                                          onPressed: downloadsSideWidget.value != null
-                                              ? () => downloadsSideWidget.value = null
+                                          onPressed: downloadsSideWidget
+                                                      .value !=
+                                                  null
+                                              ? () => downloadsSideWidget
+                                                  .value = null
                                               : context.isMobile
-                                                  ? () => showDownloadPopup(context, video: videoData)
+                                                  ? () => showDownloadPopup(
+                                                      context,
+                                                      video: videoData)
                                                   : () {
-                                                      commentSideWidget.value = null;
-                                                      downloadsSideWidget.value = Column(
+                                                      commentSideWidget.value =
+                                                          null;
+                                                      downloadsSideWidget
+                                                          .value = Column(
                                                         children: [
                                                           AppBar(
-                                                            leading: const SizedBox(),
+                                                            leading:
+                                                                const SizedBox(),
                                                             centerTitle: true,
-                                                            title: const Text('Download links'),
+                                                            title: const Text(
+                                                                'Download links'),
                                                             actions: [
                                                               IconButton(
-                                                                  icon: const FaIcon(FontAwesomeIcons.times),
-                                                                  onPressed: () {
-                                                                    downloadsSideWidget.value = null;
+                                                                  icon: const FaIcon(
+                                                                      FontAwesomeIcons
+                                                                          .times),
+                                                                  onPressed:
+                                                                      () {
+                                                                    downloadsSideWidget
+                                                                            .value =
+                                                                        null;
                                                                   }),
-                                                              const SizedBox(width: 16),
+                                                              const SizedBox(
+                                                                  width: 16),
                                                             ],
                                                           ),
                                                           Expanded(
-                                                            child: SingleChildScrollView(
-                                                              controller: ScrollController(),
-                                                              padding: const EdgeInsets.symmetric(
-                                                                  horizontal: 15, vertical: 12),
-                                                              child: DownloadsWidget(
-                                                                video: videoData,
-                                                                onClose: () => downloadsSideWidget.value = null,
+                                                            child:
+                                                                SingleChildScrollView(
+                                                              controller:
+                                                                  ScrollController(),
+                                                              padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      15,
+                                                                  vertical: 12),
+                                                              child:
+                                                                  DownloadsWidget(
+                                                                video:
+                                                                    videoData,
+                                                                onClose: () =>
+                                                                    downloadsSideWidget
+                                                                            .value =
+                                                                        null,
                                                               ),
                                                             ),
                                                           ),
@@ -194,11 +238,15 @@ class VideoScreen extends HookConsumerWidget {
                                               hint: "Create New",
                                               onConfirm: () {
                                                 ref
-                                                    .read(playlistProvider.notifier)
-                                                    .addPlaylist(_textController.value.text);
-                                                _textController.value = const TextEditingValue();
+                                                    .read(playlistProvider
+                                                        .notifier)
+                                                    .addPlaylist(_textController
+                                                        .value.text);
+                                                _textController.value =
+                                                    const TextEditingValue();
                                               },
-                                              builder: (ctx) => PlaylistPopup(videoData: videoData),
+                                              builder: (ctx) => PlaylistPopup(
+                                                  videoData: videoData),
                                             );
                                           },
                                           label: "Save",
@@ -217,35 +265,50 @@ class VideoScreen extends HookConsumerWidget {
                                     onTap: commentsSnapshot.data == null
                                         ? null
                                         : commentSideWidget.value != null
-                                            ? () => commentSideWidget.value = null
+                                            ? () =>
+                                                commentSideWidget.value = null
                                             : context.isMobile
                                                 ? () => showPopover(
                                                       context: context,
                                                       isScrollable: false,
-                                                      innerPadding: EdgeInsets.zero,
+                                                      innerPadding:
+                                                          EdgeInsets.zero,
                                                       builder: (ctx) {
                                                         return CommentsWidget(
-                                                          snapshot: commentsSnapshot,
-                                                          replyComment: replyComment,
+                                                          snapshot:
+                                                              commentsSnapshot,
+                                                          replyComment:
+                                                              replyComment,
                                                         );
                                                       },
-                                                    ).whenComplete(() => currentIndex.value = 0)
+                                                    ).whenComplete(() =>
+                                                        currentIndex.value = 0)
                                                 : () {
-                                                    downloadsSideWidget.value = null;
-                                                    commentSideWidget.value = CommentsWidget(
-                                                      onClose: () => commentSideWidget.value = null,
-                                                      replyComment: replyComment,
-                                                      snapshot: commentsSnapshot,
+                                                    downloadsSideWidget.value =
+                                                        null;
+                                                    commentSideWidget.value =
+                                                        CommentsWidget(
+                                                      onClose: () =>
+                                                          commentSideWidget
+                                                              .value = null,
+                                                      replyComment:
+                                                          replyComment,
+                                                      snapshot:
+                                                          commentsSnapshot,
                                                     );
                                                   },
                                     title: const Text("Comments"),
                                     trailing: Text(
-                                      (commentsSnapshot.data != null ? commentsSnapshot.data!.totalLength : 0)
+                                      (commentsSnapshot.data != null
+                                              ? commentsSnapshot
+                                                  .data!.totalLength
+                                              : 0)
                                           .formatNumber,
                                     ),
                                   ),
                                   const Divider(),
-                                  if (context.isMobile) DescriptionWidget(video: videoData),
+                                  if (context.isMobile)
+                                    DescriptionWidget(video: videoData),
                                 ],
                               ),
                             ),
@@ -254,9 +317,12 @@ class VideoScreen extends HookConsumerWidget {
                             Flexible(
                               flex: 4,
                               child: [
-                                DescriptionWidget(video: videoData, isInsidePopup: false),
-                                if (commentSideWidget.value != null) commentSideWidget.value!,
-                                if (downloadsSideWidget.value != null) downloadsSideWidget.value!,
+                                DescriptionWidget(
+                                    video: videoData, isInsidePopup: false),
+                                if (commentSideWidget.value != null)
+                                  commentSideWidget.value!,
+                                if (downloadsSideWidget.value != null)
+                                  downloadsSideWidget.value!,
                               ].last,
                             ),
                         ],
@@ -339,20 +405,25 @@ class CommentsWidget extends HookWidget {
               ? IconButton(
                   onPressed: () {
                     pageController.animateToPage(0,
-                        duration: const Duration(milliseconds: 200), curve: Curves.easeInOut);
+                        duration: const Duration(milliseconds: 200),
+                        curve: Curves.easeInOut);
                     replyComment.value = null;
                   },
-                  icon: Icon(FontAwesomeIcons.chevronLeft, color: context.textTheme.bodyText1!.color),
+                  icon: Icon(FontAwesomeIcons.chevronLeft,
+                      color: context.textTheme.bodyText1!.color),
                 )
               : const SizedBox(),
           centerTitle: true,
           title: Text((currentPage.value == 0)
-              ? (snapshot.data != null ? snapshot.data!.totalLength : 0).formatNumber + " comments"
+              ? (snapshot.data != null ? snapshot.data!.totalLength : 0)
+                      .formatNumber +
+                  " comments"
               : "Replies"),
           actions: [
             IconButton(
               onPressed: onClose ?? context.back,
-              icon: Icon(FontAwesomeIcons.times, color: context.textTheme.bodyText1!.color),
+              icon: Icon(FontAwesomeIcons.times,
+                  color: context.textTheme.bodyText1!.color),
             )
           ],
         ),
@@ -368,7 +439,9 @@ class CommentsWidget extends HookWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 itemCount: _currentPage.value!.length + 1,
                 itemBuilder: (ctx, idx) {
-                  final comment = idx != _currentPage.value!.length ? _currentPage.value![idx] : null;
+                  final comment = idx != _currentPage.value!.length
+                      ? _currentPage.value![idx]
+                      : null;
                   return idx == _currentPage.value!.length
                       ? getCircularProgressIndicator()
                       : BuildCommentBox(
@@ -376,7 +449,8 @@ class CommentsWidget extends HookWidget {
                           onReplyTap: () {
                             replyComment.value = comment;
                             pageController.animateToPage(1,
-                                duration: const Duration(milliseconds: 200), curve: Curves.easeInOut);
+                                duration: const Duration(milliseconds: 200),
+                                curve: Curves.easeInOut);
                           },
                         );
                 },
@@ -389,7 +463,8 @@ class CommentsWidget extends HookWidget {
                   ),
                   onWillPop: () async {
                     await pageController.animateToPage(0,
-                        duration: const Duration(milliseconds: 200), curve: Curves.easeInOut);
+                        duration: const Duration(milliseconds: 200),
+                        curve: Curves.easeInOut);
                     replyComment.value = null;
                     return false;
                   }),
@@ -464,7 +539,8 @@ class DescriptionWidget extends StatelessWidget {
       children: [
         Text(
           "Description",
-          style: context.textTheme.bodyText1!.copyWith(fontWeight: FontWeight.bold, fontSize: isInsidePopup ? 16 : 18),
+          style: context.textTheme.bodyText1!.copyWith(
+              fontWeight: FontWeight.bold, fontSize: isInsidePopup ? 16 : 18),
         ),
         const SizedBox(height: 15),
         Row(
@@ -475,7 +551,8 @@ class DescriptionWidget extends StatelessWidget {
               body: 'views',
             ),
             DescriptionInfoWidget(
-              title: DateFormat('dd MMM yyy').format(video.publishDate ?? DateTime.now()),
+              title: DateFormat('dd MMM yyy')
+                  .format(video.publishDate ?? DateTime.now()),
               body: 'Upload date',
             ),
           ],

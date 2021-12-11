@@ -25,12 +25,14 @@ class ChannelInfo extends HookWidget {
   Widget build(BuildContext context) {
     double size = isOnVideo ? 40 : 60;
     final yt = YoutubeExplode();
-    final channelData =
-        channelId != null ? useFuture(useMemoized(() => yt.channels.get(channelId), [channelId!])) : channel;
+    final channelData = channelId != null
+        ? useFuture(useMemoized(() => yt.channels.get(channelId), [channelId!]))
+        : channel;
     final Channel? data = channel?.data ?? channelData?.data;
     return GestureDetector(
       onTap: isOnVideo && data != null || channelId != null
-          ? () => context.pushPage(ChannelScreen(id: channelId ?? data!.id.value))
+          ? () =>
+              context.pushPage(ChannelScreen(id: channelId ?? data!.id.value))
           : null,
       child: Column(
         children: [
@@ -50,7 +52,8 @@ class ChannelInfo extends HookWidget {
                     data != null
                         ? data.subscribersCount == null
                             ? "Hidden"
-                            : data.subscribersCount!.formatNumber + " subscribers"
+                            : data.subscribersCount!.formatNumber +
+                                " subscribers"
                         : "",
                     style: context.textTheme.bodyText2,
                   ),

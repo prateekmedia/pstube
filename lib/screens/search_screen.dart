@@ -19,7 +19,8 @@ class CustomSearchDelegate extends SearchDelegate {
       ];
 
   @override
-  Widget buildLeading(BuildContext context) => context.backLeading(() => close(context, null));
+  Widget buildLeading(BuildContext context) =>
+      context.backLeading(() => close(context, null));
 
   @override
   Widget buildResults(BuildContext context) {
@@ -55,7 +56,8 @@ class SearchResult extends HookWidget {
     var isMounted = useIsMounted();
     var yt = YoutubeExplode();
     final _currentPage = useState<SearchList?>(null);
-    void loadVideos() async => _currentPage.value = await yt.search.getVideos(query);
+    void loadVideos() async =>
+        _currentPage.value = await yt.search.getVideos(query);
     final controller = useScrollController();
 
     void _getMoreData() async {
@@ -107,7 +109,8 @@ class SuggestionList extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final yt = YoutubeExplode();
-    Future<List<String>> getSuggestions() => yt.search.getQuerySuggestions(query).whenComplete(() => yt.close());
+    Future<List<String>> getSuggestions() =>
+        yt.search.getQuerySuggestions(query).whenComplete(() => yt.close());
     return WillPopScope(
       onWillPop: () async => query.isNotEmpty ? showResults() : true,
       child: SafeArea(

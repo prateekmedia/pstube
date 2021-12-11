@@ -15,7 +15,8 @@ class PlaylistScreen extends ConsumerStatefulWidget {
   ConsumerState<PlaylistScreen> createState() => _PlaylistScreenState();
 }
 
-class _PlaylistScreenState extends ConsumerState<PlaylistScreen> with AutomaticKeepAliveClientMixin {
+class _PlaylistScreenState extends ConsumerState<PlaylistScreen>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(context) {
     super.build(context);
@@ -49,11 +50,14 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> with AutomaticK
                               margin: const EdgeInsets.symmetric(horizontal: 8),
                               child: entry.value.isNotEmpty
                                   ? FutureBuilder<Video>(
-                                      future: yt.videos.get(entry.value.first).whenComplete(() => yt.close()),
+                                      future: yt.videos
+                                          .get(entry.value.first)
+                                          .whenComplete(() => yt.close()),
                                       builder: (context, snapshot) {
                                         return snapshot.hasData
                                             ? CachedNetworkImage(
-                                                imageUrl: snapshot.data!.thumbnails.mediumResUrl,
+                                                imageUrl: snapshot.data!
+                                                    .thumbnails.mediumResUrl,
                                                 fit: BoxFit.fitWidth,
                                               )
                                             : const SizedBox();
@@ -95,12 +99,19 @@ class PlaylistSubScreen extends StatelessWidget {
   final String playlistName;
   final WidgetRef ref;
 
-  const PlaylistSubScreen({Key? key, required this.playlistName, required this.ref}) : super(key: key);
+  const PlaylistSubScreen(
+      {Key? key, required this.playlistName, required this.ref})
+      : super(key: key);
 
   @override
   Widget build(context) {
     final playlistP = ref.watch(playlistProvider.notifier);
-    final videos = ref.watch(playlistProvider).entries.where((element) => element.key == playlistName).first.value;
+    final videos = ref
+        .watch(playlistProvider)
+        .entries
+        .where((element) => element.key == playlistName)
+        .first
+        .value;
     return Scaffold(
       appBar: AppBar(
         title: Text(playlistName),

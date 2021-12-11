@@ -15,7 +15,8 @@ final Widget _progressIndicator = SizedBox(
   child: getCircularProgressIndicator(),
 );
 
-Future showDownloadPopup(BuildContext context, {Video? video, String? videoUrl}) {
+Future showDownloadPopup(BuildContext context,
+    {Video? video, String? videoUrl}) {
   assert(video != null || videoUrl != null);
   final yt = YoutubeExplode();
   Future<Video?> getVideo() => yt.videos.get(videoUrl!);
@@ -24,7 +25,8 @@ Future showDownloadPopup(BuildContext context, {Video? video, String? videoUrl})
     padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 12),
     innerPadding: EdgeInsets.zero,
     builder: (ctx) => FutureBuilder<Video?>(
-        future: videoUrl != null ? getVideo().whenComplete(() => yt.close()) : null,
+        future:
+            videoUrl != null ? getVideo().whenComplete(() => yt.close()) : null,
         builder: (context, snapshot) {
           return video != null || snapshot.hasData && snapshot.data != null
               ? DownloadsWidget(video: video ?? snapshot.data!)
@@ -80,7 +82,8 @@ class DownloadsWidget extends ConsumerWidget {
                     label: "Video + Audio",
                     padding: const EdgeInsets.only(top: 6, bottom: 14),
                   ),
-                  for (var videoStream in snapshot.data!.muxed.toList().sortByVideoQuality())
+                  for (var videoStream
+                      in snapshot.data!.muxed.toList().sortByVideoQuality())
                     CustomListTile(
                       stream: videoStream,
                       video: video,
@@ -91,7 +94,8 @@ class DownloadsWidget extends ConsumerWidget {
                     icon: FontAwesomeIcons.music,
                     label: "Audio only",
                   ),
-                  for (var audioStream in snapshot.data!.audioOnly.toList().reversed)
+                  for (var audioStream
+                      in snapshot.data!.audioOnly.toList().reversed)
                     CustomListTile(
                       stream: audioStream,
                       video: video,
@@ -102,7 +106,8 @@ class DownloadsWidget extends ConsumerWidget {
                     icon: FontAwesomeIcons.video,
                     label: "Video only",
                   ),
-                  for (var videoStream in snapshot.data!.videoOnly.toList().sortByVideoQuality())
+                  for (var videoStream
+                      in snapshot.data!.videoOnly.toList().sortByVideoQuality())
                     CustomListTile(
                       stream: videoStream,
                       video: video,
@@ -158,7 +163,8 @@ class CustomListTile extends ConsumerWidget {
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: InkWell(
         onTap: () async {
-          if ((Platform.isAndroid || Platform.isIOS) && !await Permission.storage.request().isGranted) return;
+          if ((Platform.isAndroid || Platform.isIOS) &&
+              !await Permission.storage.request().isGranted) return;
           ref.watch(downloadListProvider.notifier).addDownload(
                 DownloadItem.fromVideo(
                   video: video,
@@ -179,11 +185,15 @@ class CustomListTile extends ConsumerWidget {
                     (stream is ThumbnailStreamInfo
                             ? stream.containerName
                             : stream is AudioOnlyStreamInfo
-                                ? stream.audioCodec.split('.')[0].replaceAll('mp4a', 'm4a')
+                                ? stream.audioCodec
+                                    .split('.')[0]
+                                    .replaceAll('mp4a', 'm4a')
                                 : stream.container.name)
                         .toUpperCase(),
                   ),
-                  Text(stream is ThumbnailStreamInfo ? "" : (stream.size.totalBytes as int).getFileSize()),
+                  Text(stream is ThumbnailStreamInfo
+                      ? ""
+                      : (stream.size.totalBytes as int).getFileSize()),
                 ],
               ),
               Align(

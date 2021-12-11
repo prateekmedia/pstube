@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutube/utils/utils.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:page_transition/page_transition.dart';
 
 extension ContextExtensions on BuildContext {
   TextTheme get textTheme => Theme.of(this).textTheme;
@@ -14,10 +15,12 @@ extension ContextExtensions on BuildContext {
     Navigator.of(this).pop();
   }
 
-  pushPage(Widget page) => Navigator.of(this).push(MaterialPageRoute(builder: (ctx) => page));
+  pushPage(Widget page) => Navigator.of(this)
+      .push(PageTransition(type: PageTransitionType.rightToLeft, child: page));
 
   Widget backLeading([VoidCallback? onBack]) => IconButton(
-        icon: FaIcon(FontAwesomeIcons.chevronLeft, color: textTheme.bodyText1!.color),
+        icon: FaIcon(FontAwesomeIcons.chevronLeft,
+            color: textTheme.bodyText1!.color),
         splashColor: Colors.transparent,
         focusColor: Colors.transparent,
         highlightColor: Colors.transparent,
@@ -29,7 +32,8 @@ extension ContextExtensions on BuildContext {
   Color get getAltBackgroundColor => brightness.getAltBackgroundColor;
   Color get getAlt2BackgroundColor => brightness.getAlt2BackgroundColor;
 
-  bool get isMobile => (Platform.isAndroid && !isLandscape) || width < mobileWidth;
+  bool get isMobile =>
+      (Platform.isAndroid && !isLandscape) || width < mobileWidth;
 
   MediaQueryData get queryData => MediaQuery.of(this);
   get isLandscape => queryData.orientation == Orientation.landscape;

@@ -33,7 +33,10 @@ class FtBody extends StatelessWidget {
                       child: Center(
                           child: Text(
                         'Network Lost. Showing cached data.',
-                        style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .copyWith(color: Colors.white),
                       )),
                     ),
                   ),
@@ -48,7 +51,10 @@ class FtBody extends StatelessWidget {
                       child: Center(
                           child: Text(
                         'Back online',
-                        style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .copyWith(color: Colors.white),
                       )),
                     ),
                   ),

@@ -15,7 +15,8 @@ class LikedScreen extends StatefulHookWidget {
   State<LikedScreen> createState() => _LikedScreenState();
 }
 
-class _LikedScreenState extends State<LikedScreen> with AutomaticKeepAliveClientMixin {
+class _LikedScreenState extends State<LikedScreen>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -65,7 +66,8 @@ class LikedVideoList extends StatefulWidget {
   State<LikedVideoList> createState() => _LikedVideoListState();
 }
 
-class _LikedVideoListState extends State<LikedVideoList> with AutomaticKeepAliveClientMixin {
+class _LikedVideoListState extends State<LikedVideoList>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -103,7 +105,8 @@ class LikedCommentList extends StatefulWidget {
   State<LikedCommentList> createState() => _LikedCommentListState();
 }
 
-class _LikedCommentListState extends State<LikedCommentList> with AutomaticKeepAliveClientMixin {
+class _LikedCommentListState extends State<LikedCommentList>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);

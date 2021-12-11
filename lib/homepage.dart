@@ -3,9 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:flutube/utils/utils.dart';
 import 'package:flutube/models/models.dart';
@@ -58,11 +57,14 @@ class MyHomePage extends HookConsumerWidget {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Clear all items from download list?', style: context.textTheme.bodyText1),
+                            Text('Clear all items from download list?',
+                                style: context.textTheme.bodyText1),
                             CheckboxListTile(
                               value: value,
-                              onChanged: (val) => deleteFromStorage.value = val!,
-                              title: const Text("Also delete them from storage"),
+                              onChanged: (val) =>
+                                  deleteFromStorage.value = val!,
+                              title:
+                                  const Text("Also delete them from storage"),
                             ),
                           ],
                         );
@@ -70,8 +72,11 @@ class MyHomePage extends HookConsumerWidget {
                   onConfirm: () {
                     final downloadListUtils = ref.read(downloadListProvider);
                     for (DownloadItem item in downloadListUtils.downloadList) {
-                      if (File(item.queryVideo.path + item.queryVideo.name).existsSync() && deleteFromStorage.value) {
-                        File(item.queryVideo.path + item.queryVideo.name).deleteSync();
+                      if (File(item.queryVideo.path + item.queryVideo.name)
+                              .existsSync() &&
+                          deleteFromStorage.value) {
+                        File(item.queryVideo.path + item.queryVideo.name)
+                            .deleteSync();
                       }
                     }
                     downloadListUtils.clearAll();
@@ -106,7 +111,8 @@ class MyHomePage extends HookConsumerWidget {
                   NavigationRailDestination(
                     label: Text(item.key, style: context.textTheme.bodyText1),
                     icon: FaIcon(item.value[0]),
-                    selectedIcon: FaIcon(item.value.length == 2 ? item.value[1] : item.value[0]),
+                    selectedIcon: FaIcon(
+                        item.value.length == 2 ? item.value[1] : item.value[0]),
                   ),
               ],
               selectedIndex: _currentIndex.value,
@@ -131,7 +137,9 @@ class MyHomePage extends HookConsumerWidget {
                   var clipboard = await Clipboard.getData(Clipboard.kTextPlain);
                   var youtubeRegEx = RegExp(
                       r"^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$");
-                  if (clipboard != null && clipboard.text != null && youtubeRegEx.hasMatch(clipboard.text!)) {
+                  if (clipboard != null &&
+                      clipboard.text != null &&
+                      youtubeRegEx.hasMatch(clipboard.text!)) {
                     _addDownloadController.text = clipboard.text!;
                   }
                 }
@@ -140,7 +148,8 @@ class MyHomePage extends HookConsumerWidget {
                   onConfirm: () {
                     context.back();
                     if (_addDownloadController.value.text.isNotEmpty) {
-                      showDownloadPopup(context, videoUrl: _addDownloadController.text);
+                      showDownloadPopup(context,
+                          videoUrl: _addDownloadController.text);
                     }
                   },
                   hint: "https://youtube.com/watch?v=***********",
@@ -153,27 +162,20 @@ class MyHomePage extends HookConsumerWidget {
           : null,
       bottomNavigationBar: Visibility(
         visible: context.isMobile,
-        child: Container(
-          margin: const EdgeInsets.fromLTRB(4, 0, 4, 4),
-          padding: const EdgeInsets.all(6),
-          decoration: ShapeDecoration(
-            shape: const StadiumBorder(),
-            color: context.getAltBackgroundColor,
-          ),
-          child: SalomonBottomBar(
-            selectedItemColor: context.textTheme.bodyText1!.color,
-            unselectedItemColor: context.getAlt2BackgroundColor,
-            items: [
-              for (var item in navItems.entries)
-                SalomonBottomBarItem(
-                  title: Text(item.key, style: context.textTheme.bodyText1!.copyWith(fontSize: 15)),
-                  icon: FaIcon(item.value[0], size: 20),
-                  activeIcon: FaIcon(item.value.length == 2 ? item.value[1] : item.value[0], size: 20),
-                ),
-            ],
-            currentIndex: _currentIndex.value,
-            onTap: (index) => _controller.jumpToPage(index),
-          ),
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          items: [
+            for (var item in navItems.entries)
+              BottomNavigationBarItem(
+                label: item.key,
+                icon: FaIcon(item.value[0], size: 20),
+                activeIcon: FaIcon(
+                    item.value.length == 2 ? item.value[1] : item.value[0],
+                    size: 20),
+              ),
+          ],
+          currentIndex: _currentIndex.value,
+          onTap: (index) => _controller.jumpToPage(index),
         ),
       ),
     );

@@ -4,7 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 Widget buildSearchButton(BuildContext context) {
   return IconButton(
-    onPressed: () => showSearch(context: context, delegate: CustomSearchDelegate()),
+    onPressed: () =>
+        showSearch(context: context, delegate: CustomSearchDelegate()),
     icon: const FaIcon(FontAwesomeIcons.search, size: 20),
   );
 }
