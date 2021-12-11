@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:flutube/utils/utils.dart';
 import 'package:flutube/widgets/widgets.dart';
 import 'package:flutube/providers/providers.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class PlaylistScreen extends ConsumerStatefulWidget {
@@ -76,7 +76,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> with AutomaticK
                           onPressed: () {
                             playlistP.removePlaylist(entry.key);
                           },
-                          icon: const Icon(LucideIcons.listMinus),
+                          icon: const FaIcon(FontAwesomeIcons.minus),
                         ),
                       ],
                     ),
@@ -119,7 +119,7 @@ class PlaylistSubScreen extends StatelessWidget {
                           onPressed: () {
                             playlistP.removeVideo(playlistName, videoUrl);
                           },
-                          icon: const Icon(LucideIcons.trash2),
+                          icon: const FaIcon(FontAwesomeIcons.trash),
                         ),
                       ],
                     ),

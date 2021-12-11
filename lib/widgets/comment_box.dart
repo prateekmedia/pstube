@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:readmore/readmore.dart';
+import 'package:flutube/utils/utils.dart';
 import 'package:flutube/models/models.dart';
 import 'package:flutube/screens/screens.dart';
-import 'package:flutube/utils/utils.dart';
 import 'package:flutube/widgets/widgets.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lucide_icons/lucide_icons.dart';
-import 'package:readmore/readmore.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class CommentBox extends HookConsumerWidget {
@@ -104,7 +104,7 @@ class CommentBox extends HookConsumerWidget {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Icon(LucideIcons.thumbsUp,
+                              FaIcon(FontAwesomeIcons.thumbsUp,
                                   size: 18, color: comment is LikedComment || isLiked ? Colors.blue : null),
                               const SizedBox(width: 8),
                               Text(
@@ -117,7 +117,7 @@ class CommentBox extends HookConsumerWidget {
                       ),
                       if (comment is Comment && comment.isHearted)
                         Icon(
-                          LucideIcons.heart,
+                          FontAwesomeIcons.heart,
                           color: Colors.red[600],
                         ),
                     ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import 'package:flutube/utils/utils.dart';
@@ -13,7 +13,7 @@ class CustomSearchDelegate extends SearchDelegate {
   @override
   List<Widget> buildActions(BuildContext context) => [
         IconButton(
-          icon: const Icon(LucideIcons.x, size: 22),
+          icon: const FaIcon(FontAwesomeIcons.times, size: 22),
           onPressed: () => query = '',
         ),
       ];

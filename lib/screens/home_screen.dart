@@ -16,17 +16,17 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
   Widget build(BuildContext context) {
     super.build(context);
     return ListView(
+      controller: ScrollController(),
       physics: const BouncingScrollPhysics(),
       children: [
-        StaggeredGridView.countBuilder(
-          staggeredTileBuilder: (idx) => StaggeredTile.fit(context.width > 1200
-              ? 3
+        MasonryGridView.count(
+          crossAxisCount: context.width > 1200
+              ? 4
               : context.width > 900
-                  ? 4
+                  ? 3
                   : context.width > 620
-                      ? 6
-                      : 12),
-          crossAxisCount: 12,
+                      ? 2
+                      : 1,
           shrinkWrap: true,
           primary: false,
           itemBuilder: (ctx, idx) => const FTVideo(

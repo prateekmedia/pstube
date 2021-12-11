@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutube/utils/utils.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 extension ContextExtensions on BuildContext {
   TextTheme get textTheme => Theme.of(this).textTheme;
@@ -17,7 +17,7 @@ extension ContextExtensions on BuildContext {
   pushPage(Widget page) => Navigator.of(this).push(MaterialPageRoute(builder: (ctx) => page));
 
   Widget backLeading([VoidCallback? onBack]) => IconButton(
-        icon: Icon(LucideIcons.chevronLeft, color: textTheme.bodyText1!.color),
+        icon: FaIcon(FontAwesomeIcons.chevronLeft, color: textTheme.bodyText1!.color),
         splashColor: Colors.transparent,
         focusColor: Colors.transparent,
         highlightColor: Colors.transparent,

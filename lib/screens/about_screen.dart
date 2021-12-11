@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutube/screens/custom_license_screen.dart';
 
 import 'package:flutube/utils/utils.dart';
@@ -15,10 +16,15 @@ class AboutScreen extends StatelessWidget {
         leading: context.backLeading(),
         title: const Text("About"),
       ),
-      body: ListView(
+      body: MasonryGridView(
+        gridDelegate: SliverMasonryGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: context.width > 750 ? 2 : 1,),
+        mainAxisSpacing: 6,
+        
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+        crossAxisSpacing: 10,
         children: [
           Card(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -61,9 +67,9 @@ class AboutScreen extends StatelessWidget {
             ),
           ),
           Card(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:open_file/open_file.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -24,7 +24,7 @@ class DownloadsScreen extends ConsumerWidget {
       children: [
         if (downloadList.isEmpty) ...[
           const SizedBox(height: 60),
-          const Icon(LucideIcons.download, size: 30),
+          const FaIcon(FontAwesomeIcons.download, size: 30),
           const SizedBox(height: 10),
           const Text('No Downloads found').center()
         ] else
@@ -160,10 +160,10 @@ class DownloadItemBuilder extends StatelessWidget {
                     },
               icon: Icon(
                 item.cancelToken != null && item.cancelToken!.isCancelled
-                    ? LucideIcons.fileMinus
+                    ? FontAwesomeIcons.minus
                     : item.total != 0 && item.total != item.downloaded
-                        ? LucideIcons.x
-                        : LucideIcons.trash,
+                        ? FontAwesomeIcons.times
+                        : FontAwesomeIcons.trash,
               ),
             )
           ],

@@ -1,14 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:custom_text/custom_text.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:custom_text/custom_text.dart';
+import 'package:flutube/widgets/widgets.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutube/providers/providers.dart';
-import 'package:flutube/widgets/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
-import 'package:lucide_icons/lucide_icons.dart';
-import 'package:timeago/timeago.dart' as timeago;
-import 'package:share_plus/share_plus.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import 'package:flutube/utils/utils.dart';
@@ -57,8 +57,8 @@ class VideoScreen extends HookConsumerWidget {
             ? AppBar(
                 leading: IconButton(
                     onPressed: context.back,
-                    icon: const Icon(
-                      LucideIcons.chevronLeft,
+                    icon: const FaIcon(
+                      FontAwesomeIcons.chevronLeft,
                     )))
             : null,
         body: video == null && videoSnapshot == null
@@ -90,7 +90,7 @@ class VideoScreen extends HookConsumerWidget {
                                           child: Align(
                                         alignment: Alignment.topLeft,
                                         child: IconButton(
-                                          icon: const Icon(LucideIcons.chevronLeft),
+                                          icon: const FaIcon(FontAwesomeIcons.chevronLeft),
                                           onPressed: context.back,
                                         ),
                                       ))
@@ -123,7 +123,8 @@ class VideoScreen extends HookConsumerWidget {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         iconWithBottomLabel(
-                                          icon: isLiked!.value == 1 ? Icons.thumb_up : Icons.thumb_up_off_alt_outlined,
+                                          icon:
+                                              isLiked!.value == 1 ? FontAwesomeIcons.solidThumbsUp : FontAwesomeIcons.thumbsUp,
                                           onPressed: () => updateLike(1),
                                           label: videoData.engagement.likeCount != null
                                               ? videoData.engagement.likeCount!.formatNumber
@@ -131,21 +132,19 @@ class VideoScreen extends HookConsumerWidget {
                                         ),
                                         iconWithBottomLabel(
                                           icon:
-                                              isLiked.value == 2 ? Icons.thumb_down : Icons.thumb_down_off_alt_outlined,
+                                              isLiked.value == 2 ? FontAwesomeIcons.solidThumbsDown : FontAwesomeIcons.thumbsDown,
                                           onPressed: () => updateLike(2),
-                                          label: videoData.engagement.dislikeCount != null
-                                              ? videoData.engagement.dislikeCount!.formatNumber
-                                              : "Dislike",
+                                          label: "Dislike",
                                         ),
                                         iconWithBottomLabel(
-                                          icon: LucideIcons.share2,
+                                          icon: FontAwesomeIcons.share,
                                           onPressed: () {
                                             Share.share(videoData.url);
                                           },
                                           label: "Share",
                                         ),
                                         iconWithBottomLabel(
-                                          icon: LucideIcons.download,
+                                          icon: FontAwesomeIcons.download,
                                           onPressed: downloadsSideWidget.value != null
                                               ? () => downloadsSideWidget.value = null
                                               : context.isMobile
@@ -160,7 +159,7 @@ class VideoScreen extends HookConsumerWidget {
                                                             title: const Text('Download links'),
                                                             actions: [
                                                               IconButton(
-                                                                  icon: const Icon(LucideIcons.x),
+                                                                  icon: const FaIcon(FontAwesomeIcons.times),
                                                                   onPressed: () {
                                                                     downloadsSideWidget.value = null;
                                                                   }),
@@ -184,7 +183,7 @@ class VideoScreen extends HookConsumerWidget {
                                           label: "Download",
                                         ),
                                         iconWithBottomLabel(
-                                          icon: LucideIcons.listPlus,
+                                          icon: FontAwesomeIcons.plus,
                                           onPressed: () {
                                             showPopoverWB(
                                               context: context,
@@ -343,7 +342,7 @@ class CommentsWidget extends HookWidget {
                         duration: const Duration(milliseconds: 200), curve: Curves.easeInOut);
                     replyComment.value = null;
                   },
-                  icon: Icon(LucideIcons.chevronLeft, color: context.textTheme.bodyText1!.color),
+                  icon: Icon(FontAwesomeIcons.chevronLeft, color: context.textTheme.bodyText1!.color),
                 )
               : const SizedBox(),
           centerTitle: true,
@@ -353,7 +352,7 @@ class CommentsWidget extends HookWidget {
           actions: [
             IconButton(
               onPressed: onClose ?? context.back,
-              icon: Icon(LucideIcons.x, color: context.textTheme.bodyText1!.color),
+              icon: Icon(FontAwesomeIcons.times, color: context.textTheme.bodyText1!.color),
             )
           ],
         ),
@@ -471,14 +470,6 @@ class DescriptionWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            DescriptionInfoWidget(
-              title: (((video.engagement.likeCount ?? 0) /
-                              ((video.engagement.likeCount ?? 0) + (video.engagement.dislikeCount ?? 0))) *
-                          100)
-                      .toStringAsFixed(0) +
-                  '%',
-              body: 'Like ratio',
-            ),
             DescriptionInfoWidget(
               title: video.engagement.viewCount.addCommas,
               body: 'views',

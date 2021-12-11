@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutube/screens/screens.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import 'package:flutube/utils/utils.dart';
@@ -147,7 +147,7 @@ class FTVideo extends StatelessWidget {
                       if (!isInsideDownloadPopup) ...[
                         IconButton(
                           onPressed: video != null ? () => showDownloadPopup(context, video: video) : null,
-                          icon: const Icon(LucideIcons.download),
+                          icon: const FaIcon(FontAwesomeIcons.download),
                         ),
                       ],
                       ...actions,
@@ -231,7 +231,7 @@ class FTVideo extends StatelessWidget {
                           if (!isInsideDownloadPopup) ...[
                             IconButton(
                               onPressed: video != null ? () => showDownloadPopup(context, video: video) : null,
-                              icon: const Icon(LucideIcons.download),
+                              icon: const FaIcon(FontAwesomeIcons.download),
                             ),
                           ],
                           ...actions,

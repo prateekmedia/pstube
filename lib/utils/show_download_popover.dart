@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutube/models/models.dart';
-import 'package:flutube/providers/providers.dart';
 import 'package:flutube/widgets/widgets.dart';
+import 'package:flutube/providers/providers.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'utils.dart';
@@ -63,7 +63,7 @@ class DownloadsWidget extends ConsumerWidget {
                   if (ref.watch(thumbnailDownloaderProvider)) ...[
                     linksHeader(
                       context,
-                      icon: LucideIcons.image,
+                      icon: FontAwesomeIcons.image,
                       label: "Thumbnail",
                       padding: const EdgeInsets.only(top: 6, bottom: 14),
                     ),
@@ -76,7 +76,7 @@ class DownloadsWidget extends ConsumerWidget {
                   ],
                   linksHeader(
                     context,
-                    icon: LucideIcons.film,
+                    icon: FontAwesomeIcons.film,
                     label: "Video + Audio",
                     padding: const EdgeInsets.only(top: 6, bottom: 14),
                   ),
@@ -88,7 +88,7 @@ class DownloadsWidget extends ConsumerWidget {
                     ),
                   linksHeader(
                     context,
-                    icon: LucideIcons.music,
+                    icon: FontAwesomeIcons.music,
                     label: "Audio only",
                   ),
                   for (var audioStream in snapshot.data!.audioOnly.toList().reversed)
@@ -99,7 +99,7 @@ class DownloadsWidget extends ConsumerWidget {
                     ),
                   linksHeader(
                     context,
-                    icon: LucideIcons.video,
+                    icon: FontAwesomeIcons.video,
                     label: "Video only",
                   ),
                   for (var videoStream in snapshot.data!.videoOnly.toList().sortByVideoQuality())
@@ -126,7 +126,7 @@ Widget linksHeader(
     padding: padding,
     child: Row(
       children: [
-        Icon(
+        FaIcon(
           icon,
           size: 22,
         ),

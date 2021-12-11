@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import 'package:flutube/utils/utils.dart';
@@ -72,7 +72,7 @@ class ChannelScreen extends HookWidget {
         headerSliverBuilder: (_, __) => [
           SliverAppBar(
             leading: IconButton(
-              icon: const Icon(LucideIcons.chevronLeft),
+              icon: const FaIcon(FontAwesomeIcons.chevronLeft),
               onPressed: context.back,
             ),
             title: Text(channel.value?.title ?? "", style: context.textTheme.headline5),

@@ -6,6 +6,7 @@ import 'package:flutube/utils/utils.dart';
 import 'package:flutube/models/models.dart';
 import 'package:flutube/widgets/widgets.dart';
 import 'package:flutube/providers/providers.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LikedScreen extends StatefulHookWidget {
   const LikedScreen({Key? key}) : super(key: key);
@@ -73,7 +74,7 @@ class _LikedVideoListState extends State<LikedVideoList> with AutomaticKeepAlive
       children: [
         if (widget.likedList.likedVideoList.isEmpty) ...[
           const SizedBox(height: 60),
-          const Icon(Icons.thumbs_up_down, size: 30),
+          const FaIcon(FontAwesomeIcons.solidThumbsUp, size: 30),
           const SizedBox(height: 10),
           const Text('No Liked videos found').center()
         ] else
@@ -111,7 +112,7 @@ class _LikedCommentListState extends State<LikedCommentList> with AutomaticKeepA
       children: [
         if (widget.likedList.likedCommentList.isEmpty) ...[
           const SizedBox(height: 60),
-          const Icon(Icons.thumbs_up_down, size: 30),
+          const FaIcon(FontAwesomeIcons.thumbsUp, size: 30),
           const SizedBox(height: 10),
           const Text('No Liked comments found').center()
         ] else

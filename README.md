@@ -2,7 +2,7 @@
 <img src="https://raw.githubusercontent.com/prateekmedia/flutube/main/assets/flutube.png">
 </p>
 <h1 align="center">FluTube</h1>
-<p align="center"><b>Youtube video client made using flutter</b></p>
+<p align="center"><b>Youtube client made using flutter</b></p>
 <p align="center">
 <a href="https://github.com/prateekmedia/flutube/releases"><img alt="GitHub release" src="https://img.shields.io/github/v/release/prateekmedia/flutube"/></a> <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/prateekmedia/flutube?color=blue"/></a> <a href="#build-from-source"><img alt="Build from source" src="https://img.shields.io/badge/Install Manually-git-blue"/></a>
 </p>
@@ -43,7 +43,7 @@
 
 ### Build from source
 
-- Download latest Flutter SDK (>=2.2.3)
+- Download latest Flutter SDK (>=2.8.0)
 - Clone this repo and then for building
 
 ```bash
@@ -62,7 +62,7 @@ This project would not be possible without [youtube_explode_dart](https://github
 
 [![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
-FluTube is Free Software: You can use, study share and improve it at your
+FluTube is a Free Software: You can use, study share and improve it at your
 will. Specifically you can redistribute and/or modify it under the terms of the
 [GNU General Public License](https://www.gnu.org/licenses/gpl.html) as
 published by the Free Software Foundation, either version 3 of the License, or
