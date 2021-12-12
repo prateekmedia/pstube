@@ -44,7 +44,7 @@ extension BrightnessExtensions on Brightness {
           fontWeight: FontWeight.w600,
         ),
         headline6: TextStyle(
-          fontSize: 14,
+          fontSize: 18,
           color: textColor,
           fontWeight: FontWeight.w600,
         ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 Widget iconWithBottomLabel({
   required IconData icon,
@@ -11,7 +10,7 @@ Widget iconWithBottomLabel({
     child: Column(
       children: [
         IconButton(
-          icon: FaIcon(icon, size: 28),
+          icon: Icon(icon, size: 28),
           onPressed: onPressed ?? () {},
         ),
         const SizedBox(height: 2),

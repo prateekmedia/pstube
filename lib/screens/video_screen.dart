@@ -1,4 +1,4 @@
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ant_icons/ant_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
@@ -62,8 +62,8 @@ class VideoScreen extends HookConsumerWidget {
             ? AppBar(
                 leading: IconButton(
                     onPressed: context.back,
-                    icon: const FaIcon(
-                      FontAwesomeIcons.chevronLeft,
+                    icon: const Icon(
+                      Icons.chevron_left,
                     )))
             : null,
         body: video == null && videoSnapshot == null
@@ -96,8 +96,7 @@ class VideoScreen extends HookConsumerWidget {
                                           child: Align(
                                         alignment: Alignment.topLeft,
                                         child: IconButton(
-                                          icon: const FaIcon(
-                                              FontAwesomeIcons.chevronLeft),
+                                          icon: const Icon(Icons.chevron_left),
                                           onPressed: context.back,
                                         ),
                                       ))
@@ -138,8 +137,8 @@ class VideoScreen extends HookConsumerWidget {
                                       children: [
                                         iconWithBottomLabel(
                                           icon: isLiked!.value == 1
-                                              ? FontAwesomeIcons.solidThumbsUp
-                                              : FontAwesomeIcons.thumbsUp,
+                                              ? AntIcons.like
+                                              : AntIcons.like_outline,
                                           onPressed: () => updateLike(1),
                                           label:
                                               videoData.engagement.likeCount !=
@@ -150,20 +149,20 @@ class VideoScreen extends HookConsumerWidget {
                                         ),
                                         iconWithBottomLabel(
                                           icon: isLiked.value == 2
-                                              ? FontAwesomeIcons.solidThumbsDown
-                                              : FontAwesomeIcons.thumbsDown,
+                                              ? AntIcons.dislike
+                                              : AntIcons.dislike_outline,
                                           onPressed: () => updateLike(2),
                                           label: "Dislike",
                                         ),
                                         iconWithBottomLabel(
-                                          icon: FontAwesomeIcons.share,
+                                          icon: AntIcons.share_alt,
                                           onPressed: () {
                                             Share.share(videoData.url);
                                           },
                                           label: "Share",
                                         ),
                                         iconWithBottomLabel(
-                                          icon: FontAwesomeIcons.download,
+                                          icon: Icons.download,
                                           onPressed: downloadsSideWidget
                                                       .value !=
                                                   null
@@ -187,9 +186,9 @@ class VideoScreen extends HookConsumerWidget {
                                                                 'Download links'),
                                                             actions: [
                                                               IconButton(
-                                                                  icon: const FaIcon(
-                                                                      FontAwesomeIcons
-                                                                          .times),
+                                                                  icon: const Icon(
+                                                                      AntIcons
+                                                                          .close),
                                                                   onPressed:
                                                                       () {
                                                                     downloadsSideWidget
@@ -227,7 +226,7 @@ class VideoScreen extends HookConsumerWidget {
                                           label: "Download",
                                         ),
                                         iconWithBottomLabel(
-                                          icon: FontAwesomeIcons.plus,
+                                          icon: AntIcons.unordered_list,
                                           onPressed: () {
                                             showPopoverWB(
                                               context: context,
@@ -409,7 +408,7 @@ class CommentsWidget extends HookWidget {
                         curve: Curves.easeInOut);
                     replyComment.value = null;
                   },
-                  icon: Icon(FontAwesomeIcons.chevronLeft,
+                  icon: Icon(Icons.chevron_left,
                       color: context.textTheme.bodyText1!.color),
                 )
               : const SizedBox(),
@@ -422,8 +421,8 @@ class CommentsWidget extends HookWidget {
           actions: [
             IconButton(
               onPressed: onClose ?? context.back,
-              icon: Icon(FontAwesomeIcons.times,
-                  color: context.textTheme.bodyText1!.color),
+              icon:
+                  Icon(Icons.close, color: context.textTheme.bodyText1!.color),
             )
           ],
         ),

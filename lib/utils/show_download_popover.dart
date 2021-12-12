@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutube/models/models.dart';
 import 'package:flutube/widgets/widgets.dart';
 import 'package:flutube/providers/providers.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
@@ -65,7 +64,7 @@ class DownloadsWidget extends ConsumerWidget {
                   if (ref.watch(thumbnailDownloaderProvider)) ...[
                     linksHeader(
                       context,
-                      icon: FontAwesomeIcons.image,
+                      icon: Icons.video_call,
                       label: "Thumbnail",
                       padding: const EdgeInsets.only(top: 6, bottom: 14),
                     ),
@@ -78,7 +77,7 @@ class DownloadsWidget extends ConsumerWidget {
                   ],
                   linksHeader(
                     context,
-                    icon: FontAwesomeIcons.film,
+                    icon: Icons.movie,
                     label: "Video + Audio",
                     padding: const EdgeInsets.only(top: 6, bottom: 14),
                   ),
@@ -91,7 +90,7 @@ class DownloadsWidget extends ConsumerWidget {
                     ),
                   linksHeader(
                     context,
-                    icon: FontAwesomeIcons.music,
+                    icon: Icons.audiotrack,
                     label: "Audio only",
                   ),
                   for (var audioStream
@@ -103,7 +102,7 @@ class DownloadsWidget extends ConsumerWidget {
                     ),
                   linksHeader(
                     context,
-                    icon: FontAwesomeIcons.video,
+                    icon: Icons.videocam,
                     label: "Video only",
                   ),
                   for (var videoStream
@@ -131,7 +130,7 @@ Widget linksHeader(
     padding: padding,
     child: Row(
       children: [
-        FaIcon(
+        Icon(
           icon,
           size: 22,
         ),

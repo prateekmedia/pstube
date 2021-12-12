@@ -2,13 +2,13 @@ name: flutube
 description: Youtube client made using flutter.
 
 publish_to: none
-
-version: 1.0.0-dev.1
+version: 1.0.0-dev.2
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
+  ant_icons: ^2.0.0-nullsafety.0
   bot_toast: ^4.0.1
   cached_network_image: ^3.0.0
   connectivity_plus: ^2.1.0
@@ -17,14 +17,12 @@ dependencies:
   dio: ^4.0.0
   equatable: ^2.0.3
   file_picker: ^4.0.1
-  floating_navbar: ^2.0.1+1
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
   flutter_hooks: ^0.18.0
   flutter_staggered_grid_view: ^0.5.0-dev.1
-  font_awesome_flutter: ^10.0.0-beta
   hive: ^2.0.4
   hive_flutter: ^1.1.0
   hooks_riverpod: ^1.0.0-dev.7
@@ -55,6 +53,10 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/
+
   fonts:
     - family: Roboto
       fonts:

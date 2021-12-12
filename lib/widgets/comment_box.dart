@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ant_icons/ant_icons.dart';
+
 import 'package:readmore/readmore.dart';
 import 'package:flutube/utils/utils.dart';
 import 'package:flutube/models/models.dart';
@@ -110,7 +111,7 @@ class CommentBox extends HookConsumerWidget {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              FaIcon(FontAwesomeIcons.thumbsUp,
+                              Icon(AntIcons.like,
                                   size: 18,
                                   color: comment is LikedComment || isLiked
                                       ? Colors.blue
@@ -127,7 +128,7 @@ class CommentBox extends HookConsumerWidget {
                       ),
                       if (comment is Comment && comment.isHearted)
                         Icon(
-                          FontAwesomeIcons.heart,
+                          AntIcons.heart,
                           color: Colors.red[600],
                         ),
                     ],

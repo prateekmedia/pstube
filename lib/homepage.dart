@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ant_icons/ant_icons.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:flutube/utils/utils.dart';
 import 'package:flutube/models/models.dart';
@@ -31,11 +31,11 @@ class MyHomePage extends HookConsumerWidget {
     ];
 
     final Map<String, List<IconData>> navItems = {
-      "Home": [FontAwesomeIcons.home],
-      "Liked": [FontAwesomeIcons.thumbsUp, FontAwesomeIcons.solidThumbsUp],
-      "Playlist": [FontAwesomeIcons.list],
-      "Downloads": [FontAwesomeIcons.download],
-      "Settings": [FontAwesomeIcons.cog],
+      "Home": [AntIcons.home_outline, AntIcons.home],
+      "Liked": [AntIcons.like_outline, AntIcons.like],
+      "Playlist": [AntIcons.unordered_list],
+      "Downloads": [Icons.download_outlined, Icons.download],
+      "Settings": [AntIcons.setting_outline, AntIcons.setting],
     };
 
     return Scaffold(
@@ -46,7 +46,7 @@ class MyHomePage extends HookConsumerWidget {
           buildSearchButton(context),
           if (_currentIndex.value == 3)
             IconButton(
-              icon: const FaIcon(FontAwesomeIcons.trash),
+              icon: const Icon(AntIcons.delete_outline),
               onPressed: () {
                 final deleteFromStorage = ValueNotifier<bool>(false);
                 showPopoverWB(
@@ -110,8 +110,8 @@ class MyHomePage extends HookConsumerWidget {
                 for (var item in navItems.entries)
                   NavigationRailDestination(
                     label: Text(item.key, style: context.textTheme.bodyText1),
-                    icon: FaIcon(item.value[0]),
-                    selectedIcon: FaIcon(
+                    icon: Icon(item.value[0]),
+                    selectedIcon: Icon(
                         item.value.length == 2 ? item.value[1] : item.value[0]),
                   ),
               ],
@@ -157,19 +157,20 @@ class MyHomePage extends HookConsumerWidget {
                   controller: _addDownloadController,
                 );
               },
-              child: const FaIcon(FontAwesomeIcons.plus),
+              child: const Icon(Icons.add),
             )
           : null,
       bottomNavigationBar: Visibility(
         visible: context.isMobile,
         child: BottomNavigationBar(
+          selectedItemColor: context.textTheme.bodyText1!.color,
           type: BottomNavigationBarType.fixed,
           items: [
             for (var item in navItems.entries)
               BottomNavigationBarItem(
                 label: item.key,
-                icon: FaIcon(item.value[0], size: 20),
-                activeIcon: FaIcon(
+                icon: Icon(item.value[0], size: 20),
+                activeIcon: Icon(
                     item.value.length == 2 ? item.value[1] : item.value[0],
                     size: 20),
               ),

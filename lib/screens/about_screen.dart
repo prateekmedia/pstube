@@ -1,8 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
+import 'package:flutube/models/ft_info.dart';
 import 'package:flutube/utils/utils.dart';
 import 'package:flutube/screens/screens.dart';
 
@@ -28,7 +27,7 @@ class AboutScreen extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.memory(base64Decode(myApp.logoBase64)),
+                myApp.imageWidget,
                 Flexible(
                   child: Padding(
                     padding:
@@ -89,7 +88,7 @@ class AboutScreen extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Image.memory(base64Decode(ftinfo.logoBase64)),
+                      ftinfo.imageWidget,
                       Flexible(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(

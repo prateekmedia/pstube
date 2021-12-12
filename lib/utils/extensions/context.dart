@@ -1,9 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutube/utils/utils.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:flutube/utils/utils.dart';
 
 extension ContextExtensions on BuildContext {
   TextTheme get textTheme => Theme.of(this).textTheme;
@@ -19,8 +18,7 @@ extension ContextExtensions on BuildContext {
       .push(PageTransition(type: PageTransitionType.rightToLeft, child: page));
 
   Widget backLeading([VoidCallback? onBack]) => IconButton(
-        icon: FaIcon(FontAwesomeIcons.chevronLeft,
-            color: textTheme.bodyText1!.color),
+        icon: Icon(Icons.chevron_left, color: textTheme.bodyText1!.color),
         splashColor: Colors.transparent,
         focusColor: Colors.transparent,
         highlightColor: Colors.transparent,
