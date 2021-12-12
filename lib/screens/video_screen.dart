@@ -187,7 +187,7 @@ class VideoScreen extends HookConsumerWidget {
                                                             actions: [
                                                               IconButton(
                                                                   icon: const Icon(
-                                                                      AntIcons
+                                                                      Icons
                                                                           .close),
                                                                   onPressed:
                                                                       () {

@@ -82,7 +82,7 @@ class DownloadsWidget extends ConsumerWidget {
                     padding: const EdgeInsets.only(top: 6, bottom: 14),
                   ),
                   for (var videoStream
-                      in snapshot.data!.muxed.toList().sortByVideoQuality())
+                      in snapshot.data!.muxed.sortByVideoQuality())
                     CustomListTile(
                       stream: videoStream,
                       video: video,
@@ -93,8 +93,7 @@ class DownloadsWidget extends ConsumerWidget {
                     icon: Icons.audiotrack,
                     label: "Audio only",
                   ),
-                  for (var audioStream
-                      in snapshot.data!.audioOnly.toList().reversed)
+                  for (var audioStream in snapshot.data!.audioOnly.reversed)
                     CustomListTile(
                       stream: audioStream,
                       video: video,
@@ -105,8 +104,8 @@ class DownloadsWidget extends ConsumerWidget {
                     icon: Icons.videocam,
                     label: "Video only",
                   ),
-                  for (var videoStream
-                      in snapshot.data!.videoOnly.toList().sortByVideoQuality())
+                  for (var videoStream in snapshot.data!.videoOnly
+                      .where((element) => element.tag < 200))
                     CustomListTile(
                       stream: videoStream,
                       video: video,
@@ -199,11 +198,14 @@ class CustomListTile extends ConsumerWidget {
                 alignment: Alignment.center,
                 child: Text(
                   stream is VideoStreamInfo
-                      ? stream.videoQualityLabel
+                      ? (stream as VideoStreamInfo).qualityLabel
                       : stream is AudioOnlyStreamInfo
-                          ? (stream.bitrate.bitsPerSecond as int).getBitrate()
+                          ? (stream as AudioOnlyStreamInfo)
+                              .bitrate
+                              .bitsPerSecond
+                              .getBitrate()
                           : stream is ThumbnailStreamInfo
-                              ? stream.name
+                              ? (stream as ThumbnailStreamInfo).name
                               : "",
                   style: context.textTheme.headline5,
                   textAlign: TextAlign.center,

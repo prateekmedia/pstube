@@ -7,7 +7,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'package:flutube/homepage.dart';
+import 'package:flutube/home_page.dart';
 import 'package:flutube/utils/utils.dart';
 import 'package:flutube/models/models.dart';
 import 'package:flutube/providers/providers.dart';
