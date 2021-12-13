@@ -17,7 +17,9 @@ class ChannelScreen extends HookWidget {
     final channelInfo = useState<ChannelAbout?>(null);
     final _currentVidPage = useState<ChannelUploadsList?>(null);
     final controller = useScrollController();
-    final tabController = useTabController(initialLength: 2);
+    final _tabController = useTabController(initialLength: 2);
+    const List<String> _tabs = ["Videos", "About"];
+
     final List<Widget> getStats = channelInfo.value != null
         ? [
             Padding(
@@ -67,109 +69,201 @@ class ChannelScreen extends HookWidget {
 
     return Scaffold(
       body: NestedScrollView(
-        headerSliverBuilder: (_, __) => [
-          SliverAppBar(
-            leading: IconButton(
-              icon: const Icon(Icons.chevron_left),
-              onPressed: context.back,
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) =>
+            <Widget>[
+          SliverOverlapAbsorber(
+            // This widget takes the overlapping behavior of the SliverAppBar,
+            // and redirects it to the SliverOverlapInjector below. If it is
+            // missing, then it is possible for the nested "inner" scroll view
+            // below to end up under the SliverAppBar even when the inner
+            // scroll view thinks it has not been scrolled.
+            // This is not necessary if the "headerSliverBuilder" only builds
+            // widgets that do not overlap the next sliver.
+            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+            sliver: SliverAppBar(
+              leading: IconButton(
+                icon: const Icon(Icons.chevron_left),
+                onPressed: context.back,
+              ),
+              title: Text(channel.value?.title ?? "",
+                  style: context.textTheme.headline5),
+              floating: true,
+              pinned: true,
+              forceElevated: innerBoxIsScrolled,
+              bottom: TabBar(
+                isScrollable: true,
+                controller: _tabController,
+                // These are the widgets to put in each tab in the tab bar.
+                tabs: _tabs.map((String name) => Tab(text: name)).toList(),
+              ),
             ),
-            title: Text(channel.value?.title ?? "",
-                style: context.textTheme.headline5),
-            bottom: TabBar(
-              controller: tabController,
-              indicatorSize: TabBarIndicatorSize.label,
-              tabs: const [Tab(text: "Videos"), Tab(text: "About")],
-            ),
-            actions: [
-              buildSearchButton(context),
-            ],
           ),
+          const SliverToBoxAdapter(child: NetStatus()),
         ],
-        body: FtBody(
-          expanded: true,
-          child: TabBarView(
-            controller: tabController,
-            children: [
-              _currentVidPage.value != null
-                  ? ListView.builder(
-                      controller: controller,
-                      shrinkWrap: true,
-                      primary: false,
-                      itemBuilder: (ctx, idx) =>
-                          idx == _currentVidPage.value!.length
-                              ? getCircularProgressIndicator()
-                              : FTVideo(
-                                  videoData: _currentVidPage.value![idx],
-                                  loadData: true,
-                                  showChannel: false,
-                                  isRow: true,
-                                ),
-                      itemCount: _currentVidPage.value!.length + 1,
-                    )
-                  : getCircularProgressIndicator(),
-              channelInfo.value != null
-                  ? Flex(
-                      direction: Axis.horizontal,
-                      children: [
-                        Flexible(
-                          flex: 6,
-                          child: ListView(
-                            primary: false,
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
-                                child: Text(
-                                  "Description  ",
-                                  style: context.textTheme.headline5!,
-                                ),
-                              ),
-                              SelectableText(channelInfo.value!.description),
-                              const Divider(),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
-                                child: Text(
-                                  "Links",
-                                  style: context.textTheme.headline5!,
-                                ),
-                              ),
-                              Wrap(
-                                children: [
-                                  for (ChannelLink link
-                                      in channelInfo.value!.channelLinks)
-                                    GestureDetector(
-                                      onTap: link.url.toString().launchIt,
-                                      child: Chip(
-                                        label: Text(link.title),
-                                        labelStyle: context.textTheme.bodyText2,
-                                      ),
-                                    )
-                                ],
-                              ),
-                              if (context.isMobile) ...[
-                                const Divider(),
-                                ...getStats,
-                              ]
-                            ],
-                          ),
-                        ),
-                        if (!context.isMobile)
-                          Flexible(
-                            flex: 2,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: getStats,
-                            ),
-                          ),
-                      ],
-                    )
-                  : getCircularProgressIndicator(),
-            ],
-          ),
+        body: TabBarView(
+          controller: _tabController,
+          // These are the contents of the tab views, below the tabs.
+          children: _tabs.asMap().entries.map((MapEntry<int, String> entry) {
+            return SafeArea(
+              top: false,
+              bottom: false,
+              child: Builder(
+                // This Builder is needed to provide a BuildContext that is
+                // "inside" the NestedScrollView, so that
+                // sliverOverlapAbsorberHandleFor() can find the
+                // NestedScrollView.
+                builder: (BuildContext context) {
+                  return _CustomTab(
+                    currentVidPage: _currentVidPage,
+                    channelInfo: channelInfo,
+                    getStats: getStats,
+                    entry: entry,
+                  );
+                },
+              ),
+            );
+          }).toList(),
         ),
       ),
     );
   }
+}
+
+class _CustomTab extends StatefulWidget {
+  const _CustomTab({
+    Key? key,
+    required ValueNotifier<ChannelUploadsList?> currentVidPage,
+    required this.channelInfo,
+    required this.getStats,
+    required this.entry,
+  })  : _currentVidPage = currentVidPage,
+        super(key: key);
+
+  final ValueNotifier<ChannelUploadsList?> _currentVidPage;
+  final ValueNotifier<ChannelAbout?> channelInfo;
+  final List<Widget> getStats;
+  final MapEntry<int, String> entry;
+
+  @override
+  State<_CustomTab> createState() => _CustomTabState();
+}
+
+class _CustomTabState extends State<_CustomTab>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return CustomScrollView(
+      // The "controller" and "primary" members should be left
+      // unset, so that the NestedScrollView can control this
+      // inner scroll view.
+      // If the "controller" property is set, then this scroll
+      // view will not be associated with the NestedScrollView.
+      // The PageStorageKey should be unique to this ScrollView;
+      // it allows the list to remember its scroll position when
+      // the tab view is not on the screen.
+      key: PageStorageKey<String>(widget.entry.value),
+      slivers: <Widget>[
+        SliverOverlapInjector(
+          // This is the flip side of the SliverOverlapAbsorber
+          // above.
+          handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+        ),
+        if (widget.entry.key == 0)
+          widget._currentVidPage.value != null
+              ? SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                      // This builder is called for each child.
+                      // In this example, we just number each list item.
+                      return index == widget._currentVidPage.value!.length
+                          ? getCircularProgressIndicator()
+                          : FTVideo(
+                              videoData: widget._currentVidPage.value![index],
+                              loadData: true,
+                              showChannel: false,
+                              isRow: true,
+                            );
+                    },
+                    // The childCount of the SliverChildBuilderDelegate
+                    // specifies how many children this inner list
+                    // has. In this example, each tab has a list of
+                    // exactly 30 items, but this is arbitrary.
+                    childCount: widget._currentVidPage.value!.length + 1,
+                  ),
+                )
+              : SliverToBoxAdapter(
+                  child: getCircularProgressIndicator(),
+                )
+        else
+          SliverToBoxAdapter(
+            child: widget.channelInfo.value != null
+                ? Flex(
+                    direction: Axis.horizontal,
+                    children: [
+                      Flexible(
+                        flex: 6,
+                        child: ListView(
+                          primary: false,
+                          controller: ScrollController(),
+                          shrinkWrap: true,
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Text(
+                                "Description  ",
+                                style: context.textTheme.headline5!,
+                              ),
+                            ),
+                            SelectableText(
+                                widget.channelInfo.value!.description),
+                            const Divider(),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Text(
+                                "Links",
+                                style: context.textTheme.headline5!,
+                              ),
+                            ),
+                            Wrap(
+                              children: [
+                                for (ChannelLink link
+                                    in widget.channelInfo.value!.channelLinks)
+                                  GestureDetector(
+                                    onTap: link.url.toString().launchIt,
+                                    child: Chip(
+                                      label: Text(link.title),
+                                      labelStyle: context.textTheme.bodyText2,
+                                    ),
+                                  )
+                              ],
+                            ),
+                            if (context.isMobile) ...[
+                              const Divider(),
+                              ...widget.getStats,
+                            ]
+                          ],
+                        ),
+                      ),
+                      if (!context.isMobile)
+                        Flexible(
+                          flex: 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: widget.getStats,
+                          ),
+                        ),
+                    ],
+                  )
+                : getCircularProgressIndicator(),
+          ),
+      ],
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 }
