@@ -18,7 +18,8 @@ extension ContextExtensions on BuildContext {
       .push(PageTransition(type: PageTransitionType.rightToLeft, child: page));
 
   Widget backLeading([VoidCallback? onBack]) => IconButton(
-        icon: Icon(Icons.chevron_left, color: textTheme.bodyText1!.color),
+        icon: Icon(Icons.chevron_left,
+            color: textTheme.bodyText1!.color, size: 30),
         splashColor: Colors.transparent,
         focusColor: Colors.transparent,
         highlightColor: Colors.transparent,

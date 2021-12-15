@@ -25,27 +25,32 @@ class _LikedScreenState extends State<LikedScreen>
 
     return Consumer(builder: (context, ref, _) {
       final likedList = ref.watch(likedListProvider);
-      return Column(
-        children: [
-          TabBar(
-            indicatorSize: TabBarIndicatorSize.label,
-            controller: tabController,
-            labelColor: context.textTheme.bodyText1!.color,
-            tabs: const [
-              Tab(text: "Videos"),
-              Tab(text: "Comments"),
-            ],
-          ),
-          Expanded(
-            child: TabBarView(
+      return Scaffold(
+        appBar: AppBar(
+          leading: context.backLeading(),
+          title: const Text("Liked"),
+        ),
+        body: Column(
+          children: [
+            TabBar(
+              isScrollable: true,
               controller: tabController,
-              children: [
-                LikedVideoList(likedList: likedList),
-                LikedCommentList(likedList: likedList),
+              tabs: const [
+                Tab(text: "Videos"),
+                Tab(text: "Comments"),
               ],
             ),
-          ),
-        ],
+            Expanded(
+              child: TabBarView(
+                controller: tabController,
+                children: [
+                  LikedVideoList(likedList: likedList),
+                  LikedCommentList(likedList: likedList),
+                ],
+              ),
+            ),
+          ],
+        ),
       );
     });
   }

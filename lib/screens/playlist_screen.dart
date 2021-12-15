@@ -4,6 +4,7 @@ import 'package:ant_icons/ant_icons.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:flutube/utils/utils.dart';
+import 'package:flutube/screens/screens.dart';
 import 'package:flutube/widgets/widgets.dart';
 import 'package:flutube/providers/providers.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
@@ -23,72 +24,79 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen>
     final playlist = ref.watch(playlistProvider);
     final playlistP = ref.watch(playlistProvider.notifier);
     final yt = YoutubeExplode();
-    return playlist.entries.isNotEmpty
-        ? ListView(
-            children: [
-              for (var entry in playlist.entries)
-                GestureDetector(
-                  onTap: () => context.pushPage(
-                    PlaylistSubScreen(
-                      playlistName: entry.key,
-                      ref: ref,
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
+    return ListView(
+      children: [
+        ListTile(
+          leading: const Icon(AntIcons.like),
+          title: const Text("Liked"),
+          onTap: () => context.pushPage(const LikedScreen()),
+          trailing: const Icon(Icons.chevron_right),
+        ),
+        if (playlist.entries.isNotEmpty)
+          for (var entry in playlist.entries)
+            GestureDetector(
+              onTap: () => context.pushPage(
+                PlaylistSubScreen(
+                  playlistName: entry.key,
+                  ref: ref,
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Stack(
                       children: [
-                        Stack(
-                          children: [
-                            Container(
-                              height: 81,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                color: Colors.grey,
-                              ),
-                              width: 144,
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              child: entry.value.isNotEmpty
-                                  ? FutureBuilder<Video>(
-                                      future: yt.videos
-                                          .get(entry.value.first)
-                                          .whenComplete(() => yt.close()),
-                                      builder: (context, snapshot) {
-                                        return snapshot.hasData
-                                            ? CachedNetworkImage(
-                                                imageUrl: snapshot.data!
-                                                    .thumbnails.mediumResUrl,
-                                                fit: BoxFit.fitWidth,
-                                              )
-                                            : const SizedBox();
-                                      })
-                                  : null,
-                            ),
-                            Positioned.fill(
-                              child: Align(
-                                alignment: const Alignment(0.98, 0.94),
-                                child: IconWithLabel(
-                                  label: entry.value.length.toString(),
-                                  secColor: SecColor.dark,
-                                ),
-                              ),
-                            ),
-                          ],
+                        Container(
+                          height: 81,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.grey,
+                          ),
+                          width: 144,
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          child: entry.value.isNotEmpty
+                              ? FutureBuilder<Video>(
+                                  future: yt.videos
+                                      .get(entry.value.first)
+                                      .whenComplete(() => yt.close()),
+                                  builder: (context, snapshot) {
+                                    return snapshot.hasData
+                                        ? CachedNetworkImage(
+                                            imageUrl: snapshot
+                                                .data!.thumbnails.mediumResUrl,
+                                            fit: BoxFit.fitWidth,
+                                          )
+                                        : const SizedBox();
+                                  })
+                              : null,
                         ),
-                        Expanded(child: Text(entry.key)),
-                        IconButton(
-                          onPressed: () {
-                            playlistP.removePlaylist(entry.key);
-                          },
-                          icon: const Icon(AntIcons.minus_outline),
+                        Positioned.fill(
+                          child: Align(
+                            alignment: const Alignment(0.98, 0.94),
+                            child: IconWithLabel(
+                              label: entry.value.length.toString(),
+                              secColor: SecColor.dark,
+                            ),
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                )
-            ],
-          )
-        : const Center(child: Text("No playlists found!"));
+                    Expanded(child: Text(entry.key)),
+                    IconButton(
+                      onPressed: () {
+                        playlistP.removePlaylist(entry.key);
+                      },
+                      icon: const Icon(AntIcons.minus_outline),
+                    ),
+                  ],
+                ),
+              ),
+            )
+        else
+          const Center(child: Text("No playlists found!")),
+      ],
+    );
   }
 
   @override
