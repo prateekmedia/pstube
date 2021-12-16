@@ -26,30 +26,30 @@ class _LikedScreenState extends State<LikedScreen>
     return Consumer(builder: (context, ref, _) {
       final likedList = ref.watch(likedListProvider);
       return Scaffold(
-        appBar: AppBar(
-          leading: context.backLeading(),
-          title: const Text("Liked"),
-        ),
-        body: Column(
-          children: [
-            TabBar(
-              isScrollable: true,
-              controller: tabController,
-              tabs: const [
-                Tab(text: "Videos"),
-                Tab(text: "Comments"),
-              ],
-            ),
-            Expanded(
-              child: TabBarView(
+        body: NestedScrollView(
+          headerSliverBuilder: (_, e) => [
+            SliverAppBar(
+              leading: context.backLeading(),
+              title: const Text("Liked"),
+              floating: true,
+              pinned: true,
+              bottom: TabBar(
+                isScrollable: !context.isMobile,
                 controller: tabController,
-                children: [
-                  LikedVideoList(likedList: likedList),
-                  LikedCommentList(likedList: likedList),
+                tabs: const [
+                  Tab(text: "Videos"),
+                  Tab(text: "Comments"),
                 ],
               ),
-            ),
+            )
           ],
+          body: TabBarView(
+            controller: tabController,
+            children: [
+              LikedVideoList(likedList: likedList),
+              LikedCommentList(likedList: likedList),
+            ],
+          ),
         ),
       );
     });

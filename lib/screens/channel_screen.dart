@@ -91,7 +91,7 @@ class ChannelScreen extends HookWidget {
               pinned: true,
               forceElevated: innerBoxIsScrolled,
               bottom: TabBar(
-                isScrollable: true,
+                isScrollable: !context.isMobile,
                 controller: _tabController,
                 // These are the widgets to put in each tab in the tab bar.
                 tabs: _tabs.map((String name) => Tab(text: name)).toList(),

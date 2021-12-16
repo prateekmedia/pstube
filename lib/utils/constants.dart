@@ -22,8 +22,9 @@ ThemeData getThemeData(BuildContext context, Brightness brightness) {
             primarySwatch: primaryColor,
           ),
     textTheme: brightness.textTheme,
+    tabBarTheme: TabBarTheme(labelColor: brightness.textTheme.bodyText1!.color),
     appBarTheme: AppBarTheme(
-      backgroundColor: brightness.getAltBackgroundColor,
+      backgroundColor: brightness.isDark ? Colors.grey[850]! : Colors.grey[50]!,
       foregroundColor: brightness.textColor,
       systemOverlayStyle: SystemUiOverlayStyle(
         systemNavigationBarColor: brightness.getBackgroundColor,
