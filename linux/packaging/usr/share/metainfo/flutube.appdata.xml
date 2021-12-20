@@ -2,7 +2,7 @@
 <component type="desktop-application">
 	<id>flutube</id>
 	<name>FluTube</name>
-	<summary>Youtube video client made using flutter</summary>
+	<summary>Youtube client made using flutter</summary>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-only</project_license>
 	<recommends>
@@ -13,7 +13,7 @@
 	<developer_name>Prateek SU</developer_name>
 	<url type="homepage">https://github.com/prateekmedia/flutube</url>
 	<description>
-		<p>Youtube video client made using flutter</p>
+		<p>Youtube client made using flutter</p>
 		<p>Features:</p>
 		<ul>
 			<li>Beautiful user interface</li>
@@ -28,13 +28,14 @@
 	</description>
 	<screenshots>
 		<screenshot>
-			<image type="source">https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_1.jpg?raw=true</image>
-			<image type="source">https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_2.jpg?raw=true</image>
-			<image type="source">https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_3.jpg?raw=true</image>
+			<image type="source">https://github.com/prateekmedia/flutube/blob/1.0.0/assets/screenshots/linux_1.jpg?raw=true</image>
+			<image type="source">https://github.com/prateekmedia/flutube/blob/1.0.0/assets/screenshots/linux_2.jpg?raw=true</image>
+			<image type="source">https://github.com/prateekmedia/flutube/blob/1.0.0/assets/screenshots/linux_3.jpg?raw=true</image>
 		</screenshot>
 	</screenshots>
 	<launchable type="desktop-id">flutube.desktop</launchable>
 	<releases>
+		<release version="1.0.0" date="2021-12-20"/>
 		<release version="0.6.0" date="2021-10-18"/>
 		<release version="0.5.0" date="2021-09-29"/>
 		<release version="0.4.5" date="2021-09-28"/>

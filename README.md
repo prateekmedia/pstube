@@ -10,12 +10,12 @@
 <table>
     <tr>
         <td colspan=2>
-            <img src="https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_2.jpg?raw=true"/>
+            <img src="https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_1.jpg?raw=true"/>
         </td>
     </tr>
     <tr>
         <td>
-        <img src="https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_1.jpg?raw=true"/>
+        <img src="https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_2.jpg?raw=true"/>
         </td>
         <td>
         <img src="https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_3.jpg?raw=true"/>
