@@ -2,10 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutube/models/models.dart';
-import 'package:flutube/providers/providers.dart';
 import 'package:flutube/widgets/widgets.dart';
+import 'package:flutube/providers/providers.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'utils.dart';
@@ -15,7 +14,8 @@ final Widget _progressIndicator = SizedBox(
   child: getCircularProgressIndicator(),
 );
 
-Future showDownloadPopup(BuildContext context, {Video? video, String? videoUrl}) {
+Future showDownloadPopup(BuildContext context,
+    {Video? video, String? videoUrl}) {
   assert(video != null || videoUrl != null);
   final yt = YoutubeExplode();
   Future<Video?> getVideo() => yt.videos.get(videoUrl!);
@@ -24,12 +24,13 @@ Future showDownloadPopup(BuildContext context, {Video? video, String? videoUrl})
     padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 12),
     innerPadding: EdgeInsets.zero,
     builder: (ctx) => FutureBuilder<Video?>(
-        future: videoUrl != null ? getVideo().whenComplete(() => yt.close()) : null,
+        future:
+            videoUrl != null ? getVideo().whenComplete(() => yt.close()) : null,
         builder: (context, snapshot) {
           return video != null || snapshot.hasData && snapshot.data != null
               ? DownloadsWidget(video: video ?? snapshot.data!)
               : snapshot.hasError
-                  ? const Text("Error")
+                  ? Text(context.locals.error)
                   : _progressIndicator;
         }),
   );
@@ -63,11 +64,12 @@ class DownloadsWidget extends ConsumerWidget {
                   if (ref.watch(thumbnailDownloaderProvider)) ...[
                     linksHeader(
                       context,
-                      icon: LucideIcons.image,
-                      label: "Thumbnail",
+                      icon: Icons.video_call,
+                      label: context.locals.thumbnail,
                       padding: const EdgeInsets.only(top: 6, bottom: 14),
                     ),
-                    for (var thumbnail in video.thumbnails.toStreamInfo)
+                    for (var thumbnail
+                        in video.thumbnails.toStreamInfo(context))
                       CustomListTile(
                         stream: thumbnail,
                         video: video,
@@ -76,11 +78,12 @@ class DownloadsWidget extends ConsumerWidget {
                   ],
                   linksHeader(
                     context,
-                    icon: LucideIcons.film,
-                    label: "Video + Audio",
+                    icon: Icons.movie,
+                    label: context.locals.videoPlusAudio,
                     padding: const EdgeInsets.only(top: 6, bottom: 14),
                   ),
-                  for (var videoStream in snapshot.data!.muxed.toList().sortByVideoQuality())
+                  for (var videoStream
+                      in snapshot.data!.muxed.sortByVideoQuality())
                     CustomListTile(
                       stream: videoStream,
                       video: video,
@@ -88,10 +91,10 @@ class DownloadsWidget extends ConsumerWidget {
                     ),
                   linksHeader(
                     context,
-                    icon: LucideIcons.music,
-                    label: "Audio only",
+                    icon: Icons.audiotrack,
+                    label: context.locals.audioOnly,
                   ),
-                  for (var audioStream in snapshot.data!.audioOnly.toList().reversed)
+                  for (var audioStream in snapshot.data!.audioOnly.reversed)
                     CustomListTile(
                       stream: audioStream,
                       video: video,
@@ -99,10 +102,11 @@ class DownloadsWidget extends ConsumerWidget {
                     ),
                   linksHeader(
                     context,
-                    icon: LucideIcons.video,
-                    label: "Video only",
+                    icon: Icons.videocam,
+                    label: context.locals.videoOnly,
                   ),
-                  for (var videoStream in snapshot.data!.videoOnly.toList().sortByVideoQuality())
+                  for (var videoStream in snapshot.data!.videoOnly
+                      .where((element) => element.tag < 200))
                     CustomListTile(
                       stream: videoStream,
                       video: video,
@@ -158,8 +162,10 @@ class CustomListTile extends ConsumerWidget {
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: InkWell(
         onTap: () async {
-          if ((Platform.isAndroid || Platform.isIOS) && !await Permission.storage.request().isGranted) return;
+          if ((Platform.isAndroid || Platform.isIOS) &&
+              !await Permission.storage.request().isGranted) return;
           ref.watch(downloadListProvider.notifier).addDownload(
+                context,
                 DownloadItem.fromVideo(
                   video: video,
                   stream: stream,
@@ -179,22 +185,29 @@ class CustomListTile extends ConsumerWidget {
                     (stream is ThumbnailStreamInfo
                             ? stream.containerName
                             : stream is AudioOnlyStreamInfo
-                                ? stream.audioCodec.split('.')[0].replaceAll('mp4a', 'm4a')
+                                ? stream.audioCodec
+                                    .split('.')[0]
+                                    .replaceAll('mp4a', 'm4a')
                                 : stream.container.name)
                         .toUpperCase(),
                   ),
-                  Text(stream is ThumbnailStreamInfo ? "" : (stream.size.totalBytes as int).getFileSize()),
+                  Text(stream is ThumbnailStreamInfo
+                      ? ""
+                      : (stream.size.totalBytes as int).getFileSize()),
                 ],
               ),
               Align(
                 alignment: Alignment.center,
                 child: Text(
                   stream is VideoStreamInfo
-                      ? stream.videoQualityLabel
+                      ? (stream as VideoStreamInfo).qualityLabel
                       : stream is AudioOnlyStreamInfo
-                          ? (stream.bitrate.bitsPerSecond as int).getBitrate()
+                          ? (stream as AudioOnlyStreamInfo)
+                              .bitrate
+                              .bitsPerSecond
+                              .getBitrate()
                           : stream is ThumbnailStreamInfo
-                              ? stream.name
+                              ? (stream as ThumbnailStreamInfo).name
                               : "",
                   style: context.textTheme.headline5,
                   textAlign: TextAlign.center,

@@ -8,9 +8,12 @@ extension BrightnessExtensions on Brightness {
   Color get textColor => isDark ? Colors.white : Colors.black;
   Color get textColor2 => isDark ? Colors.white70 : Colors.black87;
 
-  Color get getBackgroundColor => isDark ? Colors.grey[800]! : Colors.grey[200]!;
-  Color get getAltBackgroundColor => isDark ? Colors.grey[900]! : Colors.grey[300]!;
-  Color get getAlt2BackgroundColor => isDark ? Colors.grey[400]! : Colors.grey[600]!;
+  Color get getBackgroundColor =>
+      isDark ? Colors.grey[800]! : Colors.grey[200]!;
+  Color get getAltBackgroundColor =>
+      isDark ? Colors.grey[900]! : Colors.grey[300]!;
+  Color get getAlt2BackgroundColor =>
+      isDark ? Colors.grey[400]! : Colors.grey[600]!;
 
   TextTheme get textTheme => TextTheme(
         bodyText1: TextStyle(fontSize: 16, color: textColor),
@@ -41,7 +44,7 @@ extension BrightnessExtensions on Brightness {
           fontWeight: FontWeight.w600,
         ),
         headline6: TextStyle(
-          fontSize: 14,
+          fontSize: 18,
           color: textColor,
           fontWeight: FontWeight.w600,
         ),

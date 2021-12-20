@@ -11,30 +11,32 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMixin {
+class _HomeScreenState extends State<HomeScreen>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return ListView(
+    return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
-      children: [
-        StaggeredGridView.countBuilder(
-          staggeredTileBuilder: (idx) => StaggeredTile.fit(context.width > 1200
-              ? 3
-              : context.width > 900
-                  ? 4
-                  : context.width > 620
-                      ? 6
-                      : 12),
-          crossAxisCount: 12,
-          shrinkWrap: true,
-          primary: false,
-          itemBuilder: (ctx, idx) => const FTVideo(
-            videoUrl: 'https://www.youtube.com/watch?v=WhWc3b3KhnY',
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Center(
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 6 * 300),
+              child: MasonryGridView.count(
+                crossAxisCount: (context.width ~/ 300 as int).clamp(1, 6),
+                shrinkWrap: true,
+                primary: false,
+                itemBuilder: (ctx, idx) => const FTVideo(
+                  videoUrl: 'https://www.youtube.com/watch?v=WhWc3b3KhnY',
+                ),
+                itemCount: 4,
+              ),
+            ),
           ),
-          itemCount: 4,
-        ),
-      ],
+        ],
+      ),
     );
   }
 

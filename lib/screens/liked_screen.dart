@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ant_icons/ant_icons.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,7 +15,8 @@ class LikedScreen extends StatefulHookWidget {
   State<LikedScreen> createState() => _LikedScreenState();
 }
 
-class _LikedScreenState extends State<LikedScreen> with AutomaticKeepAliveClientMixin {
+class _LikedScreenState extends State<LikedScreen>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -23,27 +25,32 @@ class _LikedScreenState extends State<LikedScreen> with AutomaticKeepAliveClient
 
     return Consumer(builder: (context, ref, _) {
       final likedList = ref.watch(likedListProvider);
-      return Column(
-        children: [
-          TabBar(
-            indicatorSize: TabBarIndicatorSize.label,
+      return Scaffold(
+        body: NestedScrollView(
+          headerSliverBuilder: (_, e) => [
+            SliverAppBar(
+              leading: context.backLeading(),
+              title: Text(context.locals.liked),
+              floating: true,
+              pinned: true,
+              bottom: TabBar(
+                isScrollable: !context.isMobile,
+                controller: tabController,
+                tabs: [
+                  Tab(text: context.locals.videos),
+                  Tab(text: context.locals.comments),
+                ],
+              ),
+            )
+          ],
+          body: TabBarView(
             controller: tabController,
-            labelColor: context.textTheme.bodyText1!.color,
-            tabs: const [
-              Tab(text: "Videos"),
-              Tab(text: "Comments"),
+            children: [
+              LikedVideoList(likedList: likedList),
+              LikedCommentList(likedList: likedList),
             ],
           ),
-          Expanded(
-            child: TabBarView(
-              controller: tabController,
-              children: [
-                LikedVideoList(likedList: likedList),
-                LikedCommentList(likedList: likedList),
-              ],
-            ),
-          ),
-        ],
+        ),
       );
     });
   }
@@ -64,7 +71,8 @@ class LikedVideoList extends StatefulWidget {
   State<LikedVideoList> createState() => _LikedVideoListState();
 }
 
-class _LikedVideoListState extends State<LikedVideoList> with AutomaticKeepAliveClientMixin {
+class _LikedVideoListState extends State<LikedVideoList>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -73,9 +81,9 @@ class _LikedVideoListState extends State<LikedVideoList> with AutomaticKeepAlive
       children: [
         if (widget.likedList.likedVideoList.isEmpty) ...[
           const SizedBox(height: 60),
-          const Icon(Icons.thumbs_up_down, size: 30),
+          const Icon(AntIcons.like, size: 30),
           const SizedBox(height: 10),
-          const Text('No Liked videos found').center()
+          Text(context.locals.noLikedVideosFound).center()
         ] else
           for (String url in widget.likedList.likedVideoList)
             FTVideo(
@@ -102,7 +110,8 @@ class LikedCommentList extends StatefulWidget {
   State<LikedCommentList> createState() => _LikedCommentListState();
 }
 
-class _LikedCommentListState extends State<LikedCommentList> with AutomaticKeepAliveClientMixin {
+class _LikedCommentListState extends State<LikedCommentList>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -111,9 +120,9 @@ class _LikedCommentListState extends State<LikedCommentList> with AutomaticKeepA
       children: [
         if (widget.likedList.likedCommentList.isEmpty) ...[
           const SizedBox(height: 60),
-          const Icon(Icons.thumbs_up_down, size: 30),
+          const Icon(AntIcons.like, size: 30),
           const SizedBox(height: 10),
-          const Text('No Liked comments found').center()
+          Text(context.locals.noLikedCommentsFound).center()
         ] else
           for (LikedComment comment in widget.likedList.likedCommentList)
             CommentBox(

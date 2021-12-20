@@ -13,7 +13,7 @@
 .metadata
 *.keystore
 linux/packaging/usr/local/
-generated-*.dart
+generated_*.dart
 
 # IntelliJ related
 *.iml

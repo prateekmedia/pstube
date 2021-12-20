@@ -8,7 +8,7 @@ final likedListProvider = ChangeNotifierProvider((ref) => LikedList(ref));
 final _box = Hive.box('likedList');
 
 class LikedList extends ChangeNotifier {
-  final ProviderRefBase ref;
+  final ChangeNotifierProviderRef ref;
   LikedList(this.ref);
 
   List likedVideoList = _box.get('likedVideoList', defaultValue: []);
@@ -30,7 +30,9 @@ class LikedList extends ChangeNotifier {
 
   addComment(LikedComment comment) {
     if (likedCommentList
-        .where((element) => (element.author == comment.author) && (element.text == comment.text))
+        .where((element) =>
+            (element.author == comment.author) &&
+            (element.text == comment.text))
         .isEmpty) {
       likedCommentList.add(comment);
       refresh(false);

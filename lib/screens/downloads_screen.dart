@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:ant_icons/ant_icons.dart';
 import 'package:open_file/open_file.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -24,11 +24,13 @@ class DownloadsScreen extends ConsumerWidget {
       children: [
         if (downloadList.isEmpty) ...[
           const SizedBox(height: 60),
-          const Icon(LucideIcons.download, size: 30),
+          const Icon(Icons.download, size: 30),
           const SizedBox(height: 10),
-          const Text('No Downloads found').center()
+          Text(context.locals.noDownloadsFound).center()
         ] else
-          for (DownloadItem item in downloadList) DownloadItemBuilder(item: item, downloadListUtils: downloadListUtils),
+          for (DownloadItem item in downloadList)
+            DownloadItemBuilder(
+                item: item, downloadListUtils: downloadListUtils),
       ],
     );
   }
@@ -79,7 +81,8 @@ class DownloadItemBuilder extends StatelessWidget {
                       child: Align(
                         alignment: const Alignment(0.98, 0.94),
                         child: IconWithLabel(
-                          label: item.queryVideo.duration.parseDuration().format(),
+                          label:
+                              item.queryVideo.duration.parseDuration().format(),
                           secColor: SecColor.dark,
                         ),
                       ),
@@ -103,7 +106,9 @@ class DownloadItemBuilder extends StatelessWidget {
                     const SizedBox(height: 5),
                     Row(
                       children: [
-                        IconWithLabel(label: '${((item.downloaded / item.total) * 100).toStringAsFixed(1)}%'),
+                        IconWithLabel(
+                            label:
+                                '${((item.downloaded / item.total) * 100).toStringAsFixed(1)}%'),
                         const SizedBox(width: 5),
                         IconWithLabel(label: item.total.getFileSize()),
                       ],
@@ -112,7 +117,8 @@ class DownloadItemBuilder extends StatelessWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(15),
                       child: LinearProgressIndicator(
-                        value: item.total != 0 ? item.downloaded / item.total : 0,
+                        value:
+                            item.total != 0 ? item.downloaded / item.total : 0,
                         minHeight: 10,
                       ),
                     ),
@@ -128,27 +134,35 @@ class DownloadItemBuilder extends StatelessWidget {
                       final deleteFromStorage = ValueNotifier<bool>(true);
                       showPopoverWB(
                           context: context,
-                          title: "Confirm!",
+                          title: context.locals.confirm,
                           builder: (ctx) => ValueListenableBuilder<bool>(
                               valueListenable: deleteFromStorage,
                               builder: (_, value, ___) {
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Clear item from download list?', style: context.textTheme.bodyText1),
+                                    Text(
+                                        context
+                                            .locals.clearItemFromDownloadList,
+                                        style: context.textTheme.bodyText1),
                                     CheckboxListTile(
                                       value: value,
-                                      onChanged: (val) => deleteFromStorage.value = val!,
-                                      title: const Text("Also delete from storage"),
+                                      onChanged: (val) =>
+                                          deleteFromStorage.value = val!,
+                                      title: Text(context
+                                          .locals.alsoDeleteThemFromStorage),
                                     ),
                                   ],
                                 );
                               }),
-                          confirmText: "Yes",
+                          confirmText: context.locals.yes,
                           onConfirm: () {
-                            if (File(item.queryVideo.path + item.queryVideo.name).existsSync() &&
+                            if (File(item.queryVideo.path +
+                                        item.queryVideo.name)
+                                    .existsSync() &&
                                 deleteFromStorage.value) {
-                              File(item.queryVideo.path + item.queryVideo.name).deleteSync();
+                              File(item.queryVideo.path + item.queryVideo.name)
+                                  .deleteSync();
                             }
                             downloadListUtils.removeDownload(item.queryVideo);
                             context.back();
@@ -160,10 +174,10 @@ class DownloadItemBuilder extends StatelessWidget {
                     },
               icon: Icon(
                 item.cancelToken != null && item.cancelToken!.isCancelled
-                    ? LucideIcons.fileMinus
+                    ? AntIcons.minus_outline
                     : item.total != 0 && item.total != item.downloaded
-                        ? LucideIcons.x
-                        : LucideIcons.trash,
+                        ? Icons.close
+                        : AntIcons.delete_outline,
               ),
             )
           ],

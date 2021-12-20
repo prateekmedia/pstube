@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_locals.dart';
+import 'package:page_transition/page_transition.dart';
+
 import 'package:flutube/utils/utils.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 
 extension ContextExtensions on BuildContext {
   TextTheme get textTheme => Theme.of(this).textTheme;
@@ -14,10 +16,12 @@ extension ContextExtensions on BuildContext {
     Navigator.of(this).pop();
   }
 
-  pushPage(Widget page) => Navigator.of(this).push(MaterialPageRoute(builder: (ctx) => page));
+  pushPage(Widget page) => Navigator.of(this)
+      .push(PageTransition(type: PageTransitionType.rightToLeft, child: page));
 
   Widget backLeading([VoidCallback? onBack]) => IconButton(
-        icon: Icon(LucideIcons.chevronLeft, color: textTheme.bodyText1!.color),
+        icon: Icon(Icons.chevron_left,
+            color: textTheme.bodyText1!.color, size: 30),
         splashColor: Colors.transparent,
         focusColor: Colors.transparent,
         highlightColor: Colors.transparent,
@@ -29,10 +33,13 @@ extension ContextExtensions on BuildContext {
   Color get getAltBackgroundColor => brightness.getAltBackgroundColor;
   Color get getAlt2BackgroundColor => brightness.getAlt2BackgroundColor;
 
-  bool get isMobile => (Platform.isAndroid && !isLandscape) || width < mobileWidth;
+  bool get isMobile =>
+      (Platform.isAndroid && !isLandscape) || width < mobileWidth;
 
   MediaQueryData get queryData => MediaQuery.of(this);
   get isLandscape => queryData.orientation == Orientation.landscape;
   get width => queryData.size.width;
   get height => queryData.size.height;
+
+  AppLocalizations get locals => AppLocalizations.of(this)!;
 }

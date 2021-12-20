@@ -1,11 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.prateekmedia.flutube"
-    xmlns:tools="http://schemas.android.com/tools">
+    package="com.prateekmedia.flutube">
     <application
-        tools:replace="android:label"
-        android:name="io.flutter.app.FlutterApplication"
-        android:label="FluTube Debug"
         android:requestLegacyExternalStorage="true">
-    </application>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 </manifest>

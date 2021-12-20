@@ -1,7 +1,8 @@
 import 'package:flutube/utils/shared_prefs.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final thumbnailDownloaderProvider = StateNotifierProvider<ThumbnailDownloaderNotifier, bool>(
+final thumbnailDownloaderProvider =
+    StateNotifierProvider<ThumbnailDownloaderNotifier, bool>(
   (_) => ThumbnailDownloaderNotifier(
     MyPrefs().prefs.getBool('thumbnailDownloader') ?? false,
   ),
@@ -16,6 +17,9 @@ class ThumbnailDownloaderNotifier extends StateNotifier<bool> {
   }
 
   reset() {
-    MyPrefs().prefs.remove('thumbnailDownloader').whenComplete(() => state = false);
+    MyPrefs()
+        .prefs
+        .remove('thumbnailDownloader')
+        .whenComplete(() => state = false);
   }
 }

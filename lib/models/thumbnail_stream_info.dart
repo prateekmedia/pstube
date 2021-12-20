@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+import 'package:flutube/utils/utils.dart';
 
 class ThumbnailStreamInfo {
   final String name;
@@ -13,11 +15,26 @@ class ThumbnailStreamInfo {
 }
 
 extension CreateThumbnailStreamInfo on ThumbnailSet {
-  List<ThumbnailStreamInfo> get toStreamInfo => [
-        ThumbnailStreamInfo(name: "Low resolution", url: lowResUrl),
-        ThumbnailStreamInfo(name: "Medium resolution", url: mediumResUrl),
-        ThumbnailStreamInfo(name: "Standard resolution", url: standardResUrl),
-        ThumbnailStreamInfo(name: "High resolution", url: highResUrl),
-        ThumbnailStreamInfo(name: "Max resolution", url: maxResUrl),
+  List<ThumbnailStreamInfo> toStreamInfo(BuildContext context) => [
+        ThumbnailStreamInfo(
+          name: context.locals.lowResolution,
+          url: lowResUrl,
+        ),
+        ThumbnailStreamInfo(
+          name: context.locals.mediumResolution,
+          url: mediumResUrl,
+        ),
+        ThumbnailStreamInfo(
+          name: context.locals.standardResolution,
+          url: standardResUrl,
+        ),
+        ThumbnailStreamInfo(
+          name: context.locals.highResolution,
+          url: highResUrl,
+        ),
+        ThumbnailStreamInfo(
+          name: context.locals.maxResolution,
+          url: maxResUrl,
+        ),
       ];
 }
