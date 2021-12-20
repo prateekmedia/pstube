@@ -51,9 +51,10 @@ class ChannelInfo extends HookWidget {
                   Text(
                     data != null
                         ? data.subscribersCount == null
-                            ? "Hidden"
+                            ? context.locals.hidden
                             : data.subscribersCount!.formatNumber +
-                                " subscribers"
+                                " " +
+                                context.locals.subscribers
                         : "",
                     style: context.textTheme.bodyText2,
                   ),

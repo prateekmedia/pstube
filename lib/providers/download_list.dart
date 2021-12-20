@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:bot_toast/bot_toast.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutube/models/models.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import 'package:flutube/utils/utils.dart';
 
 final downloadListProvider = ChangeNotifierProvider((ref) => DownloadList(ref));
 
@@ -18,12 +20,12 @@ class DownloadList extends ChangeNotifier {
       .map((e) => DownloadItem(queryVideo: e[1], downloaded: e[0], total: e[0]))
       .toList();
 
-  void addDownload(DownloadItem downloadItem) async {
+  void addDownload(BuildContext context, DownloadItem downloadItem) async {
     final CancelToken cancelToken = CancelToken();
 
     downloadList.insert(0, downloadItem.copyWith(cancelToken: cancelToken));
     refresh();
-    BotToast.showText(text: "Download started!");
+    BotToast.showText(text: context.locals.downloadStarted);
     await Dio().download(downloadItem.queryVideo.url,
         downloadItem.queryVideo.path + downloadItem.queryVideo.name,
         onReceiveProgress: (downloaded, total) {
@@ -35,7 +37,7 @@ class DownloadList extends ChangeNotifier {
     if (currentItem.downloaded == currentItem.total && currentItem.total != 0) {
       refresh(true);
     }
-    BotToast.showText(text: "Download finished!");
+    BotToast.showText(text: context.locals.downloadFinished);
   }
 
   refresh([bool? value]) {

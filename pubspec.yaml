@@ -52,6 +52,7 @@ dev_dependencies:
   hive_generator: ^1.1.1
 
 flutter:
+  generate: true
   uses-material-design: true
 
   assets:

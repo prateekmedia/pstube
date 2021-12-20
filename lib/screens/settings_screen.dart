@@ -48,22 +48,21 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       children: [
         ListTile(
-          title: const Text("Download folder"),
+          title: Text(context.locals.downloadFolder),
           subtitle: Text(path),
           onTap: () async => ref.read(downloadPathProvider).path =
-              await FilePicker.platform
-                  .getDirectoryPath(dialogTitle: 'Choose Download Folder'),
+              await FilePicker.platform.getDirectoryPath(
+                  dialogTitle: context.locals.chooseDownloadFolder),
         ),
         SwitchListTile(
-          title: const Text('Dark mode'),
-          subtitle: const Text('Cause light attract bugs'),
+          title: Text(context.locals.darkMode),
           value: context.isDark,
           onChanged: (bool value) =>
               ref.read(themeTypeProvider.notifier).themeType = value ? 2 : 1,
         ),
         SwitchListTile(
-          title: const Text('Thumbnail downloader'),
-          subtitle: const Text('Show thumbnail downloader in download popup'),
+          title: Text(context.locals.thumbnailDownloader),
+          subtitle: Text(context.locals.showThumbnailDownloaderInDownloadPopup),
           value: ref.watch(thumbnailDownloaderProvider),
           onChanged: (bool value) =>
               ref.read(thumbnailDownloaderProvider.notifier).value = value,
@@ -76,7 +75,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
                   ? version == snapshot.data!.version
                   : null;
               return ListTile(
-                title: const Text("Update"),
+                title: Text(context.locals.update),
                 onTap: hasData && isLatest != null
                     ? (isLatest
                         ? null
@@ -84,15 +83,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
                     : null,
                 subtitle: hasData && isLatest != null
                     ? Text(isLatest
-                        ? 'You are using the latest version'
-                        : '$version is available')
+                        ? context.locals.youAreUsingTheLatestVersion
+                        : '$version ' + context.locals.isAvailable)
                     : const LinearProgressIndicator(),
               );
             }),
         ListTile(
-          title: Text("About ${myApp.name}"),
+          title: Text(context.locals.about + " ${myApp.name}"),
           onTap: () => context.pushPage(const AboutScreen()),
-          subtitle: const Text('Info about the app & the developers'),
+          subtitle: Text(context.locals.infoAboutTheAppAndtheDevelopers),
         ),
       ],
     );

@@ -18,22 +18,25 @@ class ChannelScreen extends HookWidget {
     final _currentVidPage = useState<ChannelUploadsList?>(null);
     final controller = useScrollController();
     final _tabController = useTabController(initialLength: 2);
-    const List<String> _tabs = ["Videos", "About"];
+    List<String> _tabs = [context.locals.videos, context.locals.about];
 
     final List<Widget> getStats = channelInfo.value != null
         ? [
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(
-                "Stats",
+                context.locals.stats,
                 style: context.textTheme.headline5!,
               ),
             ),
             const Divider(height: 26),
-            Text("Joined " + channelInfo.value!.joinDate,
+            Text(context.locals.joined + " " + channelInfo.value!.joinDate,
                 style: context.textTheme.bodyText2),
             const Divider(height: 26),
-            Text(channelInfo.value!.viewCount.addCommas + " views",
+            Text(
+                channelInfo.value!.viewCount.addCommas +
+                    " " +
+                    context.locals.views,
                 style: context.textTheme.bodyText2),
             const Divider(height: 26),
             Text(channelInfo.value!.country),
@@ -213,7 +216,7 @@ class _CustomTabState extends State<_CustomTab>
                               padding:
                                   const EdgeInsets.symmetric(vertical: 8.0),
                               child: Text(
-                                "Description  ",
+                                context.locals.description,
                                 style: context.textTheme.headline5!,
                               ),
                             ),
@@ -224,7 +227,7 @@ class _CustomTabState extends State<_CustomTab>
                               padding:
                                   const EdgeInsets.symmetric(vertical: 8.0),
                               child: Text(
-                                "Links",
+                                context.locals.links,
                                 style: context.textTheme.headline5!,
                               ),
                             ),

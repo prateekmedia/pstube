@@ -26,7 +26,7 @@ class DownloadsScreen extends ConsumerWidget {
           const SizedBox(height: 60),
           const Icon(Icons.download, size: 30),
           const SizedBox(height: 10),
-          const Text('No Downloads found').center()
+          Text(context.locals.noDownloadsFound).center()
         ] else
           for (DownloadItem item in downloadList)
             DownloadItemBuilder(
@@ -134,26 +134,28 @@ class DownloadItemBuilder extends StatelessWidget {
                       final deleteFromStorage = ValueNotifier<bool>(true);
                       showPopoverWB(
                           context: context,
-                          title: "Confirm!",
+                          title: context.locals.confirm,
                           builder: (ctx) => ValueListenableBuilder<bool>(
                               valueListenable: deleteFromStorage,
                               builder: (_, value, ___) {
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Clear item from download list?',
+                                    Text(
+                                        context
+                                            .locals.clearItemFromDownloadList,
                                         style: context.textTheme.bodyText1),
                                     CheckboxListTile(
                                       value: value,
                                       onChanged: (val) =>
                                           deleteFromStorage.value = val!,
-                                      title: const Text(
-                                          "Also delete from storage"),
+                                      title: Text(context
+                                          .locals.alsoDeleteThemFromStorage),
                                     ),
                                   ],
                                 );
                               }),
-                          confirmText: "Yes",
+                          confirmText: context.locals.yes,
                           onConfirm: () {
                             if (File(item.queryVideo.path +
                                         item.queryVideo.name)

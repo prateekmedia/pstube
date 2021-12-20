@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_locals.dart';
 import 'package:page_transition/page_transition.dart';
+
 import 'package:flutube/utils/utils.dart';
 
 extension ContextExtensions on BuildContext {
@@ -38,4 +40,6 @@ extension ContextExtensions on BuildContext {
   get isLandscape => queryData.orientation == Orientation.landscape;
   get width => queryData.size.width;
   get height => queryData.size.height;
+
+  AppLocalizations get locals => AppLocalizations.of(this)!;
 }

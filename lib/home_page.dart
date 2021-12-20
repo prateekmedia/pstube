@@ -30,10 +30,10 @@ class MyHomePage extends HookConsumerWidget {
     ];
 
     final Map<String, List<IconData>> navItems = {
-      "Home": [AntIcons.home_outline, AntIcons.home],
-      "Playlist": [AntIcons.unordered_list],
-      "Downloads": [Icons.download_outlined, Icons.download],
-      "Settings": [AntIcons.setting_outline, AntIcons.setting],
+      context.locals.home: [AntIcons.home_outline, AntIcons.home],
+      context.locals.playlist: [AntIcons.unordered_list],
+      context.locals.downloads: [Icons.download_outlined, Icons.download],
+      context.locals.settings: [AntIcons.setting_outline, AntIcons.setting],
     };
 
     Future addDownload() async {
@@ -56,7 +56,7 @@ class MyHomePage extends HookConsumerWidget {
           }
         },
         hint: "https://youtube.com/watch?v=***********",
-        title: "Download from video url",
+        title: context.locals.downloadFromVideoUrl,
         controller: _addDownloadController,
       );
     }
@@ -71,12 +71,12 @@ class MyHomePage extends HookConsumerWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Clear all items from download list?',
+                  Text(context.locals.clearAll,
                       style: context.textTheme.bodyText1),
                   CheckboxListTile(
                     value: value,
                     onChanged: (val) => deleteFromStorage.value = val!,
-                    title: const Text("Also delete them from storage"),
+                    title: Text(context.locals.alsoDeleteThemFromStorage),
                   ),
                 ],
               );
@@ -93,8 +93,8 @@ class MyHomePage extends HookConsumerWidget {
           downloadListUtils.clearAll();
           context.back();
         },
-        confirmText: "Yes",
-        title: "Confirm!",
+        confirmText: context.locals.yes,
+        title: context.locals.confirm,
       );
     }
 
@@ -117,14 +117,14 @@ class MyHomePage extends HookConsumerWidget {
                 IconButton(
                   icon: const Icon(AntIcons.delete_outline),
                   onPressed: clearAll,
-                  tooltip: "Clear all",
+                  tooltip: context.locals.clearAll,
                 ),
               if (_currentIndex.value == 4)
                 PopupMenuButton(
                   itemBuilder: (context) {
                     return [
                       PopupMenuItem(
-                        child: const Text('Reset default'),
+                        child: Text(context.locals.resetDefault),
                         onTap: () => resetDefaults(ref),
                       )
                     ];
@@ -198,9 +198,9 @@ class MyHomePage extends HookConsumerWidget {
                         : null,
                   );
                 } else {
-                  return const BottomNavigationBarItem(
-                    label: "Add",
-                    icon: Icon(Icons.add, size: 20),
+                  return BottomNavigationBarItem(
+                    label: context.locals.add,
+                    icon: const Icon(Icons.add, size: 20),
                   );
                 }
               },

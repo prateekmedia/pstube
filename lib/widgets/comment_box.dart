@@ -87,8 +87,8 @@ class CommentBox extends HookConsumerWidget {
                                 .copyWith(color: context.brightness.textColor),
                             trimLines: 4,
                             trimMode: TrimMode.Line,
-                            trimCollapsedText: '\nRead more',
-                            trimExpandedText: '\nShow less',
+                            trimCollapsedText: '\n' + context.locals.readMore,
+                            trimExpandedText: '\n' + context.locals.showLess,
                             lessStyle: context.textTheme.bodyText1!.copyWith(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
@@ -141,7 +141,7 @@ class CommentBox extends HookConsumerWidget {
                         padding: EdgeInsets.symmetric(
                             horizontal: kTabLabelPadding.left, vertical: 4),
                         child: Text(
-                          "${comment.replyCount} repl${comment.replyCount > 1 ? "ies" : "y"}",
+                          "${comment.replyCount} ${comment.replyCount > 1 ? context.locals.replies.toLowerCase() : context.locals.reply}",
                           style: TextStyle(
                             color: context.isDark
                                 ? const Color.fromARGB(255, 40, 170, 255)

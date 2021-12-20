@@ -131,7 +131,7 @@ class FTVideo extends StatelessWidget {
                                       child: IconWithLabel(
                                         label: video != null
                                             ? video.author
-                                            : "Loading...",
+                                            : context.locals.loading,
                                         secColor: SecColor.dark,
                                       ),
                                     ),
@@ -146,7 +146,8 @@ class FTVideo extends StatelessWidget {
                                             ? video.engagement.viewCount
                                                 .formatNumber
                                             : "0") +
-                                        " views",
+                                        " " +
+                                        context.locals.views,
                                   ),
                                 ),
                                 Flexible(
@@ -154,7 +155,7 @@ class FTVideo extends StatelessWidget {
                                     label: video != null
                                         ? timeago.format(
                                             video.uploadDate ?? DateTime.now())
-                                        : "just now",
+                                        : context.locals.now,
                                   ),
                                 ),
                               ],
@@ -249,7 +250,7 @@ class FTVideo extends StatelessWidget {
                                     child: IconWithLabel(
                                       label: video != null
                                           ? video.author
-                                          : "Loading...",
+                                          : context.locals.loading,
                                       margin: const EdgeInsets.symmetric(
                                           horizontal: 0, vertical: 2),
                                       secColor: SecColor.dark,
@@ -277,13 +278,14 @@ class FTVideo extends StatelessWidget {
                             label: (video != null
                                     ? video.engagement.viewCount.formatNumber
                                     : "0") +
-                                " views",
+                                " " +
+                                context.locals.views,
                           ),
                           IconWithLabel(
                             label: video != null
                                 ? timeago
                                     .format(video.uploadDate ?? DateTime.now())
-                                : "just now",
+                                : context.locals.now,
                           ),
                         ],
                       )

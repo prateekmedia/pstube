@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter_gen/gen_l10n/app_locals.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -56,7 +57,9 @@ class MyApp extends HookConsumerWidget {
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
+        AppLocalizations.delegate,
       ],
+      supportedLocales: AppLocalizations.supportedLocales,
       theme: getThemeData(context, Brightness.light),
       darkTheme: getThemeData(context, Brightness.dark),
       themeMode: ref.watch(themeTypeProvider),

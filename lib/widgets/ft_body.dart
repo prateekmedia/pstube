@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutube/controller/internet_connectivity.dart';
 
-import 'widgets.dart';
+import 'package:flutube/utils/utils.dart';
+import 'package:flutube/widgets/widgets.dart';
 
 class FtBody extends StatelessWidget {
   final Widget child;
@@ -46,7 +47,7 @@ class NetStatus extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
                       child: Text(
-                    'Network Lost. Showing cached data.',
+                    context.locals.networkLostShowingCachedData,
                     style: Theme.of(context)
                         .textTheme
                         .bodyText1!
@@ -64,7 +65,7 @@ class NetStatus extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
                       child: Text(
-                    'Back online',
+                    context.locals.backOnline,
                     style: Theme.of(context)
                         .textTheme
                         .bodyText1!

@@ -15,7 +15,7 @@ class CustomLicensePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: context.backLeading(),
-        title: const Text("Licenses"),
+        title: Text(context.locals.licenses),
       ),
       body: FutureBuilder<List<LicenseEntry>>(
           future: LicenseRegistry.licenses.toList(),
@@ -58,7 +58,11 @@ class CustomLicensePage extends StatelessWidget {
                       style: context.textTheme.bodyText1,
                     ),
                     subtitle: Text(
-                      '${packages[index].count} ${packages[index].count > 1 ? "Licenses." : "License."}',
+                      packages[index].count.toString() +
+                          " " +
+                          (packages[index].count > 1
+                              ? context.locals.licenses
+                              : context.locals.license),
                       style: context.textTheme.bodyText2,
                     ),
                   ),
@@ -94,7 +98,11 @@ class LicenseInfoPage extends StatelessWidget {
               style: context.textTheme.headline4,
             ),
             Text(
-                '${currentPackage.count} ${currentPackage.count > 1 ? "Licenses" : "License"}',
+                currentPackage.count.toString() +
+                    " " +
+                    (currentPackage.count > 1
+                        ? context.locals.licenses
+                        : context.locals.license),
                 style: context.textTheme.bodyText2),
           ],
         ),

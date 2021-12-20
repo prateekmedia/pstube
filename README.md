@@ -41,6 +41,13 @@
 
 ---
 
+### Contribute translations
+
+- Simply copy the content of `app_en.arb` located in `lib/translations` to your language like `app_hi.arb`
+- Now Modify the values of every key for example:
+`"preferences": "सेटिंग्स"`
+- Now make a Pull Request or simply create an issue and upload your translations there.
+
 ### Build from source
 
 - Download latest Flutter SDK (>=2.8.0)

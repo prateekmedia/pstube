@@ -30,15 +30,15 @@ class _LikedScreenState extends State<LikedScreen>
           headerSliverBuilder: (_, e) => [
             SliverAppBar(
               leading: context.backLeading(),
-              title: const Text("Liked"),
+              title: Text(context.locals.liked),
               floating: true,
               pinned: true,
               bottom: TabBar(
                 isScrollable: !context.isMobile,
                 controller: tabController,
-                tabs: const [
-                  Tab(text: "Videos"),
-                  Tab(text: "Comments"),
+                tabs: [
+                  Tab(text: context.locals.videos),
+                  Tab(text: context.locals.comments),
                 ],
               ),
             )
@@ -83,7 +83,7 @@ class _LikedVideoListState extends State<LikedVideoList>
           const SizedBox(height: 60),
           const Icon(AntIcons.like, size: 30),
           const SizedBox(height: 10),
-          const Text('No Liked videos found').center()
+          Text(context.locals.noLikedVideosFound).center()
         ] else
           for (String url in widget.likedList.likedVideoList)
             FTVideo(
@@ -122,7 +122,7 @@ class _LikedCommentListState extends State<LikedCommentList>
           const SizedBox(height: 60),
           const Icon(AntIcons.like, size: 30),
           const SizedBox(height: 10),
-          const Text('No Liked comments found').center()
+          Text(context.locals.noLikedCommentsFound).center()
         ] else
           for (LikedComment comment in widget.likedList.likedCommentList)
             CommentBox(

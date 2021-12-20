@@ -28,7 +28,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen>
       children: [
         ListTile(
           leading: const Icon(AntIcons.like),
-          title: const Text("Liked"),
+          title: Text(context.locals.liked),
           onTap: () => context.pushPage(const LikedScreen()),
           trailing: const Icon(Icons.chevron_right),
         ),
@@ -94,7 +94,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen>
               ),
             )
         else
-          const Center(child: Text("No playlists found!")),
+          Center(child: Text(context.locals.noPlaylistsFound)),
       ],
     );
   }
@@ -144,7 +144,7 @@ class PlaylistSubScreen extends StatelessWidget {
                     ),
                 ],
               )
-            : const Center(child: Text("No videos found!")),
+            : Center(child: Text(context.locals.noVideosFound)),
       ),
     );
   }

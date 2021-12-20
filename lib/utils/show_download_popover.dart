@@ -30,7 +30,7 @@ Future showDownloadPopup(BuildContext context,
           return video != null || snapshot.hasData && snapshot.data != null
               ? DownloadsWidget(video: video ?? snapshot.data!)
               : snapshot.hasError
-                  ? const Text("Error")
+                  ? Text(context.locals.error)
                   : _progressIndicator;
         }),
   );
@@ -65,10 +65,11 @@ class DownloadsWidget extends ConsumerWidget {
                     linksHeader(
                       context,
                       icon: Icons.video_call,
-                      label: "Thumbnail",
+                      label: context.locals.thumbnail,
                       padding: const EdgeInsets.only(top: 6, bottom: 14),
                     ),
-                    for (var thumbnail in video.thumbnails.toStreamInfo)
+                    for (var thumbnail
+                        in video.thumbnails.toStreamInfo(context))
                       CustomListTile(
                         stream: thumbnail,
                         video: video,
@@ -78,7 +79,7 @@ class DownloadsWidget extends ConsumerWidget {
                   linksHeader(
                     context,
                     icon: Icons.movie,
-                    label: "Video + Audio",
+                    label: context.locals.videoPlusAudio,
                     padding: const EdgeInsets.only(top: 6, bottom: 14),
                   ),
                   for (var videoStream
@@ -91,7 +92,7 @@ class DownloadsWidget extends ConsumerWidget {
                   linksHeader(
                     context,
                     icon: Icons.audiotrack,
-                    label: "Audio only",
+                    label: context.locals.audioOnly,
                   ),
                   for (var audioStream in snapshot.data!.audioOnly.reversed)
                     CustomListTile(
@@ -102,7 +103,7 @@ class DownloadsWidget extends ConsumerWidget {
                   linksHeader(
                     context,
                     icon: Icons.videocam,
-                    label: "Video only",
+                    label: context.locals.videoOnly,
                   ),
                   for (var videoStream in snapshot.data!.videoOnly
                       .where((element) => element.tag < 200))
@@ -164,6 +165,7 @@ class CustomListTile extends ConsumerWidget {
           if ((Platform.isAndroid || Platform.isIOS) &&
               !await Permission.storage.request().isGranted) return;
           ref.watch(downloadListProvider.notifier).addDownload(
+                context,
                 DownloadItem.fromVideo(
                   video: video,
                   stream: stream,

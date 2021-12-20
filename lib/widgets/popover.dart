@@ -35,8 +35,8 @@ Future<T?> showPopoverWB<T>({
   String? Function(String?)? validator,
   EdgeInsets padding = const EdgeInsets.symmetric(horizontal: 8),
   EdgeInsets innerPadding = const EdgeInsets.symmetric(horizontal: 18),
-  String cancelText = "CANCEL",
-  String confirmText = "OK",
+  String? cancelText,
+  String? confirmText,
   bool isScrollControlled = true,
   bool isScrollable = true,
   bool disableOnNoConfirm = false,
@@ -86,7 +86,7 @@ Future<T?> showPopoverWB<T>({
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               ),
-              child: Text(cancelText),
+              child: Text(cancelText ?? context.locals.cancel),
               onPressed: () {
                 context.back();
                 if (onCancel != null) onCancel();
@@ -98,7 +98,7 @@ Future<T?> showPopoverWB<T>({
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               ),
-              child: Text(confirmText),
+              child: Text(confirmText ?? context.locals.ok),
               onPressed: disableOnNoConfirm &&
                       controller != null &&
                       controller.value.text.isEmpty

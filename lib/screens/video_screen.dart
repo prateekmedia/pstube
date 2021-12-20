@@ -145,21 +145,21 @@ class VideoScreen extends HookConsumerWidget {
                                                       null
                                                   ? videoData.engagement
                                                       .likeCount!.formatNumber
-                                                  : "Like",
+                                                  : context.locals.like,
                                         ),
                                         iconWithBottomLabel(
                                           icon: isLiked.value == 2
                                               ? AntIcons.dislike
                                               : AntIcons.dislike_outline,
                                           onPressed: () => updateLike(2),
-                                          label: "Dislike",
+                                          label: context.locals.dislike,
                                         ),
                                         iconWithBottomLabel(
                                           icon: AntIcons.share_alt,
                                           onPressed: () {
                                             Share.share(videoData.url);
                                           },
-                                          label: "Share",
+                                          label: context.locals.share,
                                         ),
                                         iconWithBottomLabel(
                                           icon: Icons.download,
@@ -182,8 +182,9 @@ class VideoScreen extends HookConsumerWidget {
                                                             leading:
                                                                 const SizedBox(),
                                                             centerTitle: true,
-                                                            title: const Text(
-                                                                'Download links'),
+                                                            title: Text(context
+                                                                .locals
+                                                                .downloadLinks),
                                                             actions: [
                                                               IconButton(
                                                                   icon: const Icon(
@@ -223,18 +224,19 @@ class VideoScreen extends HookConsumerWidget {
                                                         ],
                                                       );
                                                     },
-                                          label: "Download",
+                                          label: context.locals.download,
                                         ),
                                         iconWithBottomLabel(
                                           icon: AntIcons.unordered_list,
                                           onPressed: () {
                                             showPopoverWB(
                                               context: context,
-                                              cancelText: "DONE",
-                                              confirmText: "CREATE",
+                                              cancelText: context.locals.done,
+                                              confirmText:
+                                                  context.locals.create,
                                               controller: _textController,
-                                              title: 'Save to...',
-                                              hint: "Create New",
+                                              title: context.locals.save,
+                                              hint: context.locals.createNew,
                                               onConfirm: () {
                                                 ref
                                                     .read(playlistProvider
@@ -248,7 +250,7 @@ class VideoScreen extends HookConsumerWidget {
                                                   videoData: videoData),
                                             );
                                           },
-                                          label: "Save",
+                                          label: context.locals.save,
                                         ),
                                       ],
                                     ),
@@ -296,7 +298,7 @@ class VideoScreen extends HookConsumerWidget {
                                                           commentsSnapshot,
                                                     );
                                                   },
-                                    title: const Text("Comments"),
+                                    title: Text(context.locals.comments),
                                     trailing: Text(
                                       (commentsSnapshot.data != null
                                               ? commentsSnapshot
@@ -416,8 +418,9 @@ class CommentsWidget extends HookWidget {
           title: Text((currentPage.value == 0)
               ? (snapshot.data != null ? snapshot.data!.totalLength : 0)
                       .formatNumber +
-                  " comments"
-              : "Replies"),
+                  " " +
+                  context.locals.comments.toLowerCase()
+              : context.locals.replies),
           actions: [
             IconButton(
               onPressed: onClose ?? context.back,
@@ -537,7 +540,7 @@ class DescriptionWidget extends StatelessWidget {
       padding: const EdgeInsets.all(15),
       children: [
         Text(
-          "Description",
+          context.locals.description,
           style: context.textTheme.bodyText1!.copyWith(
               fontWeight: FontWeight.bold, fontSize: isInsidePopup ? 16 : 18),
         ),
@@ -547,12 +550,12 @@ class DescriptionWidget extends StatelessWidget {
           children: [
             DescriptionInfoWidget(
               title: video.engagement.viewCount.addCommas,
-              body: 'views',
+              body: context.locals.views,
             ),
             DescriptionInfoWidget(
               title: DateFormat('dd MMM yyy')
                   .format(video.publishDate ?? DateTime.now()),
-              body: 'Upload date',
+              body: context.locals.uploadDate,
             ),
           ],
         ),

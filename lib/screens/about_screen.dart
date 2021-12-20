@@ -13,7 +13,7 @@ class AboutScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: context.backLeading(),
-        title: const Text("About"),
+        title: Text(context.locals.about),
       ),
       body: MasonryGridView(
         gridDelegate: SliverMasonryGridDelegateWithFixedCrossAxisCount(
@@ -50,18 +50,18 @@ class AboutScreen extends StatelessWidget {
                           children: [
                             ElevatedButton(
                               onPressed: myApp.url.launchIt,
-                              child: const Text(
-                                'Star on github',
-                                style: TextStyle(color: Colors.white),
+                              child: Text(
+                                context.locals.github,
+                                style: const TextStyle(color: Colors.white),
                               ),
                             ),
                             const SizedBox(width: 8),
                             ElevatedButton(
                               onPressed: () =>
                                   context.pushPage(const CustomLicensePage()),
-                              child: const Text(
-                                'Licenses',
-                                style: TextStyle(color: Colors.white),
+                              child: Text(
+                                context.locals.licenses,
+                                style: const TextStyle(color: Colors.white),
                               ),
                             ),
                           ],
@@ -81,7 +81,8 @@ class AboutScreen extends StatelessWidget {
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                  child: Text('Developer', style: context.textTheme.headline4),
+                  child: Text(context.locals.developer,
+                      style: context.textTheme.headline4),
                 ),
                 for (var ftinfo in developerInfos) ...[
                   const Divider(),
@@ -109,9 +110,9 @@ class AboutScreen extends StatelessWidget {
                               const SizedBox(height: 8),
                               ElevatedButton(
                                 onPressed: ftinfo.url.launchIt,
-                                child: const Text(
-                                  'Follow on github',
-                                  style: TextStyle(color: Colors.white),
+                                child: Text(
+                                  context.locals.github,
+                                  style: const TextStyle(color: Colors.white),
                                 ),
                               ),
                             ],
