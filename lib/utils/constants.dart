@@ -10,7 +10,7 @@ ThemeData getThemeData(BuildContext context, Brightness brightness) {
   return ThemeData(
     primarySwatch: primaryColor,
     primaryColor: primaryColor,
-    fontFamily: 'Roboto',
+    fontFamily: 'NotoSans',
     colorScheme: brightness.isDark
         ? const ColorScheme.dark().copyWith(
             surface: primaryColor.brighten(8),
