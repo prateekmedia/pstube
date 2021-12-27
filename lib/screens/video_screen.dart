@@ -1,6 +1,8 @@
-import 'package:ant_icons/ant_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:ant_icons/ant_icons.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:custom_text/custom_text.dart';
 import 'package:flutube/widgets/widgets.dart';
@@ -42,14 +44,13 @@ class VideoScreen extends HookConsumerWidget {
 
     final likedList = ref.watch(likedListProvider);
     final isLiked = videoData != null
-        ? useState<int>(
-            likedList.likedVideoList.contains(videoData.url) ? 1 : 0)
+        ? useState<bool>(likedList.likedVideoList.contains(videoData.url))
         : null;
 
-    updateLike(int value) {
-      isLiked!.value = isLiked.value != value ? value : 0;
+    updateLike() {
+      isLiked!.value = !isLiked.value;
 
-      if (isLiked.value == 1) {
+      if (isLiked.value) {
         likedList.addVideo(videoData!.url);
       } else {
         likedList.removeVideo(videoData!.url);
@@ -136,23 +137,16 @@ class VideoScreen extends HookConsumerWidget {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         iconWithBottomLabel(
-                                          icon: isLiked!.value == 1
+                                          icon: isLiked!.value
                                               ? AntIcons.like
                                               : AntIcons.like_outline,
-                                          onPressed: () => updateLike(1),
+                                          onPressed: updateLike,
                                           label:
                                               videoData.engagement.likeCount !=
                                                       null
                                                   ? videoData.engagement
                                                       .likeCount!.formatNumber
                                                   : context.locals.like,
-                                        ),
-                                        iconWithBottomLabel(
-                                          icon: isLiked.value == 2
-                                              ? AntIcons.dislike
-                                              : AntIcons.dislike_outline,
-                                          onPressed: () => updateLike(2),
-                                          label: context.locals.dislike,
                                         ),
                                         iconWithBottomLabel(
                                           icon: AntIcons.share_alt,
@@ -225,6 +219,17 @@ class VideoScreen extends HookConsumerWidget {
                                                       );
                                                     },
                                           label: context.locals.download,
+                                        ),
+                                        iconWithBottomLabel(
+                                          icon: AntIcons.copy_outline,
+                                          onPressed: () {
+                                            Clipboard.setData(ClipboardData(
+                                                text: videoData.url));
+                                            BotToast.showText(
+                                                text: context
+                                                    .locals.copiedToClipboard);
+                                          },
+                                          label: context.locals.copyLink,
                                         ),
                                         iconWithBottomLabel(
                                           icon: AntIcons.unordered_list,
