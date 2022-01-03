@@ -133,7 +133,7 @@ jobs:
       - name: Build Flutter app
         run: flutter build windows
 
-      - uses: papeloto/action-zip@master
+      - uses: vimtor/action-zip@master
         with:
           files: build/windows/runner/release/
           dest: flutube-windows.zip
