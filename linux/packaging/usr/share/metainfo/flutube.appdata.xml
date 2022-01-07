@@ -28,13 +28,14 @@
 	</description>
 	<screenshots>
 		<screenshot>
-			<image type="source">https://github.com/prateekmedia/flutube/blob/1.0.0/assets/screenshots/linux_1.jpg?raw=true</image>
-			<image type="source">https://github.com/prateekmedia/flutube/blob/1.0.0/assets/screenshots/linux_2.jpg?raw=true</image>
-			<image type="source">https://github.com/prateekmedia/flutube/blob/1.0.0/assets/screenshots/linux_3.jpg?raw=true</image>
+			<image type="source">https://github.com/prateekmedia/flutube/blob/1.1.0/assets/screenshots/linux_1.jpg?raw=true</image>
+			<image type="source">https://github.com/prateekmedia/flutube/blob/1.1.0/assets/screenshots/linux_2.jpg?raw=true</image>
+			<image type="source">https://github.com/prateekmedia/flutube/blob/1.1.0/assets/screenshots/linux_3.jpg?raw=true</image>
 		</screenshot>
 	</screenshots>
 	<launchable type="desktop-id">flutube.desktop</launchable>
 	<releases>
+		<release version="1.1.0" date="2021-01-07"/>
 		<release version="1.0.0" date="2021-12-20"/>
 		<release version="0.6.0" date="2021-10-18"/>
 		<release version="0.5.0" date="2021-09-29"/>
