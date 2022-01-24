@@ -25,6 +25,8 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen>
     final playlistP = ref.watch(playlistProvider.notifier);
     final yt = YoutubeExplode();
     return ListView(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      physics: const BouncingScrollPhysics(),
       children: [
         ListTile(
           leading: const Icon(AntIcons.like),

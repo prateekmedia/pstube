@@ -58,6 +58,6 @@ final developerInfos = <FTInfo>[
     url: 'https://github.com/prateekmedia',
     description:
         'Founder | Lead Developer | Always curious to learn new and great stuff',
-    image: "prateekmedia.jpg",
+    image: "prateekmedia.jpeg",
   )
 ];

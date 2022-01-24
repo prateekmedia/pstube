@@ -17,22 +17,21 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     super.build(context);
     return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
       physics: const BouncingScrollPhysics(),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Center(
-            child: Container(
-              constraints: const BoxConstraints(maxWidth: 6 * 300),
-              child: MasonryGridView.count(
-                crossAxisCount: (context.width ~/ 300 as int).clamp(1, 6),
-                shrinkWrap: true,
-                primary: false,
-                itemBuilder: (ctx, idx) => const FTVideo(
-                  videoUrl: 'https://www.youtube.com/watch?v=WhWc3b3KhnY',
-                ),
-                itemCount: 4,
+          Container(
+            constraints: const BoxConstraints(maxWidth: 6 * 300),
+            child: MasonryGridView.count(
+              crossAxisCount: (context.width ~/ 300 as int).clamp(1, 6),
+              shrinkWrap: true,
+              primary: false,
+              itemBuilder: (ctx, idx) => const FTVideo(
+                videoUrl: 'https://www.youtube.com/watch?v=WhWc3b3KhnY',
               ),
+              itemCount: 4,
             ),
           ),
         ],

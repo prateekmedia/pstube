@@ -45,7 +45,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
     super.build(context);
     final path = ref.watch(downloadPathProvider).path;
     return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      physics: const BouncingScrollPhysics(),
       children: [
         ListTile(
           title: Text(context.locals.downloadFolder),
