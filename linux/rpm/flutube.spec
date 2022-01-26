@@ -14,8 +14,7 @@ Youtube client made using flutter.
 # already build using ci, so nothing here
 
 %install
-mkdir -p %{buildroot}/usr
-cp -fr ../debian/usr/ %{buildroot}/usr
+cp -fr ../packaging/usr/ %{buildroot}/usr
 
 %files
 /usr/bin/data/flutter_assets/AssetManifest.json
