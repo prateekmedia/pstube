@@ -88,6 +88,7 @@ jobs:
 
       - name: Build .rpm executable
         run: |
+          sed -i "s:cp -rf :cp -rf $(pwd)/:" linux/rpm/flutube.spec
           rpmbuild -bb linux/rpm/flutube.spec
           ls -lR
           mv *.rpm flutube-linux-x86_64.rpm
