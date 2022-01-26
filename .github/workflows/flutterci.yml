@@ -89,8 +89,8 @@ jobs:
       - name: Build .rpm executable
         run: |
           sed -i "s:cp -rf :cp -rf $(pwd)/:" linux/rpm/flutube.spec
-          rpmbuild -bb linux/rpm/flutube.spec
-          mv ~/rpmbuild/RPMS/x86_64/*.rpm flutube-linux-x86_64.rpm
+          rpmbuild -bb linux/rpm/flutube.spec -D "_topdir $(pwd)/rpmbuild"
+          mv rpmbuild/RPMS/x86_64/*.rpm flutube-linux-x86_64.rpm
 
       - name: Build Tarball
         run: |
