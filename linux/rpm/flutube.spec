@@ -16,7 +16,6 @@ Youtube client made using flutter.
 %install
 mkdir -p %{buildroot}/usr
 cp -rf linux/packaging/usr/ %{buildroot}/usr
-ls -lR linux
 
 %files
 /usr/bin/data/flutter_assets/AssetManifest.json
