@@ -27,6 +27,7 @@ class DownloadPathNotifier extends ChangeNotifier {
   }
 
   init() async {
+    if (kIsWeb) return;
     _path = MyPrefs().prefs.getString('downloadPath') ??
         (Platform.isAndroid
             ? "/storage/emulated/0/Download/${myApp.name}/"

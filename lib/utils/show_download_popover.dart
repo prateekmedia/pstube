@@ -1,13 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutube/models/models.dart';
-import 'package:flutube/widgets/widgets.dart';
-import 'package:flutube/providers/providers.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+
 import 'utils.dart';
+import 'package:flutube/models/models.dart';
+import 'package:flutube/widgets/widgets.dart';
+import 'package:flutube/providers/providers.dart';
 
 final Widget _progressIndicator = SizedBox(
   height: 100,
