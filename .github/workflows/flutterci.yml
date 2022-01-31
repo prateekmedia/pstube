@@ -115,7 +115,7 @@ jobs:
       - uses: svenstaro/upload-release-action@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./flutube-linux-*
+          file: flutube-linux-*
           file_glob: true
           prerelease: ${{ github.event_name != 'release' }}
           release_name: ${{ github.event_name == 'release' && github.event.release.name || 'Development Build' }}
@@ -149,6 +149,7 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: flutube-windows-*
+          file_glob: true
           prerelease: ${{ github.event_name != 'release' }}
           release_name: ${{ github.event_name == 'release' && github.event.release.name || 'Development Build' }}
           tag: ${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}
