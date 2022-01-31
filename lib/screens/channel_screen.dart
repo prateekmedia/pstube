@@ -238,6 +238,8 @@ class _CustomTabState extends State<_CustomTab>
                                   GestureDetector(
                                     onTap: link.url.toString().launchIt,
                                     child: Chip(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 6),
                                       label: Text(link.title),
                                       labelStyle: context.textTheme.bodyText2,
                                     ),

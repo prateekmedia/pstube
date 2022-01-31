@@ -18,7 +18,6 @@ class _HomeScreenState extends State<HomeScreen>
     super.build(context);
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      physics: const BouncingScrollPhysics(),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

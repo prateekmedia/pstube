@@ -40,7 +40,7 @@ class FTVideo extends StatelessWidget {
           return Container(
             padding: isInsideDownloadPopup
                 ? EdgeInsets.zero
-                : const EdgeInsets.all(16),
+                : const EdgeInsets.all(4),
             child: isRow
                 ? GestureDetector(
                     onTap: video != null

@@ -26,7 +26,6 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen>
     final yt = YoutubeExplode();
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      physics: const BouncingScrollPhysics(),
       children: [
         ListTile(
           leading: const Icon(AntIcons.like),
@@ -95,8 +94,6 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen>
                 ),
               ),
             )
-        else
-          Center(child: Text(context.locals.noPlaylistsFound)),
       ],
     );
   }

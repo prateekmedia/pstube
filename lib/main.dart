@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_gen/gen_l10n/app_locals.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -48,7 +49,14 @@ class MyApp extends HookConsumerWidget {
     return MaterialApp(
       title: myApp.name,
       builder: (context, child) {
-        // child = myBuilder(context,child);  //do something
+        Widget myBuilder(ctx, child) {
+          return ScrollConfiguration(
+            behavior: const CupertinoScrollBehavior(),
+            child: child,
+          );
+        }
+
+        child = myBuilder(context, child);
         child = botToastBuilder(context, child);
         return child;
       },

@@ -113,13 +113,13 @@ class MyHomePage extends HookConsumerWidget {
                   onPressed: addDownload,
                   icon: const Icon(Icons.add),
                 ),
-              if (_currentIndex.value == 3)
+              if (_currentIndex.value == 2)
                 IconButton(
                   icon: const Icon(AntIcons.delete_outline),
                   onPressed: clearAll,
                   tooltip: context.locals.clearAll,
                 ),
-              if (_currentIndex.value == 4)
+              if (_currentIndex.value == 3)
                 PopupMenuButton(
                   itemBuilder: (context) {
                     return [
