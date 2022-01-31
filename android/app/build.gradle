@@ -84,7 +84,7 @@ android {
                         // on below line we are creating a new name for our apk.
                         def newName = output.outputFile.name
                         // on below line we are replacing our previous name with our app name.
-                        newName = newName.replace("app-", "$project.ext.appName-android-"+ flutterVersionCode.toInteger() + "-")
+                        newName = newName.replace("app-", "$project.ext.appName-android-"+ flutterVersionName + "-")
                         newName = newName.replace("-arm64-v8a", "-arm64")
                         newName = newName.replace("-armeabi-v7a", "-arm")
                         newName = newName.replace("-release", "")

@@ -2,7 +2,7 @@ name: flutube
 description: Youtube client made using flutter.
 
 publish_to: none
-version: 1.1.0
+version: 1.1.0+2
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
