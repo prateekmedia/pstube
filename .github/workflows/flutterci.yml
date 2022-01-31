@@ -52,7 +52,7 @@ jobs:
       - uses: svenstaro/upload-release-action@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/app/outputs/apk/release/flutube-android-*
+          file: build/app/outputs/apk/release/flutube-*
           file_glob: true
           prerelease: ${{ github.event_name != 'release' }}
           release_name: ${{ github.event_name == 'release' && github.event.release.name || 'Development Build' }}
