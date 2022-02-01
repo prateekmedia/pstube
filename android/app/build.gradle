@@ -49,7 +49,7 @@ android {
 
     defaultConfig {
         applicationId "com.prateekmedia.flutube"
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 17
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

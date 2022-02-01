@@ -79,10 +79,11 @@ jobs:
 
       - name: Build Flutter app
         run: flutter build linux -v
-
+ 
       - name: Build RPM Package
         run: |
           cp -fr build/linux/x64/release/bundle linux/packaging/usr/bin
+          rm -rf linux/packaging/usr/bin/data/flutter_assets/packages/flutter_inappwebview
           sed -i "s:cp -rf :cp -rf $(pwd)/:" linux/packaging/rpm/flutube.spec
           rpmbuild -bb linux/packaging/rpm/flutube.spec -D "_topdir $(pwd)/rpmbuild"
           cp rpmbuild/RPMS/x86_64/*.rpm flutube-linux-${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}-x86_64.rpm
