@@ -45,6 +45,7 @@ dependencies:
   youtube_explode_dart: 
     git:
       url: https://github.com/Hexer10/youtube_explode_dart.git
+  youtube_player_iframe: ^2.2.2
 
 dev_dependencies:
   build_runner: ^2.1.2

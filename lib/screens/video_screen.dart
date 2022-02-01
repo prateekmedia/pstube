@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,6 +17,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import 'package:flutube/utils/utils.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class VideoScreen extends HookConsumerWidget {
   final Video? video;
@@ -74,6 +78,13 @@ class VideoScreen extends HookConsumerWidget {
                 : FutureBuilder<CommentsList?>(
                     future: yt.videos.commentsClient.getComments(videoData),
                     builder: (context, commentsSnapshot) {
+                      final _controller = YoutubePlayerController(
+                        initialVideoId: videoData.id.value,
+                        params: const YoutubePlayerParams(
+                          autoPlay: false,
+                          showFullscreenButton: true,
+                        ),
+                      );
                       return Flex(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         direction: Axis.horizontal,
@@ -85,14 +96,21 @@ class VideoScreen extends HookConsumerWidget {
                                 children: [
                                   Stack(
                                     children: [
-                                      AspectRatio(
-                                        aspectRatio: 16 / 9,
-                                        child: CachedNetworkImage(
-                                          imageUrl:
-                                              videoData.thumbnails.mediumResUrl,
-                                          fit: BoxFit.fill,
+                                      if (kIsWeb ||
+                                          Platform.isAndroid ||
+                                          Platform.isIOS)
+                                        YoutubePlayerIFrame(
+                                          controller: _controller,
+                                        )
+                                      else
+                                        AspectRatio(
+                                          aspectRatio: 16 / 9,
+                                          child: CachedNetworkImage(
+                                            imageUrl: videoData
+                                                .thumbnails.mediumResUrl,
+                                            fit: BoxFit.fill,
+                                          ),
                                         ),
-                                      ),
                                       Positioned(
                                           child: Align(
                                         alignment: Alignment.topLeft,
