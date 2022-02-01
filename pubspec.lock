@@ -1099,7 +1099,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "6dad4d6776f8008f2b1d4f08e050d3cda4f04aa4"
+      resolved-ref: fce17affdd26be5bdaea98d4441d7bb9c9d2a72c
       url: "https://github.com/Hexer10/youtube_explode_dart.git"
     source: git
     version: "1.10.9+1"
