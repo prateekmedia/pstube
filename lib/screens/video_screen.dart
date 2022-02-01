@@ -19,7 +19,7 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'package:flutube/utils/utils.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-class VideoScreen extends HookConsumerWidget {
+class VideoScreen extends StatefulHookConsumerWidget {
   final Video? video;
   final String? videoId;
   final bool loadData;
@@ -32,14 +32,23 @@ class VideoScreen extends HookConsumerWidget {
         super(key: key);
 
   @override
-  Widget build(BuildContext context, ref) {
+  ConsumerState<VideoScreen> createState() => _VideoScreenState();
+}
+
+class _VideoScreenState extends ConsumerState<VideoScreen>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+
     final yt = YoutubeExplode();
-    final videoSnapshot = loadData || videoId != null
+    final videoSnapshot = widget.loadData || widget.videoId != null
         ? useFuture(useMemoized(() => yt.videos
-            .get(videoId ?? video!.id.value)
+            .get(widget.videoId ?? widget.video!.id.value)
             .whenComplete(() => yt.close())))
         : null;
-    final Video? videoData = videoSnapshot != null ? videoSnapshot.data : video;
+    final Video? videoData =
+        videoSnapshot != null ? videoSnapshot.data : widget.video;
     final replyComment = useState<Comment?>(null);
     final currentIndex = useState<int>(0);
     final commentSideWidget = useState<Widget?>(null);
@@ -63,15 +72,16 @@ class VideoScreen extends HookConsumerWidget {
 
     return SafeArea(
       child: Scaffold(
-        appBar: video == null && videoSnapshot == null || videoData == null
-            ? AppBar(
-                leading: IconButton(
-                    onPressed: context.back,
-                    icon: const Icon(
-                      Icons.chevron_left,
-                    )))
-            : null,
-        body: video == null && videoSnapshot == null
+        appBar:
+            widget.video == null && videoSnapshot == null || videoData == null
+                ? AppBar(
+                    leading: IconButton(
+                        onPressed: context.back,
+                        icon: const Icon(
+                          Icons.chevron_left,
+                        )))
+                : null,
+        body: widget.video == null && videoSnapshot == null
             ? const Center(child: Text('Video not found!'))
             : videoData == null
                 ? getCircularProgressIndicator()
@@ -355,6 +365,9 @@ class VideoScreen extends HookConsumerWidget {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class PlaylistPopup extends ConsumerWidget {
@@ -386,7 +399,7 @@ class PlaylistPopup extends ConsumerWidget {
   }
 }
 
-class CommentsWidget extends HookWidget {
+class CommentsWidget extends StatefulHookWidget {
   const CommentsWidget({
     Key? key,
     this.onClose,
@@ -399,10 +412,17 @@ class CommentsWidget extends HookWidget {
   final VoidCallback? onClose;
 
   @override
+  State<CommentsWidget> createState() => _CommentsWidgetState();
+}
+
+class _CommentsWidgetState extends State<CommentsWidget>
+    with AutomaticKeepAliveClientMixin {
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     var isMounted = useIsMounted();
     final PageController pageController = PageController();
-    final _currentPage = useState<CommentsList?>(snapshot.data);
+    final _currentPage = useState<CommentsList?>(widget.snapshot.data);
     final controller = useScrollController();
     final currentPage = useState<int>(0);
 
@@ -431,7 +451,7 @@ class CommentsWidget extends HookWidget {
                     pageController.animateToPage(0,
                         duration: const Duration(milliseconds: 200),
                         curve: Curves.easeInOut);
-                    replyComment.value = null;
+                    widget.replyComment.value = null;
                   },
                   icon: Icon(Icons.chevron_left,
                       color: context.textTheme.bodyText1!.color),
@@ -439,14 +459,16 @@ class CommentsWidget extends HookWidget {
               : const SizedBox(),
           centerTitle: true,
           title: Text((currentPage.value == 0)
-              ? (snapshot.data != null ? snapshot.data!.totalLength : 0)
+              ? (widget.snapshot.data != null
+                          ? widget.snapshot.data!.totalLength
+                          : 0)
                       .formatNumber +
                   " " +
                   context.locals.comments.toLowerCase()
               : context.locals.replies),
           actions: [
             IconButton(
-              onPressed: onClose ?? context.back,
+              onPressed: widget.onClose ?? context.back,
               icon:
                   Icon(Icons.close, color: context.textTheme.bodyText1!.color),
             )
@@ -472,7 +494,7 @@ class CommentsWidget extends HookWidget {
                       : BuildCommentBox(
                           comment: comment!,
                           onReplyTap: () {
-                            replyComment.value = comment;
+                            widget.replyComment.value = comment;
                             pageController.animateToPage(1,
                                 duration: const Duration(milliseconds: 200),
                                 curve: Curves.easeInOut);
@@ -483,14 +505,15 @@ class CommentsWidget extends HookWidget {
               WillPopScope(
                   child: showReplies(
                     context,
-                    replyComment.value,
-                    EdgeInsets.symmetric(horizontal: onClose != null ? 16 : 0),
+                    widget.replyComment.value,
+                    EdgeInsets.symmetric(
+                        horizontal: widget.onClose != null ? 16 : 0),
                   ),
                   onWillPop: () async {
                     await pageController.animateToPage(0,
                         duration: const Duration(milliseconds: 200),
                         curve: Curves.easeInOut);
-                    replyComment.value = null;
+                    widget.replyComment.value = null;
                     return false;
                   }),
             ][index],
@@ -499,6 +522,9 @@ class CommentsWidget extends HookWidget {
       ],
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 Widget showReplies(BuildContext context, Comment? comment, EdgeInsets padding) {

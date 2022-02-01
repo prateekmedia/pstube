@@ -6,21 +6,29 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'package:flutube/utils/utils.dart';
 
-class ChannelLogo extends HookWidget {
+class ChannelLogo extends StatefulHookWidget {
   final AsyncSnapshot<Channel>? channel;
   final double size;
   const ChannelLogo({Key? key, this.channel, this.size = 60}) : super(key: key);
 
   @override
+  State<ChannelLogo> createState() => _ChannelLogoState();
+}
+
+class _ChannelLogoState extends State<ChannelLogo>
+    with AutomaticKeepAliveClientMixin {
+  @override
   Widget build(BuildContext context) {
-    final bool channelHasData = channel != null && channel!.hasData;
-    final Channel? channelData = channelHasData ? channel!.data : null;
+    super.build(context);
+    final bool channelHasData =
+        widget.channel != null && widget.channel!.hasData;
+    final Channel? channelData = channelHasData ? widget.channel!.data : null;
     final Color bgColor =
         Colors.primaries[Random().nextInt(Colors.primaries.length)];
 
     final Widget defaultPlaceholder = Container(
-      width: size,
-      height: size,
+      width: widget.size,
+      height: widget.size,
       color: bgColor,
       child: Center(
         child: Text(
@@ -36,8 +44,8 @@ class ChannelLogo extends HookWidget {
     return ClipOval(
       child: channelHasData
           ? CachedNetworkImage(
-              width: size,
-              height: size,
+              width: widget.size,
+              height: widget.size,
               imageUrl: channelData!.logoUrl,
               errorWidget: (_, __, ___) => defaultPlaceholder,
               placeholder: (_, __) => defaultPlaceholder,
@@ -46,4 +54,7 @@ class ChannelLogo extends HookWidget {
           : defaultPlaceholder,
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -45,6 +45,7 @@ class ChannelScreen extends HookWidget {
 
     loadInitData() async {
       channel.value = await yt.channels.get(id);
+      if (!isMounted()) return;
       if (channel.value != null) {
         _currentVidPage.value =
             await yt.channels.getUploadsFromPage(channel.value!.id.value);

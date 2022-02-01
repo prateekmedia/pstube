@@ -6,7 +6,7 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import 'package:flutube/utils/utils.dart';
 
-class ChannelInfo extends HookWidget {
+class ChannelInfo extends StatefulHookWidget {
   const ChannelInfo({
     Key? key,
     required this.channel,
@@ -22,17 +22,25 @@ class ChannelInfo extends HookWidget {
   final Color? textColor;
 
   @override
+  State<ChannelInfo> createState() => _ChannelInfoState();
+}
+
+class _ChannelInfoState extends State<ChannelInfo>
+    with AutomaticKeepAliveClientMixin {
+  @override
   Widget build(BuildContext context) {
-    double size = isOnVideo ? 40 : 60;
+    super.build(context);
+    double size = widget.isOnVideo ? 40 : 60;
     final yt = YoutubeExplode();
-    final channelData = channelId != null
-        ? useFuture(useMemoized(() => yt.channels.get(channelId), [channelId!]))
-        : channel;
-    final Channel? data = channel?.data ?? channelData?.data;
+    final channelData = widget.channelId != null
+        ? useFuture(useMemoized(
+            () => yt.channels.get(widget.channelId), [widget.channelId!]))
+        : widget.channel;
+    final Channel? data = widget.channel?.data ?? channelData?.data;
     return GestureDetector(
-      onTap: isOnVideo && data != null || channelId != null
-          ? () =>
-              context.pushPage(ChannelScreen(id: channelId ?? data!.id.value))
+      onTap: widget.isOnVideo && data != null || widget.channelId != null
+          ? () => context
+              .pushPage(ChannelScreen(id: widget.channelId ?? data!.id.value))
           : null,
       child: Column(
         children: [
@@ -66,4 +74,7 @@ class ChannelInfo extends HookWidget {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
