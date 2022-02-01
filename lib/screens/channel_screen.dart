@@ -17,8 +17,12 @@ class ChannelScreen extends HookWidget {
     final channelInfo = useState<ChannelAbout?>(null);
     final _currentVidPage = useState<ChannelUploadsList?>(null);
     final controller = useScrollController();
-    final _tabController = useTabController(initialLength: 2);
-    List<String> _tabs = [context.locals.videos, context.locals.about];
+    final _tabController = useTabController(initialLength: 3);
+    List<String> _tabs = [
+      context.locals.home,
+      context.locals.videos,
+      context.locals.about
+    ];
 
     final List<Widget> getStats = channelInfo.value != null
         ? [
@@ -116,14 +120,12 @@ class ChannelScreen extends HookWidget {
                 // "inside" the NestedScrollView, so that
                 // sliverOverlapAbsorberHandleFor() can find the
                 // NestedScrollView.
-                builder: (BuildContext context) {
-                  return _CustomTab(
-                    currentVidPage: _currentVidPage,
-                    channelInfo: channelInfo,
-                    getStats: getStats,
-                    entry: entry,
-                  );
-                },
+                builder: (BuildContext context) => _CustomTab(
+                  currentVidPage: _currentVidPage,
+                  channelInfo: channelInfo,
+                  getStats: getStats,
+                  entry: entry,
+                ),
               ),
             );
           }).toList(),
@@ -174,6 +176,8 @@ class _CustomTabState extends State<_CustomTab>
           handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
         ),
         if (widget.entry.key == 0)
+          Container()
+        else if (widget.entry.key == 1)
           widget._currentVidPage.value != null
               ? SliverList(
                   delegate: SliverChildBuilderDelegate(
