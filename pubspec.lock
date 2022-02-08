@@ -683,6 +683,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.4.0"
+  piped_api:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: f9be9522e9d94956bca37aa23145b7f2efeeda71
+      url: "https://github.com/TeamPiped/piped_dart"
+    source: git
+    version: "1.0.0"
   platform:
     dependency: transitive
     description:
