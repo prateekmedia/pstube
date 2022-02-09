@@ -5,48 +5,51 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final likedListProvider = ChangeNotifierProvider((ref) => LikedList(ref));
 
-final _box = Hive.box('likedList');
+final _box = Hive.box<List>('likedList');
 
 class LikedList extends ChangeNotifier {
-  final ChangeNotifierProviderRef ref;
   LikedList(this.ref);
+  final ChangeNotifierProviderRef ref;
 
-  List likedVideoList = _box.get('likedVideoList', defaultValue: []);
-  List likedCommentList = _box.get('likedCommentList', defaultValue: []);
+  List likedVideoList = _box.get('likedVideoList', defaultValue: <dynamic>[])!;
+  List likedCommentList =
+      _box.get('likedCommentList', defaultValue: <dynamic>[])!;
 
-  addVideo(String url) {
+  void addVideo(String url) {
     if (!likedVideoList.contains(url)) {
       likedVideoList.add(url);
-      refresh(true);
+      refresh(value: true);
     }
   }
 
-  removeVideo(String url) {
+  void removeVideo(String url) {
     if (likedVideoList.contains(url)) {
       likedVideoList.remove(url);
-      refresh(true);
+      refresh(value: true);
     }
   }
 
-  addComment(LikedComment comment) {
+  void addComment(LikedComment comment) {
     if (likedCommentList
-        .where((element) =>
-            (element.author == comment.author) &&
-            (element.text == comment.text))
+        .where(
+          (dynamic element) =>
+              (element.author == comment.author) &&
+              (element.text == comment.text),
+        )
         .isEmpty) {
       likedCommentList.add(comment);
-      refresh(false);
+      refresh(value: false);
     }
   }
 
-  removeComment(LikedComment comment) {
+  void removeComment(LikedComment comment) {
     if (likedCommentList.contains(comment)) {
       likedCommentList.remove(comment);
-      refresh(false);
+      refresh(value: false);
     }
   }
 
-  refresh([bool? value]) {
+  void refresh({bool? value}) {
     notifyListeners();
     if (value != null) {
       if (value) {

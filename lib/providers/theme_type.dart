@@ -5,13 +5,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 final themeTypeProvider = StateNotifierProvider<ThemeTypeNotifier, ThemeMode>(
   (_) => ThemeTypeNotifier(
     ThemeMode.values.firstWhere(
-        (element) => element.index == MyPrefs().prefs.getInt('themeType'),
-        orElse: () => ThemeMode.system),
+      (element) => element.index == MyPrefs().prefs.getInt('themeType'),
+      orElse: () => ThemeMode.system,
+    ),
   ),
 );
 
 class ThemeTypeNotifier extends StateNotifier<ThemeMode> {
-  ThemeTypeNotifier(state) : super(state);
+  ThemeTypeNotifier(ThemeMode state) : super(state);
 
   set themeType(int newThemeType) {
     state =
@@ -19,7 +20,9 @@ class ThemeTypeNotifier extends StateNotifier<ThemeMode> {
     MyPrefs().prefs.setInt('themeType', state.index);
   }
 
-  reset() {
+  set toggle(bool value) => themeType = value ? 2 : 1;
+
+  void reset() {
     MyPrefs()
         .prefs
         .remove('themeType')

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:libadwaita/libadwaita.dart';
 
 Widget iconWithBottomLabel({
   required IconData icon,
@@ -9,9 +10,9 @@ Widget iconWithBottomLabel({
     padding: const EdgeInsets.symmetric(horizontal: 8),
     child: Column(
       children: [
-        IconButton(
-          icon: Icon(icon, size: 28),
+        AdwButton.circular(
           onPressed: onPressed ?? () {},
+          child: Icon(icon, size: 28),
         ),
         const SizedBox(height: 2),
         Text(label),

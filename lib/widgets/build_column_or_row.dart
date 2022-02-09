@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-buildColumnOrRow(bool isRow, {required List<Widget> children}) {
+Flex buildColumnOrRow({required bool isRow, required List<Widget> children}) {
   return isRow
       ? Row(
           mainAxisSize: MainAxisSize.min,

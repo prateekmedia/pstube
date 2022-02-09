@@ -4,11 +4,6 @@ import 'package:flutube/utils/utils.dart';
 enum SecColor { dark, light }
 
 class IconWithLabel extends StatelessWidget {
-  final String label;
-  final TextStyle? style;
-  final EdgeInsets margin;
-  final SecColor secColor;
-
   const IconWithLabel({
     Key? key,
     required this.label,
@@ -16,6 +11,11 @@ class IconWithLabel extends StatelessWidget {
     this.margin = const EdgeInsets.symmetric(horizontal: 2),
     this.secColor = SecColor.light,
   }) : super(key: key);
+
+  final String label;
+  final TextStyle? style;
+  final EdgeInsets margin;
+  final SecColor secColor;
 
   @override
   Widget build(BuildContext context) {

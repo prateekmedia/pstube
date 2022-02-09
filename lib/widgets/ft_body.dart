@@ -5,21 +5,21 @@ import 'package:flutube/utils/utils.dart';
 import 'package:flutube/widgets/widgets.dart';
 
 class FtBody extends StatelessWidget {
-  final Widget child;
-  final bool expanded;
-
   const FtBody({
     Key? key,
     required this.child,
     this.expanded = true,
   }) : super(key: key);
 
+  final Widget child;
+  final bool expanded;
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         const NetStatus(),
-        expanded ? Expanded(child: child) : child,
+        if (expanded) Expanded(child: child) else child,
       ],
     );
   }
@@ -44,15 +44,16 @@ class NetStatus extends StatelessWidget {
                 width: double.infinity,
                 color: Colors.redAccent,
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8),
                   child: Center(
-                      child: Text(
-                    context.locals.networkLostShowingCachedData,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1!
-                        .copyWith(color: Colors.white),
-                  )),
+                    child: Text(
+                      context.locals.networkLostShowingCachedData,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1!
+                          .copyWith(color: Colors.white),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -62,15 +63,16 @@ class NetStatus extends StatelessWidget {
                 width: double.infinity,
                 color: Colors.green[600],
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8),
                   child: Center(
-                      child: Text(
-                    context.locals.backOnline,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1!
-                        .copyWith(color: Colors.white),
-                  )),
+                    child: Text(
+                      context.locals.backOnline,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1!
+                          .copyWith(color: Colors.white),
+                    ),
+                  ),
                 ),
               ),
             ),

@@ -4,19 +4,19 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 final thumbnailDownloaderProvider =
     StateNotifierProvider<ThumbnailDownloaderNotifier, bool>(
   (_) => ThumbnailDownloaderNotifier(
-    MyPrefs().prefs.getBool('thumbnailDownloader') ?? false,
+    state: MyPrefs().prefs.getBool('thumbnailDownloader') ?? false,
   ),
 );
 
 class ThumbnailDownloaderNotifier extends StateNotifier<bool> {
-  ThumbnailDownloaderNotifier(state) : super(state);
+  ThumbnailDownloaderNotifier({required bool state}) : super(state);
 
   set value(bool value) {
     state = value;
     MyPrefs().prefs.setBool('thumbnailDownloader', state);
   }
 
-  reset() {
+  void reset() {
     MyPrefs()
         .prefs
         .remove('thumbnailDownloader')

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class SizeExpandedSection extends StatefulWidget {
-  const SizeExpandedSection(
-      {this.expand = true,
-      this.child,
-      this.axisAlignment = 1.0,
-      this.axis = Axis.vertical,
-      this.duration,
-      this.animationCurve,
-      Key? key})
-      : super(key: key);
+  const SizeExpandedSection({
+    this.expand = true,
+    this.child,
+    this.axisAlignment = 1.0,
+    this.axis = Axis.vertical,
+    this.duration,
+    this.animationCurve,
+    Key? key,
+  }) : super(key: key);
   final Widget? child;
   final bool? expand;
   final Axis axis;
@@ -34,8 +34,9 @@ class _SizeExpandedSectionState extends State<SizeExpandedSection>
 
   void prepareAnimations() {
     expandController = AnimationController(
-        vsync: this,
-        duration: widget.duration ?? const Duration(milliseconds: 500));
+      vsync: this,
+      duration: widget.duration ?? const Duration(milliseconds: 500),
+    );
     animation = CurvedAnimation(
       parent: expandController,
       curve: widget.animationCurve ?? Curves.fastOutSlowIn,

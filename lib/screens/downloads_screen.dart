@@ -1,37 +1,42 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:ant_icons/ant_icons.dart';
-import 'package:open_file/open_file.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
-import 'package:flutube/utils/utils.dart';
+import 'package:flutter/material.dart';
 import 'package:flutube/models/models.dart';
-import 'package:flutube/screens/screens.dart';
-import 'package:flutube/widgets/widgets.dart';
 import 'package:flutube/providers/providers.dart';
+import 'package:flutube/screens/screens.dart';
+import 'package:flutube/utils/utils.dart';
+import 'package:flutube/widgets/widgets.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:libadwaita/libadwaita.dart';
+import 'package:open_file/open_file.dart';
 
 class DownloadsScreen extends ConsumerWidget {
   const DownloadsScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(context, ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final downloadListUtils = ref.watch(downloadListProvider);
     final downloadList = downloadListUtils.downloadList;
-    return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      children: [
-        if (downloadList.isEmpty) ...[
-          const SizedBox(height: 60),
-          const Icon(Icons.download, size: 30),
-          const SizedBox(height: 10),
-          Text(context.locals.noDownloadsFound).center()
-        ] else
-          for (DownloadItem item in downloadList)
-            DownloadItemBuilder(
-                item: item, downloadListUtils: downloadListUtils),
-      ],
+    return AdwClamp.scrollable(
+      maximumSize: 800,
+      child: AdwPreferencesGroup(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        children: [
+          if (downloadList.isEmpty) ...[
+            const SizedBox(height: 60),
+            const Icon(Icons.download, size: 30),
+            const SizedBox(height: 10),
+            Text(context.locals.noDownloadsFound).center()
+          ] else
+            for (DownloadItem item in downloadList)
+              DownloadItemBuilder(
+                item: item,
+                downloadListUtils: downloadListUtils,
+              ),
+        ],
+      ),
     );
   }
 }
@@ -53,15 +58,17 @@ class DownloadItemBuilder extends StatelessWidget {
           ? () => OpenFile.open(item.queryVideo.path + item.queryVideo.name)
           : null,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8),
         child: Row(
           children: [
             GestureDetector(
               onTap: () {
-                context.pushPage(VideoScreen(
-                  video: null,
-                  videoId: item.queryVideo.id,
-                ));
+                context.pushPage(
+                  VideoScreen(
+                    video: null,
+                    videoId: item.queryVideo.id,
+                  ),
+                );
               },
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
@@ -93,7 +100,7 @@ class DownloadItemBuilder extends StatelessWidget {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -107,8 +114,9 @@ class DownloadItemBuilder extends StatelessWidget {
                     Row(
                       children: [
                         IconWithLabel(
-                            label:
-                                '${((item.downloaded / item.total) * 100).toStringAsFixed(1)}%'),
+                          label:
+                              '${((item.downloaded / item.total) * 100).toStringAsFixed(1)}%',
+                        ),
                         const SizedBox(width: 5),
                         IconWithLabel(label: item.total.getFileSize()),
                       ],
@@ -126,53 +134,56 @@ class DownloadItemBuilder extends StatelessWidget {
                 ),
               ),
             ),
-            IconButton(
+            AdwButton.circular(
               onPressed: item.total == 0 ||
                       item.total == item.downloaded ||
                       item.cancelToken != null && item.cancelToken!.isCancelled
                   ? () {
                       final deleteFromStorage = ValueNotifier<bool>(true);
-                      showPopoverWB(
-                          context: context,
-                          title: context.locals.confirm,
-                          builder: (ctx) => ValueListenableBuilder<bool>(
-                              valueListenable: deleteFromStorage,
-                              builder: (_, value, ___) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                        context
-                                            .locals.clearItemFromDownloadList,
-                                        style: context.textTheme.bodyText1),
-                                    CheckboxListTile(
-                                      value: value,
-                                      onChanged: (val) =>
-                                          deleteFromStorage.value = val!,
-                                      title: Text(context
-                                          .locals.alsoDeleteThemFromStorage),
-                                    ),
-                                  ],
-                                );
-                              }),
-                          confirmText: context.locals.yes,
-                          onConfirm: () {
-                            if (File(item.queryVideo.path +
-                                        item.queryVideo.name)
-                                    .existsSync() &&
-                                deleteFromStorage.value) {
-                              File(item.queryVideo.path + item.queryVideo.name)
-                                  .deleteSync();
-                            }
-                            downloadListUtils.removeDownload(item.queryVideo);
-                            context.back();
-                          });
+                      showPopoverWB<dynamic>(
+                        context: context,
+                        title: context.locals.confirm,
+                        builder: (ctx) => ValueListenableBuilder<bool>(
+                          valueListenable: deleteFromStorage,
+                          builder: (_, value, ___) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  context.locals.clearItemFromDownloadList,
+                                  style: context.textTheme.bodyText1,
+                                ),
+                                CheckboxListTile(
+                                  value: value,
+                                  onChanged: (val) =>
+                                      deleteFromStorage.value = val!,
+                                  title: Text(
+                                    context.locals.alsoDeleteThemFromStorage,
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                        confirmText: context.locals.yes,
+                        onConfirm: () {
+                          if (File(
+                                item.queryVideo.path + item.queryVideo.name,
+                              ).existsSync() &&
+                              deleteFromStorage.value) {
+                            File(item.queryVideo.path + item.queryVideo.name)
+                                .deleteSync();
+                          }
+                          downloadListUtils.removeDownload(item.queryVideo);
+                          context.back();
+                        },
+                      );
                     }
                   : () {
                       item.cancelToken!.cancel();
                       downloadListUtils.refresh();
                     },
-              icon: Icon(
+              child: Icon(
                 item.cancelToken != null && item.cancelToken!.isCancelled
                     ? AntIcons.minus_outline
                     : item.total != 0 && item.total != item.downloaded

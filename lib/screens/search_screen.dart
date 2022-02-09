@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
-
 import 'package:flutube/utils/utils.dart';
 import 'package:flutube/widgets/widgets.dart';
+import 'package:libadwaita/libadwaita.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-class CustomSearchDelegate extends SearchDelegate {
+class CustomSearchDelegate extends SearchDelegate<String?> {
   @override
   TextStyle get searchFieldStyle => const TextStyle(fontSize: 16);
 
   @override
   List<Widget> buildActions(BuildContext context) => [
-        IconButton(
-          icon: const Icon(Icons.close, size: 22),
+        AdwButton.circular(
+          child: const Icon(Icons.close, size: 22),
           onPressed: () => query = '',
         ),
       ];
@@ -52,15 +52,15 @@ class SearchResult extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    var isMounted = useIsMounted();
-    var yt = YoutubeExplode();
+    final isMounted = useIsMounted();
+    final yt = YoutubeExplode();
     final _currentPage = useState<SearchList?>(null);
-    void loadVideos() async => !isMounted()
+    Future<void> loadVideos() async => !isMounted()
         ? _currentPage.value = await yt.search.getVideos(query)
         : null;
     final controller = useScrollController();
 
-    void _getMoreData() async {
+    Future<void> _getMoreData() async {
       if (isMounted() &&
           controller.position.pixels == controller.position.maxScrollExtent &&
           _currentPage.value != null) {
@@ -71,11 +71,14 @@ class SearchResult extends HookWidget {
       }
     }
 
-    useEffect(() {
-      loadVideos();
-      controller.addListener(_getMoreData);
-      return () => controller.removeListener(_getMoreData);
-    }, [controller]);
+    useEffect(
+      () {
+        loadVideos();
+        controller.addListener(_getMoreData);
+        return () => controller.removeListener(_getMoreData);
+      },
+      [controller],
+    );
 
     return _currentPage.value != null
         ? ListView.builder(
@@ -95,10 +98,6 @@ class SearchResult extends HookWidget {
 }
 
 class SuggestionList extends HookWidget {
-  final Function(String value) onTap;
-  final String query;
-  final bool Function() showResults;
-
   const SuggestionList({
     Key? key,
     required this.query,
@@ -106,13 +105,17 @@ class SuggestionList extends HookWidget {
     required this.showResults,
   }) : super(key: key);
 
+  final Function(String value) onTap;
+  final String query;
+  final bool Function() showResults;
+
   @override
   Widget build(BuildContext context) {
     final yt = YoutubeExplode();
     Future<List<String>> getSuggestions() =>
-        yt.search.getQuerySuggestions(query).whenComplete(() => yt.close());
+        yt.search.getQuerySuggestions(query).whenComplete(yt.close);
     return WillPopScope(
-      onWillPop: () async => query.isNotEmpty ? showResults() : true,
+      onWillPop: query.isNotEmpty ? () async => showResults() : null,
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8),

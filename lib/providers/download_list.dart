@@ -1,76 +1,93 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:bot_toast/bot_toast.dart';
 import 'package:flutube/models/models.dart';
+import 'package:flutube/utils/utils.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'package:flutube/utils/utils.dart';
-
 final downloadListProvider = ChangeNotifierProvider((ref) => DownloadList(ref));
 
-final _box = Hive.box('downloadList');
+final _box = Hive.box<dynamic>('downloadList');
 
 class DownloadList extends ChangeNotifier {
-  final ChangeNotifierProviderRef ref;
   DownloadList(this.ref);
 
-  List<DownloadItem> downloadList = (_box.get('value', defaultValue: [])
-          as List)
-      .map((e) => DownloadItem(queryVideo: e[1], downloaded: e[0], total: e[0]))
-      .toList();
+  final ChangeNotifierProviderRef ref;
 
-  void addDownload(BuildContext context, DownloadItem downloadItem) async {
-    final CancelToken cancelToken = CancelToken();
+  List<DownloadItem> downloadList =
+      (_box.get('value', defaultValue: <dynamic>[]) as List)
+          .map(
+            (dynamic e) => DownloadItem(
+              queryVideo: e[1] as QueryVideo,
+              downloaded: e[0] as int,
+              total: e[0] as int,
+            ),
+          )
+          .toList();
+
+  Future<void> addDownload(
+    BuildContext context,
+    DownloadItem downloadItem,
+  ) async {
+    final cancelToken = CancelToken();
 
     downloadList.insert(0, downloadItem.copyWith(cancelToken: cancelToken));
     refresh();
     BotToast.showText(text: context.locals.downloadStarted);
-    await Dio().download(downloadItem.queryVideo.url,
-        downloadItem.queryVideo.path + downloadItem.queryVideo.name,
-        onReceiveProgress: (downloaded, total) {
-      updateDownload(downloadItem.queryVideo,
-          downloaded: downloaded, total: total);
-    }, cancelToken: cancelToken);
-    DownloadItem currentItem =
+    await Dio().download(
+      downloadItem.queryVideo.url,
+      downloadItem.queryVideo.path + downloadItem.queryVideo.name,
+      onReceiveProgress: (downloaded, total) {
+        updateDownload(
+          downloadItem.queryVideo,
+          downloaded: downloaded,
+          total: total,
+        );
+      },
+      cancelToken: cancelToken,
+    );
+    final currentItem =
         downloadList.firstWhere((e) => e.queryVideo == downloadItem.queryVideo);
     if (currentItem.downloaded == currentItem.total && currentItem.total != 0) {
-      refresh(true);
+      refresh(value: true);
     }
     BotToast.showText(text: context.locals.downloadFinished);
   }
 
-  refresh([bool? value]) {
+  void refresh({bool? value}) {
     notifyListeners();
     if (value != null) {
       _box.put(
-          'value', downloadList.map((e) => [e.total, e.queryVideo]).toList());
+        'value',
+        downloadList.map((e) => [e.total, e.queryVideo]).toList(),
+      );
     }
   }
 
-  updateDownload(
+  void updateDownload(
     QueryVideo queryVideo, {
     required int downloaded,
     int? total,
   }) {
-    var currentItemIndex =
+    final currentItemIndex =
         downloadList.indexWhere((e) => e.queryVideo == queryVideo);
     downloadList[currentItemIndex] = downloadList[currentItemIndex]
         .copyWith(downloaded: downloaded, total: total);
     notifyListeners();
   }
 
-  removeDownload(
+  void removeDownload(
     QueryVideo queryVideo,
   ) {
-    var currentItemIndex =
+    final currentItemIndex =
         downloadList.indexWhere((e) => e.queryVideo == queryVideo);
     downloadList.removeAt(currentItemIndex);
-    refresh(true);
+    refresh(value: true);
   }
 
-  clearAll() {
+  void clearAll() {
     downloadList = [];
-    refresh(true);
+    refresh(value: true);
   }
 }

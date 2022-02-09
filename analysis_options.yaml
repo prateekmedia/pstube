@@ -1,1 +1,10 @@
-include: package:flutter_lints/flutter.yaml
+include: package:very_good_analysis/analysis_options.yaml
+
+linter:
+  rules:
+    public_member_api_docs: false
+    library_private_types_in_public_api: false
+    avoid_setters_without_getters: false
+    avoid_dynamic_calls: false
+    argument_type_not_assignable: false
+    lines_longer_than_80_chars: false

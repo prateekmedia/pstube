@@ -1,54 +1,60 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutube/models/models.dart';
+import 'package:flutube/providers/providers.dart';
+import 'package:flutube/utils/utils.dart';
+import 'package:flutube/widgets/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
-
-import 'utils.dart';
-import 'package:flutube/models/models.dart';
-import 'package:flutube/widgets/widgets.dart';
-import 'package:flutube/providers/providers.dart';
 
 final Widget _progressIndicator = SizedBox(
   height: 100,
   child: getCircularProgressIndicator(),
 );
 
-Future showDownloadPopup(BuildContext context,
-    {Video? video, String? videoUrl}) {
-  assert(video != null || videoUrl != null);
+Future showDownloadPopup(
+  BuildContext context, {
+  Video? video,
+  String? videoUrl,
+}) {
+  assert(
+    video != null || videoUrl != null,
+    "Both video and videoUrl can't be null",
+  );
   final yt = YoutubeExplode();
-  Future<Video?> getVideo() => yt.videos.get(videoUrl!);
-  return showPopover(
+  Future<Video?> getVideo() => yt.videos.get(videoUrl);
+  return showPopover<dynamic>(
     context: context,
     padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 12),
     innerPadding: EdgeInsets.zero,
     builder: (ctx) => FutureBuilder<Video?>(
-        future:
-            videoUrl != null ? getVideo().whenComplete(() => yt.close()) : null,
-        builder: (context, snapshot) {
-          return video != null || snapshot.hasData && snapshot.data != null
-              ? DownloadsWidget(video: video ?? snapshot.data!)
-              : snapshot.hasError
-                  ? Text(context.locals.error)
-                  : _progressIndicator;
-        }),
+      future: videoUrl != null ? getVideo().whenComplete(yt.close) : null,
+      builder: (context, snapshot) {
+        return video != null || snapshot.hasData && snapshot.data != null
+            ? DownloadsWidget(video: video ?? snapshot.data!)
+            : snapshot.hasError
+                ? Text(context.locals.error)
+                : _progressIndicator;
+      },
+    ),
   );
 }
 
 class DownloadsWidget extends ConsumerWidget {
-  final Video video;
-  final VoidCallback? onClose;
-
   const DownloadsWidget({
     Key? key,
     required this.video,
     this.onClose,
   }) : super(key: key);
 
+  final Video video;
+  final VoidCallback? onClose;
+
   @override
-  Widget build(context, ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return FutureBuilder<StreamManifest>(
       future: YoutubeExplode().videos.streamsClient.getManifest(video.id.value),
       builder: (context, snapshot) {
@@ -145,11 +151,7 @@ Widget linksHeader(
   );
 }
 
-class CustomListTile extends ConsumerWidget {
-  final dynamic stream;
-  final Video video;
-  final VoidCallback? onClose;
-
+class CustomListTile extends HookConsumerWidget {
   const CustomListTile({
     Key? key,
     required this.stream,
@@ -157,15 +159,20 @@ class CustomListTile extends ConsumerWidget {
     this.onClose,
   }) : super(key: key);
 
+  final dynamic stream;
+  final Video video;
+  final VoidCallback? onClose;
+
   @override
-  Widget build(BuildContext context, ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isMounted = useIsMounted();
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: InkWell(
         onTap: () async {
           if ((Platform.isAndroid || Platform.isIOS) &&
               !await Permission.storage.request().isGranted) return;
-          ref.watch(downloadListProvider.notifier).addDownload(
+          await ref.watch(downloadListProvider.notifier).addDownload(
                 context,
                 DownloadItem.fromVideo(
                   video: video,
@@ -173,6 +180,8 @@ class CustomListTile extends ConsumerWidget {
                   path: ref.watch(downloadPathProvider).path,
                 ),
               );
+          if (!isMounted()) return;
+          // ignore: use_build_context_synchronously
           onClose != null ? onClose!() : context.back();
         },
         child: Container(
@@ -184,21 +193,22 @@ class CustomListTile extends ConsumerWidget {
                 children: [
                   Text(
                     (stream is ThumbnailStreamInfo
-                            ? stream.containerName
+                            ? stream.containerName as String
                             : stream is AudioOnlyStreamInfo
                                 ? stream.audioCodec
                                     .split('.')[0]
-                                    .replaceAll('mp4a', 'm4a')
-                                : stream.container.name)
+                                    .replaceAll('mp4a', 'm4a') as String
+                                : stream.container.name as String)
                         .toUpperCase(),
                   ),
-                  Text(stream is ThumbnailStreamInfo
-                      ? ""
-                      : (stream.size.totalBytes as int).getFileSize()),
+                  Text(
+                    stream is ThumbnailStreamInfo
+                        ? ''
+                        : (stream.size.totalBytes as int).getFileSize(),
+                  ),
                 ],
               ),
               Align(
-                alignment: Alignment.center,
                 child: Text(
                   stream is VideoStreamInfo
                       ? (stream as VideoStreamInfo).qualityLabel
@@ -209,7 +219,7 @@ class CustomListTile extends ConsumerWidget {
                               .getBitrate()
                           : stream is ThumbnailStreamInfo
                               ? (stream as ThumbnailStreamInfo).name
-                              : "",
+                              : '',
                   style: context.textTheme.headline5,
                   textAlign: TextAlign.center,
                 ),

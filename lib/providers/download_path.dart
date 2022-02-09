@@ -1,11 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutube/utils/utils.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import 'package:flutube/utils/utils.dart';
 
 final downloadPathProvider =
     ChangeNotifierProvider((_) => DownloadPathNotifier());
@@ -16,27 +15,27 @@ class DownloadPathNotifier extends ChangeNotifier {
 
   set path(String? newPath) {
     if (newPath != null && newPath != path && Directory(newPath).existsSync()) {
-      var _newPath =
-          newPath.endsWith("/") || Platform.isWindows && newPath.endsWith("\\")
+      final _newPath =
+          newPath.endsWith('/') || Platform.isWindows && newPath.endsWith(r'\')
               ? newPath
-              : newPath + (Platform.isWindows ? '\\' : '/');
+              : newPath + (Platform.isWindows ? r'\' : '/');
       MyPrefs().prefs.setString('downloadPath', _newPath);
       _path = _newPath;
       notifyListeners();
     }
   }
 
-  init() async {
+  Future<void> init() async {
     if (kIsWeb) return;
     _path = MyPrefs().prefs.getString('downloadPath') ??
         (Platform.isAndroid
-            ? "/storage/emulated/0/Download/${myApp.name}/"
+            ? '/storage/emulated/0/Download/${myApp.name}/'
             : p.join((await getDownloadsDirectory())!.path, myApp.name) +
-                (Platform.isWindows ? '\\' : '/'));
-    if (!await Directory(path).exists()) await Directory(path).create();
+                (Platform.isWindows ? r'\' : '/'));
+    if (!Directory(path).existsSync()) await Directory(path).create();
   }
 
   void reset() {
-    MyPrefs().prefs.remove('downloadPath').whenComplete(() => init());
+    MyPrefs().prefs.remove('downloadPath').whenComplete(init);
   }
 }

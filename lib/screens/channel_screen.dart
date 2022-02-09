@@ -1,53 +1,57 @@
+import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
-
 import 'package:flutube/utils/utils.dart';
 import 'package:flutube/widgets/widgets.dart';
+import 'package:libadwaita/libadwaita.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class ChannelScreen extends HookWidget {
-  final String id;
   const ChannelScreen({Key? key, required this.id}) : super(key: key);
+  final String id;
 
   @override
   Widget build(BuildContext context) {
-    var isMounted = useIsMounted();
+    final isMounted = useIsMounted();
     final yt = YoutubeExplode();
     final channel = useState<Channel?>(null);
     final channelInfo = useState<ChannelAbout?>(null);
     final _currentVidPage = useState<ChannelUploadsList?>(null);
     final controller = useScrollController();
-    final _tabController = useTabController(initialLength: 3);
-    List<String> _tabs = [
+    final _currentIndex = useState<int>(0);
+    final _tabs = <String>[
       context.locals.home,
       context.locals.videos,
       context.locals.about
     ];
 
-    final List<Widget> getStats = channelInfo.value != null
-        ? [
+    final getStats = channelInfo.value != null
+        ? <Widget>[
             Padding(
-              padding: const EdgeInsets.only(top: 8.0),
+              padding: const EdgeInsets.only(top: 8),
               child: Text(
                 context.locals.stats,
-                style: context.textTheme.headline5!,
+                style: context.textTheme.headline5,
               ),
             ),
             const Divider(height: 26),
-            Text(context.locals.joined + " " + channelInfo.value!.joinDate,
-                style: context.textTheme.bodyText2),
+            Text(
+              '${context.locals.joined} ${channelInfo.value!.joinDate}',
+              style: context.textTheme.bodyText2,
+            ),
             const Divider(height: 26),
             Text(
-                channelInfo.value!.viewCount.addCommas +
-                    " " +
-                    context.locals.views,
-                style: context.textTheme.bodyText2),
+              '${channelInfo.value!.viewCount.addCommas} '
+              '${context.locals.views}',
+              style: context.textTheme.bodyText2,
+            ),
             const Divider(height: 26),
             Text(channelInfo.value!.country),
           ]
-        : [];
+        : <Widget>[];
 
-    loadInitData() async {
+    Future<void> loadInitData() async {
       channel.value = await yt.channels.get(id);
       if (!isMounted()) return;
       if (channel.value != null) {
@@ -59,7 +63,7 @@ class ChannelScreen extends HookWidget {
       // channelInfo.value!.channelLinks
     }
 
-    void _getMoreData() async {
+    Future<void> _getMoreData() async {
       if (isMounted() &&
           controller.position.pixels == controller.position.maxScrollExtent &&
           _currentVidPage.value != null) {
@@ -69,67 +73,46 @@ class ChannelScreen extends HookWidget {
       }
     }
 
-    useEffect(() {
-      loadInitData();
-      controller.addListener(_getMoreData);
-      return () => controller.removeListener(_getMoreData);
-    }, [controller]);
+    useEffect(
+      () {
+        loadInitData();
+        controller.addListener(_getMoreData);
+        return () => controller.removeListener(_getMoreData);
+      },
+      [controller],
+    );
 
-    return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) =>
-            <Widget>[
-          SliverOverlapAbsorber(
-            // This widget takes the overlapping behavior of the SliverAppBar,
-            // and redirects it to the SliverOverlapInjector below. If it is
-            // missing, then it is possible for the nested "inner" scroll view
-            // below to end up under the SliverAppBar even when the inner
-            // scroll view thinks it has not been scrolled.
-            // This is not necessary if the "headerSliverBuilder" only builds
-            // widgets that do not overlap the next sliver.
-            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-            sliver: SliverAppBar(
-              leading: IconButton(
-                icon: const Icon(Icons.chevron_left),
-                onPressed: context.back,
-              ),
-              title: Text(channel.value?.title ?? "",
-                  style: context.textTheme.headline5),
-              floating: true,
-              pinned: true,
-              forceElevated: innerBoxIsScrolled,
-              bottom: TabBar(
-                isScrollable: !context.isMobile,
-                controller: _tabController,
-                // These are the widgets to put in each tab in the tab bar.
-                tabs: _tabs.map((String name) => Tab(text: name)).toList(),
-              ),
-            ),
-          ),
-          const SliverToBoxAdapter(child: NetStatus()),
-        ],
-        body: TabBarView(
-          controller: _tabController,
-          // These are the contents of the tab views, below the tabs.
-          children: _tabs.asMap().entries.map((MapEntry<int, String> entry) {
-            return SafeArea(
-              top: false,
-              bottom: false,
-              child: Builder(
-                // This Builder is needed to provide a BuildContext that is
-                // "inside" the NestedScrollView, so that
-                // sliverOverlapAbsorberHandleFor() can find the
-                // NestedScrollView.
-                builder: (BuildContext context) => _CustomTab(
-                  currentVidPage: _currentVidPage,
-                  channelInfo: channelInfo,
+    return AdwScaffold(
+      headerbar: (viewSwitcher) => AdwHeaderBar.bitsdojo(
+        appWindow: appWindow,
+        start: [context.backLeading()],
+        title: viewSwitcher,
+      ),
+      viewSwitcher: AdwViewSwitcher(
+        currentIndex: _currentIndex.value,
+        onViewChanged: (idx) => _currentIndex.value = idx,
+        tabs: _tabs.map((e) => ViewSwitcherData(title: e)).toList(),
+      ),
+      body: AdwViewStack(
+        index: _currentIndex.value,
+        // These are the contents of the tab views, below the tabs.
+        children: _tabs
+            .asMap()
+            .entries
+            .map(
+              (MapEntry<int, String> entry) => SafeArea(
+                top: false,
+                bottom: false,
+                child: _CustomTab(
+                  currentVidPage: _currentVidPage.value,
+                  channelInfo: channelInfo.value,
                   getStats: getStats,
+                  channel: channel.value,
                   entry: entry,
                 ),
               ),
-            );
-          }).toList(),
-        ),
+            )
+            .toList(),
       ),
     );
   }
@@ -138,16 +121,18 @@ class ChannelScreen extends HookWidget {
 class _CustomTab extends StatefulWidget {
   const _CustomTab({
     Key? key,
-    required ValueNotifier<ChannelUploadsList?> currentVidPage,
+    required ChannelUploadsList? currentVidPage,
     required this.channelInfo,
     required this.getStats,
+    required this.channel,
     required this.entry,
   })  : _currentVidPage = currentVidPage,
         super(key: key);
 
-  final ValueNotifier<ChannelUploadsList?> _currentVidPage;
-  final ValueNotifier<ChannelAbout?> channelInfo;
+  final ChannelUploadsList? _currentVidPage;
+  final ChannelAbout? channelInfo;
   final List<Widget> getStats;
+  final Channel? channel;
   final MapEntry<int, String> entry;
 
   @override
@@ -159,118 +144,112 @@ class _CustomTabState extends State<_CustomTab>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return CustomScrollView(
-      // The "controller" and "primary" members should be left
-      // unset, so that the NestedScrollView can control this
-      // inner scroll view.
-      // If the "controller" property is set, then this scroll
-      // view will not be associated with the NestedScrollView.
-      // The PageStorageKey should be unique to this ScrollView;
-      // it allows the list to remember its scroll position when
-      // the tab view is not on the screen.
-      key: PageStorageKey<String>(widget.entry.value),
-      slivers: <Widget>[
-        SliverOverlapInjector(
-          // This is the flip side of the SliverOverlapAbsorber
-          // above.
-          handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-        ),
-        if (widget.entry.key == 0)
-          Container()
-        else if (widget.entry.key == 1)
-          widget._currentVidPage.value != null
-              ? SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      // This builder is called for each child.
-                      // In this example, we just number each list item.
-                      return index == widget._currentVidPage.value!.length
-                          ? getCircularProgressIndicator()
-                          : FTVideo(
-                              videoData: widget._currentVidPage.value![index],
-                              loadData: true,
-                              showChannel: false,
-                              isRow: true,
-                            );
-                    },
-                    // The childCount of the SliverChildBuilderDelegate
-                    // specifies how many children this inner list
-                    // has. In this example, each tab has a list of
-                    // exactly 30 items, but this is arbitrary.
-                    childCount: widget._currentVidPage.value!.length + 1,
-                  ),
-                )
-              : SliverToBoxAdapter(
-                  child: getCircularProgressIndicator(),
-                )
-        else
-          SliverToBoxAdapter(
-            child: widget.channelInfo.value != null
-                ? Flex(
-                    direction: Axis.horizontal,
+    return AdwClamp.scrollable(
+      maximumSize: 1200,
+      child: (widget.entry.key == 0 && widget.channel != null)
+          ? Column(
+              children: [
+                CachedNetworkImage(imageUrl: widget.channel!.bannerUrl),
+                Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Row(
                     children: [
-                      Flexible(
-                        flex: 6,
-                        child: ListView(
-                          primary: false,
-                          controller: ScrollController(),
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
-                              child: Text(
-                                context.locals.description,
-                                style: context.textTheme.headline5!,
-                              ),
-                            ),
-                            SelectableText(
-                                widget.channelInfo.value!.description),
-                            const Divider(),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
-                              child: Text(
-                                context.locals.links,
-                                style: context.textTheme.headline5!,
-                              ),
-                            ),
-                            Wrap(
-                              children: [
-                                for (ChannelLink link
-                                    in widget.channelInfo.value!.channelLinks)
-                                  GestureDetector(
-                                    onTap: link.url.toString().launchIt,
-                                    child: Chip(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 6),
-                                      label: Text(link.title),
-                                      labelStyle: context.textTheme.bodyText2,
-                                    ),
-                                  )
-                              ],
-                            ),
-                            if (context.isMobile) ...[
-                              const Divider(),
-                              ...widget.getStats,
-                            ]
-                          ],
+                      ClipOval(
+                        child: CachedNetworkImage(
+                          height: 80,
+                          imageUrl: widget.channel!.logoUrl,
                         ),
                       ),
-                      if (!context.isMobile)
+                      const SizedBox(width: 12),
+                      Text(widget.channel!.title),
+                    ],
+                  ),
+                ),
+              ],
+            )
+          : (widget.entry.key == 1 && widget._currentVidPage != null)
+              ? AdwPreferencesGroup(
+                  children: List.generate(
+                    widget._currentVidPage!.length + 1,
+                    (index) => index == widget._currentVidPage!.length
+                        ? getCircularProgressIndicator()
+                        : FTVideo(
+                            videoData: widget._currentVidPage![index],
+                            loadData: true,
+                            showChannel: false,
+                            isRow: true,
+                          ),
+                  ),
+                )
+              : widget.entry.key == 2 && widget.channelInfo != null
+                  ? Flex(
+                      direction: Axis.horizontal,
+                      children: [
                         Flexible(
-                          flex: 2,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: widget.getStats,
+                          flex: 6,
+                          child: ListView(
+                            primary: false,
+                            controller: ScrollController(),
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8),
+                                child: Text(
+                                  context.locals.description,
+                                  style: context.textTheme.headline5,
+                                ),
+                              ),
+                              SelectableText(
+                                widget.channelInfo!.description,
+                              ),
+                              const Divider(),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8),
+                                child: Text(
+                                  context.locals.links,
+                                  style: context.textTheme.headline5,
+                                ),
+                              ),
+                              Wrap(
+                                children: [
+                                  for (ChannelLink link
+                                      in widget.channelInfo!.channelLinks)
+                                    AdwButton.pill(
+                                      onPressed: link.url.toString().launchIt,
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 12,
+                                        vertical: 12,
+                                      ),
+                                      margin: const EdgeInsets.symmetric(
+                                        horizontal: 3,
+                                      ),
+                                      child: Text(link.title),
+                                      //   labelStyle: context.textTheme.bodyText2,
+                                      // ),
+                                    )
+                                ],
+                              ),
+                              if (context.isMobile) ...[
+                                const Divider(),
+                                ...widget.getStats,
+                              ]
+                            ],
                           ),
                         ),
-                    ],
-                  )
-                : getCircularProgressIndicator(),
-          ),
-      ],
+                        if (!context.isMobile)
+                          Flexible(
+                            flex: 2,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: widget.getStats,
+                            ),
+                          ),
+                      ],
+                    )
+                  : getCircularProgressIndicator(),
     );
   }
 

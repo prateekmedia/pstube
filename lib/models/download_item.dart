@@ -3,11 +3,6 @@ import 'package:flutube/models/models.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class DownloadItem {
-  final QueryVideo queryVideo;
-  final int downloaded;
-  final int total;
-  CancelToken? cancelToken;
-
   DownloadItem({
     required this.queryVideo,
     required this.downloaded,
@@ -15,23 +10,29 @@ class DownloadItem {
     required this.total,
   });
 
-  static DownloadItem fromVideo({
+  DownloadItem.fromVideo({
     required Video video,
-    required stream,
+    required dynamic stream,
     required String path,
-    int downloaded = 0,
-    int total = 0,
-  }) {
-    return DownloadItem(
-      queryVideo: QueryVideo.fromVideo(
-        video: video,
-        stream: stream,
-        path: path,
-      ),
-      downloaded: downloaded,
-      total: total,
-    );
-  }
+    this.downloaded = 0,
+    this.total = 0,
+  }) : queryVideo = QueryVideo.fromVideo(
+          video: video,
+          stream: stream,
+          path: path,
+        );
+
+  factory DownloadItem.fromJson(Map<String, dynamic> json) => DownloadItem(
+        downloaded: json['downloaded'] as int,
+        total: json['total'] as int,
+        queryVideo:
+            QueryVideo.fromJson(json['queryVideo'] as Map<String, String>),
+      );
+
+  final QueryVideo queryVideo;
+  final int downloaded;
+  final int total;
+  CancelToken? cancelToken;
 
   DownloadItem copyWith({
     QueryVideo? queryVideo,
@@ -47,15 +48,9 @@ class DownloadItem {
     );
   }
 
-  factory DownloadItem.fromJson(Map<String, dynamic> json) => DownloadItem(
-        downloaded: json["downloaded"],
-        total: json["total"],
-        queryVideo: QueryVideo.fromJson(json["queryVideo"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "downloaded": downloaded,
-        "total": total,
-        "queryVideo": queryVideo.toJson(),
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'downloaded': downloaded,
+        'total': total,
+        'queryVideo': queryVideo.toJson(),
       };
 }

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'package:flutube/utils/utils.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class ThumbnailStreamInfo {
-  final String name;
-  final String url;
-  final String containerName;
-
   ThumbnailStreamInfo({
     required this.name,
     required this.url,
-    this.containerName = "jpg",
+    this.containerName = 'jpg',
   });
+
+  final String name;
+  final String url;
+  final String containerName;
 }
 
 extension CreateThumbnailStreamInfo on ThumbnailSet {

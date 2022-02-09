@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutube/utils/utils.dart';
+import 'package:libadwaita/libadwaita.dart';
 
 Future<T?> showPopover<T>({
   required BuildContext context,
@@ -30,7 +31,7 @@ Future<T?> showPopoverWB<T>({
   Widget Function(BuildContext)? builder,
   required void Function()? onConfirm,
   TextEditingController? controller,
-  String hint = "",
+  String hint = '',
   void Function()? onCancel,
   String? Function(String?)? validator,
   EdgeInsets padding = const EdgeInsets.symmetric(horizontal: 8),
@@ -41,7 +42,10 @@ Future<T?> showPopoverWB<T>({
   bool isScrollable = true,
   bool disableOnNoConfirm = false,
 }) {
-  assert(title != null || builder != null);
+  assert(
+    title != null || builder != null,
+    "Title and Builder both can't be null",
+  );
   final _formKey = key ?? GlobalKey<FormState>();
   return showPopover<T>(
     context: context,
@@ -54,7 +58,7 @@ Future<T?> showPopoverWB<T>({
       children: [
         const SizedBox(height: 8),
         if (title != null) ...[
-          Text(title, style: context.textTheme.headline4!),
+          Text(title, style: context.textTheme.headline6),
           const Divider(),
         ],
         if (builder != null) builder(ctx),
@@ -80,30 +84,22 @@ Future<T?> showPopoverWB<T>({
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            TextButton(
-              style: TextButton.styleFrom(
-                primary: context.textTheme.bodyText2!.color,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              ),
+            AdwButton(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
               child: Text(cancelText ?? context.locals.cancel),
               onPressed: () {
                 context.back();
                 if (onCancel != null) onCancel();
               },
             ),
-            TextButton(
-              style: TextButton.styleFrom(
-                primary: context.textTheme.bodyText1!.color,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              ),
-              child: Text(confirmText ?? context.locals.ok),
+            AdwButton(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
               onPressed: disableOnNoConfirm &&
                       controller != null &&
                       controller.value.text.isEmpty
                   ? null
                   : onConfirm,
+              child: Text(confirmText ?? context.locals.ok),
             ),
           ],
         ),
@@ -137,16 +133,16 @@ class Popover extends StatelessWidget {
         _buildHandle(context),
         const SizedBox(height: 8),
         Flexible(
-          fit: FlexFit.loose,
           child: Padding(
             padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
             child: Container(
               margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               padding: innerPadding,
               decoration: BoxDecoration(
                 color: theme.cardColor,
-                borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                borderRadius: const BorderRadius.all(Radius.circular(16)),
               ),
               child: isScrollable
                   ? SingleChildScrollView(padding: padding, child: child)

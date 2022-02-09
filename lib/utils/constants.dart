@@ -8,15 +8,22 @@ final myApp = FTInfo(
   name: 'FluTube',
   url: 'https://github.com/prateekmedia/flutube',
   description: 'Youtube client made using flutter.',
-  image: "flutube.png",
+  image: 'flutube.png',
 );
 
 final developerInfos = <FTInfo>[
   FTInfo(
-    name: 'Prateek SU',
+    name: 'Prateek Sunal',
     url: 'https://github.com/prateekmedia',
-    description:
-        'Founder | Lead Developer | Always curious to learn new and great stuff',
-    image: "prateekmedia.jpeg",
+    description: 'Founder | Lead Developer',
+    image: 'prateekmedia.jpeg',
+  )
+];
+
+final translatorsInfos = <FTInfo>[
+  FTInfo(
+    name: 'Prateek Sunal',
+    url: 'https://github.com/prateekmedia',
+    description: 'Hindi Translations',
   )
 ];

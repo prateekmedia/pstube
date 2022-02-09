@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 class FTInfo {
-  final String name;
-  final String url;
-  final String description;
-  final String image;
-
   FTInfo({
     required this.name,
     required this.url,
     required this.description,
-    required this.image,
+    this.image,
   });
+
+  final String name;
+  final String url;
+  final String description;
+  final String? image;
 }
 
 extension CoolFtInfoExtensions on FTInfo {
@@ -20,7 +20,7 @@ extension CoolFtInfoExtensions on FTInfo {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(25),
           child: Image.asset(
-            "assets/" + image,
+            'assets/$image',
             width: 135,
           ),
         ),

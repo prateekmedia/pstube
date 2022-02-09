@@ -13,6 +13,13 @@ class LikedComment {
     required this.likeCount,
   });
 
+  LikedComment.fromComment(Comment comment)
+      : channelId = comment.channelId.value,
+        author = comment.author,
+        text = comment.text,
+        publishedTime = comment.publishedTime,
+        likeCount = comment.likeCount;
+
   @HiveField(0)
   String channelId;
 
@@ -27,14 +34,4 @@ class LikedComment {
 
   @HiveField(5)
   int likeCount;
-
-  static LikedComment fromComment(Comment comment) {
-    return LikedComment(
-      channelId: comment.channelId.value,
-      author: comment.author,
-      text: comment.text,
-      publishedTime: comment.publishedTime,
-      likeCount: comment.likeCount,
-    );
-  }
 }

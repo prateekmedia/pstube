@@ -1,35 +1,40 @@
 import 'dart:io';
 
+import 'package:ant_icons/ant_icons.dart';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:bot_toast/bot_toast.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:custom_text/custom_text.dart';
 import 'package:flutter/foundation.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ant_icons/ant_icons.dart';
-import 'package:bot_toast/bot_toast.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:custom_text/custom_text.dart';
-import 'package:flutube/widgets/widgets.dart';
-import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutube/providers/providers.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
-
 import 'package:flutube/utils/utils.dart';
+import 'package:flutube/widgets/widgets.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:libadwaita/libadwaita.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:timeago/timeago.dart' as timeago;
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class VideoScreen extends StatefulHookConsumerWidget {
-  final Video? video;
-  final String? videoId;
-  final bool loadData;
   const VideoScreen({
     Key? key,
     required this.video,
     this.videoId,
     this.loadData = false,
-  })  : assert(videoId != null || video != null),
+  })  : assert(
+          videoId != null || video != null,
+          "VideoId and video both can't be null",
+        ),
         super(key: key);
+
+  final Video? video;
+  final String? videoId;
+  final bool loadData;
 
   @override
   ConsumerState<VideoScreen> createState() => _VideoScreenState();
@@ -43,12 +48,15 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
 
     final yt = YoutubeExplode();
     final videoSnapshot = widget.loadData || widget.videoId != null
-        ? useFuture(useMemoized(() => yt.videos
-            .get(widget.videoId ?? widget.video!.id.value)
-            .whenComplete(() => yt.close())))
+        ? useFuture(
+            useMemoized(
+              () => yt.videos
+                  .get(widget.videoId ?? widget.video!.id.value)
+                  .whenComplete(yt.close),
+            ),
+          )
         : null;
-    final Video? videoData =
-        videoSnapshot != null ? videoSnapshot.data : widget.video;
+    final videoData = videoSnapshot != null ? videoSnapshot.data : widget.video;
     final replyComment = useState<Comment?>(null);
     final currentIndex = useState<int>(0);
     final commentSideWidget = useState<Widget?>(null);
@@ -60,7 +68,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
         ? useState<bool>(likedList.likedVideoList.contains(videoData.url))
         : null;
 
-    updateLike() {
+    void updateLike() {
       isLiked!.value = !isLiked.value;
 
       if (isLiked.value) {
@@ -70,299 +78,292 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
       }
     }
 
-    return SafeArea(
-      child: Scaffold(
-        appBar:
-            widget.video == null && videoSnapshot == null || videoData == null
-                ? AppBar(
-                    leading: IconButton(
-                        onPressed: context.back,
-                        icon: const Icon(
-                          Icons.chevron_left,
-                        )))
-                : null,
-        body: widget.video == null && videoSnapshot == null
-            ? const Center(child: Text('Video not found!'))
-            : videoData == null
-                ? getCircularProgressIndicator()
-                : FutureBuilder<CommentsList?>(
-                    future: yt.videos.commentsClient.getComments(videoData),
-                    builder: (context, commentsSnapshot) {
-                      final _controller = YoutubePlayerController(
-                        initialVideoId: videoData.id.value,
-                        params: const YoutubePlayerParams(
-                          autoPlay: false,
-                          showFullscreenButton: true,
-                        ),
-                      );
-                      return Flex(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        direction: Axis.horizontal,
-                        children: [
-                          Flexible(
-                            flex: 8,
-                            child: FtBody(
-                              child: ListView(
-                                children: [
-                                  Stack(
+    return AdwScaffold(
+      headerbar: (_) => AdwHeaderBar.bitsdojo(
+        appWindow: appWindow,
+        start: [context.backLeading()],
+      ),
+      body: widget.video == null && videoSnapshot == null
+          ? const Center(child: Text('Video not found!'))
+          : videoData == null
+              ? getCircularProgressIndicator()
+              : FutureBuilder<CommentsList?>(
+                  future: yt.videos.commentsClient.getComments(videoData),
+                  builder: (context, commentsSnapshot) {
+                    final _controller = YoutubePlayerController(
+                      initialVideoId: videoData.id.value,
+                      params: const YoutubePlayerParams(
+                        autoPlay: false,
+                        showFullscreenButton: true,
+                      ),
+                    );
+                    return Flex(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      direction: Axis.horizontal,
+                      children: [
+                        Flexible(
+                          flex: 8,
+                          child: FtBody(
+                            child: ListView(
+                              children: [
+                                if (kIsWeb ||
+                                    Platform.isAndroid ||
+                                    Platform.isIOS)
+                                  YoutubePlayerIFrame(
+                                    controller: _controller,
+                                  )
+                                else
+                                  AspectRatio(
+                                    aspectRatio: 16 / 9,
+                                    child: CachedNetworkImage(
+                                      imageUrl:
+                                          videoData.thumbnails.mediumResUrl,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                Container(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      if (kIsWeb ||
-                                          Platform.isAndroid ||
-                                          Platform.isIOS)
-                                        YoutubePlayerIFrame(
-                                          controller: _controller,
-                                        )
-                                      else
-                                        AspectRatio(
-                                          aspectRatio: 16 / 9,
-                                          child: CachedNetworkImage(
-                                            imageUrl: videoData
-                                                .thumbnails.mediumResUrl,
-                                            fit: BoxFit.fill,
+                                      Text(
+                                        videoData.title,
+                                        style: context.textTheme.headline3,
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            '${videoData.engagement.viewCount.formatNumber}'
+                                            ' views',
                                           ),
-                                        ),
-                                      Positioned(
-                                          child: Align(
-                                        alignment: Alignment.topLeft,
-                                        child: IconButton(
-                                          icon: const Icon(Icons.chevron_left),
-                                          onPressed: context.back,
-                                        ),
-                                      ))
+                                          Text(
+                                            videoData.publishDate != null
+                                                ? '  •  ${timeago.format(
+                                                    videoData.publishDate!,
+                                                  )}'
+                                                : '',
+                                          ),
+                                        ],
+                                      ),
                                     ],
                                   ),
-                                  Container(
-                                    padding: const EdgeInsets.all(12),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          videoData.title,
-                                          style: context.textTheme.headline3,
-                                        ),
-                                        const SizedBox(height: 10),
-                                        Row(
-                                          children: [
-                                            Text(videoData.engagement.viewCount
-                                                    .formatNumber +
-                                                ' views'),
-                                            Text(videoData.publishDate != null
-                                                ? '  •  ' +
-                                                    timeago.format(
-                                                        videoData.publishDate!)
-                                                : ''),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 2,
                                   ),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 2),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        iconWithBottomLabel(
-                                          icon: isLiked!.value
-                                              ? AntIcons.like
-                                              : AntIcons.like_outline,
-                                          onPressed: updateLike,
-                                          label:
-                                              videoData.engagement.likeCount !=
-                                                      null
-                                                  ? videoData.engagement
-                                                      .likeCount!.formatNumber
-                                                  : context.locals.like,
-                                        ),
-                                        iconWithBottomLabel(
-                                          icon: AntIcons.share_alt,
-                                          onPressed: () {
-                                            Share.share(videoData.url);
-                                          },
-                                          label: context.locals.share,
-                                        ),
-                                        iconWithBottomLabel(
-                                          icon: Icons.download,
-                                          onPressed: downloadsSideWidget
-                                                      .value !=
-                                                  null
-                                              ? () => downloadsSideWidget
-                                                  .value = null
-                                              : context.isMobile
-                                                  ? () => showDownloadPopup(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      iconWithBottomLabel(
+                                        icon: isLiked!.value
+                                            ? AntIcons.like
+                                            : AntIcons.like_outline,
+                                        onPressed: updateLike,
+                                        label: videoData.engagement.likeCount !=
+                                                null
+                                            ? videoData.engagement.likeCount!
+                                                .formatNumber
+                                            : context.locals.like,
+                                      ),
+                                      iconWithBottomLabel(
+                                        icon: AntIcons.share_alt,
+                                        onPressed: () {
+                                          Share.share(videoData.url);
+                                        },
+                                        label: context.locals.share,
+                                      ),
+                                      iconWithBottomLabel(
+                                        icon: Icons.download,
+                                        onPressed: downloadsSideWidget.value !=
+                                                null
+                                            ? () =>
+                                                downloadsSideWidget.value = null
+                                            : context.isMobile
+                                                ? () => showDownloadPopup(
                                                       context,
-                                                      video: videoData)
-                                                  : () {
-                                                      commentSideWidget.value =
-                                                          null;
-                                                      downloadsSideWidget
-                                                          .value = Column(
-                                                        children: [
-                                                          AppBar(
-                                                            leading:
-                                                                const SizedBox(),
-                                                            centerTitle: true,
-                                                            title: Text(context
-                                                                .locals
-                                                                .downloadLinks),
-                                                            actions: [
-                                                              IconButton(
-                                                                  icon: const Icon(
-                                                                      Icons
-                                                                          .close),
-                                                                  onPressed:
-                                                                      () {
-                                                                    downloadsSideWidget
-                                                                            .value =
-                                                                        null;
-                                                                  }),
-                                                              const SizedBox(
-                                                                  width: 16),
-                                                            ],
+                                                      video: videoData,
+                                                    )
+                                                : () {
+                                                    commentSideWidget.value =
+                                                        null;
+                                                    downloadsSideWidget.value =
+                                                        Column(
+                                                      children: [
+                                                        AppBar(
+                                                          leading:
+                                                              const SizedBox(),
+                                                          centerTitle: true,
+                                                          title: Text(
+                                                            context.locals
+                                                                .downloadLinks,
                                                           ),
-                                                          Expanded(
-                                                            child:
-                                                                SingleChildScrollView(
-                                                              controller:
-                                                                  ScrollController(),
-                                                              padding: const EdgeInsets
-                                                                      .symmetric(
-                                                                  horizontal:
-                                                                      15,
-                                                                  vertical: 12),
-                                                              child:
-                                                                  DownloadsWidget(
-                                                                video:
-                                                                    videoData,
-                                                                onClose: () =>
-                                                                    downloadsSideWidget
-                                                                            .value =
-                                                                        null,
+                                                          actions: [
+                                                            AdwButton.circular(
+                                                              child: const Icon(
+                                                                Icons.close,
                                                               ),
+                                                              onPressed: () =>
+                                                                  downloadsSideWidget
+                                                                          .value =
+                                                                      null,
+                                                            ),
+                                                            const SizedBox(
+                                                              width: 16,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        Expanded(
+                                                          child:
+                                                              SingleChildScrollView(
+                                                            controller:
+                                                                ScrollController(),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                              horizontal: 15,
+                                                              vertical: 12,
+                                                            ),
+                                                            child:
+                                                                DownloadsWidget(
+                                                              video: videoData,
+                                                              onClose: () =>
+                                                                  downloadsSideWidget
+                                                                          .value =
+                                                                      null,
                                                             ),
                                                           ),
-                                                        ],
-                                                      );
-                                                    },
-                                          label: context.locals.download,
-                                        ),
-                                        iconWithBottomLabel(
-                                          icon: AntIcons.copy_outline,
-                                          onPressed: () {
-                                            Clipboard.setData(ClipboardData(
-                                                text: videoData.url));
-                                            BotToast.showText(
-                                                text: context
-                                                    .locals.copiedToClipboard);
-                                          },
-                                          label: context.locals.copyLink,
-                                        ),
-                                        iconWithBottomLabel(
-                                          icon: AntIcons.unordered_list,
-                                          onPressed: () {
-                                            showPopoverWB(
-                                              context: context,
-                                              cancelText: context.locals.done,
-                                              confirmText:
-                                                  context.locals.create,
-                                              controller: _textController,
-                                              title: context.locals.save,
-                                              hint: context.locals.createNew,
-                                              onConfirm: () {
-                                                ref
-                                                    .read(playlistProvider
-                                                        .notifier)
-                                                    .addPlaylist(_textController
-                                                        .value.text);
-                                                _textController.value =
-                                                    const TextEditingValue();
-                                              },
-                                              builder: (ctx) => PlaylistPopup(
-                                                  videoData: videoData),
-                                            );
-                                          },
-                                          label: context.locals.save,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const Divider(),
-                                  ChannelInfo(
-                                    channel: null,
-                                    channelId: videoData.channelId.value,
-                                    isOnVideo: true,
-                                  ),
-                                  const Divider(),
-                                  ListTile(
-                                    onTap: commentsSnapshot.data == null
-                                        ? null
-                                        : commentSideWidget.value != null
-                                            ? () =>
-                                                commentSideWidget.value = null
-                                            : context.isMobile
-                                                ? () => showPopover(
-                                                      context: context,
-                                                      isScrollable: false,
-                                                      innerPadding:
-                                                          EdgeInsets.zero,
-                                                      builder: (ctx) {
-                                                        return CommentsWidget(
-                                                          snapshot:
-                                                              commentsSnapshot,
-                                                          replyComment:
-                                                              replyComment,
-                                                        );
-                                                      },
-                                                    ).whenComplete(() =>
-                                                        currentIndex.value = 0)
-                                                : () {
-                                                    downloadsSideWidget.value =
-                                                        null;
-                                                    commentSideWidget.value =
-                                                        CommentsWidget(
-                                                      onClose: () =>
-                                                          commentSideWidget
-                                                              .value = null,
-                                                      replyComment:
-                                                          replyComment,
-                                                      snapshot:
-                                                          commentsSnapshot,
+                                                        ),
+                                                      ],
                                                     );
                                                   },
-                                    title: Text(context.locals.comments),
-                                    trailing: Text(
-                                      (commentsSnapshot.data != null
-                                              ? commentsSnapshot
-                                                  .data!.totalLength
-                                              : 0)
-                                          .formatNumber,
-                                    ),
+                                        label: context.locals.download,
+                                      ),
+                                      iconWithBottomLabel(
+                                        icon: AntIcons.copy_outline,
+                                        onPressed: () {
+                                          Clipboard.setData(
+                                            ClipboardData(
+                                              text: videoData.url,
+                                            ),
+                                          );
+                                          BotToast.showText(
+                                            text: context
+                                                .locals.copiedToClipboard,
+                                          );
+                                        },
+                                        label: context.locals.copyLink,
+                                      ),
+                                      iconWithBottomLabel(
+                                        icon: AntIcons.unordered_list,
+                                        onPressed: () {
+                                          showPopoverWB<dynamic>(
+                                            context: context,
+                                            cancelText: context.locals.done,
+                                            confirmText: context.locals.create,
+                                            controller: _textController,
+                                            title: context.locals.save,
+                                            hint: context.locals.createNew,
+                                            onConfirm: () {
+                                              ref
+                                                  .read(
+                                                    playlistProvider.notifier,
+                                                  )
+                                                  .addPlaylist(
+                                                    _textController.value.text,
+                                                  );
+                                              _textController.value =
+                                                  TextEditingValue.empty;
+                                            },
+                                            builder: (ctx) => PlaylistPopup(
+                                              videoData: videoData,
+                                            ),
+                                          );
+                                        },
+                                        label: context.locals.save,
+                                      ),
+                                    ],
                                   ),
-                                  const Divider(),
-                                  if (context.isMobile)
-                                    DescriptionWidget(video: videoData),
-                                ],
-                              ),
+                                ),
+                                const Divider(),
+                                ChannelInfo(
+                                  channel: null,
+                                  channelId: videoData.channelId.value,
+                                  isOnVideo: true,
+                                ),
+                                const Divider(height: 4),
+                                ListTile(
+                                  onTap: commentsSnapshot.data == null
+                                      ? null
+                                      : commentSideWidget.value != null
+                                          ? () => commentSideWidget.value = null
+                                          : context.isMobile
+                                              ? () => showPopover<dynamic>(
+                                                    context: context,
+                                                    isScrollable: false,
+                                                    innerPadding:
+                                                        EdgeInsets.zero,
+                                                    builder: (ctx) {
+                                                      return CommentsWidget(
+                                                        snapshot:
+                                                            commentsSnapshot,
+                                                        replyComment:
+                                                            replyComment,
+                                                      );
+                                                    },
+                                                  ).whenComplete(
+                                                    () =>
+                                                        currentIndex.value = 0,
+                                                  )
+                                              : () {
+                                                  downloadsSideWidget.value =
+                                                      null;
+                                                  commentSideWidget.value =
+                                                      CommentsWidget(
+                                                    onClose: () =>
+                                                        commentSideWidget
+                                                            .value = null,
+                                                    replyComment: replyComment,
+                                                    snapshot: commentsSnapshot,
+                                                  );
+                                                },
+                                  title: Text(context.locals.comments),
+                                  trailing: Text(
+                                    (commentsSnapshot.data != null
+                                            ? commentsSnapshot.data!.totalLength
+                                            : 0)
+                                        .formatNumber,
+                                  ),
+                                ),
+                                const Divider(height: 4),
+                                if (context.isMobile)
+                                  DescriptionWidget(video: videoData),
+                              ],
                             ),
                           ),
-                          if (!context.isMobile)
-                            Flexible(
-                              flex: 4,
-                              child: [
-                                DescriptionWidget(
-                                    video: videoData, isInsidePopup: false),
-                                if (commentSideWidget.value != null)
-                                  commentSideWidget.value!,
-                                if (downloadsSideWidget.value != null)
-                                  downloadsSideWidget.value!,
-                              ].last,
-                            ),
-                        ],
-                      );
-                    }),
-      ),
+                        ),
+                        if (!context.isMobile)
+                          Flexible(
+                            flex: 4,
+                            child: [
+                              DescriptionWidget(
+                                video: videoData,
+                                isInsidePopup: false,
+                              ),
+                              if (commentSideWidget.value != null)
+                                commentSideWidget.value!,
+                              if (downloadsSideWidget.value != null)
+                                downloadsSideWidget.value!,
+                            ].last,
+                          ),
+                      ],
+                    );
+                  },
+                ),
     );
   }
 
@@ -379,23 +380,25 @@ class PlaylistPopup extends ConsumerWidget {
   final Video videoData;
 
   @override
-  Widget build(context, ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final playlist = ref.watch(playlistProvider);
     final playlistP = ref.read(playlistProvider.notifier);
-    return Column(children: [
-      for (var entry in playlist.entries)
-        CheckboxListTile(
-          value: entry.value.contains(videoData.url),
-          onChanged: (value) {
-            if (value!) {
-              playlistP.addVideo(entry.key, videoData.url);
-            } else {
-              playlistP.removeVideo(entry.key, videoData.url);
-            }
-          },
-          title: Text(entry.key),
-        )
-    ]);
+    return Column(
+      children: [
+        for (var entry in playlist.entries)
+          CheckboxListTile(
+            value: entry.value.contains(videoData.url),
+            onChanged: (value) {
+              if (value!) {
+                playlistP.addVideo(entry.key, videoData.url);
+              } else {
+                playlistP.removeVideo(entry.key, videoData.url);
+              }
+            },
+            title: Text(entry.key),
+          )
+      ],
+    );
   }
 }
 
@@ -420,13 +423,13 @@ class _CommentsWidgetState extends State<CommentsWidget>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    var isMounted = useIsMounted();
-    final PageController pageController = PageController();
+    final isMounted = useIsMounted();
+    final pageController = PageController();
     final _currentPage = useState<CommentsList?>(widget.snapshot.data);
     final controller = useScrollController();
     final currentPage = useState<int>(0);
 
-    void _getMoreData() async {
+    Future<void> _getMoreData() async {
       if (isMounted() &&
           controller.position.pixels == controller.position.maxScrollExtent &&
           _currentPage.value != null) {
@@ -437,39 +440,43 @@ class _CommentsWidgetState extends State<CommentsWidget>
       }
     }
 
-    useEffect(() {
-      controller.addListener(_getMoreData);
-      return () => controller.removeListener(_getMoreData);
-    }, [controller]);
+    useEffect(
+      () {
+        controller.addListener(_getMoreData);
+        return () => controller.removeListener(_getMoreData);
+      },
+      [controller],
+    );
 
     return Column(
       children: [
         AppBar(
           leading: (currentPage.value == 1)
-              ? IconButton(
+              ? AdwButton.circular(
                   onPressed: () {
-                    pageController.animateToPage(0,
-                        duration: const Duration(milliseconds: 200),
-                        curve: Curves.easeInOut);
+                    pageController.animateToPage(
+                      0,
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeInOut,
+                    );
                     widget.replyComment.value = null;
                   },
-                  icon: Icon(Icons.chevron_left,
-                      color: context.textTheme.bodyText1!.color),
+                  child: Icon(
+                    Icons.chevron_left,
+                    color: context.textTheme.bodyText1!.color,
+                  ),
                 )
               : const SizedBox(),
           centerTitle: true,
-          title: Text((currentPage.value == 0)
-              ? (widget.snapshot.data != null
-                          ? widget.snapshot.data!.totalLength
-                          : 0)
-                      .formatNumber +
-                  " " +
-                  context.locals.comments.toLowerCase()
-              : context.locals.replies),
+          title: Text(
+            (currentPage.value == 0)
+                ? '${(widget.snapshot.data != null ? widget.snapshot.data!.totalLength : 0).formatNumber} ${context.locals.comments.toLowerCase()}'
+                : context.locals.replies,
+          ),
           actions: [
-            IconButton(
+            AdwButton.circular(
               onPressed: widget.onClose ?? context.back,
-              icon:
+              child:
                   Icon(Icons.close, color: context.textTheme.bodyText1!.color),
             )
           ],
@@ -495,27 +502,33 @@ class _CommentsWidgetState extends State<CommentsWidget>
                           comment: comment!,
                           onReplyTap: () {
                             widget.replyComment.value = comment;
-                            pageController.animateToPage(1,
-                                duration: const Duration(milliseconds: 200),
-                                curve: Curves.easeInOut);
+                            pageController.animateToPage(
+                              1,
+                              duration: const Duration(milliseconds: 200),
+                              curve: Curves.easeInOut,
+                            );
                           },
                         );
                 },
               ),
               WillPopScope(
-                  child: showReplies(
-                    context,
-                    widget.replyComment.value,
-                    EdgeInsets.symmetric(
-                        horizontal: widget.onClose != null ? 16 : 0),
+                child: showReplies(
+                  context,
+                  widget.replyComment.value,
+                  EdgeInsets.symmetric(
+                    horizontal: widget.onClose != null ? 16 : 0,
                   ),
-                  onWillPop: () async {
-                    await pageController.animateToPage(0,
-                        duration: const Duration(milliseconds: 200),
-                        curve: Curves.easeInOut);
-                    widget.replyComment.value = null;
-                    return false;
-                  }),
+                ),
+                onWillPop: () async {
+                  await pageController.animateToPage(
+                    0,
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.easeInOut,
+                  );
+                  widget.replyComment.value = null;
+                  return false;
+                },
+              ),
             ][index],
           ),
         ),
@@ -529,9 +542,9 @@ class _CommentsWidgetState extends State<CommentsWidget>
 
 Widget showReplies(BuildContext context, Comment? comment, EdgeInsets padding) {
   final yt = YoutubeExplode();
-  getReplies() async {
+  Future<CommentsList?>? getReplies() async {
     if (comment == null) return null;
-    var replies = await yt.videos.commentsClient.getReplies(comment);
+    final replies = await yt.videos.commentsClient.getReplies(comment);
     yt.close();
     return replies;
   }
@@ -546,39 +559,39 @@ Widget showReplies(BuildContext context, Comment? comment, EdgeInsets padding) {
               onReplyTap: null,
               isInsideReply: true,
             ),
-            FutureBuilder<List?>(
-                future: getReplies(),
-                builder: (context, snapshot) {
-                  return snapshot.data != null
-                      ? Container(
-                          padding: const EdgeInsets.only(left: 50),
-                          child: Column(
-                            children: [
-                              for (Comment reply in snapshot.data!)
-                                BuildCommentBox(
-                                  comment: reply,
-                                  onReplyTap: null,
-                                  isInsideReply: true,
-                                ),
-                            ],
-                          ),
-                        )
-                      : getCircularProgressIndicator();
-                }),
+            FutureBuilder<List<Comment>?>(
+              future: getReplies(),
+              builder: (context, snapshot) {
+                return snapshot.data != null
+                    ? Container(
+                        padding: const EdgeInsets.only(left: 50),
+                        child: Column(
+                          children: [
+                            for (Comment reply in snapshot.data!)
+                              BuildCommentBox(
+                                comment: reply,
+                                onReplyTap: null,
+                                isInsideReply: true,
+                              ),
+                          ],
+                        ),
+                      )
+                    : getCircularProgressIndicator();
+              },
+            ),
           ],
         )
       : getCircularProgressIndicator();
 }
 
 class DescriptionWidget extends StatelessWidget {
-  final bool isInsidePopup;
-
   const DescriptionWidget({
     Key? key,
     required this.video,
     this.isInsidePopup = true,
   }) : super(key: key);
 
+  final bool isInsidePopup;
   final Video video;
 
   @override
@@ -591,7 +604,9 @@ class DescriptionWidget extends StatelessWidget {
         Text(
           context.locals.description,
           style: context.textTheme.bodyText1!.copyWith(
-              fontWeight: FontWeight.bold, fontSize: isInsidePopup ? 16 : 18),
+            fontWeight: FontWeight.bold,
+            fontSize: isInsidePopup ? 16 : 18,
+          ),
         ),
         const SizedBox(height: 15),
         Row(
@@ -644,7 +659,7 @@ class DescriptionInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(title, style: context.textTheme.headline3!),
+        Text(title, style: context.textTheme.headline3),
         Text(body),
       ],
     );

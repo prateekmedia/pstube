@@ -1,12 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:ant_icons/ant_icons.dart';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:flutube/utils/utils.dart';
 import 'package:flutube/models/models.dart';
-import 'package:flutube/widgets/widgets.dart';
 import 'package:flutube/providers/providers.dart';
+import 'package:flutube/utils/utils.dart';
+import 'package:flutube/widgets/widgets.dart';
+import 'package:libadwaita/libadwaita.dart';
 
 class LikedScreen extends StatefulHookWidget {
   const LikedScreen({Key? key}) : super(key: key);
@@ -20,39 +21,38 @@ class _LikedScreenState extends State<LikedScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final _controller = PageController();
+    final _currentIndex = useState<int>(0);
+    final _tabs = [
+      context.locals.videos,
+      context.locals.comments,
+    ];
 
-    final tabController = useTabController(initialLength: 2);
-
-    return Consumer(builder: (context, ref, _) {
-      final likedList = ref.watch(likedListProvider);
-      return Scaffold(
-        body: NestedScrollView(
-          headerSliverBuilder: (_, e) => [
-            SliverAppBar(
-              leading: context.backLeading(),
-              title: Text(context.locals.liked),
-              floating: true,
-              pinned: true,
-              bottom: TabBar(
-                isScrollable: !context.isMobile,
-                controller: tabController,
-                tabs: [
-                  Tab(text: context.locals.videos),
-                  Tab(text: context.locals.comments),
-                ],
-              ),
-            )
-          ],
-          body: TabBarView(
-            controller: tabController,
+    return Consumer(
+      builder: (context, ref, _) {
+        final likedList = ref.watch(likedListProvider);
+        return AdwScaffold(
+          headerbar: (viewSwitcher) => AdwHeaderBar.bitsdojo(
+            appWindow: appWindow,
+            start: [context.backLeading()],
+            title: viewSwitcher,
+          ),
+          viewSwitcher: AdwViewSwitcher(
+            currentIndex: _currentIndex.value,
+            onViewChanged: _controller.jumpToPage,
+            tabs: _tabs.map((e) => ViewSwitcherData(title: e)).toList(),
+          ),
+          body: PageView(
+            controller: _controller,
+            onPageChanged: (page) => _currentIndex.value = page,
             children: [
               LikedVideoList(likedList: likedList),
               LikedCommentList(likedList: likedList),
             ],
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 
   @override
@@ -77,7 +77,7 @@ class _LikedVideoListState extends State<LikedVideoList>
   Widget build(BuildContext context) {
     super.build(context);
     return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
       children: [
         if (widget.likedList.likedVideoList.isEmpty) ...[
           const SizedBox(height: 60),
@@ -85,9 +85,9 @@ class _LikedVideoListState extends State<LikedVideoList>
           const SizedBox(height: 10),
           Text(context.locals.noLikedVideosFound).center()
         ] else
-          for (String url in widget.likedList.likedVideoList)
+          for (final url in widget.likedList.likedVideoList)
             FTVideo(
-              videoUrl: url,
+              videoUrl: url as String,
               isRow: !context.isMobile,
             ),
       ],
@@ -116,7 +116,7 @@ class _LikedCommentListState extends State<LikedCommentList>
   Widget build(BuildContext context) {
     super.build(context);
     return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
       children: [
         if (widget.likedList.likedCommentList.isEmpty) ...[
           const SizedBox(height: 60),
@@ -124,11 +124,12 @@ class _LikedCommentListState extends State<LikedCommentList>
           const SizedBox(height: 10),
           Text(context.locals.noLikedCommentsFound).center()
         ] else
-          for (LikedComment comment in widget.likedList.likedCommentList)
+          for (final comment in widget.likedList.likedCommentList)
             CommentBox(
               comment: comment,
               onReplyTap: null,
-              updateLike: () => widget.likedList.removeComment(comment),
+              updateLike: () =>
+                  widget.likedList.removeComment(comment as LikedComment),
             ),
       ],
     );
