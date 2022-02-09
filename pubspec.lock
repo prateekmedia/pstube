@@ -539,7 +539,7 @@ packages:
     description:
       path: "."
       ref: fix46
-      resolved-ref: "69218ab6709e74a107084a7b5ede12d77220abc2"
+      resolved-ref: ff6ba2f71b4c8d23f57f5f6b7d08453b78d86778
       url: "https://github.com/gtk-flutter/libadwaita.git"
     source: git
     version: "1.0.0"

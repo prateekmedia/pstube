@@ -161,7 +161,17 @@ class _CustomTabState extends State<_CustomTab>
                         ),
                       ),
                       const SizedBox(width: 12),
-                      Text(widget.channel!.title),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(widget.channel!.title),
+                          Text(
+                            widget.channel!.subscribersCount != null
+                                ? '${widget.channel!.subscribersCount} ${context.locals.subscribers}'
+                                : context.locals.hidden,
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),

@@ -41,17 +41,17 @@ class FTVideo extends StatelessWidget {
               isInsideDownloadPopup ? EdgeInsets.zero : const EdgeInsets.all(8),
           margin: const EdgeInsets.all(8),
           color: context.theme.cardColor.withOpacity(0.65),
-          child: isRow
-              ? GestureDetector(
-                  onTap: video != null
-                      ? () => context.pushPage(
-                            VideoScreen(
-                              video: video,
-                              loadData: loadData,
-                            ),
-                          )
-                      : null,
-                  child: Row(
+          child: GestureDetector(
+            onTap: video != null
+                ? () => context.pushPage(
+                      VideoScreen(
+                        video: video,
+                        loadData: loadData,
+                      ),
+                    )
+                : null,
+            child: isRow
+                ? Row(
                     children: [
                       Stack(
                         children: [
@@ -79,7 +79,7 @@ class FTVideo extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                getTitle(video),
+                                Flexible(child: getTitle(video)),
                               ],
                             ),
                             const SizedBox(height: 6),
@@ -109,57 +109,52 @@ class FTVideo extends StatelessWidget {
                       ],
                       ...actions,
                     ],
-                  ),
-                )
-              : Column(
-                  children: [
-                    Stack(
-                      children: [
-                        getThumbnail(video, context),
-                        if (video != null)
-                          Positioned.fill(
-                            child: Align(
-                              alignment: const Alignment(0.98, 0.94),
-                              child: getDuration(video),
-                            ),
-                          )
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (video != null)
-                                Text(
-                                  video.title,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(fontSize: 15),
-                                )
-                              else
-                                Container(),
-                              if (showChannel) getAuthor(video, context),
-                            ],
-                          ),
-                        ),
-                        if (!isInsideDownloadPopup) ...[
-                          getDownloadButton(video, context),
+                  )
+                : Column(
+                    children: [
+                      Stack(
+                        children: [
+                          getThumbnail(video, context),
+                          if (video != null)
+                            Positioned.fill(
+                              child: Align(
+                                alignment: const Alignment(0.98, 0.94),
+                                child: getDuration(video),
+                              ),
+                            )
                         ],
-                        ...actions,
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        getViews(video, context),
-                        getTime(video),
-                      ],
-                    )
-                  ],
-                ),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (video != null)
+                                  getTitle(video)
+                                else
+                                  Container(),
+                                if (showChannel) getAuthor(video, context),
+                              ],
+                            ),
+                          ),
+                          if (!isInsideDownloadPopup) ...[
+                            getDownloadButton(video, context),
+                          ],
+                          ...actions,
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          getViews(video, context),
+                          getTime(video),
+                        ],
+                      )
+                    ],
+                  ),
+          ),
         );
       },
     );
@@ -204,14 +199,12 @@ class FTVideo extends StatelessWidget {
     );
   }
 
-  Flexible getTitle(Video? video) {
-    return Flexible(
-      child: Text(
-        video != null ? video.title : '           ',
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-        style: const TextStyle(fontSize: 14),
-      ),
+  Text getTitle(Video? video) {
+    return Text(
+      video != null ? video.title : '           ',
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
+      style: const TextStyle(fontSize: 14),
     );
   }
 
