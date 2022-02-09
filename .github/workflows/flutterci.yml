@@ -82,22 +82,23 @@ jobs:
  
       - name: Build RPM Package
         run: |
-          cp -fr build/linux/x64/release/bundle linux/packaging/usr/bin
-          rm -rf linux/packaging/usr/bin/data/flutter_assets/packages/flutter_inappwebview
+          cp -fr build/linux/x64/release/bundle linux/packaging/deb/usr/bin
           sed -i "s:cp -rf :cp -rf $(pwd)/:" linux/packaging/rpm/flutube.spec
+          sed -i "s:FILES_HERE:$(find packaging/deb/usr -type f -follow -print | awk '{printf "%s\\n", $0}')):" linux/packaging/rpm/flutube.spec
+          sed -i "s:packaging/deb::" linux/packaging/rpm/flutube.spec
           rpmbuild -bb linux/packaging/rpm/flutube.spec -D "_topdir $(pwd)/rpmbuild"
           cp rpmbuild/RPMS/x86_64/*.rpm flutube-linux-${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}-x86_64.rpm
           rm -rf linux/packaging/rpm
 
       - name: Build DEB Package
         run: |
-          dpkg-deb --build --root-owner-group linux/packaging
-          cp linux/*.deb flutube-linux-${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}-x86_64.deb
+          dpkg-deb --build --root-owner-group linux/packaging/deb
+          cp linux/packaging/*.deb flutube-linux-${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}-x86_64.deb
 
       - name: Build Tarball
         run: |
           mkdir -p AppDir/
-          cp -r linux/packaging/usr AppDir/
+          cp -r linux/packaging/deb/usr AppDir/
           ln -sr AppDir/usr/bin/flutube AppDir/flutube
           tar czf flutube-linux-${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}-x86_64.tar.gz -C AppDir/ .
 

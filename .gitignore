@@ -12,7 +12,7 @@
 .*hidden*
 .metadata
 *.keystore
-linux/packaging/usr/local/
+linux/packaging/deb/usr/local/
 generated_*.dart
 
 # IntelliJ related
