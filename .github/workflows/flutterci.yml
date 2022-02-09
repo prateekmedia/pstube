@@ -84,8 +84,9 @@ jobs:
         run: |
           cp -fr build/linux/x64/release/bundle linux/packaging/deb/usr/bin
           sed -i "s:cp -rf :cp -rf $(pwd)/:" linux/packaging/rpm/flutube.spec
-          sed -i "s:FILES_HERE:$(find linux/packaging/deb/usr -type f -follow -print | awk '{printf "%s\\n", $0}')):" linux/packaging/rpm/flutube.spec
-          sed -i "s:packaging/deb::" linux/packaging/rpm/flutube.spec
+          cd linux/packaging/deb
+          sed -i "s:FILES_HERE:$(find usr -type f -follow -print | awk '{printf "/%s\\n", $0}'):" ../rpm/flutube.spec
+          cd ../../../
           rpmbuild -bb linux/packaging/rpm/flutube.spec -D "_topdir $(pwd)/rpmbuild"
           cp rpmbuild/RPMS/x86_64/*.rpm flutube-linux-${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}-x86_64.rpm
           rm -rf linux/packaging/rpm
