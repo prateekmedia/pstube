@@ -107,6 +107,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
           ),
           AdwComboRow(
             title: 'Region',
+            onSelected: (val) => ref.watch(regionProvider.notifier).region =
+                Regions.values.toList()[val],
+            selectedIndex:
+                Regions.values.toList().indexOf(ref.watch(regionProvider)),
             choices: Regions.values
                 .map(
                   (Regions e) => e.toString(),
