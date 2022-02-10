@@ -8,7 +8,7 @@ class IconWithLabel extends StatelessWidget {
     Key? key,
     required this.label,
     this.style,
-    this.margin = const EdgeInsets.symmetric(horizontal: 2),
+    this.margin = const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
     this.secColor = SecColor.light,
   }) : super(key: key);
 
@@ -21,10 +21,10 @@ class IconWithLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: margin,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
       decoration: BoxDecoration(
-        color: context.getAltBackgroundColor
-            .withOpacity(secColor == SecColor.light ? 0.18 : 1),
+        color: context.getBackgroundColor
+            .brighten(context, secColor == SecColor.light ? 20 : 1),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Text(

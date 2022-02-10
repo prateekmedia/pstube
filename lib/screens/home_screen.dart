@@ -54,7 +54,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 idx == shown.value
                             ? AdwButton(
                                 onPressed: () => shown.value += 20,
-                                child: const Text('Load more'),
+                                child: Text(context.locals.loadMore),
                               )
                             : FTVideo(
                                 videoUrl:

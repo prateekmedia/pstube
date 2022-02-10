@@ -25,8 +25,6 @@
     "views": "المشاهدات",
     "description": "الوصف",
     "links": "روابط",
-    "license": "الرخصة",
-    "licenses": "التراخيص",
     "noVideosFound": "لا توجد فيديوهات",
     "downloadFolder": "مجلد التنزيلات",
     "chooseDownloadFolder": "اختر مجلد التنزيلات",
@@ -55,8 +53,6 @@
     "hidden": "إخفاء",
     "subscribers": "مشترك",
     "reply": "رد",
-    "now": "الآن",
-    "loading": "جار التنزيل...",
     "cancel": "إلغاء",
     "ok": "حسنا",
     "resetDefault": "إستعادة الوضع الإفتراضي",
@@ -70,6 +66,6 @@
     "showLess": "إظهار أقل",
     "networkLostShowingCachedData": "فقدت الشبكة عرض البيانات المخزنة مؤقتًا",
     "backOnline": "العودة إلى الاتصال",
-    "developer": "مطور",
-    "github": "Github"
+    "loadMore": "Load more",
+    "videoNotFound": "Video not found!"
 }

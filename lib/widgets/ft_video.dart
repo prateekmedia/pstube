@@ -32,33 +32,26 @@ class FTVideo extends HookWidget {
   Widget build(BuildContext context) {
     final yt = YoutubeExplode();
     Future<Video?> getVideo() => yt.videos.get(videoUrl);
-    final isHovering = useState<bool>(false);
-
-    void updateHover({bool value = false}) => isHovering.value = value;
 
     return FutureBuilder<Video?>(
       future: videoUrl != null ? getVideo().whenComplete(yt.close) : null,
       builder: (context, snapshot) {
         final video = snapshot.data ?? videoData;
-        return Container(
-          padding:
-              isInsideDownloadPopup ? EdgeInsets.zero : const EdgeInsets.all(8),
-          margin: const EdgeInsets.all(8),
-          color: isHovering.value
-              ? context.theme.cardColor.withOpacity(0.65)
-              : null,
-          child: MouseRegion(
-            onHover: (_) => updateHover(value: true),
-            onExit: (_) => updateHover(),
-            child: GestureDetector(
-              onTap: video != null
-                  ? () => context.pushPage(
-                        VideoScreen(
-                          video: video,
-                          loadData: loadData,
-                        ),
-                      )
-                  : null,
+        return Padding(
+          padding: const EdgeInsets.all(8),
+          child: InkWell(
+            onTap: video != null
+                ? () => context.pushPage(
+                      VideoScreen(
+                        video: video,
+                        loadData: loadData,
+                      ),
+                    )
+                : null,
+            child: Padding(
+              padding: isInsideDownloadPopup
+                  ? EdgeInsets.zero
+                  : const EdgeInsets.all(16),
               child: isRow
                   ? Row(
                       children: [
@@ -187,12 +180,7 @@ class FTVideo extends HookWidget {
                 Flexible(
                   child: Container(
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          context.getAltBackgroundColor,
-                          context.getBackgroundColor
-                        ],
-                      ),
+                      color: context.getBackgroundColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
@@ -202,41 +190,39 @@ class FTVideo extends HookWidget {
     );
   }
 
-  IconWithLabel getDuration(Video video) {
-    return IconWithLabel(
-      label: (video.duration ?? Duration.zero).format(),
-      secColor: SecColor.dark,
-    );
-  }
-
-  Text getTitle(Video? video) {
-    return Text(
-      video != null ? video.title : '           ',
-      maxLines: 2,
-      overflow: TextOverflow.ellipsis,
-      style: const TextStyle(fontSize: 14),
-    );
-  }
-
-  GestureDetector getAuthor(Video? video, BuildContext context) {
-    return GestureDetector(
-      onTap: (video != null)
-          ? () => context.pushPage(ChannelScreen(id: video.channelId.value))
-          : null,
-      child: IconWithLabel(
-        label: video != null ? video.author : '                ',
+  IconWithLabel getDuration(Video video) => IconWithLabel(
+        label: (video.duration ?? Duration.zero).format(),
         secColor: SecColor.dark,
-      ),
-    );
-  }
+      );
 
-  AdwButton getDownloadButton(Video? video, BuildContext context) {
-    return AdwButton.circular(
-      onPressed:
-          video != null ? () => showDownloadPopup(context, video: video) : null,
-      child: const Icon(Icons.download),
-    );
-  }
+  Text getTitle(Video? video) => Text(
+        video != null ? video.title : '           ',
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+        style: const TextStyle(fontSize: 14),
+      );
+
+  GestureDetector getAuthor(Video? video, BuildContext context) =>
+      GestureDetector(
+        onTap: (video != null)
+            ? () => context.pushPage(ChannelScreen(id: video.channelId.value))
+            : null,
+        child: IconWithLabel(
+          label: video != null ? video.author : '                ',
+          secColor: SecColor.dark,
+        ),
+      );
+
+  AdwButton getDownloadButton(Video? video, BuildContext context) =>
+      AdwButton.circular(
+        onPressed: video != null
+            ? () => showDownloadPopup(context, video: video)
+            : null,
+        child: Icon(
+          Icons.download,
+          color: video == null ? Colors.transparent : null,
+        ),
+      );
 
   IconWithLabel getViews(Video? video, BuildContext context) {
     return IconWithLabel(
@@ -246,11 +232,9 @@ class FTVideo extends HookWidget {
     );
   }
 
-  IconWithLabel getTime(Video? video) {
-    return IconWithLabel(
-      label: video != null
-          ? timeago.format(video.uploadDate ?? DateTime.now())
-          : '           ',
-    );
-  }
+  IconWithLabel getTime(Video? video) => IconWithLabel(
+        label: video != null
+            ? timeago.format(video.uploadDate ?? DateTime.now())
+            : '           ',
+      );
 }

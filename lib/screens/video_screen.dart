@@ -84,7 +84,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
         start: [context.backLeading()],
       ),
       body: widget.video == null && videoSnapshot == null
-          ? const Center(child: Text('Video not found!'))
+          ? Center(child: Text(context.locals.videoNotFound))
           : videoData == null
               ? getCircularProgressIndicator()
               : FutureBuilder<CommentsList?>(

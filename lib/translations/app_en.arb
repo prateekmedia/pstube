@@ -25,8 +25,6 @@
     "views": "views",
     "description": "Description",
     "links": "Links",
-    "license": "Copylefted license",
-    "licenses": "Libre licenses",
     "noVideosFound": "No videos found",
     "downloadFolder": "Download folder",
     "chooseDownloadFolder": "Download Folder",
@@ -55,8 +53,6 @@
     "hidden": "Hidden",
     "subscribers": "subscribers",
     "reply": "reply",
-    "now": "now",
-    "loading": "Loading…",
     "cancel": "Cancel",
     "ok": "OK",
     "resetDefault": "Reset Default",
@@ -70,6 +66,6 @@
     "showLess": "Show less",
     "networkLostShowingCachedData": "Network lost showing cached data",
     "backOnline": "Back online",
-    "developer": "Developer",
-    "github": "GitHub"
+    "loadMore": "Load more",
+    "videoNotFound": "Video not found!"
 }

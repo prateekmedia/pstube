@@ -58,7 +58,7 @@ Future<T?> showPopoverWB<T>({
       children: [
         const SizedBox(height: 8),
         if (title != null) ...[
-          Text(title, style: context.textTheme.headline6),
+          Text(title, style: context.textTheme.headline5),
           const Divider(),
         ],
         if (builder != null) builder(ctx),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutube/utils/extensions/context.dart';
 
 extension ColorTint on Color {
   Color darken([int percent = 10]) {
@@ -15,7 +16,7 @@ extension ColorTint on Color {
     );
   }
 
-  Color brighten([int percent = 10]) {
+  Color lighten([int percent = 10]) {
     assert(
       1 <= percent && percent <= 100,
       "The percentage can't be less then 1 or greater then 100",
@@ -28,4 +29,7 @@ extension ColorTint on Color {
       blue + ((255 - blue) * p).round(),
     );
   }
+
+  Color brighten(BuildContext ctx, [int percent = 10]) =>
+      ctx.isDark ? darken(percent) : lighten(percent);
 }
