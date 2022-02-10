@@ -12,7 +12,7 @@ final myApp = SFInfo(
   image: 'sftube.png',
 );
 
-final developerInfos = <SFInfo>[
+List<SFInfo> developerInfos = <SFInfo>[
   SFInfo(
     name: 'Prateek Sunal',
     url: 'https://github.com/prateekmedia',
@@ -21,10 +21,20 @@ final developerInfos = <SFInfo>[
   )
 ];
 
-final translatorsInfos = <SFInfo>[
+List<SFInfo> translatorsInfos = <SFInfo>[
   SFInfo(
-    name: 'Prateek Sunal',
-    url: 'https://github.com/prateekmedia',
-    description: 'Hindi Translations',
-  )
+    name: 'MesterPerfect',
+    url: 'https://github.com/MesterPerfect',
+    description: 'Arabic',
+  ),
+  SFInfo(
+    name: 'albanobattistella',
+    url: 'https://github.com/albanobattistella',
+    description: 'Italian',
+  ),
+  SFInfo(
+    name: 'Allan Nordhøy',
+    url: 'https://github.com/comradekingu',
+    description: 'Norwegian Bokmål',
+  ),
 ];

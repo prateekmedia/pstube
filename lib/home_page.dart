@@ -134,7 +134,8 @@ class MyHomePage extends HookConsumerWidget {
                   },
                   child: AdwTextField(
                     onChanged: (query) => searchedTerm.value = query,
-                    icon: Icons.search,
+                    autofocus: true,
+                    prefixIcon: Icons.search,
                   ),
                 ),
               )
