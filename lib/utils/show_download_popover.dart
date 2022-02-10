@@ -63,7 +63,7 @@ class DownloadsWidget extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (onClose == null)
-                    FTVideo(
+                    SFVideo(
                       isRow: true,
                       videoData: video,
                       isInsideDownloadPopup: true,

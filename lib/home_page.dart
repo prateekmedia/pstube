@@ -168,7 +168,7 @@ class MyHomePage extends HookConsumerWidget {
             ),
         ],
       ),
-      body: FtBody(
+      body: SFBody(
         child: PageView.builder(
           controller: _controller,
           itemCount: mainScreens.length,

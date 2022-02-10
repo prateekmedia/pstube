@@ -86,7 +86,7 @@ class _LikedVideoListState extends State<LikedVideoList>
           Text(context.locals.noLikedVideosFound).center()
         ] else
           for (final url in widget.likedList.likedVideoList)
-            FTVideo(
+            SFVideo(
               videoUrl: url as String,
               isRow: !context.isMobile,
             ),

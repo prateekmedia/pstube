@@ -87,7 +87,7 @@ class SearchResult extends HookWidget {
             itemCount: _currentPage.value!.length + 1,
             itemBuilder: (ctx, idx) => idx == _currentPage.value!.length
                 ? getCircularProgressIndicator()
-                : FTVideo(
+                : SFVideo(
                     videoData: _currentPage.value![idx],
                     isRow: !context.isMobile,
                     loadData: true,

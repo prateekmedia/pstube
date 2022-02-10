@@ -103,7 +103,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                       children: [
                         Flexible(
                           flex: 8,
-                          child: FtBody(
+                          child: SFBody(
                             child: ListView(
                               children: [
                                 if (kIsWeb ||

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class FTInfo {
-  FTInfo({
+class SFInfo {
+  SFInfo({
     required this.name,
     required this.url,
     required this.description,
@@ -14,7 +14,7 @@ class FTInfo {
   final String? image;
 }
 
-extension CoolFtInfoExtensions on FTInfo {
+extension CoolSFInfoExtensions on SFInfo {
   Widget get imageWidget => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: ClipRRect(

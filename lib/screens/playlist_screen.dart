@@ -83,12 +83,12 @@ class PlaylistSubScreen extends StatelessWidget {
         start: [context.backLeading()],
         title: Text(playlistName),
       ),
-      body: FtBody(
+      body: SFBody(
         child: videos.isNotEmpty
             ? ListView(
                 children: [
                   for (var videoUrl in videos)
-                    FTVideo(
+                    SFVideo(
                       isRow: !context.isMobile,
                       videoUrl: videoUrl,
                       actions: [

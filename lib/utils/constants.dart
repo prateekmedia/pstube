@@ -4,15 +4,15 @@ import 'package:flutube/models/models.dart';
 const mobileWidth = 800;
 const primaryColor = Colors.red;
 
-final myApp = FTInfo(
+final myApp = SFInfo(
   name: 'FluTube',
   url: 'https://github.com/prateekmedia/flutube',
   description: 'Youtube client made using flutter.',
   image: 'flutube.png',
 );
 
-final developerInfos = <FTInfo>[
-  FTInfo(
+final developerInfos = <SFInfo>[
+  SFInfo(
     name: 'Prateek Sunal',
     url: 'https://github.com/prateekmedia',
     description: 'Founder | Lead Developer',
@@ -20,8 +20,8 @@ final developerInfos = <FTInfo>[
   )
 ];
 
-final translatorsInfos = <FTInfo>[
-  FTInfo(
+final translatorsInfos = <SFInfo>[
+  SFInfo(
     name: 'Prateek Sunal',
     url: 'https://github.com/prateekmedia',
     description: 'Hindi Translations',

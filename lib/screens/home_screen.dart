@@ -56,7 +56,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 onPressed: () => shown.value += 20,
                                 child: Text(context.locals.loadMore),
                               )
-                            : FTVideo(
+                            : SFVideo(
                                 videoUrl:
                                     'https://youtube.com${(snapshot.data!.data[idx] as StreamItem).url}',
                               ),

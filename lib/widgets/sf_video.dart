@@ -8,8 +8,8 @@ import 'package:libadwaita/libadwaita.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-class FTVideo extends HookWidget {
-  const FTVideo({
+class SFVideo extends HookWidget {
+  const SFVideo({
     Key? key,
     this.videoUrl,
     this.videoData,

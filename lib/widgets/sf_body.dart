@@ -4,8 +4,8 @@ import 'package:flutube/controller/internet_connectivity.dart';
 import 'package:flutube/utils/utils.dart';
 import 'package:flutube/widgets/widgets.dart';
 
-class FtBody extends StatelessWidget {
-  const FtBody({
+class SFBody extends StatelessWidget {
+  const SFBody({
     Key? key,
     required this.child,
     this.expanded = true,

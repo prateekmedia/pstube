@@ -183,7 +183,7 @@ class _CustomTabState extends State<_CustomTab>
                     widget._currentVidPage!.length + 1,
                     (index) => index == widget._currentVidPage!.length
                         ? getCircularProgressIndicator()
-                        : FTVideo(
+                        : SFVideo(
                             videoData: widget._currentVidPage![index],
                             loadData: true,
                             showChannel: false,
