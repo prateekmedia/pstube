@@ -47,7 +47,11 @@ jobs:
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
 
       - name: Build Flutter app
-        run: flutter build apk --split-per-abi
+        run: flutter build apk
+
+      - name: Rename app
+        if: ${{ github.event_name != 'release' }}
+        run: mv build/app/outputs/apk/release/flutube-* build/app/outputs/apk/release/flutube-android-continuous.apk
 
       - uses: svenstaro/upload-release-action@latest
         with:
