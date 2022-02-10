@@ -22,8 +22,8 @@ class DownloadsScreen extends ConsumerWidget {
     final downloadList = downloadListUtils.downloadList;
     return AdwClamp.scrollable(
       maximumSize: 800,
-      child: AdwPreferencesGroup(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: Column(
         children: [
           if (downloadList.isEmpty) ...[
             const SizedBox(height: 60),
@@ -54,7 +54,7 @@ class DownloadItemBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: item.total != 0 && item.total == item.downloaded
           ? () => OpenFile.open(item.queryVideo.path + item.queryVideo.name)
           : null,

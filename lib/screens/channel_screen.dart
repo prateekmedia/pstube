@@ -169,7 +169,7 @@ class _CustomTabState extends State<_CustomTab>
                           Text(widget.channel!.title),
                           Text(
                             widget.channel!.subscribersCount != null
-                                ? '${widget.channel!.subscribersCount} ${context.locals.subscribers}'
+                                ? '${widget.channel!.subscribersCount!.addCommas} ${context.locals.subscribers}'
                                 : context.locals.hidden,
                           ),
                         ],
@@ -180,7 +180,8 @@ class _CustomTabState extends State<_CustomTab>
               ],
             )
           : (widget.entry.key == 1 && widget._currentVidPage != null)
-              ? AdwPreferencesGroup(
+              ? Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: List.generate(
                     widget._currentVidPage!.length + 1,
                     (index) => index == widget._currentVidPage!.length

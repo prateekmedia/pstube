@@ -67,5 +67,6 @@
     "networkLostShowingCachedData": "فقدت الشبكة عرض البيانات المخزنة مؤقتًا",
     "backOnline": "العودة إلى الاتصال",
     "loadMore": "Load more",
-    "videoNotFound": "Video not found!"
+    "videoNotFound": "Video not found!",
+    "typeToSearch": "Type to search"
 }

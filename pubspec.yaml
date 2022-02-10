@@ -17,6 +17,9 @@ dependencies:
   custom_text: ^0.6.0-dev.1
   # dart_vlc: ^0.1.7
   dio: ^4.0.4
+  easy_autocomplete:
+    git:
+      url: https://github.com/prateekmedia/flutter_easy_autocomplete.git
   equatable: ^2.0.3
   file_picker: ^4.3.3
   flutter:

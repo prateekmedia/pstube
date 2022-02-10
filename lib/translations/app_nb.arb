@@ -68,5 +68,6 @@
     "networkLostShowingCachedData": "Mistet tilknytning under vising av hurtiglagret data",
     "backOnline": "Tilknyttet igjen",
     "loadMore": "Load more",
-    "videoNotFound": "Video not found!"
+    "videoNotFound": "Video not found!",
+    "typeToSearch": "Type to search"
 }

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:ant_icons/ant_icons.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:easy_autocomplete/easy_autocomplete.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -11,6 +12,7 @@ import 'package:sftube/providers/providers.dart';
 import 'package:sftube/screens/screens.dart';
 import 'package:sftube/utils/utils.dart';
 import 'package:sftube/widgets/widgets.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class MyHomePage extends HookConsumerWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -19,11 +21,12 @@ class MyHomePage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final _currentIndex = useState<int>(0);
     final _addDownloadController = TextEditingController();
+    final _searchController = TextEditingController();
     final toggleSearch = useState<bool>(false);
     final searchedTerm = useState<String>('');
-    final _controller = PageController();
+    final _controller = PageController(initialPage: _currentIndex.value);
 
-    void switchSearchBar({bool? value}) {
+    void toggleSearchBar({bool? value}) {
       searchedTerm.value = '';
       toggleSearch.value = value ?? !toggleSearch.value;
     }
@@ -114,14 +117,14 @@ class MyHomePage extends HookConsumerWidget {
         start: [
           AdwHeaderButton(
             isActive: toggleSearch.value,
-            onPressed: () => toggleSearch.value = !toggleSearch.value,
+            onPressed: toggleSearchBar,
             icon: const Icon(AntIcons.search_outline, size: 20),
           ),
         ],
         title: toggleSearch.value
             ? Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
                 color: Theme.of(context).appBarTheme.backgroundColor,
                 constraints: BoxConstraints.loose(const Size(500, 50)),
                 child: RawKeyboardListener(
@@ -129,13 +132,34 @@ class MyHomePage extends HookConsumerWidget {
                   onKey: (event) {
                     if (event.runtimeType == RawKeyDownEvent &&
                         event.logicalKey.keyId == 4294967323) {
-                      switchSearchBar(value: false);
+                      toggleSearchBar(value: false);
                     }
                   },
-                  child: AdwTextField(
-                    onChanged: (query) => searchedTerm.value = query,
+                  child: EasyAutocomplete(
+                    asyncSuggestions: (str) =>
+                        YoutubeExplode().search.getQuerySuggestions(str),
+                    controller: _searchController,
                     autofocus: true,
-                    prefixIcon: Icons.search,
+                    decoration: InputDecoration(
+                      fillColor: context.theme.canvasColor,
+                      contentPadding: const EdgeInsets.only(top: 8),
+                      filled: true,
+                      isDense: true,
+                      prefixIcon: const Icon(Icons.search, size: 18),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                    ),
+                    onChanged: (v) {},
+                    onSubmitted: (str) => searchedTerm.value = str,
+                    suggestionBuilder: (data) => Container(
+                      margin: const EdgeInsets.all(1),
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Text(data),
+                    ),
                   ),
                 ),
               )
@@ -169,13 +193,86 @@ class MyHomePage extends HookConsumerWidget {
             ),
         ],
       ),
-      body: SFBody(
-        child: PageView.builder(
-          controller: _controller,
-          itemCount: mainScreens.length,
-          itemBuilder: (context, index) => mainScreens[index],
-          onPageChanged: (index) => _currentIndex.value = index,
-        ),
+      body: Column(
+        children: [
+          if (!toggleSearch.value)
+            Flexible(
+              child: SFBody(
+                child: PageView.builder(
+                  controller: _controller,
+                  itemCount: mainScreens.length,
+                  itemBuilder: (context, index) => mainScreens[index],
+                  onPageChanged: (index) => _currentIndex.value = index,
+                ),
+              ),
+            )
+          else
+            Flexible(
+              child: searchedTerm.value.isNotEmpty
+                  ? HookBuilder(
+                      builder: (_) {
+                        final isMounted = useIsMounted();
+                        final yt = YoutubeExplode();
+                        final _currentPage = useState<SearchList?>(null);
+                        Future<void> loadVideos() async => isMounted()
+                            ? _currentPage.value =
+                                await yt.search.getVideos(searchedTerm.value)
+                            : null;
+
+                        final controller = useScrollController();
+
+                        Future<void> _getMoreData() async {
+                          if (isMounted() &&
+                              controller.position.pixels ==
+                                  controller.position.maxScrollExtent &&
+                              _currentPage.value != null) {
+                            final page = await (_currentPage.value)!.nextPage();
+                            if (page == null || page.isEmpty && !isMounted()) {
+                              return;
+                            }
+
+                            _currentPage.value!.addAll(page);
+                          }
+                        }
+
+                        useEffect(
+                          () {
+                            loadVideos();
+                            controller.addListener(_getMoreData);
+                            searchedTerm.addListener(loadVideos);
+                            return () {
+                              searchedTerm.removeListener(loadVideos);
+                              controller.removeListener(_getMoreData);
+                            };
+                          },
+                          [controller],
+                        );
+
+                        return _currentPage.value != null
+                            ? ListView.builder(
+                                shrinkWrap: true,
+                                controller: controller,
+                                itemCount: _currentPage.value!.length + 1,
+                                itemBuilder: (ctx, idx) =>
+                                    idx == _currentPage.value!.length
+                                        ? getCircularProgressIndicator()
+                                        : SFVideo(
+                                            videoData: _currentPage.value![idx],
+                                            isRow: !context.isMobile,
+                                            loadData: true,
+                                          ),
+                              )
+                            : const Center(child: CircularProgressIndicator());
+                      },
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(child: Text(context.locals.typeToSearch)),
+                      ],
+                    ),
+            ),
+        ],
       ),
       viewSwitcher: !toggleSearch.value
           ? AdwViewSwitcher(

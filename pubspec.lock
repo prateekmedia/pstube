@@ -302,6 +302,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.4"
+  easy_autocomplete:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "4ff3d93392ff36089769171c48b887525613ad78"
+      url: "https://github.com/prateekmedia/flutter_easy_autocomplete.git"
+    source: git
+    version: "1.4.2"
   equatable:
     dependency: "direct main"
     description:
@@ -539,7 +548,7 @@ packages:
     description:
       path: "."
       ref: fix46
-      resolved-ref: aaa09d116919212c8a51902d678fdf01db5b7d05
+      resolved-ref: "2abde04c228b3440cee47a09543a85208841fcca"
       url: "https://github.com/gtk-flutter/libadwaita.git"
     source: git
     version: "1.0.0"

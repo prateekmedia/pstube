@@ -67,5 +67,6 @@
     "networkLostShowingCachedData": "Rete persa che mostra i dati nella cache",
     "backOnline": "Di nuovo online",
     "loadMore": "Load more",
-    "videoNotFound": "Video not found!"
+    "videoNotFound": "Video not found!",
+    "typeToSearch": "Type to search"
 }
