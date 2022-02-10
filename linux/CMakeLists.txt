@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
-set(BINARY_NAME "flutube")
-set(APPLICATION_ID "com.prateekmedia.flutube")
+set(BINARY_NAME "sftube")
+set(APPLICATION_ID "com.prateekmedia.sftube")
 
 cmake_policy(SET CMP0063 NEW)
 

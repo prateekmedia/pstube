@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-	<id>flutube</id>
-	<name>FluTube</name>
+	<id>sftube</id>
+	<name>SFTube</name>
 	<summary>Youtube client made using flutter</summary>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-only</project_license>
@@ -11,7 +11,7 @@
 		<control>touch</control>
 	</recommends>
 	<developer_name>Prateek Sunal</developer_name>
-	<url type="homepage">https://github.com/prateekmedia/flutube</url>
+	<url type="homepage">https://github.com/prateekmedia/sftube</url>
 	<description>
 		<p>Youtube client made using flutter</p>
 		<p>Features:</p>
@@ -28,12 +28,12 @@
 	</description>
 	<screenshots>
 		<screenshot>
-			<image type="source">https://github.com/prateekmedia/flutube/blob/1.1.0/assets/screenshots/linux_1.jpg?raw=true</image>
-			<image type="source">https://github.com/prateekmedia/flutube/blob/1.1.0/assets/screenshots/linux_2.jpg?raw=true</image>
-			<image type="source">https://github.com/prateekmedia/flutube/blob/1.1.0/assets/screenshots/linux_3.jpg?raw=true</image>
+			<image type="source">https://github.com/prateekmedia/sftube/blob/1.1.0/assets/screenshots/linux_1.jpg?raw=true</image>
+			<image type="source">https://github.com/prateekmedia/sftube/blob/1.1.0/assets/screenshots/linux_2.jpg?raw=true</image>
+			<image type="source">https://github.com/prateekmedia/sftube/blob/1.1.0/assets/screenshots/linux_3.jpg?raw=true</image>
 		</screenshot>
 	</screenshots>
-	<launchable type="desktop-id">flutube.desktop</launchable>
+	<launchable type="desktop-id">sftube.desktop</launchable>
 	<releases>
 		<release version="1.1.0" date="2021-01-07"/>
 		<release version="1.0.0" date="2021-12-20"/>

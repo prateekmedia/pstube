@@ -4,13 +4,15 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutube/providers/providers.dart';
-import 'package:flutube/utils/utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:libadwaita/libadwaita.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:piped_api/piped_api.dart';
+
+import 'package:sftube/providers/providers.dart';
+import 'package:sftube/utils/utils.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
@@ -30,7 +32,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
     http
         .get(
       Uri.parse(
-        'https://api.github.com/repos/prateekmedia/flutube/releases',
+        'https://api.github.com/repos/prateekmedia/sftube/releases',
       ),
     )
         .then((http.Response response) async {
@@ -123,7 +125,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
               context: context,
               builder: (_) => AdwAboutWindow(
                 issueTrackerLink:
-                    'https://github.com/prateekmedia/flutube/issues',
+                    'https://github.com/prateekmedia/sftube/issues',
                 headerbar: (leading, text) => AdwHeaderBar(
                   onDoubleTap: appWindow.maximizeOrRestore,
                   onHeaderDrag: appWindow.startDragging,
@@ -132,7 +134,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
                   isTransparent: true,
                   start: leading,
                 ),
-                appIcon: Image.asset('assets/flutube.png'),
+                appIcon: Image.asset(myApp.imagePath),
                 credits: [
                   AdwPreferencesGroup.credits(
                     title: 'Developers',

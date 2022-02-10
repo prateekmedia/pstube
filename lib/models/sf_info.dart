@@ -19,10 +19,9 @@ extension CoolSFInfoExtensions on SFInfo {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(25),
-          child: Image.asset(
-            'assets/$image',
-            width: 135,
-          ),
+          child: Image.asset(imagePath, width: 135),
         ),
       );
+
+  String get imagePath => 'assets/$image';
 }

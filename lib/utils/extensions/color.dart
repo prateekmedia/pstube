@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutube/utils/extensions/context.dart';
+import 'package:sftube/utils/extensions/context.dart';
 
 extension ColorTint on Color {
   Color darken([int percent = 10]) {

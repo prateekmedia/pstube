@@ -1,12 +1,13 @@
 import 'package:ant_icons/ant_icons.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
-import 'package:flutube/providers/providers.dart';
-import 'package:flutube/screens/screens.dart';
-import 'package:flutube/utils/utils.dart';
-import 'package:flutube/widgets/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
+
+import 'package:sftube/providers/providers.dart';
+import 'package:sftube/screens/screens.dart';
+import 'package:sftube/utils/utils.dart';
+import 'package:sftube/widgets/widgets.dart';
 
 class PlaylistScreen extends ConsumerStatefulWidget {
   const PlaylistScreen({Key? key}) : super(key: key);

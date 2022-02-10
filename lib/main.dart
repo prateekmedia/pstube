@@ -6,14 +6,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_locals.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutube/controller/internet_connectivity.dart';
-import 'package:flutube/home_page.dart';
-import 'package:flutube/models/models.dart';
-import 'package:flutube/providers/providers.dart';
-import 'package:flutube/utils/utils.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
+
+import 'package:sftube/controller/internet_connectivity.dart';
+import 'package:sftube/home_page.dart';
+import 'package:sftube/models/models.dart';
+import 'package:sftube/providers/providers.dart';
+import 'package:sftube/utils/utils.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +33,7 @@ Future<void> main() async {
         ? (await getApplicationDocumentsDirectory()).path
         : (await getDownloadsDirectory())!
             .path
-            .replaceFirst('Downloads', '.flutube'),
+            .replaceFirst('Downloads', '.sftube'),
   );
   await Hive.openBox<dynamic>('playlist');
   await Hive.openBox<List>('likedList');

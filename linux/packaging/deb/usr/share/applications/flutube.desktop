@@ -1,8 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=FluTube
-Icon=flutube
-Exec=flutube %u
-StartupWMClass=flutube
-Categories=Utility;

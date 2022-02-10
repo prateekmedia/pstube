@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_locals.dart';
-import 'package:flutube/utils/utils.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:sftube/utils/utils.dart';
 
 extension ContextExtensions on BuildContext {
   TextTheme get textTheme => Theme.of(this).textTheme;

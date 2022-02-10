@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutube/utils/utils.dart';
+import 'package:sftube/utils/utils.dart';
 
 Widget getCircularProgressIndicator({bool center = true}) {
   return Padding(

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.prateekmedia.flutube">
+    package="com.prateekmedia.sftube">
    <application
-        android:label="FluTube"
+        android:label="SFTube"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true">

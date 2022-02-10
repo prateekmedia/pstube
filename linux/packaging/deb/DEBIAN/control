@@ -1,9 +1,9 @@
-Package: flutube
+Package: sftube
 Version: 0.1.5-1
 Section: base
 Priority: optional
-Homepage: https://github.com/prateekmedia/flutube
+Homepage: https://github.com/prateekmedia/sftube
 Architecture: amd64
 Maintainer: Prateek Sunal <pankajsunal123@gmail.com>
-Description: FluTube
+Description: SFTube
  Youtube video client made using flutter

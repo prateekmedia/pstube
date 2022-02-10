@@ -1,10 +1,11 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutube/models/models.dart';
-import 'package:flutube/utils/utils.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import 'package:sftube/models/models.dart';
+import 'package:sftube/utils/utils.dart';
 
 final downloadListProvider = ChangeNotifierProvider((ref) => DownloadList(ref));
 

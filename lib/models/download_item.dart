@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutube/models/models.dart';
+import 'package:sftube/models/models.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class DownloadItem {

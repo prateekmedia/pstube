@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutube/utils/utils.dart';
+import 'package:sftube/utils/utils.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class ThumbnailStreamInfo {

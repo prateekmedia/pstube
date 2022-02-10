@@ -1,24 +1,24 @@
 <p align="center">
-<img src="https://raw.githubusercontent.com/prateekmedia/flutube/main/assets/flutube.png">
+<img src="https://raw.githubusercontent.com/prateekmedia/sftube/main/assets/sftube.png">
 </p>
-<h1 align="center">FluTube</h1>
+<h1 align="center">SFTube</h1>
 <p align="center"><b>Youtube client made using flutter</b></p>
 <p align="center">
-<a href="https://github.com/prateekmedia/flutube/releases"><img alt="GitHub release" src="https://img.shields.io/github/v/release/prateekmedia/flutube"/></a> <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/prateekmedia/flutube?color=blue"/></a> <a href="#build-from-source"><img alt="Build from source" src="https://img.shields.io/badge/Install Manually-git-blue"/></a>
+<a href="https://github.com/prateekmedia/sftube/releases"><img alt="GitHub release" src="https://img.shields.io/github/v/release/prateekmedia/sftube"/></a> <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/prateekmedia/sftube?color=blue"/></a> <a href="#build-from-source"><img alt="Build from source" src="https://img.shields.io/badge/Install Manually-git-blue"/></a>
 </p>
 
 <table>
     <tr>
         <td colspan=2>
-            <img src="https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_1.jpg?raw=true"/>
+            <img src="https://github.com/prateekmedia/sftube/blob/main/assets/screenshots/linux_1.jpg?raw=true"/>
         </td>
     </tr>
     <tr>
         <td>
-        <img src="https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_2.jpg?raw=true"/>
+        <img src="https://github.com/prateekmedia/sftube/blob/main/assets/screenshots/linux_2.jpg?raw=true"/>
         </td>
         <td>
-        <img src="https://github.com/prateekmedia/flutube/blob/main/assets/screenshots/linux_3.jpg?raw=true"/>
+        <img src="https://github.com/prateekmedia/sftube/blob/main/assets/screenshots/linux_3.jpg?raw=true"/>
         </td>
     </tr>
 </table>
@@ -37,7 +37,7 @@
 
 ### Direct app download
 
-<a href="https://github.com/prateekmedia/flutube/releases/latest/"><img src="https://img.shields.io/badge/Download latest version-indigo?style=for-the-badge&logo=Github"/></a>  <a href="https://github.com/prateekmedia/flutube/releases/continuous/"><img src="https://img.shields.io/badge/Download nightly build-157?style=for-the-badge&logo=Github"/></a>
+<a href="https://github.com/prateekmedia/sftube/releases/latest/"><img src="https://img.shields.io/badge/Download latest version-indigo?style=for-the-badge&logo=Github"/></a>  <a href="https://github.com/prateekmedia/sftube/releases/continuous/"><img src="https://img.shields.io/badge/Download nightly build-157?style=for-the-badge&logo=Github"/></a>
 
 ---
 
@@ -69,7 +69,7 @@ This project would not be possible without [youtube_explode_dart](https://github
 
 [![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
-FluTube is a Free Software: You can use, study share and improve it at your
+SFTube is a Free Software: You can use, study share and improve it at your
 will. Specifically you can redistribute and/or modify it under the terms of the
 [GNU General Public License](https://www.gnu.org/licenses/gpl.html) as
 published by the Free Software Foundation, either version 3 of the License, or

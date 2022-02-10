@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutube/models/models.dart';
+import 'package:sftube/models/sf_info.dart';
+export 'package:sftube/models/sf_info.dart';
 
 const mobileWidth = 800;
 const primaryColor = Colors.red;
 
 final myApp = SFInfo(
-  name: 'FluTube',
-  url: 'https://github.com/prateekmedia/flutube',
+  name: 'SFTube',
+  url: 'https://github.com/prateekmedia/sftube',
   description: 'Youtube client made using flutter.',
-  image: 'flutube.png',
+  image: 'sftube.png',
 );
 
 final developerInfos = <SFInfo>[
