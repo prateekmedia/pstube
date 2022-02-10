@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutube/screens/screens.dart';
 import 'package:flutube/utils/utils.dart';
 import 'package:flutube/widgets/widgets.dart';
@@ -7,7 +8,7 @@ import 'package:libadwaita/libadwaita.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-class FTVideo extends StatelessWidget {
+class FTVideo extends HookWidget {
   const FTVideo({
     Key? key,
     this.videoUrl,
@@ -31,6 +32,9 @@ class FTVideo extends StatelessWidget {
   Widget build(BuildContext context) {
     final yt = YoutubeExplode();
     Future<Video?> getVideo() => yt.videos.get(videoUrl);
+    final isHovering = useState<bool>(false);
+
+    void updateHover({bool value = false}) => isHovering.value = value;
 
     return FutureBuilder<Video?>(
       future: videoUrl != null ? getVideo().whenComplete(yt.close) : null,
@@ -40,120 +44,126 @@ class FTVideo extends StatelessWidget {
           padding:
               isInsideDownloadPopup ? EdgeInsets.zero : const EdgeInsets.all(8),
           margin: const EdgeInsets.all(8),
-          color: context.theme.cardColor.withOpacity(0.65),
-          child: GestureDetector(
-            onTap: video != null
-                ? () => context.pushPage(
-                      VideoScreen(
-                        video: video,
-                        loadData: loadData,
-                      ),
-                    )
-                : null,
-            child: isRow
-                ? Row(
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            height: 90,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            padding: const EdgeInsets.all(5),
-                            child: getThumbnail(video, context),
-                          ),
-                          if (video != null)
-                            Positioned.fill(
-                              child: Align(
-                                alignment: const Alignment(0.90, 0.90),
-                                child: getDuration(video),
-                              ),
-                            ),
-                        ],
-                      ),
-                      const SizedBox(width: 6),
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+          color: isHovering.value
+              ? context.theme.cardColor.withOpacity(0.65)
+              : null,
+          child: MouseRegion(
+            onHover: (_) => updateHover(value: true),
+            onExit: (_) => updateHover(),
+            child: GestureDetector(
+              onTap: video != null
+                  ? () => context.pushPage(
+                        VideoScreen(
+                          video: video,
+                          loadData: loadData,
+                        ),
+                      )
+                  : null,
+              child: isRow
+                  ? Row(
+                      children: [
+                        Stack(
                           children: [
-                            Row(
-                              children: [
-                                Flexible(child: getTitle(video)),
-                              ],
+                            Container(
+                              height: 90,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              padding: const EdgeInsets.all(5),
+                              child: getThumbnail(video, context),
                             ),
-                            const SizedBox(height: 6),
-                            if (showChannel)
+                            if (video != null)
+                              Positioned.fill(
+                                child: Align(
+                                  alignment: const Alignment(0.90, 0.90),
+                                  child: getDuration(video),
+                                ),
+                              ),
+                          ],
+                        ),
+                        const SizedBox(width: 6),
+                        Flexible(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Flexible(child: getTitle(video)),
+                                ],
+                              ),
+                              const SizedBox(height: 6),
+                              if (showChannel)
+                                Row(
+                                  children: [
+                                    Flexible(
+                                      child: getAuthor(video, context),
+                                    ),
+                                  ],
+                                ),
                               Row(
                                 children: [
                                   Flexible(
-                                    child: getAuthor(video, context),
+                                    child: getViews(video, context),
+                                  ),
+                                  Flexible(
+                                    child: getTime(video),
                                   ),
                                 ],
-                              ),
-                            Row(
-                              children: [
-                                Flexible(
-                                  child: getViews(video, context),
+                              )
+                            ],
+                          ),
+                        ),
+                        if (!isInsideDownloadPopup) ...[
+                          getDownloadButton(video, context),
+                        ],
+                        ...actions,
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        Stack(
+                          children: [
+                            getThumbnail(video, context),
+                            if (video != null)
+                              Positioned.fill(
+                                child: Align(
+                                  alignment: const Alignment(0.98, 0.94),
+                                  child: getDuration(video),
                                 ),
-                                Flexible(
-                                  child: getTime(video),
-                                ),
-                              ],
-                            )
+                              )
                           ],
                         ),
-                      ),
-                      if (!isInsideDownloadPopup) ...[
-                        getDownloadButton(video, context),
-                      ],
-                      ...actions,
-                    ],
-                  )
-                : Column(
-                    children: [
-                      Stack(
-                        children: [
-                          getThumbnail(video, context),
-                          if (video != null)
-                            Positioned.fill(
-                              child: Align(
-                                alignment: const Alignment(0.98, 0.94),
-                                child: getDuration(video),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  if (video != null)
+                                    getTitle(video)
+                                  else
+                                    Container(),
+                                  if (showChannel) getAuthor(video, context),
+                                ],
                               ),
-                            )
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                if (video != null)
-                                  getTitle(video)
-                                else
-                                  Container(),
-                                if (showChannel) getAuthor(video, context),
-                              ],
                             ),
-                          ),
-                          if (!isInsideDownloadPopup) ...[
-                            getDownloadButton(video, context),
+                            if (!isInsideDownloadPopup) ...[
+                              getDownloadButton(video, context),
+                            ],
+                            ...actions,
                           ],
-                          ...actions,
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          getViews(video, context),
-                          getTime(video),
-                        ],
-                      )
-                    ],
-                  ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            getViews(video, context),
+                            getTime(video),
+                          ],
+                        )
+                      ],
+                    ),
+            ),
           ),
         );
       },
