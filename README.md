@@ -1,7 +1,7 @@
 <p align="center">
 <img width="100" src="https://raw.githubusercontent.com/prateekmedia/sftube/main/assets/sftube.png">
 </p>
-<h1 align="center">SFTube</h1>
+<h1 align="center">SFTube - Formerly FluTube</h1>
 <p align="center"><b>Youtube client made using flutter</b></p>
 <p align="center">
 <a href="https://github.com/prateekmedia/sftube/releases"><img alt="GitHub release" src="https://img.shields.io/github/v/release/prateekmedia/sftube"/></a> <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/prateekmedia/sftube?color=blue"/></a> <a href="#build-from-source"><img alt="Build from source" src="https://img.shields.io/badge/Install Manually-git-blue"/></a>
