@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://raw.githubusercontent.com/prateekmedia/sftube/main/assets/sftube.png">
+<img width="100" src="https://raw.githubusercontent.com/prateekmedia/sftube/main/assets/sftube.png">
 </p>
 <h1 align="center">SFTube</h1>
 <p align="center"><b>Youtube client made using flutter</b></p>
