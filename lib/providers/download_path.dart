@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sftube/utils/utils.dart';
 
 final downloadPathProvider =
@@ -32,6 +33,9 @@ class DownloadPathNotifier extends ChangeNotifier {
             ? '/storage/emulated/0/Download/${myApp.name}/'
             : p.join((await getDownloadsDirectory())!.path, myApp.name) +
                 (Platform.isWindows ? r'\' : '/'));
+    if (Platform.isAndroid && !await Permission.storage.request().isGranted) {
+      return;
+    }
     if (!Directory(path).existsSync()) await Directory(path).create();
   }
 

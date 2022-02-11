@@ -442,6 +442,7 @@ class _CommentsWidgetState extends State<CommentsWidget>
       children: [
         AdwHeaderBar(
           onClose: widget.onClose ?? context.back,
+          autoPositionWindowButtons: false,
           start: [
             if (currentPage.value == 1)
               AdwHeaderButton(

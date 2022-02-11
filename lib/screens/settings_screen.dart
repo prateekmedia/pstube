@@ -127,10 +127,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
                 issueTrackerLink:
                     'https://github.com/prateekmedia/sftube/issues',
                 headerbar: (leading, text) => AdwHeaderBar(
-                  onDoubleTap: appWindow.maximizeOrRestore,
-                  onHeaderDrag: appWindow.startDragging,
+                  onDoubleTap: appWindow?.maximizeOrRestore,
+                  onHeaderDrag: appWindow?.startDragging,
+                  autoPositionWindowButtons: false,
                   title: text,
-                  onClose: Navigator.of(context).pop,
+                  onClose: () => Navigator.of(context).pop(),
                   isTransparent: true,
                   start: leading,
                 ),

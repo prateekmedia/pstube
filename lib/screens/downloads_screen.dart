@@ -76,7 +76,7 @@ class DownloadItemBuilder extends StatelessWidget {
                 child: Stack(
                   children: [
                     SizedBox(
-                      height: 80,
+                      height: 60,
                       child: AspectRatio(
                         aspectRatio: 16 / 9,
                         child: CachedNetworkImage(

@@ -2,6 +2,7 @@
     package="com.prateekmedia.sftube">
     <application
         android:requestLegacyExternalStorage="true">
+    </application>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <!-- Flutter needs it to communicate with the running application
