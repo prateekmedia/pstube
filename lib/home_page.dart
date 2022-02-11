@@ -214,10 +214,11 @@ class MyHomePage extends HookConsumerWidget {
                         final isMounted = useIsMounted();
                         final yt = YoutubeExplode();
                         final _currentPage = useState<SearchList?>(null);
-                        Future<void> loadVideos() async => isMounted()
-                            ? _currentPage.value =
-                                await yt.search.getVideos(searchedTerm.value)
-                            : null;
+                        Future<void> loadVideos() async {
+                          if (!isMounted()) return;
+                          _currentPage.value =
+                              await yt.search.getVideos(searchedTerm.value);
+                        }
 
                         final controller = useScrollController();
 

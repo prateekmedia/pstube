@@ -196,28 +196,16 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                                                     downloadsSideWidget.value =
                                                         Column(
                                                       children: [
-                                                        AppBar(
-                                                          leading:
-                                                              const SizedBox(),
-                                                          centerTitle: true,
+                                                        AdwHeaderBar(
+                                                          autoPositionWindowButtons:
+                                                              false,
                                                           title: Text(
                                                             context.locals
                                                                 .downloadLinks,
                                                           ),
-                                                          actions: [
-                                                            AdwButton.circular(
-                                                              child: const Icon(
-                                                                Icons.close,
-                                                              ),
-                                                              onPressed: () =>
-                                                                  downloadsSideWidget
-                                                                          .value =
-                                                                      null,
-                                                            ),
-                                                            const SizedBox(
-                                                              width: 16,
-                                                            ),
-                                                          ],
+                                                          onClose: () =>
+                                                              downloadsSideWidget
+                                                                  .value = null,
                                                         ),
                                                         Expanded(
                                                           child:
@@ -452,36 +440,32 @@ class _CommentsWidgetState extends State<CommentsWidget>
 
     return Column(
       children: [
-        AppBar(
-          leading: (currentPage.value == 1)
-              ? AdwButton.circular(
-                  onPressed: () {
-                    pageController.animateToPage(
-                      0,
-                      duration: const Duration(milliseconds: 200),
-                      curve: Curves.easeInOut,
-                    );
-                    widget.replyComment.value = null;
-                  },
-                  child: Icon(
-                    Icons.chevron_left,
-                    color: context.textTheme.bodyText1!.color,
-                  ),
-                )
-              : const SizedBox(),
-          centerTitle: true,
+        AdwHeaderBar(
+          onClose: widget.onClose ?? context.back,
+          start: [
+            if (currentPage.value == 1)
+              AdwHeaderButton(
+                onPressed: () {
+                  pageController.animateToPage(
+                    0,
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.easeInOut,
+                  );
+                  widget.replyComment.value = null;
+                },
+                icon: Icon(
+                  Icons.chevron_left,
+                  color: context.textTheme.bodyText1!.color,
+                ),
+              )
+            else
+              const SizedBox(),
+          ],
           title: Text(
             (currentPage.value == 0)
                 ? '${(widget.snapshot.data != null ? widget.snapshot.data!.totalLength : 0).formatNumber} ${context.locals.comments.toLowerCase()}'
                 : context.locals.replies,
           ),
-          actions: [
-            AdwButton.circular(
-              onPressed: widget.onClose ?? context.back,
-              child:
-                  Icon(Icons.close, color: context.textTheme.bodyText1!.color),
-            )
-          ],
         ),
         Expanded(
           child: PageView.builder(
