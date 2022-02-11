@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
 	<id>sftube</id>
-	<name>SFTube</name>
+	<name>SFTUBE</name>
 	<summary>Youtube client made using flutter</summary>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-only</project_license>

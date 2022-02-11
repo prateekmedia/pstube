@@ -2,7 +2,7 @@ name: sftube
 description: Youtube client made using flutter.
 
 publish_to: none
-version: 1.1.0+2
+version: 2.0.0
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -66,6 +66,7 @@ dev_dependencies:
   build_runner: ^2.1.2
   flutter_lints: ^1.0.4
   hive_generator: ^1.1.1
+  msix: ^2.8.18
   very_good_analysis: ^2.4.0
 
 dependency_overrides:
@@ -103,3 +104,11 @@ flutter:
         - asset: assets/fonts/NotoSans/NotoSans-BoldItalic.ttf
           style: italic
           weight: 700
+
+msix_config:
+  display_name: SFTUBE
+  publisher_display_name: Prateek Sunal
+  identity_name: com.prateekmedia.sftube
+  msix_version: 2.0.0
+  capabilities: "internetClient"
+  store: false

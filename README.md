@@ -1,7 +1,7 @@
 <p align="center">
 <img width="100" src="https://raw.githubusercontent.com/prateekmedia/sftube/main/assets/sftube.png">
 </p>
-<h1 align="center">SFTube - Formerly FluTube</h1>
+<h1 align="center">SFTUBE - Formerly FluTube</h1>
 <p align="center"><b>Youtube client made using flutter</b></p>
 <p align="center">
 <a href="https://github.com/prateekmedia/sftube/releases"><img alt="GitHub release" src="https://img.shields.io/github/v/release/prateekmedia/sftube"/></a> <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/prateekmedia/sftube?color=blue"/></a> <a href="#build-from-source"><img alt="Build from source" src="https://img.shields.io/badge/Install Manually-git-blue"/></a>
@@ -69,7 +69,7 @@ This project would not be possible without [youtube_explode_dart](https://github
 
 [![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
-SFTube is a Free Software: You can use, study share and improve it at your
+SFTUBE is a Free Software: You can use, study share and improve it at your
 will. Specifically you can redistribute and/or modify it under the terms of the
 [GNU General Public License](https://www.gnu.org/licenses/gpl.html) as
 published by the Free Software Foundation, either version 3 of the License, or

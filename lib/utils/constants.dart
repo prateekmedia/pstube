@@ -6,7 +6,7 @@ const mobileWidth = 800;
 const primaryColor = Colors.red;
 
 final myApp = SFInfo(
-  name: 'SFTube',
+  name: 'SFTUBE',
   url: 'https://github.com/prateekmedia/sftube',
   description: 'Youtube client made using flutter.',
   image: 'sftube.png',
