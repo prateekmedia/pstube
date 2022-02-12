@@ -62,7 +62,7 @@ packages:
     description:
       path: bitsdojo_window
       ref: HEAD
-      resolved-ref: b49a6f92dbdba2dcf32b69671b5c19b30154ac88
+      resolved-ref: e9b0ceada3ce50fb780b81b195ee390b4f9137ba
       url: "https://github.com/prateekmedia/bitsdojo_window"
     source: git
     version: "0.1.1+1"
@@ -71,7 +71,7 @@ packages:
     description:
       path: bitsdojo_window_linux
       ref: HEAD
-      resolved-ref: b49a6f92dbdba2dcf32b69671b5c19b30154ac88
+      resolved-ref: e9b0ceada3ce50fb780b81b195ee390b4f9137ba
       url: "https://github.com/prateekmedia/bitsdojo_window.git"
     source: git
     version: "0.1.1"
@@ -80,7 +80,7 @@ packages:
     description:
       path: bitsdojo_window_macos
       ref: HEAD
-      resolved-ref: b49a6f92dbdba2dcf32b69671b5c19b30154ac88
+      resolved-ref: e9b0ceada3ce50fb780b81b195ee390b4f9137ba
       url: "https://github.com/prateekmedia/bitsdojo_window.git"
     source: git
     version: "0.1.0"
@@ -96,7 +96,7 @@ packages:
     description:
       path: bitsdojo_window_windows
       ref: HEAD
-      resolved-ref: b49a6f92dbdba2dcf32b69671b5c19b30154ac88
+      resolved-ref: e9b0ceada3ce50fb780b81b195ee390b4f9137ba
       url: "https://github.com/prateekmedia/bitsdojo_window.git"
     source: git
     version: "0.1.0"
@@ -577,7 +577,7 @@ packages:
     description:
       path: "."
       ref: fix46
-      resolved-ref: "9ceaf30b00dc2feee1c179d41c5c992928e2e266"
+      resolved-ref: "3bf3cbc0dd99bacb888e094a97737fe5f018598d"
       url: "https://github.com/gtk-flutter/libadwaita.git"
     source: git
     version: "1.0.0"
