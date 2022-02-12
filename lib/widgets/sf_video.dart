@@ -97,7 +97,8 @@ class SFVideo extends HookWidget {
                                     ),
                                   ],
                                 ),
-                              Row(
+                              buildColumnOrRow(
+                                isRow: showChannel && !context.isMobile,
                                 children: [
                                   Flexible(
                                     child: getViews(video, context),
