@@ -2,12 +2,14 @@ import 'dart:io';
 
 import 'package:ant_icons/ant_icons.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:dio/dio.dart';
 import 'package:easy_autocomplete/easy_autocomplete.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
+import 'package:piped_api/piped_api.dart';
 
 import 'package:sftube/providers/providers.dart';
 import 'package:sftube/screens/screens.dart';
@@ -27,18 +29,16 @@ class MyHomePage extends HookConsumerWidget {
     final toggleSearch = useState<bool>(false);
     final searchedTerm = useState<String>('');
     final _controller = PageController(initialPage: _currentIndex.value);
+    final videos = useMemoized(
+      () => PipedApi().getUnauthenticatedApi().trending(
+            region: ref.watch(regionProvider),
+          ),
+    );
 
     void toggleSearchBar({bool? value}) {
       searchedTerm.value = '';
       toggleSearch.value = value ?? !toggleSearch.value;
     }
-
-    final mainScreens = [
-      const HomeScreen(),
-      const PlaylistScreen(),
-      const DownloadsScreen(),
-      const SettingsScreen(),
-    ];
 
     final navItems = <String, List<IconData>>{
       context.locals.home: [AntIcons.home_outline, AntIcons.home],
@@ -195,87 +195,103 @@ class MyHomePage extends HookConsumerWidget {
             ),
         ],
       ),
-      body: Column(
-        children: [
-          if (!toggleSearch.value)
-            Flexible(
-              child: SFBody(
-                child: PageView.builder(
-                  controller: _controller,
-                  itemCount: mainScreens.length,
-                  itemBuilder: (context, index) => mainScreens[index],
-                  onPageChanged: (index) => _currentIndex.value = index,
-                ),
-              ),
-            )
-          else
-            Flexible(
-              child: searchedTerm.value.isNotEmpty
-                  ? HookBuilder(
-                      builder: (_) {
-                        final isMounted = useIsMounted();
-                        final yt = YoutubeExplode();
-                        final _currentPage = useState<SearchList?>(null);
-                        Future<void> loadVideos() async {
-                          if (!isMounted()) return;
-                          _currentPage.value =
-                              await yt.search.getVideos(searchedTerm.value);
-                        }
+      body: FutureBuilder<Response>(
+        future: videos,
+        builder: (context, snapshot) {
+          final mainScreens = [
+            HomeScreen(snapshot: snapshot),
+            const PlaylistScreen(),
+            const DownloadsScreen(),
+            const SettingsScreen(),
+          ];
 
-                        final controller = useScrollController();
-
-                        Future<void> _getMoreData() async {
-                          if (isMounted() &&
-                              controller.position.pixels ==
-                                  controller.position.maxScrollExtent &&
-                              _currentPage.value != null) {
-                            final page = await (_currentPage.value)!.nextPage();
-                            if (page == null || page.isEmpty && !isMounted()) {
-                              return;
+          return Column(
+            children: [
+              if (!toggleSearch.value)
+                Flexible(
+                  child: SFBody(
+                    child: PageView.builder(
+                      controller: _controller,
+                      itemCount: mainScreens.length,
+                      itemBuilder: (context, index) => mainScreens[index],
+                      onPageChanged: (index) => _currentIndex.value = index,
+                    ),
+                  ),
+                )
+              else
+                Flexible(
+                  child: searchedTerm.value.isNotEmpty
+                      ? HookBuilder(
+                          builder: (_) {
+                            final isMounted = useIsMounted();
+                            final yt = YoutubeExplode();
+                            final _currentPage = useState<SearchList?>(null);
+                            Future<void> loadVideos() async {
+                              if (!isMounted()) return;
+                              _currentPage.value =
+                                  await yt.search.getVideos(searchedTerm.value);
                             }
 
-                            _currentPage.value!.addAll(page);
-                          }
-                        }
+                            final controller = useScrollController();
 
-                        useEffect(
-                          () {
-                            loadVideos();
-                            controller.addListener(_getMoreData);
-                            searchedTerm.addListener(loadVideos);
-                            return () {
-                              searchedTerm.removeListener(loadVideos);
-                              controller.removeListener(_getMoreData);
-                            };
-                          },
-                          [controller],
-                        );
+                            Future<void> _getMoreData() async {
+                              if (isMounted() &&
+                                  controller.position.pixels ==
+                                      controller.position.maxScrollExtent &&
+                                  _currentPage.value != null) {
+                                final page =
+                                    await (_currentPage.value)!.nextPage();
+                                if (page == null ||
+                                    page.isEmpty && !isMounted()) {
+                                  return;
+                                }
 
-                        return _currentPage.value != null
-                            ? ListView.builder(
-                                shrinkWrap: true,
-                                controller: controller,
-                                itemCount: _currentPage.value!.length + 1,
-                                itemBuilder: (ctx, idx) =>
-                                    idx == _currentPage.value!.length
+                                _currentPage.value!.addAll(page);
+                              }
+                            }
+
+                            useEffect(
+                              () {
+                                loadVideos();
+                                controller.addListener(_getMoreData);
+                                searchedTerm.addListener(loadVideos);
+                                return () {
+                                  searchedTerm.removeListener(loadVideos);
+                                  controller.removeListener(_getMoreData);
+                                };
+                              },
+                              [controller],
+                            );
+
+                            return _currentPage.value != null
+                                ? ListView.builder(
+                                    shrinkWrap: true,
+                                    controller: controller,
+                                    itemCount: _currentPage.value!.length + 1,
+                                    itemBuilder: (ctx, idx) => idx ==
+                                            _currentPage.value!.length
                                         ? getCircularProgressIndicator()
                                         : SFVideo(
                                             videoData: _currentPage.value![idx],
                                             isRow: !context.isMobile,
                                             loadData: true,
                                           ),
-                              )
-                            : const Center(child: CircularProgressIndicator());
-                      },
-                    )
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Center(child: Text(context.locals.typeToSearch)),
-                      ],
-                    ),
-            ),
-        ],
+                                  )
+                                : const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                          },
+                        )
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Center(child: Text(context.locals.typeToSearch)),
+                          ],
+                        ),
+                ),
+            ],
+          );
+        },
       ),
       viewSwitcher: !toggleSearch.value
           ? AdwViewSwitcher(

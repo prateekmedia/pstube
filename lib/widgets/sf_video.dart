@@ -14,6 +14,7 @@ class SFVideo extends HookWidget {
   const SFVideo({
     Key? key,
     this.videoUrl,
+    this.date,
     this.videoData,
     this.isRow = false,
     this.showChannel = true,
@@ -22,6 +23,7 @@ class SFVideo extends HookWidget {
     this.actions = const [],
   }) : super(key: key);
 
+  final String? date;
   final String? videoUrl;
   final Video? videoData;
   final bool loadData;
@@ -236,7 +238,7 @@ class SFVideo extends HookWidget {
 
   IconWithLabel getTime(Video? video) => IconWithLabel(
         label: video != null
-            ? timeago.format(video.uploadDate ?? DateTime.now())
+            ? date ?? timeago.format(video.uploadDate ?? DateTime.now())
             : '           ',
       );
 }

@@ -1,19 +1,19 @@
-import 'dart:math';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:libadwaita/libadwaita.dart';
 import 'package:piped_api/piped_api.dart';
 
-import 'package:sftube/providers/providers.dart';
 import 'package:sftube/utils/utils.dart';
 import 'package:sftube/widgets/widgets.dart';
 
-class HomeScreen extends StatefulHookConsumerWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class HomeScreen extends ConsumerStatefulWidget {
+  const HomeScreen({
+    Key? key,
+    required this.snapshot,
+  }) : super(key: key);
+
+  final AsyncSnapshot<Response> snapshot;
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -25,18 +25,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   Widget build(BuildContext context) {
     super.build(context);
 
-    final shown = useState<int>(18);
-
-    final videos = useMemoized(
-      () => PipedApi().getUnauthenticatedApi().trending(
-            region: ref.watch(regionProvider),
-          ),
-    );
-    return FutureBuilder<Response>(
-      future: videos,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return SingleChildScrollView(
+    return (widget.snapshot.hasData)
+        ? SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Column(
               children: [
@@ -49,31 +39,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                     ),
                     shrinkWrap: true,
                     primary: false,
-                    itemBuilder: (ctx, idx) =>
-                        shown.value < (snapshot.data!.data.length as int) &&
-                                idx == shown.value
-                            ? AdwButton(
-                                onPressed: () => shown.value += 20,
-                                child: Text(context.locals.loadMore),
-                              )
-                            : SFVideo(
-                                videoUrl:
-                                    'https://youtube.com${(snapshot.data!.data[idx] as StreamItem).url}',
-                              ),
-                    itemCount:
-                        min(snapshot.data!.data.length as int, shown.value + 1),
+                    itemBuilder: (ctx, idx) {
+                      final streamItem =
+                          widget.snapshot.data!.data[idx] as StreamItem;
+                      return SFVideo(
+                        loadData: true,
+                        date: streamItem.uploadedDate,
+                        videoData: streamItem.toVideo,
+                      );
+                    },
+                    itemCount: widget.snapshot.data!.data.length as int,
                   ),
                 ),
               ],
             ),
-          );
-        } else {
-          return const Center(
+          )
+        : const Center(
             child: CircularProgressIndicator(),
           );
-        }
-      },
-    );
   }
 
   @override

@@ -58,7 +58,9 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
             ),
           )
         : null;
-    final videoData = videoSnapshot != null ? videoSnapshot.data : widget.video;
+    final videoData = videoSnapshot != null && videoSnapshot.hasData
+        ? videoSnapshot.data
+        : widget.video;
     final replyComment = useState<Comment?>(null);
     final currentIndex = useState<int>(0);
     final commentSideWidget = useState<Widget?>(null);

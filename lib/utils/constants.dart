@@ -5,6 +5,8 @@ export 'package:sftube/models/sf_info.dart';
 const mobileWidth = 800;
 const primaryColor = Colors.red;
 
+const ytCom = 'https://youtube.com';
+
 final myApp = SFInfo(
   name: 'SFTUBE',
   url: 'https://github.com/prateekmedia/sftube',
