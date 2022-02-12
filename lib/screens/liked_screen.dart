@@ -34,7 +34,7 @@ class _LikedScreenState extends State<LikedScreen>
         final likedList = ref.watch(likedListProvider);
         return AdwScaffold(
           headerbar: (viewSwitcher) => AdwHeaderBar.bitsdojo(
-            appWindow: getAppwindow(appWindow),
+            appWindow: platformAppWindow,
             start: [context.backLeading()],
             title: viewSwitcher,
           ),

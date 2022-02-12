@@ -115,7 +115,7 @@ class MyHomePage extends HookConsumerWidget {
 
     return AdwScaffold(
       headerbar: (viewSwitcher) => AdwHeaderBar.bitsdojo(
-        appWindow: appWindow,
+        appWindow: platformAppWindow,
         start: [
           AdwHeaderButton(
             isActive: toggleSearch.value,
@@ -128,7 +128,7 @@ class MyHomePage extends HookConsumerWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
                 color: Theme.of(context).appBarTheme.backgroundColor,
-                constraints: BoxConstraints.loose(const Size(500, 50)),
+                constraints: BoxConstraints.loose(const Size(500, 40)),
                 child: RawKeyboardListener(
                   focusNode: FocusNode(),
                   onKey: (event) {
@@ -143,6 +143,7 @@ class MyHomePage extends HookConsumerWidget {
                     controller: _searchController,
                     autofocus: true,
                     decoration: InputDecoration(
+                      constraints: BoxConstraints.loose(const Size(500, 36)),
                       fillColor: context.theme.canvasColor,
                       contentPadding: const EdgeInsets.only(top: 8),
                       filled: true,

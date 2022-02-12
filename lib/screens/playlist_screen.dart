@@ -80,7 +80,7 @@ class PlaylistSubScreen extends StatelessWidget {
         .value;
     return AdwScaffold(
       headerbar: (_) => AdwHeaderBar.bitsdojo(
-        appWindow: getAppwindow(appWindow),
+        appWindow: platformAppWindow,
         start: [context.backLeading()],
         title: Text(playlistName),
       ),

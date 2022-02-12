@@ -8,7 +8,7 @@ const primaryColor = Colors.red;
 const ytCom = 'https://youtube.com';
 
 final myApp = SFInfo(
-  name: 'SFTUBE',
+  name: 'SF Tube',
   url: 'https://github.com/prateekmedia/sftube',
   description: 'Youtube client made using flutter.',
   image: 'sftube.png',

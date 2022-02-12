@@ -1,7 +1,7 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=SFTUBE
+Name=SF Tube
 Icon=sftube
 Exec=sftube %u
 StartupWMClass=sftube

@@ -5,5 +5,5 @@ Priority: optional
 Homepage: https://github.com/prateekmedia/sftube
 Architecture: amd64
 Maintainer: Prateek Sunal <pankajsunal123@gmail.com>
-Description: SFTUBE
+Description: SF Tube
  Youtube video client made using flutter

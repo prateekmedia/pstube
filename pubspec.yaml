@@ -106,7 +106,7 @@ flutter:
           weight: 700
 
 msix_config:
-  display_name: SFTUBE
+  display_name: SF Tube
   publisher_display_name: Prateek Sunal
   identity_name: com.prateekmedia.sftube
   msix_version: 2.0.0

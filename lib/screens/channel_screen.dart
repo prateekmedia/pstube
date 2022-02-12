@@ -20,6 +20,7 @@ class ChannelScreen extends HookWidget {
     final channel = useState<Channel?>(null);
     final channelInfo = useState<ChannelAbout?>(null);
     final _currentVidPage = useState<ChannelUploadsList?>(null);
+    final _pageController = usePageController();
     final controller = useScrollController();
     final _currentIndex = useState<int>(0);
     final _tabs = <String>[
@@ -86,17 +87,18 @@ class ChannelScreen extends HookWidget {
 
     return AdwScaffold(
       headerbar: (viewSwitcher) => AdwHeaderBar.bitsdojo(
-        appWindow: getAppwindow(appWindow),
+        appWindow: platformAppWindow,
         start: [context.backLeading()],
         title: viewSwitcher,
       ),
       viewSwitcher: AdwViewSwitcher(
         currentIndex: _currentIndex.value,
-        onViewChanged: (idx) => _currentIndex.value = idx,
+        onViewChanged: _pageController.jumpToPage,
         tabs: _tabs.map((e) => ViewSwitcherData(title: e)).toList(),
       ),
-      body: AdwViewStack(
-        index: _currentIndex.value,
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (idx) => _currentIndex.value = idx,
         // These are the contents of the tab views, below the tabs.
         children: _tabs
             .asMap()

@@ -84,7 +84,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
 
     return AdwScaffold(
       headerbar: (_) => AdwHeaderBar.bitsdojo(
-        appWindow: getAppwindow(appWindow),
+        appWindow: platformAppWindow,
         start: [context.backLeading()],
       ),
       body: widget.video == null && videoSnapshot == null
