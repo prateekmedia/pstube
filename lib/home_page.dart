@@ -1,14 +1,14 @@
 import 'dart:io';
 
 import 'package:ant_icons/ant_icons.dart';
-import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:dio/dio.dart';
-import 'package:easy_autocomplete/easy_autocomplete.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
+import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
+import 'package:libadwaita_searchbar/libadwaita_searchbar.dart';
 import 'package:piped_api/piped_api.dart';
 
 import 'package:sftube/providers/providers.dart';
@@ -115,7 +115,7 @@ class MyHomePage extends HookConsumerWidget {
 
     return AdwScaffold(
       headerbar: (viewSwitcher) => AdwHeaderBar.bitsdojo(
-        appWindow: platformAppWindow,
+        appWindow: appWindow,
         start: [
           AdwHeaderButton(
             isActive: toggleSearch.value,
@@ -124,47 +124,12 @@ class MyHomePage extends HookConsumerWidget {
           ),
         ],
         title: toggleSearch.value
-            ? Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
-                color: Theme.of(context).appBarTheme.backgroundColor,
-                constraints: BoxConstraints.loose(const Size(500, 40)),
-                child: RawKeyboardListener(
-                  focusNode: FocusNode(),
-                  onKey: (event) {
-                    if (event.runtimeType == RawKeyDownEvent &&
-                        event.logicalKey.keyId == 4294967323) {
-                      toggleSearchBar(value: false);
-                    }
-                  },
-                  child: EasyAutocomplete(
-                    asyncSuggestions: (str) =>
-                        YoutubeExplode().search.getQuerySuggestions(str),
-                    controller: _searchController,
-                    autofocus: true,
-                    decoration: InputDecoration(
-                      constraints: BoxConstraints.loose(const Size(500, 36)),
-                      fillColor: context.theme.canvasColor,
-                      contentPadding: const EdgeInsets.only(top: 8),
-                      filled: true,
-                      isDense: true,
-                      prefixIcon: const Icon(Icons.search, size: 18),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                    ),
-                    onChanged: (v) {},
-                    onSubmitted: (str) => searchedTerm.value = str,
-                    suggestionBuilder: (data) => Container(
-                      margin: const EdgeInsets.all(1),
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Text(data),
-                    ),
-                  ),
-                ),
+            ? AdwSearchBar(
+                toggleSearchBar: toggleSearchBar,
+                asyncSuggestions: (str) =>
+                    YoutubeExplode().search.getQuerySuggestions(str),
+                onSubmitted: (str) => searchedTerm.value = str,
+                controller: _searchController,
               )
             : viewSwitcher,
         end: [

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:ant_icons/ant_icons.dart';
-import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:custom_text/custom_text.dart';
@@ -12,6 +11,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:libadwaita/libadwaita.dart';
+import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 
 import 'package:sftube/providers/providers.dart';
 import 'package:sftube/utils/utils.dart';
@@ -84,7 +84,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
 
     return AdwScaffold(
       headerbar: (_) => AdwHeaderBar.bitsdojo(
-        appWindow: platformAppWindow,
+        appWindow: appWindow,
         start: [context.backLeading()],
       ),
       body: widget.video == null && videoSnapshot == null

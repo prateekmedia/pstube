@@ -10,19 +10,12 @@ environment:
 dependencies:
   adwaita: ^0.5.1
   ant_icons: ^2.0.0-nullsafety.0
-  bitsdojo_window:
-    git:
-      url: https://github.com/prateekmedia/bitsdojo_window
-      path: bitsdojo_window
   bot_toast: ^4.0.1
   cached_network_image: ^3.2.0
   connectivity_plus: ^2.2.0
   custom_text: ^0.6.0-dev.1
   # dart_vlc: ^0.1.7
   dio: ^4.0.4
-  easy_autocomplete:
-    git:
-      url: https://github.com/prateekmedia/flutter_easy_autocomplete.git
   equatable: ^2.0.3
   file_picker: ^4.3.3
   flutter:
@@ -39,6 +32,8 @@ dependencies:
     git:
       url: https://github.com/gtk-flutter/libadwaita.git
       ref: fix46
+  libadwaita_bitsdojo: ^0.5.0
+  libadwaita_searchbar: ^0.5.0+1
   open_file: # Upgrade to pub.dev when package > 3.2.1
     git:
       url: https://github.com/miDeb/open_file.git

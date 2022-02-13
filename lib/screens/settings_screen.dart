@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:libadwaita/libadwaita.dart';
+import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:piped_api/piped_api.dart';
 
@@ -127,8 +127,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
                 issueTrackerLink:
                     'https://github.com/prateekmedia/sftube/issues',
                 headerbar: (leading, text) => AdwHeaderBar(
-                  onDoubleTap: platformAppWindow?.maximizeOrRestore,
-                  onHeaderDrag: platformAppWindow?.startDragging,
+                  onDoubleTap: appWindow?.maximizeOrRestore,
+                  onHeaderDrag: appWindow?.startDragging,
                   autoPositionWindowButtons: false,
                   title: text,
                   onClose: () => Navigator.of(context).pop(),

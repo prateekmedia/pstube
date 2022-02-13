@@ -1,8 +1,8 @@
 import 'package:ant_icons/ant_icons.dart';
-import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
+import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 
 import 'package:sftube/providers/providers.dart';
 import 'package:sftube/screens/screens.dart';
@@ -80,7 +80,7 @@ class PlaylistSubScreen extends StatelessWidget {
         .value;
     return AdwScaffold(
       headerbar: (_) => AdwHeaderBar.bitsdojo(
-        appWindow: platformAppWindow,
+        appWindow: appWindow,
         start: [context.backLeading()],
         title: Text(playlistName),
       ),

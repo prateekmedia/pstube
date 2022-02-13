@@ -1,8 +1,8 @@
-import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:libadwaita/libadwaita.dart';
+import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 
 import 'package:sftube/utils/utils.dart';
 import 'package:sftube/widgets/widgets.dart';
@@ -87,7 +87,7 @@ class ChannelScreen extends HookWidget {
 
     return AdwScaffold(
       headerbar: (viewSwitcher) => AdwHeaderBar.bitsdojo(
-        appWindow: platformAppWindow,
+        appWindow: appWindow,
         start: [context.backLeading()],
         title: viewSwitcher,
       ),
