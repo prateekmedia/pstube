@@ -564,12 +564,10 @@ packages:
   libadwaita:
     dependency: "direct main"
     description:
-      path: "."
-      ref: fix46
-      resolved-ref: "412729d30cbf3edd43f0bd4e21fed276a40ad320"
-      url: "https://github.com/gtk-flutter/libadwaita.git"
-    source: git
-    version: "1.0.0"
+      name: libadwaita
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0+1"
   libadwaita_bitsdojo:
     dependency: "direct main"
     description:
