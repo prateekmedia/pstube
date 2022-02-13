@@ -302,6 +302,9 @@ class MyHomePage extends HookConsumerWidget {
                   final item = navItems.entries.elementAt(index);
                   return ViewSwitcherData(
                     title: item.key,
+                    badge: index == 2
+                        ? ref.watch(downloadListProvider).downloading
+                        : null,
                     icon: item.value[0],
                   );
                 },

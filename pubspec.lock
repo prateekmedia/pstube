@@ -329,7 +329,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "4ff3d93392ff36089769171c48b887525613ad78"
+      resolved-ref: "1f7fcd22ed9861b575e93abeef6bcab1856388b5"
       url: "https://github.com/prateekmedia/flutter_easy_autocomplete.git"
     source: git
     version: "1.4.2"

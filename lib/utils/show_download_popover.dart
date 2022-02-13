@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -153,7 +152,7 @@ Widget linksHeader(
   );
 }
 
-class CustomListTile extends HookConsumerWidget {
+class CustomListTile extends ConsumerStatefulWidget {
   const CustomListTile({
     Key? key,
     required this.stream,
@@ -166,25 +165,28 @@ class CustomListTile extends HookConsumerWidget {
   final VoidCallback? onClose;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isMounted = useIsMounted();
+  ConsumerState<CustomListTile> createState() => _CustomListTileState();
+}
+
+class _CustomListTileState extends ConsumerState<CustomListTile> {
+  @override
+  Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: InkWell(
         onTap: () async {
           if ((Platform.isAndroid || Platform.isIOS) &&
               !await Permission.storage.request().isGranted) return;
+          if (!mounted) return;
+          widget.onClose != null ? widget.onClose!() : context.back();
           await ref.watch(downloadListProvider.notifier).addDownload(
                 context,
                 DownloadItem.fromVideo(
-                  video: video,
-                  stream: stream,
+                  video: widget.video,
+                  stream: widget.stream,
                   path: ref.watch(downloadPathProvider).path,
                 ),
               );
-          if (!isMounted()) return;
-          // ignore: use_build_context_synchronously
-          onClose != null ? onClose!() : context.back();
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
@@ -194,33 +196,33 @@ class CustomListTile extends HookConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    (stream is ThumbnailStreamInfo
-                            ? stream.containerName as String
-                            : stream is AudioOnlyStreamInfo
-                                ? stream.audioCodec
+                    (widget.stream is ThumbnailStreamInfo
+                            ? widget.stream.containerName as String
+                            : widget.stream is AudioOnlyStreamInfo
+                                ? widget.stream.audioCodec
                                     .split('.')[0]
                                     .replaceAll('mp4a', 'm4a') as String
-                                : stream.container.name as String)
+                                : widget.stream.container.name as String)
                         .toUpperCase(),
                   ),
                   Text(
-                    stream is ThumbnailStreamInfo
+                    widget.stream is ThumbnailStreamInfo
                         ? ''
-                        : (stream.size.totalBytes as int).getFileSize(),
+                        : (widget.stream.size.totalBytes as int).getFileSize(),
                   ),
                 ],
               ),
               Align(
                 child: Text(
-                  stream is VideoStreamInfo
-                      ? (stream as VideoStreamInfo).qualityLabel
-                      : stream is AudioOnlyStreamInfo
-                          ? (stream as AudioOnlyStreamInfo)
+                  widget.stream is VideoStreamInfo
+                      ? (widget.stream as VideoStreamInfo).qualityLabel
+                      : widget.stream is AudioOnlyStreamInfo
+                          ? (widget.stream as AudioOnlyStreamInfo)
                               .bitrate
                               .bitsPerSecond
                               .getBitrate()
-                          : stream is ThumbnailStreamInfo
-                              ? (stream as ThumbnailStreamInfo).name
+                          : widget.stream is ThumbnailStreamInfo
+                              ? (widget.stream as ThumbnailStreamInfo).name
                               : '',
                   style: context.textTheme.headline5,
                   textAlign: TextAlign.center,

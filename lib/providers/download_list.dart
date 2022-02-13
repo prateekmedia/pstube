@@ -27,6 +27,13 @@ class DownloadList extends ChangeNotifier {
           )
           .toList();
 
+  String? get downloading {
+    final downloading = downloadList
+        .where((element) => element.downloaded != element.total)
+        .length;
+    return downloading != 0 ? downloading.toString() : null;
+  }
+
   Future<void> addDownload(
     BuildContext context,
     DownloadItem downloadItem,

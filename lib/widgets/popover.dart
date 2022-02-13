@@ -63,7 +63,8 @@ Future<T?> showPopoverWB<T>({
         ],
         if (builder != null) builder(ctx),
         if (controller != null)
-          Padding(
+          Container(
+            constraints: BoxConstraints.loose(const Size(500, 36)),
             padding: padding,
             child: Form(
               key: _formKey,
