@@ -76,6 +76,7 @@ Future<T?> showPopoverWB<T>({
                 style: context.textTheme.bodyText1,
                 decoration: InputDecoration(
                   hintText: hint,
+                  constraints: BoxConstraints.loose(const Size(500, 40)),
                 ),
               ),
             ),
