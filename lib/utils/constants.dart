@@ -9,6 +9,7 @@ const ytCom = 'https://youtube.com';
 
 final myApp = SFInfo(
   name: 'SF Tube',
+  nickname: 'sftube',
   url: 'https://github.com/prateekmedia/sftube',
   description: 'Youtube client made using flutter.',
   image: 'sftube.png',

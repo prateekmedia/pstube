@@ -30,8 +30,8 @@ class DownloadPathNotifier extends ChangeNotifier {
     if (kIsWeb) return;
     _path = MyPrefs().prefs.getString('downloadPath') ??
         (Platform.isAndroid
-            ? '/storage/emulated/0/Download/${myApp.name}/'
-            : p.join((await getDownloadsDirectory())!.path, myApp.name) +
+            ? '/storage/emulated/0/Download/${myApp.nickname!}/'
+            : p.join((await getDownloadsDirectory())!.path, myApp.nickname) +
                 (Platform.isWindows ? r'\' : '/'));
     if (Platform.isAndroid && !await Permission.storage.request().isGranted) {
       return;
