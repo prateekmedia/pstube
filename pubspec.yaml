@@ -77,7 +77,6 @@ dependency_overrides:
     git:
       url: https://github.com/prateekmedia/bitsdojo_window.git
       path: bitsdojo_window_windows
-  nm: ^0.5.0
 
 flutter:
   generate: true

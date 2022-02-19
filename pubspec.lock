@@ -566,7 +566,7 @@ packages:
     description:
       path: "."
       ref: next
-      resolved-ref: "6be0aa9df26c0fa5d77c56998e04582a484788cb"
+      resolved-ref: cda63cc48d1dd0c6b06e9c6bd90089efe2f61fdb
       url: "https://github.com/gtk-flutter/libadwaita"
     source: git
     version: "1.2.0"
@@ -648,7 +648,7 @@ packages:
     source: hosted
     version: "2.8.18"
   nm:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: nm
       url: "https://pub.dartlang.org"
