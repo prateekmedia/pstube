@@ -8,7 +8,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
-import 'package:libadwaita_searchbar/libadwaita_searchbar.dart';
+import 'package:libadwaita_searchbar_ac/libadwaita_searchbar_ac.dart';
 import 'package:piped_api/piped_api.dart';
 
 import 'package:sftube/providers/providers.dart';
@@ -114,53 +114,49 @@ class MyHomePage extends HookConsumerWidget {
     }
 
     return AdwScaffold(
-      headerbar: (viewSwitcher) => AdwHeaderBar.bitsdojo(
-        appWindow: appWindow,
-        start: [
-          AdwHeaderButton(
-            isActive: toggleSearch.value,
-            onPressed: toggleSearchBar,
-            icon: const Icon(AntIcons.search_outline, size: 20),
-          ),
-        ],
-        title: toggleSearch.value
-            ? AdwSearchBar(
-                toggleSearchBar: toggleSearchBar,
-                asyncSuggestions: (str) =>
-                    YoutubeExplode().search.getQuerySuggestions(str),
-                onSubmitted: (str) => searchedTerm.value = str,
-                controller: _searchController,
-              )
-            : viewSwitcher,
-        end: [
-          if (!toggleSearch.value)
-            AdwHeaderButton(
-              onPressed: addDownload,
-              icon: const Icon(
-                Icons.add,
-                size: 17,
-              ),
-            ),
-          if (!toggleSearch.value && _currentIndex.value == 2)
-            AdwHeaderButton(
-              icon: const Icon(AntIcons.delete_outline),
-              onPressed: clearAll,
-            ),
-          if (!toggleSearch.value && _currentIndex.value == 3)
-            AdwPopupMenu(
-              body: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  AdwButton.flat(
-                    child: Text(context.locals.resetDefault),
-                    onPressed: () => resetDefaults(ref),
-                  ),
-                ],
-              ),
-            ),
-        ],
+      actions: AdwActions().bitsdojo,
+      start: [
+        AdwHeaderButton(
+          isActive: toggleSearch.value,
+          onPressed: toggleSearchBar,
+          icon: const Icon(AntIcons.search_outline, size: 20),
+        ),
+      ],
+      title: AdwSearchBarAc(
+        toggleSearchBar: toggleSearchBar,
+        asyncSuggestions: (str) =>
+            YoutubeExplode().search.getQuerySuggestions(str),
+        onSubmitted: (str) => searchedTerm.value = str,
+        controller: _searchController,
       ),
+      end: [
+        if (!toggleSearch.value)
+          AdwHeaderButton(
+            onPressed: addDownload,
+            icon: const Icon(
+              Icons.add,
+              size: 17,
+            ),
+          ),
+        if (!toggleSearch.value && _currentIndex.value == 2)
+          AdwHeaderButton(
+            icon: const Icon(AntIcons.delete_outline),
+            onPressed: clearAll,
+          ),
+        if (!toggleSearch.value && _currentIndex.value == 3)
+          AdwPopupMenu(
+            body: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                AdwButton.flat(
+                  child: Text(context.locals.resetDefault),
+                  onPressed: () => resetDefaults(ref),
+                ),
+              ],
+            ),
+          ),
+      ],
       body: FutureBuilder<Response>(
         future: videos,
         builder: (context, snapshot) {

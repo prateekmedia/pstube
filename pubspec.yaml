@@ -28,9 +28,12 @@ dependencies:
   hive_flutter: ^1.1.0
   hooks_riverpod: ^2.0.0-dev.0
   intl: ^0.17.0
-  libadwaita: ^1.0.0+1
-  libadwaita_bitsdojo: ^0.5.0
-  libadwaita_searchbar: ^0.5.0+1
+  libadwaita:
+    git:
+      url: https://github.com/gtk-flutter/libadwaita
+      ref: next
+  libadwaita_bitsdojo: ^0.5.3
+  libadwaita_searchbar_ac: ^0.5.0
   open_file: # Upgrade to pub.dev when package > 3.2.1
     git:
       url: https://github.com/miDeb/open_file.git

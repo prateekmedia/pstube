@@ -126,14 +126,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
               builder: (_) => AdwAboutWindow(
                 issueTrackerLink:
                     'https://github.com/prateekmedia/sftube/issues',
-                headerbar: (leading, text) => AdwHeaderBar(
+                appName: myApp.name,
+                actions: AdwActions(
                   onDoubleTap: appWindow?.maximizeOrRestore,
                   onHeaderDrag: appWindow?.startDragging,
-                  autoPositionWindowButtons: false,
-                  title: text,
                   onClose: () => Navigator.of(context).pop(),
+                ),
+                headerBarStyle: const HeaderBarStyle(
                   isTransparent: true,
-                  start: leading,
+                  autoPositionWindowButtons: false,
                 ),
                 appIcon: Image.asset(myApp.imagePath),
                 credits: [

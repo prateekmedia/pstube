@@ -86,11 +86,10 @@ class ChannelScreen extends HookWidget {
     );
 
     return AdwScaffold(
-      headerbar: (viewSwitcher) => AdwHeaderBar.bitsdojo(
-        appWindow: appWindow,
-        start: [context.backLeading()],
-        title: viewSwitcher,
-      ),
+      actions: AdwActions().bitsdojo,
+      start: [
+        context.backLeading(),
+      ],
       viewSwitcher: AdwViewSwitcher(
         currentIndex: _currentIndex.value,
         onViewChanged: _pageController.jumpToPage,
