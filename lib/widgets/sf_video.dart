@@ -114,7 +114,12 @@ class SFVideo extends HookWidget {
                         if (!isInsideDownloadPopup) ...[
                           getDownloadButton(video, context),
                         ],
-                        ...actions,
+                        ...actions.map(
+                          (e) => Padding(
+                            padding: const EdgeInsets.only(left: 8),
+                            child: e,
+                          ),
+                        ),
                       ],
                     )
                   : Column(

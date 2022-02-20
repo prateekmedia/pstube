@@ -19,10 +19,22 @@ extension ContextExtensions on BuildContext {
   Future pushPage(Widget page) => Navigator.of(this)
       .push(PageTransition(type: PageTransitionType.rightToLeft, child: page));
 
-  Widget backLeading([VoidCallback? onBack]) => AdwHeaderButton(
-        icon: const Icon(Icons.chevron_left),
-        onPressed: back,
-      );
+  Widget backLeading({VoidCallback? onBack, bool isCircular = false}) =>
+      isCircular
+          ? Container(
+              decoration: ShapeDecoration(
+                color: theme.canvasColor,
+                shape: const StadiumBorder(),
+              ),
+              child: AdwHeaderButton(
+                icon: const Icon(Icons.chevron_left),
+                onPressed: back,
+              ),
+            )
+          : AdwHeaderButton(
+              icon: const Icon(Icons.chevron_left),
+              onPressed: back,
+            );
 
   Color get getBackgroundColor => brightness.getBackgroundColor;
   Color get getAltBackgroundColor => brightness.getAltBackgroundColor;

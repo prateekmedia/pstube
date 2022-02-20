@@ -62,8 +62,6 @@ class ChannelScreen extends HookWidget {
             await yt.channels.getUploadsFromPage(channel.value!.id.value);
       }
       channelInfo.value = await yt.channels.getAboutPage(id);
-
-      // channelInfo.value!.channelLinks
     }
 
     Future<void> _getMoreData() async {
@@ -239,6 +237,7 @@ class _CustomTabState extends State<_CustomTab>
                                       ),
                                       margin: const EdgeInsets.symmetric(
                                         horizontal: 3,
+                                        vertical: 3,
                                       ),
                                       child: Text(link.title),
                                       //   labelStyle: context.textTheme.bodyText2,

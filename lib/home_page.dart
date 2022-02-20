@@ -122,13 +122,15 @@ class MyHomePage extends HookConsumerWidget {
           icon: const Icon(AntIcons.search_outline, size: 20),
         ),
       ],
-      title: AdwSearchBarAc(
-        toggleSearchBar: toggleSearchBar,
-        asyncSuggestions: (str) =>
-            YoutubeExplode().search.getQuerySuggestions(str),
-        onSubmitted: (str) => searchedTerm.value = str,
-        controller: _searchController,
-      ),
+      title: toggleSearch.value
+          ? AdwSearchBarAc(
+              toggleSearchBar: toggleSearchBar,
+              asyncSuggestions: (str) =>
+                  YoutubeExplode().search.getQuerySuggestions(str),
+              onSubmitted: (str) => searchedTerm.value = str,
+              controller: _searchController,
+            )
+          : null,
       end: [
         if (!toggleSearch.value)
           AdwHeaderButton(
