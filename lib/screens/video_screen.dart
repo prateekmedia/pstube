@@ -62,7 +62,6 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
         ? videoSnapshot.data
         : widget.video;
     final replyComment = useState<Comment?>(null);
-    final currentIndex = useState<int>(0);
     final commentSideWidget = useState<Widget?>(null);
     final downloadsSideWidget = useState<Widget?>(null);
     final _textController = TextEditingController();
@@ -128,254 +127,209 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                                               ),
                                             ),
                                           Flexible(
-                                            child: ListView(
-                                              shrinkWrap: true,
+                                            child: Stack(
                                               children: [
-                                                Container(
-                                                  padding:
-                                                      const EdgeInsets.all(12),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        videoData.title,
-                                                        style: context.textTheme
-                                                            .headline3,
+                                                ListView(
+                                                  shrinkWrap: true,
+                                                  children: [
+                                                    Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                        12,
                                                       ),
-                                                      const SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      Row(
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
                                                         children: [
                                                           Text(
-                                                            '${videoData.engagement.viewCount.formatNumber}'
-                                                            ' views',
+                                                            videoData.title,
+                                                            style: context
+                                                                .textTheme
+                                                                .headline3,
                                                           ),
-                                                          Text(
-                                                            videoData.publishDate !=
-                                                                    null
-                                                                ? '  •  ${timeago.format(
-                                                                    videoData
-                                                                        .publishDate!,
-                                                                  )}'
-                                                                : '',
+                                                          const SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              Text(
+                                                                '${videoData.engagement.viewCount.formatNumber}'
+                                                                ' views',
+                                                              ),
+                                                              Text(
+                                                                videoData.publishDate !=
+                                                                        null
+                                                                    ? '  •  ${timeago.format(
+                                                                        videoData
+                                                                            .publishDate!,
+                                                                      )}'
+                                                                    : '',
+                                                              ),
+                                                            ],
                                                           ),
                                                         ],
                                                       ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Container(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                    horizontal: 10,
-                                                    vertical: 2,
-                                                  ),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      iconWithBottomLabel(
-                                                        icon: isLiked!.value
-                                                            ? AntIcons.like
-                                                            : AntIcons
-                                                                .like_outline,
-                                                        onPressed: updateLike,
-                                                        label: videoData
+                                                    ),
+                                                    Container(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                        horizontal: 10,
+                                                        vertical: 2,
+                                                      ),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          iconWithBottomLabel(
+                                                            icon: isLiked!.value
+                                                                ? AntIcons.like
+                                                                : AntIcons
+                                                                    .like_outline,
+                                                            onPressed:
+                                                                updateLike,
+                                                            label: videoData.engagement
+                                                                        .likeCount !=
+                                                                    null
+                                                                ? videoData
                                                                     .engagement
-                                                                    .likeCount !=
-                                                                null
-                                                            ? videoData
-                                                                .engagement
-                                                                .likeCount!
-                                                                .formatNumber
-                                                            : context
-                                                                .locals.like,
-                                                      ),
-                                                      iconWithBottomLabel(
-                                                        icon:
-                                                            AntIcons.share_alt,
-                                                        onPressed: () {
-                                                          Share.share(
-                                                            videoData.url,
-                                                          );
-                                                        },
-                                                        label: context
-                                                            .locals.share,
-                                                      ),
-                                                      iconWithBottomLabel(
-                                                        icon: Icons.download,
-                                                        onPressed: downloadsSideWidget
-                                                                    .value !=
-                                                                null
-                                                            ? () =>
-                                                                downloadsSideWidget
+                                                                    .likeCount!
+                                                                    .formatNumber
+                                                                : context.locals
+                                                                    .like,
+                                                          ),
+                                                          iconWithBottomLabel(
+                                                            icon: AntIcons
+                                                                .share_alt,
+                                                            onPressed: () {
+                                                              Share.share(
+                                                                videoData.url,
+                                                              );
+                                                            },
+                                                            label: context
+                                                                .locals.share,
+                                                          ),
+                                                          iconWithBottomLabel(
+                                                            icon:
+                                                                Icons.download,
+                                                            onPressed: downloadsSideWidget
+                                                                        .value !=
+                                                                    null
+                                                                ? () => downloadsSideWidget
                                                                         .value =
                                                                     null
-                                                            : context.isMobile
-                                                                ? () =>
-                                                                    showDownloadPopup(
-                                                                      context,
-                                                                      video:
-                                                                          videoData,
-                                                                    )
                                                                 : () {
                                                                     commentSideWidget
                                                                             .value =
                                                                         null;
                                                                     downloadsSideWidget
                                                                             .value =
-                                                                        Column(
-                                                                      children: [
-                                                                        AdwHeaderBar(
-                                                                          style:
-                                                                              const HeaderBarStyle(
-                                                                            autoPositionWindowButtons:
-                                                                                false,
-                                                                          ),
-                                                                          title:
-                                                                              Text(
-                                                                            context.locals.downloadLinks,
-                                                                          ),
-                                                                          actions:
-                                                                              AdwActions(
-                                                                            onClose: () =>
-                                                                                downloadsSideWidget.value = null,
-                                                                          ),
-                                                                        ),
-                                                                        Expanded(
-                                                                          child:
-                                                                              SingleChildScrollView(
-                                                                            controller:
-                                                                                ScrollController(),
-                                                                            padding:
-                                                                                const EdgeInsets.symmetric(
-                                                                              horizontal: 15,
-                                                                              vertical: 12,
-                                                                            ),
-                                                                            child:
-                                                                                DownloadsWidget(
-                                                                              video: videoData,
-                                                                              onClose: () => downloadsSideWidget.value = null,
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ],
+                                                                        ShowDownloadsWidget(
+                                                                      downloadsSideWidget:
+                                                                          downloadsSideWidget,
+                                                                      videoData:
+                                                                          videoData,
                                                                     );
                                                                   },
-                                                        label: context
-                                                            .locals.download,
-                                                      ),
-                                                      iconWithBottomLabel(
-                                                        icon: AntIcons
-                                                            .copy_outline,
-                                                        onPressed: () {
-                                                          Clipboard.setData(
-                                                            ClipboardData(
-                                                              text:
-                                                                  videoData.url,
-                                                            ),
-                                                          );
-                                                          BotToast.showText(
-                                                            text: context.locals
-                                                                .copiedToClipboard,
-                                                          );
-                                                        },
-                                                        label: context
-                                                            .locals.copyLink,
-                                                      ),
-                                                      iconWithBottomLabel(
-                                                        icon: AntIcons
-                                                            .unordered_list,
-                                                        onPressed: () {
-                                                          showPopoverWB<
-                                                              dynamic>(
-                                                            context: context,
-                                                            cancelText: context
-                                                                .locals.done,
-                                                            confirmText: context
-                                                                .locals.create,
-                                                            controller:
-                                                                _textController,
-                                                            title: context
-                                                                .locals.save,
-                                                            hint: context.locals
-                                                                .createNew,
-                                                            onConfirm: () {
-                                                              ref
-                                                                  .read(
-                                                                    playlistProvider
-                                                                        .notifier,
-                                                                  )
-                                                                  .addPlaylist(
-                                                                    _textController
-                                                                        .value
-                                                                        .text,
-                                                                  );
-                                                              _textController
-                                                                      .value =
-                                                                  TextEditingValue
-                                                                      .empty;
+                                                            label: context
+                                                                .locals
+                                                                .download,
+                                                          ),
+                                                          iconWithBottomLabel(
+                                                            icon: AntIcons
+                                                                .copy_outline,
+                                                            onPressed: () {
+                                                              Clipboard.setData(
+                                                                ClipboardData(
+                                                                  text:
+                                                                      videoData
+                                                                          .url,
+                                                                ),
+                                                              );
+                                                              BotToast.showText(
+                                                                text: context
+                                                                    .locals
+                                                                    .copiedToClipboard,
+                                                              );
                                                             },
-                                                            builder: (ctx) =>
-                                                                PlaylistPopup(
-                                                              videoData:
-                                                                  videoData,
-                                                            ),
-                                                          );
-                                                        },
-                                                        label:
-                                                            context.locals.save,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                const Divider(),
-                                                ChannelInfo(
-                                                  channel: null,
-                                                  channelId:
-                                                      videoData.channelId.value,
-                                                  isOnVideo: true,
-                                                ),
-                                                const Divider(height: 4),
-                                                ListTile(
-                                                  onTap: commentsSnapshot
-                                                              .data ==
-                                                          null
-                                                      ? null
-                                                      : commentSideWidget
-                                                                  .value !=
-                                                              null
-                                                          ? () =>
-                                                              commentSideWidget
-                                                                  .value = null
-                                                          : context.isMobile
-                                                              ? () =>
-                                                                  showPopover<
-                                                                      dynamic>(
-                                                                    context:
-                                                                        context,
-                                                                    isScrollable:
-                                                                        false,
-                                                                    innerPadding:
-                                                                        EdgeInsets
-                                                                            .zero,
-                                                                    builder:
-                                                                        (ctx) {
-                                                                      return CommentsWidget(
-                                                                        snapshot:
-                                                                            commentsSnapshot,
-                                                                        replyComment:
-                                                                            replyComment,
+                                                            label: context
+                                                                .locals
+                                                                .copyLink,
+                                                          ),
+                                                          iconWithBottomLabel(
+                                                            icon: AntIcons
+                                                                .unordered_list,
+                                                            onPressed: () {
+                                                              showPopoverWB<
+                                                                  dynamic>(
+                                                                context:
+                                                                    context,
+                                                                cancelText:
+                                                                    context
+                                                                        .locals
+                                                                        .done,
+                                                                confirmText:
+                                                                    context
+                                                                        .locals
+                                                                        .create,
+                                                                controller:
+                                                                    _textController,
+                                                                title: context
+                                                                    .locals
+                                                                    .save,
+                                                                hint: context
+                                                                    .locals
+                                                                    .createNew,
+                                                                onConfirm: () {
+                                                                  ref
+                                                                      .read(
+                                                                        playlistProvider
+                                                                            .notifier,
+                                                                      )
+                                                                      .addPlaylist(
+                                                                        _textController
+                                                                            .value
+                                                                            .text,
                                                                       );
-                                                                    },
-                                                                  ).whenComplete(
-                                                                    () => currentIndex
-                                                                        .value = 0,
-                                                                  )
+                                                                  _textController
+                                                                          .value =
+                                                                      TextEditingValue
+                                                                          .empty;
+                                                                },
+                                                                builder: (ctx) =>
+                                                                    PlaylistPopup(
+                                                                  videoData:
+                                                                      videoData,
+                                                                ),
+                                                              );
+                                                            },
+                                                            label: context
+                                                                .locals.save,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    const Divider(),
+                                                    ChannelInfo(
+                                                      channel: null,
+                                                      channelId: videoData
+                                                          .channelId.value,
+                                                      isOnVideo: true,
+                                                    ),
+                                                    const Divider(height: 4),
+                                                    ListTile(
+                                                      onTap: commentsSnapshot
+                                                                  .data ==
+                                                              null
+                                                          ? null
+                                                          : commentSideWidget
+                                                                      .value !=
+                                                                  null
+                                                              ? () =>
+                                                                  commentSideWidget
+                                                                          .value =
+                                                                      null
                                                               : () {
                                                                   downloadsSideWidget
                                                                           .value =
@@ -392,24 +346,36 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                                                                         commentsSnapshot,
                                                                   );
                                                                 },
-                                                  title: Text(
-                                                    context.locals.comments,
-                                                  ),
-                                                  trailing: Text(
-                                                    (commentsSnapshot.data !=
-                                                                null
-                                                            ? commentsSnapshot
-                                                                .data!
-                                                                .totalLength
-                                                            : 0)
-                                                        .formatNumber,
-                                                  ),
+                                                      title: Text(
+                                                        context.locals.comments,
+                                                      ),
+                                                      trailing: Text(
+                                                        (commentsSnapshot
+                                                                        .data !=
+                                                                    null
+                                                                ? commentsSnapshot
+                                                                    .data!
+                                                                    .totalLength
+                                                                : 0)
+                                                            .formatNumber,
+                                                      ),
+                                                    ),
+                                                    const Divider(height: 4),
+                                                    if (context.isMobile)
+                                                      DescriptionWidget(
+                                                        video: videoData,
+                                                      ),
+                                                  ],
                                                 ),
-                                                const Divider(height: 4),
-                                                if (context.isMobile)
-                                                  DescriptionWidget(
-                                                    video: videoData,
-                                                  ),
+                                                if (context.isMobile) ...[
+                                                  if (commentSideWidget.value !=
+                                                      null)
+                                                    commentSideWidget.value!,
+                                                  if (downloadsSideWidget
+                                                          .value !=
+                                                      null)
+                                                    downloadsSideWidget.value!
+                                                ],
                                               ],
                                             ),
                                           ),
@@ -451,10 +417,12 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                     width: context.width / 3,
                     child: [
                       const SizedBox(),
-                      if (commentSideWidget.value != null)
-                        commentSideWidget.value!,
-                      if (downloadsSideWidget.value != null)
-                        downloadsSideWidget.value!
+                      if (!context.isMobile) ...[
+                        if (commentSideWidget.value != null)
+                          commentSideWidget.value!,
+                        if (downloadsSideWidget.value != null)
+                          downloadsSideWidget.value!,
+                      ],
                     ].last,
                   ),
                 ),
@@ -468,6 +436,54 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
 
   @override
   bool get wantKeepAlive => true;
+}
+
+class ShowDownloadsWidget extends StatelessWidget {
+  const ShowDownloadsWidget({
+    Key? key,
+    required this.downloadsSideWidget,
+    required this.videoData,
+  }) : super(key: key);
+
+  final ValueNotifier<Widget?> downloadsSideWidget;
+  final Video videoData;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        AdwHeaderBar(
+          style: const HeaderBarStyle(
+            autoPositionWindowButtons: false,
+          ),
+          title: Text(
+            context.locals.downloadLinks,
+          ),
+          actions: AdwActions(
+            onClose: () => downloadsSideWidget.value = null,
+            onHeaderDrag: appWindow?.startDragging,
+            onDoubleTap: appWindow?.maximizeOrRestore,
+          ),
+        ),
+        Expanded(
+          child: Container(
+            color: context.theme.canvasColor,
+            child: SingleChildScrollView(
+              controller: ScrollController(),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 15,
+                vertical: 12,
+              ),
+              child: DownloadsWidget(
+                video: videoData,
+                onClose: () => downloadsSideWidget.value = null,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 class PlaylistPopup extends ConsumerWidget {
@@ -552,6 +568,8 @@ class _CommentsWidgetState extends State<CommentsWidget>
         AdwHeaderBar(
           actions: AdwActions(
             onClose: widget.onClose ?? context.back,
+            onHeaderDrag: appWindow?.startDragging,
+            onDoubleTap: appWindow?.maximizeOrRestore,
           ),
           style: const HeaderBarStyle(
             autoPositionWindowButtons: false,
@@ -582,54 +600,57 @@ class _CommentsWidgetState extends State<CommentsWidget>
           ),
         ),
         Expanded(
-          child: PageView.builder(
-            onPageChanged: (index) => currentPage.value = index,
-            controller: pageController,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: 2,
-            itemBuilder: (_, index) => [
-              ListView.builder(
-                controller: controller,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: _currentPage.value!.length + 1,
-                itemBuilder: (ctx, idx) {
-                  final comment = idx != _currentPage.value!.length
-                      ? _currentPage.value![idx]
-                      : null;
-                  return idx == _currentPage.value!.length
-                      ? getCircularProgressIndicator()
-                      : BuildCommentBox(
-                          comment: comment!,
-                          onReplyTap: () {
-                            widget.replyComment.value = comment;
-                            pageController.animateToPage(
-                              1,
-                              duration: const Duration(milliseconds: 200),
-                              curve: Curves.easeInOut,
-                            );
-                          },
-                        );
-                },
-              ),
-              WillPopScope(
-                child: showReplies(
-                  context,
-                  widget.replyComment.value,
-                  EdgeInsets.symmetric(
-                    horizontal: widget.onClose != null ? 16 : 0,
-                  ),
+          child: Container(
+            color: context.theme.canvasColor,
+            child: PageView.builder(
+              onPageChanged: (index) => currentPage.value = index,
+              controller: pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: 2,
+              itemBuilder: (_, index) => [
+                ListView.builder(
+                  controller: controller,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  itemCount: _currentPage.value!.length + 1,
+                  itemBuilder: (ctx, idx) {
+                    final comment = idx != _currentPage.value!.length
+                        ? _currentPage.value![idx]
+                        : null;
+                    return idx == _currentPage.value!.length
+                        ? getCircularProgressIndicator()
+                        : BuildCommentBox(
+                            comment: comment!,
+                            onReplyTap: () {
+                              widget.replyComment.value = comment;
+                              pageController.animateToPage(
+                                1,
+                                duration: const Duration(milliseconds: 200),
+                                curve: Curves.easeInOut,
+                              );
+                            },
+                          );
+                  },
                 ),
-                onWillPop: () async {
-                  await pageController.animateToPage(
-                    0,
-                    duration: const Duration(milliseconds: 200),
-                    curve: Curves.easeInOut,
-                  );
-                  widget.replyComment.value = null;
-                  return false;
-                },
-              ),
-            ][index],
+                WillPopScope(
+                  child: showReplies(
+                    context,
+                    widget.replyComment.value,
+                    EdgeInsets.symmetric(
+                      horizontal: widget.onClose != null ? 16 : 0,
+                    ),
+                  ),
+                  onWillPop: () async {
+                    await pageController.animateToPage(
+                      0,
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeInOut,
+                    );
+                    widget.replyComment.value = null;
+                    return false;
+                  },
+                ),
+              ][index],
+            ),
           ),
         ),
       ],

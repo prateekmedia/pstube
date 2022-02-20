@@ -115,8 +115,8 @@ class SFVideo extends HookWidget {
                           getDownloadButton(video, context),
                         ],
                         ...actions.map(
-                          (e) => Padding(
-                            padding: const EdgeInsets.only(left: 8),
+                          (e) => Container(
+                            margin: const EdgeInsets.only(left: 8),
                             child: e,
                           ),
                         ),

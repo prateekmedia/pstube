@@ -68,22 +68,18 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
               dialogTitle: context.locals.chooseDownloadFolder,
             ),
           ),
-          AdwActionRow(
+          AdwSwitchRow(
             title: context.locals.darkMode,
-            end: AdwSwitch(
-              value: context.isDark,
-              onChanged: (bool value) =>
-                  ref.read(themeTypeProvider.notifier).toggle = value,
-            ),
+            value: context.isDark,
+            onChanged: (bool value) =>
+                ref.read(themeTypeProvider.notifier).toggle = value,
           ),
-          AdwActionRow(
+          AdwSwitchRow(
             title: context.locals.thumbnailDownloader,
             subtitle: context.locals.showThumbnailDownloaderInDownloadPopup,
-            end: AdwSwitch(
-              value: ref.watch(thumbnailDownloaderProvider),
-              onChanged: (bool value) =>
-                  ref.read(thumbnailDownloaderProvider.notifier).value = value,
-            ),
+            value: ref.watch(thumbnailDownloaderProvider),
+            onChanged: (bool value) =>
+                ref.read(thumbnailDownloaderProvider.notifier).value = value,
           ),
           FutureBuilder<PackageInfo>(
             future: PackageInfo.fromPlatform(),
@@ -130,7 +126,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
                 actions: AdwActions(
                   onDoubleTap: appWindow?.maximizeOrRestore,
                   onHeaderDrag: appWindow?.startDragging,
-                  onClose: () => Navigator.of(context).pop(),
+                  onClose: Navigator.of(context).pop,
                 ),
                 headerBarStyle: const HeaderBarStyle(
                   isTransparent: true,

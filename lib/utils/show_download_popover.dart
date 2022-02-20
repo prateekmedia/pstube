@@ -56,74 +56,77 @@ class DownloadsWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return FutureBuilder<StreamManifest>(
-      future: YoutubeExplode().videos.streamsClient.getManifest(video.id.value),
-      builder: (context, snapshot) {
-        return snapshot.hasData
-            ? Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (onClose == null)
-                    SFVideo(
-                      isRow: true,
-                      videoData: video,
-                      isInsideDownloadPopup: true,
-                    ),
-                  if (ref.watch(thumbnailDownloaderProvider)) ...[
+    return SafeArea(
+      child: FutureBuilder<StreamManifest>(
+        future:
+            YoutubeExplode().videos.streamsClient.getManifest(video.id.value),
+        builder: (context, snapshot) {
+          return snapshot.hasData
+              ? Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (onClose == null)
+                      SFVideo(
+                        isRow: true,
+                        videoData: video,
+                        isInsideDownloadPopup: true,
+                      ),
+                    if (ref.watch(thumbnailDownloaderProvider)) ...[
+                      linksHeader(
+                        context,
+                        icon: Icons.video_call,
+                        label: context.locals.thumbnail,
+                        padding: const EdgeInsets.only(top: 6, bottom: 14),
+                      ),
+                      for (var thumbnail
+                          in video.thumbnails.toStreamInfo(context))
+                        CustomListTile(
+                          stream: thumbnail,
+                          video: video,
+                          onClose: onClose,
+                        ),
+                    ],
                     linksHeader(
                       context,
-                      icon: Icons.video_call,
-                      label: context.locals.thumbnail,
+                      icon: Icons.movie,
+                      label: context.locals.videoPlusAudio,
                       padding: const EdgeInsets.only(top: 6, bottom: 14),
                     ),
-                    for (var thumbnail
-                        in video.thumbnails.toStreamInfo(context))
+                    for (var videoStream
+                        in snapshot.data!.muxed.sortByVideoQuality())
                       CustomListTile(
-                        stream: thumbnail,
+                        stream: videoStream,
+                        video: video,
+                        onClose: onClose,
+                      ),
+                    linksHeader(
+                      context,
+                      icon: Icons.audiotrack,
+                      label: context.locals.audioOnly,
+                    ),
+                    for (var audioStream in snapshot.data!.audioOnly.reversed)
+                      CustomListTile(
+                        stream: audioStream,
+                        video: video,
+                        onClose: onClose,
+                      ),
+                    linksHeader(
+                      context,
+                      icon: Icons.videocam,
+                      label: context.locals.videoOnly,
+                    ),
+                    for (var videoStream in snapshot.data!.videoOnly
+                        .where((element) => element.tag < 200))
+                      CustomListTile(
+                        stream: videoStream,
                         video: video,
                         onClose: onClose,
                       ),
                   ],
-                  linksHeader(
-                    context,
-                    icon: Icons.movie,
-                    label: context.locals.videoPlusAudio,
-                    padding: const EdgeInsets.only(top: 6, bottom: 14),
-                  ),
-                  for (var videoStream
-                      in snapshot.data!.muxed.sortByVideoQuality())
-                    CustomListTile(
-                      stream: videoStream,
-                      video: video,
-                      onClose: onClose,
-                    ),
-                  linksHeader(
-                    context,
-                    icon: Icons.audiotrack,
-                    label: context.locals.audioOnly,
-                  ),
-                  for (var audioStream in snapshot.data!.audioOnly.reversed)
-                    CustomListTile(
-                      stream: audioStream,
-                      video: video,
-                      onClose: onClose,
-                    ),
-                  linksHeader(
-                    context,
-                    icon: Icons.videocam,
-                    label: context.locals.videoOnly,
-                  ),
-                  for (var videoStream in snapshot.data!.videoOnly
-                      .where((element) => element.tag < 200))
-                    CustomListTile(
-                      stream: videoStream,
-                      video: video,
-                      onClose: onClose,
-                    ),
-                ],
-              )
-            : _progressIndicator;
-      },
+                )
+              : _progressIndicator;
+        },
+      ),
     );
   }
 }
