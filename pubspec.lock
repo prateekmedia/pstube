@@ -566,7 +566,7 @@ packages:
     description:
       path: "."
       ref: next
-      resolved-ref: "8a9ea04410012bd665d7e3460f06d544c412feea"
+      resolved-ref: b981760815a92f761ea6cfbbd23b46750a897b10
       url: "https://github.com/gtk-flutter/libadwaita"
     source: git
     version: "1.2.0"
