@@ -17,11 +17,9 @@ class PlaylistNotifier extends StateNotifier<Map<String, List<String>>> {
 
   bool validatePlaylist(String playlist) => playlist.isNotEmpty;
 
-  void removePlaylist(String playlist, {bool re = true}) {
+  void removePlaylist(String playlist) {
     state.remove(playlist);
-    if (re) {
-      refresh();
-    }
+    refresh();
   }
 
   void addPlaylist(String playlist, {bool re = true}) {
