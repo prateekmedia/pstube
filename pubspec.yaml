@@ -31,7 +31,7 @@ dependencies:
   libadwaita:
     git:
       url: https://github.com/gtk-flutter/libadwaita
-      ref: next
+      ref: main
   libadwaita_bitsdojo: ^0.5.3
   libadwaita_searchbar_ac: ^0.5.0
   open_file: # Upgrade to pub.dev when package > 3.2.1
