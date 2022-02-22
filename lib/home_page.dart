@@ -113,169 +113,183 @@ class MyHomePage extends HookConsumerWidget {
       );
     }
 
-    return AdwScaffold(
-      actions: AdwActions().bitsdojo,
-      start: [
-        AdwHeaderButton(
-          isActive: toggleSearch.value,
-          onPressed: toggleSearchBar,
-          icon: const Icon(AntIcons.search_outline, size: 20),
-        ),
-      ],
-      title: toggleSearch.value
-          ? AdwSearchBarAc(
-              toggleSearchBar: toggleSearchBar,
-              asyncSuggestions: (str) =>
-                  YoutubeExplode().search.getQuerySuggestions(str),
-              onSubmitted: (str) => searchedTerm.value = str,
-              controller: _searchController,
-            )
-          : null,
-      end: [
-        if (!toggleSearch.value)
+    return WillPopScope(
+      onWillPop: () async {
+        if (_currentIndex.value != 0) {
+          _currentIndex.value = 0;
+          return false;
+        } else if (toggleSearch.value) {
+          toggleSearchBar();
+          return false;
+        }
+
+        return true;
+      },
+      child: AdwScaffold(
+        actions: AdwActions().bitsdojo,
+        start: [
           AdwHeaderButton(
-            onPressed: addDownload,
-            icon: const Icon(
-              Icons.add,
-              size: 17,
-            ),
+            isActive: toggleSearch.value,
+            onPressed: toggleSearchBar,
+            icon: const Icon(AntIcons.search_outline, size: 20),
           ),
-        if (!toggleSearch.value && _currentIndex.value == 2)
-          AdwHeaderButton(
-            icon: const Icon(AntIcons.delete_outline),
-            onPressed: clearAll,
-          ),
-        if (!toggleSearch.value && _currentIndex.value == 3)
-          AdwPopupMenu(
-            body: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                AdwButton.flat(
-                  child: Text(context.locals.resetDefault),
-                  onPressed: () => resetDefaults(ref),
-                ),
-              ],
-            ),
-          ),
-      ],
-      body: FutureBuilder<Response>(
-        future: videos,
-        builder: (context, snapshot) {
-          final mainScreens = [
-            HomeScreen(snapshot: snapshot),
-            const PlaylistScreen(),
-            const DownloadsScreen(),
-            const SettingsScreen(),
-          ];
-
-          return Column(
-            children: [
-              if (!toggleSearch.value)
-                Flexible(
-                  child: SFBody(
-                    child: PageView.builder(
-                      controller: _controller,
-                      itemCount: mainScreens.length,
-                      itemBuilder: (context, index) => mainScreens[index],
-                      onPageChanged: (index) => _currentIndex.value = index,
-                    ),
-                  ),
-                )
-              else
-                Flexible(
-                  child: searchedTerm.value.isNotEmpty
-                      ? HookBuilder(
-                          builder: (_) {
-                            final isMounted = useIsMounted();
-                            final yt = YoutubeExplode();
-                            final _currentPage = useState<SearchList?>(null);
-                            Future<void> loadVideos() async {
-                              if (!isMounted()) return;
-                              _currentPage.value =
-                                  await yt.search.getVideos(searchedTerm.value);
-                            }
-
-                            final controller = useScrollController();
-
-                            Future<void> _getMoreData() async {
-                              if (isMounted() &&
-                                  controller.position.pixels ==
-                                      controller.position.maxScrollExtent &&
-                                  _currentPage.value != null) {
-                                final page =
-                                    await (_currentPage.value)!.nextPage();
-                                if (page == null ||
-                                    page.isEmpty && !isMounted()) {
-                                  return;
-                                }
-
-                                _currentPage.value!.addAll(page);
-                              }
-                            }
-
-                            useEffect(
-                              () {
-                                loadVideos();
-                                controller.addListener(_getMoreData);
-                                searchedTerm.addListener(loadVideos);
-                                return () {
-                                  searchedTerm.removeListener(loadVideos);
-                                  controller.removeListener(_getMoreData);
-                                };
-                              },
-                              [controller],
-                            );
-
-                            return _currentPage.value != null
-                                ? ListView.builder(
-                                    shrinkWrap: true,
-                                    controller: controller,
-                                    itemCount: _currentPage.value!.length + 1,
-                                    itemBuilder: (ctx, idx) => idx ==
-                                            _currentPage.value!.length
-                                        ? getCircularProgressIndicator()
-                                        : SFVideo(
-                                            videoData: _currentPage.value![idx],
-                                            isRow: !context.isMobile,
-                                            loadData: true,
-                                          ),
-                                  )
-                                : const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                          },
-                        )
-                      : Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Center(child: Text(context.locals.typeToSearch)),
-                          ],
-                        ),
-                ),
-            ],
-          );
-        },
-      ),
-      viewSwitcher: !toggleSearch.value
-          ? AdwViewSwitcher(
-              tabs: List.generate(
-                navItems.entries.length,
-                (index) {
-                  final item = navItems.entries.elementAt(index);
-                  return ViewSwitcherData(
-                    title: item.key,
-                    badge: index == 2
-                        ? ref.watch(downloadListProvider).downloading
-                        : null,
-                    icon: item.value[0],
-                  );
-                },
+        ],
+        title: toggleSearch.value
+            ? AdwSearchBarAc(
+                toggleSearchBar: toggleSearchBar,
+                asyncSuggestions: (str) =>
+                    YoutubeExplode().search.getQuerySuggestions(str),
+                onSubmitted: (str) => searchedTerm.value = str,
+                controller: _searchController,
+              )
+            : null,
+        end: [
+          if (!toggleSearch.value)
+            AdwHeaderButton(
+              onPressed: addDownload,
+              icon: const Icon(
+                Icons.add,
+                size: 17,
               ),
-              currentIndex: _currentIndex.value,
-              onViewChanged: _controller.jumpToPage,
-            )
-          : null,
+            ),
+          if (!toggleSearch.value && _currentIndex.value == 2)
+            AdwHeaderButton(
+              icon: const Icon(AntIcons.delete_outline),
+              onPressed: clearAll,
+            ),
+          if (!toggleSearch.value && _currentIndex.value == 3)
+            AdwPopupMenu(
+              body: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  AdwButton.flat(
+                    child: Text(context.locals.resetDefault),
+                    onPressed: () => resetDefaults(ref),
+                  ),
+                ],
+              ),
+            ),
+        ],
+        body: FutureBuilder<Response>(
+          future: videos,
+          builder: (context, snapshot) {
+            final mainScreens = [
+              HomeScreen(snapshot: snapshot),
+              const PlaylistScreen(),
+              const DownloadsScreen(),
+              const SettingsScreen(),
+            ];
+
+            return Column(
+              children: [
+                if (!toggleSearch.value)
+                  Flexible(
+                    child: SFBody(
+                      child: PageView.builder(
+                        controller: _controller,
+                        itemCount: mainScreens.length,
+                        itemBuilder: (context, index) => mainScreens[index],
+                        onPageChanged: (index) => _currentIndex.value = index,
+                      ),
+                    ),
+                  )
+                else
+                  Flexible(
+                    child: searchedTerm.value.isNotEmpty
+                        ? HookBuilder(
+                            builder: (_) {
+                              final isMounted = useIsMounted();
+                              final yt = YoutubeExplode();
+                              final _currentPage = useState<SearchList?>(null);
+                              Future<void> loadVideos() async {
+                                if (!isMounted()) return;
+                                _currentPage.value = await yt.search
+                                    .getVideos(searchedTerm.value);
+                              }
+
+                              final controller = useScrollController();
+
+                              Future<void> _getMoreData() async {
+                                if (isMounted() &&
+                                    controller.position.pixels ==
+                                        controller.position.maxScrollExtent &&
+                                    _currentPage.value != null) {
+                                  final page =
+                                      await (_currentPage.value)!.nextPage();
+                                  if (page == null ||
+                                      page.isEmpty && !isMounted()) {
+                                    return;
+                                  }
+
+                                  _currentPage.value!.addAll(page);
+                                }
+                              }
+
+                              useEffect(
+                                () {
+                                  loadVideos();
+                                  controller.addListener(_getMoreData);
+                                  searchedTerm.addListener(loadVideos);
+                                  return () {
+                                    searchedTerm.removeListener(loadVideos);
+                                    controller.removeListener(_getMoreData);
+                                  };
+                                },
+                                [controller],
+                              );
+
+                              return _currentPage.value != null
+                                  ? ListView.builder(
+                                      shrinkWrap: true,
+                                      controller: controller,
+                                      itemCount: _currentPage.value!.length + 1,
+                                      itemBuilder: (ctx, idx) =>
+                                          idx == _currentPage.value!.length
+                                              ? getCircularProgressIndicator()
+                                              : SFVideo(
+                                                  videoData:
+                                                      _currentPage.value![idx],
+                                                  isRow: !context.isMobile,
+                                                  loadData: true,
+                                                ),
+                                    )
+                                  : const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                            },
+                          )
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Center(child: Text(context.locals.typeToSearch)),
+                            ],
+                          ),
+                  ),
+              ],
+            );
+          },
+        ),
+        viewSwitcher: !toggleSearch.value
+            ? AdwViewSwitcher(
+                tabs: List.generate(
+                  navItems.entries.length,
+                  (index) {
+                    final item = navItems.entries.elementAt(index);
+                    return ViewSwitcherData(
+                      title: item.key,
+                      badge: index == 2
+                          ? ref.watch(downloadListProvider).downloading
+                          : null,
+                      icon: item.value[0],
+                    );
+                  },
+                ),
+                currentIndex: _currentIndex.value,
+                onViewChanged: _controller.jumpToPage,
+              )
+            : null,
+      ),
     );
   }
 }

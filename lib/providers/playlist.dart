@@ -1,44 +1,41 @@
+import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final _box = Hive.box<dynamic>('playlist');
 
-final playlistProvider =
-    StateNotifierProvider<PlaylistNotifier, Map<String, List<String>>>(
-  (_) => PlaylistNotifier(
-    Map<String, List<String>>.from(
-      _box.get('playlist', defaultValue: {'Watch later': <String>[]}) as Map,
-    ),
-  ),
-);
+final playlistProvider = ChangeNotifierProvider((_) => PlaylistNotifier());
 
-class PlaylistNotifier extends StateNotifier<Map<String, List<String>>> {
-  PlaylistNotifier(Map<String, List<String>> state) : super(state);
+class PlaylistNotifier extends ChangeNotifier {
+  PlaylistNotifier() : super();
+
+  Map<String, List<String>> playlist = Map<String, List<String>>.from(
+    _box.get('playlist', defaultValue: {'Watch later': <String>[]}) as Map,
+  );
 
   bool validatePlaylist(String playlist) => playlist.isNotEmpty;
 
-  void removePlaylist(String playlist) {
-    state.remove(playlist);
+  void removePlaylist(String plist) {
+    playlist.remove(plist);
     refresh();
   }
 
-  void addPlaylist(String playlist, {bool re = true}) {
-    if (validatePlaylist(playlist)) {
-      state.putIfAbsent(playlist, () => []);
+  void addPlaylist(String plist, {bool re = true}) {
+    if (validatePlaylist(plist)) {
+      playlist.putIfAbsent(plist, () => []);
       if (re) {
         refresh();
       }
     }
   }
 
-  void addVideo(String playlist, String videoUrl) {
-    if (validatePlaylist(playlist)) {
-      addPlaylist(playlist, re: false);
-      if (state.containsKey(playlist)) {
-        state.entries
+  void addVideo(String plist, String videoUrl) {
+    if (validatePlaylist(plist)) {
+      addPlaylist(plist, re: false);
+      if (playlist.containsKey(plist)) {
+        playlist.entries
             .firstWhere(
-              (entry) =>
-                  entry.key == playlist && !entry.value.contains(videoUrl),
+              (entry) => entry.key == plist && !entry.value.contains(videoUrl),
             )
             .value
             .add(videoUrl);
@@ -47,11 +44,11 @@ class PlaylistNotifier extends StateNotifier<Map<String, List<String>>> {
     }
   }
 
-  void removeVideo(String playlist, String videoUrl) {
-    if (validatePlaylist(playlist) && state.containsKey(playlist)) {
-      state.entries
+  void removeVideo(String plist, String videoUrl) {
+    if (validatePlaylist(plist) && playlist.containsKey(plist)) {
+      playlist.entries
           .firstWhere(
-            (entry) => entry.key == playlist && entry.value.contains(videoUrl),
+            (entry) => entry.key == plist && entry.value.contains(videoUrl),
           )
           .value
           .remove(videoUrl);
@@ -60,7 +57,7 @@ class PlaylistNotifier extends StateNotifier<Map<String, List<String>>> {
   }
 
   void refresh() {
-    state = state;
-    _box.put('playlist', state);
+    _box.put('playlist', playlist);
+    notifyListeners();
   }
 }

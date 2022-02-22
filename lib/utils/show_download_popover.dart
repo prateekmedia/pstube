@@ -29,6 +29,7 @@ Future showDownloadPopup(
   Future<Video?> getVideo() => yt.videos.get(videoUrl);
   return showPopover<dynamic>(
     context: context,
+    title: "Download video",
     padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 12),
     innerPadding: EdgeInsets.zero,
     builder: (ctx) => FutureBuilder<Video?>(
@@ -65,12 +66,6 @@ class DownloadsWidget extends ConsumerWidget {
               ? Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    if (onClose == null)
-                      SFVideo(
-                        isRow: true,
-                        videoData: video,
-                        isInsideDownloadPopup: true,
-                      ),
                     if (ref.watch(thumbnailDownloaderProvider)) ...[
                       linksHeader(
                         context,

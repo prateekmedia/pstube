@@ -496,7 +496,7 @@ class PlaylistPopup extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final playlist = ref.watch(playlistProvider);
+    final playlist = ref.watch(playlistProvider).playlist;
     final playlistP = ref.read(playlistProvider.notifier);
     return Column(
       children: [

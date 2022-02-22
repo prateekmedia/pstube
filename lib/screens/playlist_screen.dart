@@ -21,7 +21,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final playlist = ref.watch(playlistProvider);
+    final playlist = ref.watch(playlistProvider).playlist;
     final playlistP = ref.watch(playlistProvider.notifier);
     return AdwClamp.scrollable(
       child: AdwPreferencesGroup(
@@ -74,6 +74,7 @@ class PlaylistSubScreen extends StatelessWidget {
     final playlistP = ref.watch(playlistProvider.notifier);
     final videos = ref
         .watch(playlistProvider)
+        .playlist
         .entries
         .where((element) => element.key == playlistName)
         .first

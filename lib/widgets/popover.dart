@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:libadwaita/libadwaita.dart';
+import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:sftube/utils/utils.dart';
 
 Future<T?> showPopover<T>({
   required BuildContext context,
   required Widget Function(BuildContext) builder,
+  required String title,
   bool isScrollControlled = true,
   EdgeInsets? padding = const EdgeInsets.symmetric(horizontal: 8),
   EdgeInsets? innerPadding = const EdgeInsets.symmetric(horizontal: 18),
@@ -16,6 +18,7 @@ Future<T?> showPopover<T>({
     context: context,
     constraints: const BoxConstraints(maxWidth: 600),
     builder: (ctx) => Popover(
+      title: title,
       isScrollable: isScrollable,
       innerPadding: innerPadding,
       padding: padding,
@@ -27,7 +30,7 @@ Future<T?> showPopover<T>({
 Future<T?> showPopoverWB<T>({
   required BuildContext context,
   GlobalKey<FormState>? key,
-  String? title,
+  required String title,
   Widget Function(BuildContext)? builder,
   required void Function()? onConfirm,
   TextEditingController? controller,
@@ -42,13 +45,10 @@ Future<T?> showPopoverWB<T>({
   bool isScrollable = true,
   bool disableOnNoConfirm = false,
 }) {
-  assert(
-    title != null || builder != null,
-    "Title and Builder both can't be null",
-  );
   final _formKey = key ?? GlobalKey<FormState>();
   return showPopover<T>(
     context: context,
+    title: title,
     padding: padding,
     innerPadding: innerPadding,
     isScrollControlled: isScrollControlled,
@@ -56,11 +56,6 @@ Future<T?> showPopoverWB<T>({
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 8),
-        if (title != null) ...[
-          Text(title, style: context.textTheme.headline5),
-          const Divider(),
-        ],
         if (builder != null) builder(ctx),
         if (controller != null)
           Container(
@@ -115,12 +110,14 @@ class Popover extends StatelessWidget {
   const Popover({
     Key? key,
     required this.child,
+    required this.title,
     required this.padding,
     required this.innerPadding,
     this.isScrollable = true,
   }) : super(key: key);
 
   final Widget child;
+  final String title;
   final EdgeInsets? padding;
   final EdgeInsets? innerPadding;
   final bool isScrollable;
@@ -131,44 +128,22 @@ class Popover extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const SizedBox(height: 12),
-        _buildHandle(context),
-        const SizedBox(height: 8),
+        AdwHeaderBar(
+          actions: AdwActions(onClose: Navigator.of(context).pop),
+          title: Text(title, style: context.textTheme.headline5),
+        ),
         Flexible(
-          child: Padding(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
+          child: Container(
+            padding: innerPadding,
+            decoration: BoxDecoration(
+              color: theme.canvasColor,
             ),
-            child: Container(
-              margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              padding: innerPadding,
-              decoration: BoxDecoration(
-                color: theme.cardColor,
-                borderRadius: const BorderRadius.all(Radius.circular(16)),
-              ),
-              child: isScrollable
-                  ? SingleChildScrollView(padding: padding, child: child)
-                  : child,
-            ),
+            child: isScrollable
+                ? SingleChildScrollView(padding: padding, child: child)
+                : child,
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildHandle(BuildContext context) {
-    // final theme = Theme.of(context);
-
-    return SafeArea(
-      bottom: false,
-      child: Container(
-        height: 6,
-        width: 40,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(6),
-        ),
-      ),
     );
   }
 }
