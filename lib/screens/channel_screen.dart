@@ -89,6 +89,7 @@ class ChannelScreen extends HookWidget {
       start: [
         context.backLeading(),
       ],
+      title: channel.value != null ? Text(channel.value!.title) : null,
       viewSwitcher: AdwViewSwitcher(
         currentIndex: _currentIndex.value,
         onViewChanged: _pageController.jumpToPage,
