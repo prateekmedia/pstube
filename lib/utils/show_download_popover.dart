@@ -31,7 +31,6 @@ Future showDownloadPopup(
     context: context,
     title: "Download video",
     padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 12),
-    innerPadding: EdgeInsets.zero,
     builder: (ctx) => FutureBuilder<Video?>(
       future: videoUrl != null ? getVideo().whenComplete(yt.close) : null,
       builder: (context, snapshot) {

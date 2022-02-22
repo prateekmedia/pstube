@@ -1,3 +1,4 @@
+import 'package:ant_icons/ant_icons.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -23,11 +24,11 @@ class ChannelScreen extends HookWidget {
     final _pageController = usePageController();
     final controller = useScrollController();
     final _currentIndex = useState<int>(0);
-    final _tabs = <String>[
-      context.locals.home,
-      context.locals.videos,
-      context.locals.about
-    ];
+    final _tabs = <String, IconData>{
+      context.locals.home: AntIcons.home_outline,
+      context.locals.videos: AntIcons.video_camera_outline,
+      context.locals.about: AntIcons.info_circle_outline,
+    };
 
     final getStats = channelInfo.value != null
         ? <Widget>[
@@ -91,13 +92,16 @@ class ChannelScreen extends HookWidget {
       viewSwitcher: AdwViewSwitcher(
         currentIndex: _currentIndex.value,
         onViewChanged: _pageController.jumpToPage,
-        tabs: _tabs.map((e) => ViewSwitcherData(title: e)).toList(),
+        tabs: _tabs.entries
+            .map((e) => ViewSwitcherData(title: e.key, icon: e.value))
+            .toList(),
       ),
       body: PageView(
         controller: _pageController,
         onPageChanged: (idx) => _currentIndex.value = idx,
         // These are the contents of the tab views, below the tabs.
-        children: _tabs
+        children: _tabs.keys
+            .toList()
             .asMap()
             .entries
             .map(

@@ -158,14 +158,17 @@ class MyHomePage extends HookConsumerWidget {
               onPressed: clearAll,
             ),
           if (!toggleSearch.value && _currentIndex.value == 3)
-            AdwPopupMenu(
+            GtkPopupMenu(
               body: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   AdwButton.flat(
                     child: Text(context.locals.resetDefault),
-                    onPressed: () => resetDefaults(ref),
+                    onPressed: () {
+                      resetDefaults(ref);
+                      context.back();
+                    },
                   ),
                 ],
               ),

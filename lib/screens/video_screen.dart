@@ -511,7 +511,8 @@ class PlaylistPopup extends ConsumerWidget {
               }
             },
             title: Text(entry.key),
-          )
+          ),
+        const SizedBox(height: 8),
       ],
     );
   }
