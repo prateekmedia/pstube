@@ -7,7 +7,6 @@ Future<T?> showPopover<T>({
   required BuildContext context,
   required Widget Function(BuildContext) builder,
   required String title,
-  bool isScrollControlled = true,
   EdgeInsets? padding = const EdgeInsets.symmetric(horizontal: 8),
   bool isScrollable = true,
 }) {
@@ -35,16 +34,14 @@ Future<T?> showPopoverWB<T>({
   EdgeInsets padding = const EdgeInsets.symmetric(horizontal: 8),
   String? cancelText,
   String? confirmText,
-  bool isScrollControlled = true,
   bool isScrollable = true,
-  bool disableOnNoConfirm = false,
+  bool hideConfirm = false,
 }) {
   final _formKey = key ?? GlobalKey<FormState>();
   return showPopover<T>(
     context: context,
     title: title,
     padding: padding,
-    isScrollControlled: isScrollControlled,
     builder: (ctx) => Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,7 +73,7 @@ Future<T?> showPopoverWB<T>({
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            AdwButton.flat(
+            AdwButton(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
               child: Text(cancelText ?? context.locals.cancel),
               onPressed: () {
@@ -84,15 +81,15 @@ Future<T?> showPopoverWB<T>({
                 if (onCancel != null) onCancel();
               },
             ),
-            AdwButton(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              onPressed: disableOnNoConfirm &&
-                      controller != null &&
-                      controller.value.text.isEmpty
-                  ? null
-                  : onConfirm,
-              child: Text(confirmText ?? context.locals.ok),
-            ),
+            if (!hideConfirm)
+              AdwButton.flat(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                onPressed: controller != null && controller.value.text.isEmpty
+                    ? null
+                    : onConfirm,
+                child: Text(confirmText ?? context.locals.ok),
+              ),
           ],
         ),
         const SizedBox(height: 10),

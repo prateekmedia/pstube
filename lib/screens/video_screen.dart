@@ -269,10 +269,8 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                                                                     context
                                                                         .locals
                                                                         .done,
-                                                                confirmText:
-                                                                    context
-                                                                        .locals
-                                                                        .create,
+                                                                hideConfirm:
+                                                                    true,
                                                                 controller:
                                                                     _textController,
                                                                 title: context
