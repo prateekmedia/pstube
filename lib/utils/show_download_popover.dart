@@ -29,7 +29,7 @@ Future showDownloadPopup(
   Future<Video?> getVideo() => yt.videos.get(videoUrl);
   return showPopover<dynamic>(
     context: context,
-    title: "Download video",
+    title: context.locals.download,
     padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 12),
     builder: (ctx) => FutureBuilder<Video?>(
       future: videoUrl != null ? getVideo().whenComplete(yt.close) : null,

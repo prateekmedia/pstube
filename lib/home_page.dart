@@ -116,7 +116,7 @@ class MyHomePage extends HookConsumerWidget {
     return WillPopScope(
       onWillPop: () async {
         if (_currentIndex.value != 0) {
-          _currentIndex.value = 0;
+          _controller.jumpToPage(0);
           return false;
         } else if (toggleSearch.value) {
           toggleSearchBar();
