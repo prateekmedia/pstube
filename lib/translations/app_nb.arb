@@ -60,12 +60,12 @@
     "clearItemFromDownloadList": "Tøm element fra nedlastingsliste?",
     "noLikedVideosFound": "Fant ingen likte videoer.",
     "noLikedCommentsFound": "Fant ingen likte kommentarer.",
-    "downloadLinks": "Nedlastingslenker",
+    "downloadQuality": "Last ned kvalitet",
     "uploadDate": "Opplastingsdato",
     "readMore": "Les mer",
     "showLess": "Vis mindre",
     "networkLostShowingCachedData": "Mistet tilknytning under vising av hurtiglagret data",
     "backOnline": "Tilknyttet igjen",
-    "videoNotFound": "Video not found!",
-    "typeToSearch": "Type to search"
+    "videoNotFound": "Video ikke funnet!",
+    "typeToSearch": "Skriv for å søke"
 }

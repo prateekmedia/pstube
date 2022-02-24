@@ -455,7 +455,7 @@ class ShowDownloadsWidget extends StatelessWidget {
             autoPositionWindowButtons: false,
           ),
           title: Text(
-            context.locals.downloadLinks,
+            context.locals.downloadQuality,
           ),
           actions: AdwActions(
             onClose: () => downloadsSideWidget.value = null,

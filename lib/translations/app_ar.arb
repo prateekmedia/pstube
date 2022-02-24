@@ -59,12 +59,12 @@
     "clearItemFromDownloadList": "مسح العنصر من قائمة التنزيل؟",
     "noLikedVideosFound": "لم يتم العثور على مقاطع فيديو أعجبتك.",
     "noLikedCommentsFound": "لا توجد تعليقات أعجبتك.",
-    "downloadLinks": "روابط التنزيل",
+    "downloadQuality": "جودة التنزيل",
     "uploadDate": "تاريخ الرفع",
     "readMore": "اقرء المزيد",
     "showLess": "إظهار أقل",
     "networkLostShowingCachedData": "فقدت الشبكة عرض البيانات المخزنة مؤقتًا",
     "backOnline": "العودة إلى الاتصال",
-    "videoNotFound": "Video not found!",
-    "typeToSearch": "Type to search"
+    "videoNotFound": "لم يتم العثور على الفيديو!",
+    "typeToSearch": "اكتب للبحث"
 }
