@@ -27,7 +27,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
     return (widget.snapshot.hasData)
         ? SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Column(
               children: [
                 Container(
