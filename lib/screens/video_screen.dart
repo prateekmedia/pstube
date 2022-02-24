@@ -453,6 +453,7 @@ class ShowDownloadsWidget extends StatelessWidget {
         AdwHeaderBar(
           style: const HeaderBarStyle(
             autoPositionWindowButtons: false,
+            isTransparent: true,
           ),
           title: Text(
             context.locals.downloadQuality,
@@ -572,6 +573,7 @@ class _CommentsWidgetState extends State<CommentsWidget>
           ),
           style: const HeaderBarStyle(
             autoPositionWindowButtons: false,
+            isTransparent: true,
           ),
           start: [
             if (currentPage.value == 1)
