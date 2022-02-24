@@ -205,6 +205,7 @@ class MyHomePage extends HookConsumerWidget {
                               final isMounted = useIsMounted();
                               final yt = YoutubeExplode();
                               final _currentPage = useState<SearchList?>(null);
+
                               Future<void> loadVideos() async {
                                 if (!isMounted()) return;
                                 _currentPage.value = await yt.search
@@ -214,18 +215,20 @@ class MyHomePage extends HookConsumerWidget {
                               final controller = useScrollController();
 
                               Future<void> _getMoreData() async {
-                                if (isMounted() &&
+                                if (_currentPage.value != null &&
+                                    isMounted() &&
                                     controller.position.pixels ==
-                                        controller.position.maxScrollExtent &&
-                                    _currentPage.value != null) {
+                                        controller.position.maxScrollExtent) {
                                   final page =
-                                      await (_currentPage.value)!.nextPage();
+                                      await _currentPage.value!.nextPage();
+
                                   if (page == null ||
-                                      page.isEmpty && !isMounted()) {
-                                    return;
-                                  }
+                                      page.isEmpty ||
+                                      !isMounted()) return;
 
                                   _currentPage.value!.addAll(page);
+                                  // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+                                  _currentPage.notifyListeners();
                                 }
                               }
 

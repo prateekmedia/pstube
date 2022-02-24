@@ -56,22 +56,28 @@ class ChannelScreen extends HookWidget {
         : <Widget>[];
 
     Future<void> loadInitData() async {
-      channel.value = await yt.channels.get(id);
-      if (!isMounted()) return;
-      if (channel.value != null) {
+      channel.value = await yt.channels.get(id).then((value) async {
         _currentVidPage.value =
-            await yt.channels.getUploadsFromPage(channel.value!.id.value);
-      }
+            await yt.channels.getUploadsFromPage(value.id.value);
+      });
+
+      if (!isMounted()) return;
+
       channelInfo.value = await yt.channels.getAboutPage(id);
     }
 
     Future<void> _getMoreData() async {
       if (isMounted() &&
-          controller.position.pixels == controller.position.maxScrollExtent &&
-          _currentVidPage.value != null) {
-        final page = await (_currentVidPage.value)!.nextPage();
-        if (page == null || page.isEmpty && !isMounted()) return;
-        _currentVidPage.value = page;
+          controller.position.pixels == controller.position.maxScrollExtent) {
+        final page = await _currentVidPage.value!.nextPage();
+
+        print(page);
+
+        if (page == null || page.isEmpty || !isMounted()) return;
+
+        _currentVidPage.value!.addAll(page);
+        // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+        _currentVidPage.notifyListeners();
       }
     }
 
@@ -161,9 +167,17 @@ class _CustomTabState extends State<_CustomTab>
                   child: Row(
                     children: [
                       ClipOval(
-                        child: CachedNetworkImage(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: CachedNetworkImageProvider(
+                                widget.channel!.logoUrl,
+                              ),
+                            ),
+                            color: Colors.grey,
+                          ),
                           height: 80,
-                          imageUrl: widget.channel!.logoUrl,
+                          width: 80,
                         ),
                       ),
                       const SizedBox(width: 12),
