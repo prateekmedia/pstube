@@ -453,7 +453,6 @@ class ShowDownloadsWidget extends StatelessWidget {
         AdwHeaderBar(
           style: const HeaderBarStyle(
             autoPositionWindowButtons: false,
-            isTransparent: true,
           ),
           title: Text(
             context.locals.downloadQuality,
@@ -545,13 +544,16 @@ class _CommentsWidgetState extends State<CommentsWidget>
     final currentPage = useState<int>(0);
 
     Future<void> _getMoreData() async {
-      if (isMounted() &&
-          controller.position.pixels == controller.position.maxScrollExtent &&
-          _currentPage.value != null) {
+      if (_currentPage.value != null &&
+          isMounted() &&
+          controller.position.pixels == controller.position.maxScrollExtent) {
         final page = await (_currentPage.value)!.nextPage();
-        if (page == null || page.isEmpty && !isMounted()) return;
 
-        _currentPage.value = page;
+        if (page == null || page.isEmpty || !isMounted()) return;
+
+        _currentPage.value!.addAll(page);
+        // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+        _currentPage.notifyListeners();
       }
     }
 
@@ -573,7 +575,6 @@ class _CommentsWidgetState extends State<CommentsWidget>
           ),
           style: const HeaderBarStyle(
             autoPositionWindowButtons: false,
-            isTransparent: true,
           ),
           start: [
             if (currentPage.value == 1)

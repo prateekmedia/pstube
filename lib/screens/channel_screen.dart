@@ -59,6 +59,7 @@ class ChannelScreen extends HookWidget {
       channel.value = await yt.channels.get(id).then((value) async {
         _currentVidPage.value =
             await yt.channels.getUploadsFromPage(value.id.value);
+        return;
       });
 
       if (!isMounted()) return;
@@ -222,7 +223,7 @@ class _CustomTabState extends State<_CustomTab>
                             primary: false,
                             controller: ScrollController(),
                             shrinkWrap: true,
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
                             children: [
                               Padding(
                                 padding:
