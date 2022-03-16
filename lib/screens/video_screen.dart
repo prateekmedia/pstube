@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:ant_icons/ant_icons.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chewie/chewie.dart';
+import 'package:ext_video_player/ext_video_player.dart';
 import 'package:custom_text/custom_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +22,6 @@ import 'package:sftube/widgets/widgets.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class VideoScreen extends StatefulHookConsumerWidget {
   const VideoScreen({
@@ -95,12 +96,14 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                             future:
                                 yt.videos.commentsClient.getComments(videoData),
                             builder: (context, commentsSnapshot) {
-                              final _controller = YoutubePlayerController(
-                                initialVideoId: videoData.id.value,
-                                params: const YoutubePlayerParams(
-                                  autoPlay: false,
-                                  showFullscreenButton: true,
-                                ),
+                              final videoPlayerController =
+                                  VideoPlayerController.network(
+                                'https://youtube.com/watch?v=${videoData.id.value}',
+                              )..initialize();
+                              final chewieController = ChewieController(
+                                videoPlayerController: videoPlayerController,
+                                autoPlay: false,
+                                looping: false,
                               );
                               return Flex(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,8 +117,8 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                                           if (kIsWeb ||
                                               Platform.isAndroid ||
                                               Platform.isIOS)
-                                            YoutubePlayerIFrame(
-                                              controller: _controller,
+                                            Chewie(
+                                              controller: chewieController,
                                             )
                                           else
                                             AspectRatio(
