@@ -134,35 +134,34 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                                                       ),
                                                 )
                                               else
-                                                Stack(
-                                                  children: [
-                                                    AspectRatio(
-                                                      aspectRatio: 16 / 9,
-                                                      child: CachedNetworkImage(
-                                                        imageUrl: videoData
-                                                            .thumbnails
-                                                            .mediumResUrl,
-                                                        fit: BoxFit.fill,
+                                                AspectRatio(
+                                                  aspectRatio: 16 / 9,
+                                                  child: Stack(
+                                                    children: [
+                                                      AspectRatio(
+                                                        aspectRatio: 16 / 9,
+                                                        child:
+                                                            CachedNetworkImage(
+                                                          imageUrl: videoData
+                                                              .thumbnails
+                                                              .mediumResUrl,
+                                                          fit: BoxFit.fill,
+                                                        ),
                                                       ),
-                                                    ),
-                                                    if (videoPlatforms) ...[
-                                                      Container(
-                                                        color: Colors.black
-                                                            .withOpacity(0.25),
-                                                      ),
-                                                      Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: const [
-                                                          Center(
-                                                            child:
-                                                                CircularProgressIndicator(),
+                                                      if (videoPlatforms) ...[
+                                                        Container(
+                                                          color: Colors.black
+                                                              .withOpacity(
+                                                            0.25,
                                                           ),
-                                                        ],
-                                                      ),
-                                                    ]
-                                                  ],
+                                                        ),
+                                                        const Align(
+                                                          child:
+                                                              CircularProgressIndicator(),
+                                                        ),
+                                                      ]
+                                                    ],
+                                                  ),
                                                 ),
                                               Flexible(
                                                 child: Stack(
