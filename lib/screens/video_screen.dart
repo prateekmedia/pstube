@@ -119,6 +119,8 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                                                             .contains(
                                                           '360',
                                                         ),
+                                                        orElse: () => snapshot
+                                                            .data!.muxed.first,
                                                       )
                                                       .url
                                                       .toString(),
