@@ -20,7 +20,6 @@ class VideoPlayer extends StatefulWidget {
 
 class _VideoPlayerState extends State<VideoPlayer> with WidgetsBindingObserver {
   late BetterPlayerController _controller;
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -48,7 +47,6 @@ class _VideoPlayerState extends State<VideoPlayer> with WidgetsBindingObserver {
         autoPlay: true,
         allowedScreenSleep: false,
         // autoDispose: true,
-        fullScreenAspectRatio: 16 / 9,
         controlsConfiguration: BetterPlayerControlsConfiguration(
           overflowModalColor: Colors.black87,
           overflowMenuIconsColor: Colors.white,
@@ -112,12 +110,6 @@ class _VideoPlayerState extends State<VideoPlayer> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _formKey,
-      backgroundColor: Colors.black,
-      body: BetterPlayer(
-        controller: _controller,
-      ),
-    );
+    return BetterPlayer(controller: _controller);
   }
 }
