@@ -463,7 +463,10 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
               else
                 Align(
                   alignment: Alignment.topLeft,
-                  child: context.backLeading(isCircular: true),
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 6, top: 4),
+                    child: context.backLeading(isCircular: true),
+                  ),
                 ),
               Align(
                 alignment: Alignment.topRight,
