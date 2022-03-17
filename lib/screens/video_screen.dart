@@ -443,18 +443,17 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                             },
                           ),
               ),
-              SizedBox(
-                height: 51,
-                child: AdwHeaderBar(
-                  actions: AdwActions().bitsdojo,
-                  start: [
-                    context.backLeading(isCircular: true),
-                  ],
-                  style: const HeaderBarStyle(
-                    isTransparent: true,
+              if (!videoPlatforms)
+                SizedBox(
+                  height: 51,
+                  child: AdwHeaderBar(
+                    actions: AdwActions().bitsdojo,
+                    start: [
+                      context.backLeading(isCircular: true),
+                    ],
+                    style: const HeaderBarStyle(isTransparent: true),
                   ),
                 ),
-              ),
               Align(
                 alignment: Alignment.topRight,
                 child: Material(
