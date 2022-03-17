@@ -148,11 +148,18 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                                                     if (videoPlatforms) ...[
                                                       Container(
                                                         color: Colors.black
-                                                            .withOpacity(0.1),
+                                                            .withOpacity(0.25),
                                                       ),
-                                                      const Center(
-                                                        child:
-                                                            CircularProgressIndicator(),
+                                                      Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: const [
+                                                          Center(
+                                                            child:
+                                                                CircularProgressIndicator(),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ]
                                                   ],
