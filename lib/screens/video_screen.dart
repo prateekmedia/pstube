@@ -459,6 +459,11 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                     ],
                     style: const HeaderBarStyle(isTransparent: true),
                   ),
+                )
+              else
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: context.backLeading(isCircular: true),
                 ),
               Align(
                 alignment: Alignment.topRight,
