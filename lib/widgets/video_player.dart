@@ -41,10 +41,11 @@ class _VideoPlayerState extends State<VideoPlayer> with WidgetsBindingObserver {
       BetterPlayerConfiguration(
         autoDetectFullscreenAspectRatio: true,
         fit: BoxFit.fitHeight,
+
         aspectRatio: 16 / 9,
         handleLifecycle: false,
         autoDetectFullscreenDeviceOrientation: true,
-        autoPlay: true,
+        // autoPlay: true,
         allowedScreenSleep: false,
         // autoDispose: true,
         controlsConfiguration: BetterPlayerControlsConfiguration(
