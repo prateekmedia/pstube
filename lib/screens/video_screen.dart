@@ -1,12 +1,7 @@
-import 'dart:io';
-
 import 'package:ant_icons/ant_icons.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chewie/chewie.dart';
-import 'package:ext_video_player/ext_video_player.dart';
 import 'package:custom_text/custom_text.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -17,6 +12,7 @@ import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 
 import 'package:sftube/providers/providers.dart';
 import 'package:sftube/utils/utils.dart';
+import 'package:sftube/widgets/video_player.dart';
 import 'package:sftube/widgets/widgets.dart';
 
 import 'package:share_plus/share_plus.dart';
@@ -96,305 +92,353 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                             future:
                                 yt.videos.commentsClient.getComments(videoData),
                             builder: (context, commentsSnapshot) {
-                              final videoPlayerController =
-                                  VideoPlayerController.network(
-                                'https://youtube.com/watch?v=${videoData.id.value}',
-                              )..initialize();
-                              final chewieController = ChewieController(
-                                videoPlayerController: videoPlayerController,
-                                autoPlay: false,
-                                looping: false,
-                              );
-                              return Flex(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                direction: Axis.horizontal,
-                                children: [
-                                  Flexible(
-                                    flex: 8,
-                                    child: SFBody(
-                                      child: Column(
-                                        children: [
-                                          if (kIsWeb ||
-                                              Platform.isAndroid ||
-                                              Platform.isIOS)
-                                            Chewie(
-                                              controller: chewieController,
-                                            )
-                                          else
-                                            AspectRatio(
-                                              aspectRatio: 16 / 9,
-                                              child: CachedNetworkImage(
-                                                imageUrl: videoData
-                                                    .thumbnails.mediumResUrl,
-                                                fit: BoxFit.fill,
-                                              ),
-                                            ),
-                                          Flexible(
-                                            child: Stack(
-                                              children: [
-                                                ListView(
-                                                  shrinkWrap: true,
-                                                  children: [
-                                                    Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                        12,
+                              return FutureBuilder<StreamManifest>(
+                                future: YoutubeExplode()
+                                    .videos
+                                    .streamsClient
+                                    .getManifest(videoData.id),
+                                builder: (context, snapshot) {
+                                  return Flex(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    direction: Axis.horizontal,
+                                    children: [
+                                      Flexible(
+                                        flex: 8,
+                                        child: SFBody(
+                                          child: Column(
+                                            children: [
+                                              if (videoPlatforms &&
+                                                  snapshot.hasData &&
+                                                  snapshot.data != null)
+                                                VideoPlayer(
+                                                  url: snapshot.data!.muxed
+                                                      .firstWhere(
+                                                        (element) => element
+                                                            .qualityLabel
+                                                            .contains(
+                                                          '360',
+                                                        ),
+                                                      )
+                                                      .url
+                                                      .toString(),
+                                                  resolutions: snapshot
+                                                      .data!.muxed
+                                                      .asMap()
+                                                      .map(
+                                                        (key, value) =>
+                                                            MapEntry(
+                                                          value.qualityLabel,
+                                                          value.url.toString(),
+                                                        ),
                                                       ),
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text(
-                                                            videoData.title,
-                                                            style: context
-                                                                .textTheme
-                                                                .headline3,
+                                                )
+                                              else
+                                                Stack(
+                                                  children: [
+                                                    AspectRatio(
+                                                      aspectRatio: 16 / 9,
+                                                      child: CachedNetworkImage(
+                                                        imageUrl: videoData
+                                                            .thumbnails
+                                                            .mediumResUrl,
+                                                        fit: BoxFit.fill,
+                                                      ),
+                                                    ),
+                                                    if (videoPlatforms) ...[
+                                                      Container(
+                                                        color: Colors.black
+                                                            .withOpacity(0.1),
+                                                      ),
+                                                      const Center(
+                                                        child:
+                                                            CircularProgressIndicator(),
+                                                      ),
+                                                    ]
+                                                  ],
+                                                ),
+                                              Flexible(
+                                                child: Stack(
+                                                  children: [
+                                                    ListView(
+                                                      shrinkWrap: true,
+                                                      children: [
+                                                        Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(
+                                                            12,
                                                           ),
-                                                          const SizedBox(
-                                                            height: 10,
-                                                          ),
-                                                          Row(
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
                                                             children: [
                                                               Text(
-                                                                '${videoData.engagement.viewCount.formatNumber}'
-                                                                ' views',
+                                                                videoData.title,
+                                                                style: context
+                                                                    .textTheme
+                                                                    .headline3,
                                                               ),
-                                                              Text(
-                                                                videoData.publishDate !=
-                                                                        null
-                                                                    ? '  •  ${timeago.format(
-                                                                        videoData
-                                                                            .publishDate!,
-                                                                      )}'
-                                                                    : '',
+                                                              const SizedBox(
+                                                                height: 10,
+                                                              ),
+                                                              Row(
+                                                                children: [
+                                                                  Text(
+                                                                    '${videoData.engagement.viewCount.formatNumber}'
+                                                                    ' views',
+                                                                  ),
+                                                                  Text(
+                                                                    videoData.publishDate !=
+                                                                            null
+                                                                        ? '  •  ${timeago.format(
+                                                                            videoData.publishDate!,
+                                                                          )}'
+                                                                        : '',
+                                                                  ),
+                                                                ],
                                                               ),
                                                             ],
                                                           ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                        horizontal: 10,
-                                                        vertical: 2,
-                                                      ),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          iconWithBottomLabel(
-                                                            icon: isLiked!.value
-                                                                ? AntIcons.like
-                                                                : AntIcons
-                                                                    .like_outline,
-                                                            onPressed:
-                                                                updateLike,
-                                                            label: videoData.engagement
-                                                                        .likeCount !=
-                                                                    null
-                                                                ? videoData
-                                                                    .engagement
-                                                                    .likeCount!
-                                                                    .formatNumber
-                                                                : context.locals
-                                                                    .like,
+                                                        ),
+                                                        Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                            horizontal: 10,
+                                                            vertical: 2,
                                                           ),
-                                                          iconWithBottomLabel(
-                                                            icon: AntIcons
-                                                                .share_alt,
-                                                            onPressed: () {
-                                                              Share.share(
-                                                                videoData.url,
-                                                              );
-                                                            },
-                                                            label: context
-                                                                .locals.share,
-                                                          ),
-                                                          iconWithBottomLabel(
-                                                            icon:
-                                                                Icons.download,
-                                                            onPressed: downloadsSideWidget
-                                                                        .value !=
-                                                                    null
-                                                                ? () => downloadsSideWidget
-                                                                        .value =
-                                                                    null
-                                                                : () {
-                                                                    commentSideWidget
-                                                                            .value =
-                                                                        null;
-                                                                    downloadsSideWidget
-                                                                            .value =
-                                                                        ShowDownloadsWidget(
-                                                                      downloadsSideWidget:
-                                                                          downloadsSideWidget,
-                                                                      videoData:
-                                                                          videoData,
-                                                                    );
-                                                                  },
-                                                            label: context
-                                                                .locals
-                                                                .download,
-                                                          ),
-                                                          iconWithBottomLabel(
-                                                            icon: AntIcons
-                                                                .copy_outline,
-                                                            onPressed: () {
-                                                              Clipboard.setData(
-                                                                ClipboardData(
-                                                                  text:
-                                                                      videoData
-                                                                          .url,
-                                                                ),
-                                                              );
-                                                              BotToast.showText(
-                                                                text: context
-                                                                    .locals
-                                                                    .copiedToClipboard,
-                                                              );
-                                                            },
-                                                            label: context
-                                                                .locals
-                                                                .copyLink,
-                                                          ),
-                                                          iconWithBottomLabel(
-                                                            icon: AntIcons
-                                                                .unordered_list,
-                                                            onPressed: () {
-                                                              showPopoverWB<
-                                                                  dynamic>(
-                                                                context:
-                                                                    context,
-                                                                cancelText:
-                                                                    context
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              iconWithBottomLabel(
+                                                                icon: isLiked!
+                                                                        .value
+                                                                    ? AntIcons
+                                                                        .like
+                                                                    : AntIcons
+                                                                        .like_outline,
+                                                                onPressed:
+                                                                    updateLike,
+                                                                label: videoData
+                                                                            .engagement.likeCount !=
+                                                                        null
+                                                                    ? videoData
+                                                                        .engagement
+                                                                        .likeCount!
+                                                                        .formatNumber
+                                                                    : context
                                                                         .locals
-                                                                        .done,
-                                                                hideConfirm:
-                                                                    true,
-                                                                controller:
-                                                                    _textController,
-                                                                title: context
-                                                                    .locals
-                                                                    .save,
-                                                                hint: context
-                                                                    .locals
-                                                                    .createNew,
-                                                                onConfirm: () {
-                                                                  ref
-                                                                      .read(
-                                                                        playlistProvider
-                                                                            .notifier,
-                                                                      )
-                                                                      .addPlaylist(
-                                                                        _textController
-                                                                            .value
-                                                                            .text,
-                                                                      );
-                                                                  _textController
-                                                                          .value =
-                                                                      TextEditingValue
-                                                                          .empty;
-                                                                },
-                                                                builder: (ctx) =>
-                                                                    PlaylistPopup(
-                                                                  videoData:
-                                                                      videoData,
-                                                                ),
-                                                              );
-                                                            },
-                                                            label: context
-                                                                .locals.save,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    const Divider(),
-                                                    ChannelInfo(
-                                                      channel: null,
-                                                      channelId: videoData
-                                                          .channelId.value,
-                                                      isOnVideo: true,
-                                                    ),
-                                                    const Divider(height: 4),
-                                                    ListTile(
-                                                      onTap: commentsSnapshot
-                                                                  .data ==
-                                                              null
-                                                          ? null
-                                                          : commentSideWidget
-                                                                      .value !=
-                                                                  null
-                                                              ? () =>
-                                                                  commentSideWidget
-                                                                          .value =
-                                                                      null
-                                                              : () {
-                                                                  downloadsSideWidget
-                                                                          .value =
-                                                                      null;
-                                                                  commentSideWidget
-                                                                          .value =
-                                                                      CommentsWidget(
-                                                                    onClose: () =>
-                                                                        commentSideWidget.value =
-                                                                            null,
-                                                                    replyComment:
-                                                                        replyComment,
-                                                                    snapshot:
-                                                                        commentsSnapshot,
+                                                                        .like,
+                                                              ),
+                                                              iconWithBottomLabel(
+                                                                icon: AntIcons
+                                                                    .share_alt,
+                                                                onPressed: () {
+                                                                  Share.share(
+                                                                    videoData
+                                                                        .url,
                                                                   );
                                                                 },
-                                                      title: Text(
-                                                        context.locals.comments,
-                                                      ),
-                                                      trailing: Text(
-                                                        (commentsSnapshot
-                                                                        .data !=
-                                                                    null
-                                                                ? commentsSnapshot
-                                                                    .data!
-                                                                    .totalLength
-                                                                : 0)
-                                                            .formatNumber,
-                                                      ),
+                                                                label: context
+                                                                    .locals
+                                                                    .share,
+                                                              ),
+                                                              iconWithBottomLabel(
+                                                                icon: Icons
+                                                                    .download,
+                                                                onPressed: downloadsSideWidget
+                                                                            .value !=
+                                                                        null
+                                                                    ? () =>
+                                                                        downloadsSideWidget.value =
+                                                                            null
+                                                                    : () {
+                                                                        commentSideWidget.value =
+                                                                            null;
+                                                                        downloadsSideWidget.value =
+                                                                            ShowDownloadsWidget(
+                                                                          manifest:
+                                                                              snapshot.data,
+                                                                          downloadsSideWidget:
+                                                                              downloadsSideWidget,
+                                                                          videoData:
+                                                                              videoData,
+                                                                        );
+                                                                      },
+                                                                label: context
+                                                                    .locals
+                                                                    .download,
+                                                              ),
+                                                              iconWithBottomLabel(
+                                                                icon: AntIcons
+                                                                    .copy_outline,
+                                                                onPressed: () {
+                                                                  Clipboard
+                                                                      .setData(
+                                                                    ClipboardData(
+                                                                      text: videoData
+                                                                          .url,
+                                                                    ),
+                                                                  );
+                                                                  BotToast
+                                                                      .showText(
+                                                                    text: context
+                                                                        .locals
+                                                                        .copiedToClipboard,
+                                                                  );
+                                                                },
+                                                                label: context
+                                                                    .locals
+                                                                    .copyLink,
+                                                              ),
+                                                              iconWithBottomLabel(
+                                                                icon: AntIcons
+                                                                    .unordered_list,
+                                                                onPressed: () {
+                                                                  showPopoverWB<
+                                                                      dynamic>(
+                                                                    context:
+                                                                        context,
+                                                                    cancelText:
+                                                                        context
+                                                                            .locals
+                                                                            .done,
+                                                                    hideConfirm:
+                                                                        true,
+                                                                    controller:
+                                                                        _textController,
+                                                                    title: context
+                                                                        .locals
+                                                                        .save,
+                                                                    hint: context
+                                                                        .locals
+                                                                        .createNew,
+                                                                    onConfirm:
+                                                                        () {
+                                                                      ref
+                                                                          .read(
+                                                                            playlistProvider.notifier,
+                                                                          )
+                                                                          .addPlaylist(
+                                                                            _textController.value.text,
+                                                                          );
+                                                                      _textController
+                                                                              .value =
+                                                                          TextEditingValue
+                                                                              .empty;
+                                                                    },
+                                                                    builder:
+                                                                        (ctx) =>
+                                                                            PlaylistPopup(
+                                                                      videoData:
+                                                                          videoData,
+                                                                    ),
+                                                                  );
+                                                                },
+                                                                label: context
+                                                                    .locals
+                                                                    .save,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        const Divider(),
+                                                        ChannelInfo(
+                                                          channel: null,
+                                                          channelId: videoData
+                                                              .channelId.value,
+                                                          isOnVideo: true,
+                                                        ),
+                                                        const Divider(
+                                                          height: 4,
+                                                        ),
+                                                        ListTile(
+                                                          onTap: commentsSnapshot
+                                                                      .data ==
+                                                                  null
+                                                              ? null
+                                                              : commentSideWidget
+                                                                          .value !=
+                                                                      null
+                                                                  ? () => commentSideWidget
+                                                                          .value =
+                                                                      null
+                                                                  : () {
+                                                                      downloadsSideWidget
+                                                                              .value =
+                                                                          null;
+                                                                      commentSideWidget
+                                                                              .value =
+                                                                          CommentsWidget(
+                                                                        onClose:
+                                                                            () =>
+                                                                                commentSideWidget.value = null,
+                                                                        replyComment:
+                                                                            replyComment,
+                                                                        snapshot:
+                                                                            commentsSnapshot,
+                                                                      );
+                                                                    },
+                                                          title: Text(
+                                                            context.locals
+                                                                .comments,
+                                                          ),
+                                                          trailing: Text(
+                                                            (commentsSnapshot
+                                                                            .data !=
+                                                                        null
+                                                                    ? commentsSnapshot
+                                                                        .data!
+                                                                        .totalLength
+                                                                    : 0)
+                                                                .formatNumber,
+                                                          ),
+                                                        ),
+                                                        const Divider(
+                                                          height: 4,
+                                                        ),
+                                                        if (context.isMobile)
+                                                          DescriptionWidget(
+                                                            video: videoData,
+                                                          ),
+                                                      ],
                                                     ),
-                                                    const Divider(height: 4),
-                                                    if (context.isMobile)
-                                                      DescriptionWidget(
-                                                        video: videoData,
-                                                      ),
+                                                    if (context.isMobile) ...[
+                                                      if (commentSideWidget
+                                                              .value !=
+                                                          null)
+                                                        commentSideWidget
+                                                            .value!,
+                                                      if (downloadsSideWidget
+                                                              .value !=
+                                                          null)
+                                                        downloadsSideWidget
+                                                            .value!
+                                                    ],
                                                   ],
                                                 ),
-                                                if (context.isMobile) ...[
-                                                  if (commentSideWidget.value !=
-                                                      null)
-                                                    commentSideWidget.value!,
-                                                  if (downloadsSideWidget
-                                                          .value !=
-                                                      null)
-                                                    downloadsSideWidget.value!
-                                                ],
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  if (!context.isMobile)
-                                    Flexible(
-                                      flex: 4,
-                                      child: [
-                                        DescriptionWidget(
-                                          video: videoData,
-                                          isInsidePopup: false,
                                         ),
-                                      ].last,
-                                    ),
-                                ],
+                                      ),
+                                      if (!context.isMobile)
+                                        Flexible(
+                                          flex: 4,
+                                          child: [
+                                            DescriptionWidget(
+                                              video: videoData,
+                                              isInsidePopup: false,
+                                            ),
+                                          ].last,
+                                        ),
+                                    ],
+                                  );
+                                },
                               );
                             },
                           ),
@@ -444,10 +488,12 @@ class ShowDownloadsWidget extends StatelessWidget {
     Key? key,
     required this.downloadsSideWidget,
     required this.videoData,
+    this.manifest,
   }) : super(key: key);
 
   final ValueNotifier<Widget?> downloadsSideWidget;
   final Video videoData;
+  final StreamManifest? manifest;
 
   @override
   Widget build(BuildContext context) {

@@ -71,8 +71,6 @@ class ChannelScreen extends HookWidget {
           controller.position.pixels == controller.position.maxScrollExtent) {
         final page = await _currentVidPage.value!.nextPage();
 
-        print(page);
-
         if (page == null || page.isEmpty || !isMounted()) return;
 
         _currentVidPage.value!.addAll(page);

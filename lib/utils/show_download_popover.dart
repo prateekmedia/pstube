@@ -18,6 +18,7 @@ final Widget _progressIndicator = SizedBox(
 
 Future showDownloadPopup(
   BuildContext context, {
+  StreamManifest? manifest,
   Video? video,
   String? videoUrl,
 }) {
@@ -35,7 +36,10 @@ Future showDownloadPopup(
       future: videoUrl != null ? getVideo().whenComplete(yt.close) : null,
       builder: (context, snapshot) {
         return video != null || snapshot.hasData && snapshot.data != null
-            ? DownloadsWidget(video: video ?? snapshot.data!)
+            ? DownloadsWidget(
+                video: video ?? snapshot.data!,
+                manifest: manifest,
+              )
             : snapshot.hasError
                 ? Text(context.locals.error)
                 : _progressIndicator;
@@ -48,20 +52,24 @@ class DownloadsWidget extends ConsumerWidget {
   const DownloadsWidget({
     Key? key,
     required this.video,
+    this.manifest,
     this.onClose,
   }) : super(key: key);
 
   final Video video;
+  final StreamManifest? manifest;
   final VoidCallback? onClose;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
       child: FutureBuilder<StreamManifest>(
-        future:
-            YoutubeExplode().videos.streamsClient.getManifest(video.id.value),
+        future: manifest == null
+            ? YoutubeExplode().videos.streamsClient.getManifest(video.id.value)
+            : null,
         builder: (context, snapshot) {
-          return snapshot.hasData
+          final data = manifest ?? snapshot.data;
+          return snapshot.hasData || manifest != null
               ? Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -86,8 +94,7 @@ class DownloadsWidget extends ConsumerWidget {
                       label: context.locals.videoPlusAudio,
                       padding: const EdgeInsets.only(top: 6, bottom: 14),
                     ),
-                    for (var videoStream
-                        in snapshot.data!.muxed.sortByVideoQuality())
+                    for (var videoStream in data!.muxed.sortByVideoQuality())
                       CustomListTile(
                         stream: videoStream,
                         video: video,
@@ -98,7 +105,7 @@ class DownloadsWidget extends ConsumerWidget {
                       icon: Icons.audiotrack,
                       label: context.locals.audioOnly,
                     ),
-                    for (var audioStream in snapshot.data!.audioOnly.reversed)
+                    for (var audioStream in data.audioOnly.reversed)
                       CustomListTile(
                         stream: audioStream,
                         video: video,
@@ -109,8 +116,8 @@ class DownloadsWidget extends ConsumerWidget {
                       icon: Icons.videocam,
                       label: context.locals.videoOnly,
                     ),
-                    for (var videoStream in snapshot.data!.videoOnly
-                        .where((element) => element.tag < 200))
+                    for (var videoStream
+                        in data.videoOnly.where((element) => element.tag < 200))
                       CustomListTile(
                         stream: videoStream,
                         video: video,
