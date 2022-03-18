@@ -136,6 +136,7 @@ class MyHomePage extends HookConsumerWidget {
         ],
         title: toggleSearch.value
             ? AdwSearchBarAc(
+                search: null,
                 toggleSearchBar: toggleSearchBar,
                 asyncSuggestions: (str) =>
                     YoutubeExplode().search.getQuerySuggestions(str),
