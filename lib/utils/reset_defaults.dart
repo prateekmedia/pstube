@@ -6,4 +6,5 @@ void resetDefaults(WidgetRef ref) {
   ref.watch(themeTypeProvider.notifier).reset();
   ref.watch(thumbnailDownloaderProvider.notifier).reset();
   ref.watch(regionProvider.notifier).reset();
+  ref.watch(rememberChoiceProvider.notifier).reset();
 }

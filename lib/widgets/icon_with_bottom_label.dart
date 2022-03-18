@@ -11,8 +11,9 @@ Widget iconWithBottomLabel({
     child: Column(
       children: [
         AdwButton.circular(
+          size: 40,
           onPressed: onPressed ?? () {},
-          child: Icon(icon, size: 28),
+          child: Icon(icon),
         ),
         const SizedBox(height: 2),
         Text(label),

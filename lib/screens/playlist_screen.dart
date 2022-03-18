@@ -1,8 +1,8 @@
-import 'package:ant_icons/ant_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 import 'package:sftube/providers/providers.dart';
 import 'package:sftube/screens/screens.dart';
@@ -28,7 +28,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen>
         padding: const EdgeInsets.symmetric(horizontal: 12),
         children: [
           AdwActionRow(
-            start: const Icon(AntIcons.like),
+            start: const Icon(LucideIcons.thumbsUp),
             title: context.locals.liked,
             onActivated: () => context.pushPage(const LikedScreen()),
             end: const Icon(Icons.chevron_right),
@@ -44,10 +44,8 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen>
                 ),
                 title: entry.key,
                 end: AdwButton.flat(
-                  onPressed: () {
-                    playlistP.removePlaylist(entry.key);
-                  },
-                  child: const Icon(AntIcons.minus_outline),
+                  onPressed: () => playlistP.removePlaylist(entry.key),
+                  child: const Icon(LucideIcons.minus),
                 ),
               )
         ],
@@ -81,9 +79,7 @@ class PlaylistSubScreen extends StatelessWidget {
         .value;
     return AdwScaffold(
       actions: AdwActions().bitsdojo,
-      start: [
-        context.backLeading(),
-      ],
+      start: [context.backLeading()],
       title: Text(playlistName),
       body: SFBody(
         child: videos.isNotEmpty
@@ -95,10 +91,9 @@ class PlaylistSubScreen extends StatelessWidget {
                       videoUrl: videoUrl,
                       actions: [
                         AdwButton.circular(
-                          onPressed: () {
-                            playlistP.removeVideo(playlistName, videoUrl);
-                          },
-                          child: const Icon(AntIcons.delete_outline),
+                          onPressed: () =>
+                              playlistP.removeVideo(playlistName, videoUrl),
+                          child: const Icon(LucideIcons.trash),
                         ),
                       ],
                     ),

@@ -8,13 +8,11 @@ Future<T?> showPopover<T>({
   required Widget Function(BuildContext) builder,
   required String title,
   EdgeInsets? padding = const EdgeInsets.symmetric(horizontal: 8),
-  bool isScrollable = true,
 }) {
   return showDialog<T>(
     context: context,
     builder: (ctx) => Popover(
       title: title,
-      isScrollable: isScrollable,
       padding: padding,
       child: builder(ctx),
     ),
@@ -34,7 +32,6 @@ Future<T?> showPopoverWB<T>({
   EdgeInsets padding = const EdgeInsets.symmetric(horizontal: 8),
   String? cancelText,
   String? confirmText,
-  bool isScrollable = true,
   bool hideConfirm = false,
 }) {
   final _formKey = key ?? GlobalKey<FormState>();
@@ -104,13 +101,11 @@ class Popover extends StatelessWidget {
     required this.child,
     required this.title,
     required this.padding,
-    this.isScrollable = true,
   }) : super(key: key);
 
   final Widget child;
   final String title;
   final EdgeInsets? padding;
-  final bool isScrollable;
 
   @override
   Widget build(BuildContext context) {

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:libadwaita/libadwaita.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'package:sftube/models/models.dart';
@@ -72,7 +73,17 @@ class DownloadsWidget extends ConsumerWidget {
           return snapshot.hasData || manifest != null
               ? Column(
                   mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    AdwActionRow(
+                      end: Checkbox(
+                        value: ref.watch(rememberChoiceProvider),
+                        onChanged: (value) => ref
+                            .watch(rememberChoiceProvider.notifier)
+                            .value = value!,
+                      ),
+                      title: 'Remember my choice',
+                    ),
                     if (ref.watch(thumbnailDownloaderProvider)) ...[
                       linksHeader(
                         context,
@@ -82,7 +93,7 @@ class DownloadsWidget extends ConsumerWidget {
                       ),
                       for (var thumbnail
                           in video.thumbnails.toStreamInfo(context))
-                        CustomListTile(
+                        DownloadQualityTile(
                           stream: thumbnail,
                           video: video,
                           onClose: onClose,
@@ -95,7 +106,7 @@ class DownloadsWidget extends ConsumerWidget {
                       padding: const EdgeInsets.only(top: 6, bottom: 14),
                     ),
                     for (var videoStream in data!.muxed.sortByVideoQuality())
-                      CustomListTile(
+                      DownloadQualityTile(
                         stream: videoStream,
                         video: video,
                         onClose: onClose,
@@ -106,7 +117,7 @@ class DownloadsWidget extends ConsumerWidget {
                       label: context.locals.audioOnly,
                     ),
                     for (var audioStream in data.audioOnly.reversed)
-                      CustomListTile(
+                      DownloadQualityTile(
                         stream: audioStream,
                         video: video,
                         onClose: onClose,
@@ -118,7 +129,7 @@ class DownloadsWidget extends ConsumerWidget {
                     ),
                     for (var videoStream
                         in data.videoOnly.where((element) => element.tag < 200))
-                      CustomListTile(
+                      DownloadQualityTile(
                         stream: videoStream,
                         video: video,
                         onClose: onClose,
@@ -156,8 +167,8 @@ Widget linksHeader(
   );
 }
 
-class CustomListTile extends ConsumerStatefulWidget {
-  const CustomListTile({
+class DownloadQualityTile extends ConsumerStatefulWidget {
+  const DownloadQualityTile({
     Key? key,
     required this.stream,
     required this.video,
@@ -169,10 +180,10 @@ class CustomListTile extends ConsumerStatefulWidget {
   final VoidCallback? onClose;
 
   @override
-  ConsumerState<CustomListTile> createState() => _CustomListTileState();
+  ConsumerState<DownloadQualityTile> createState() => _CustomListTileState();
 }
 
-class _CustomListTileState extends ConsumerState<CustomListTile> {
+class _CustomListTileState extends ConsumerState<DownloadQualityTile> {
   @override
   Widget build(BuildContext context) {
     return Container(

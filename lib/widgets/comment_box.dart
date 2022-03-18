@@ -1,7 +1,7 @@
-import 'package:ant_icons/ant_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:readmore/readmore.dart';
 
 import 'package:sftube/models/models.dart';
@@ -120,7 +120,7 @@ class CommentBox extends HookConsumerWidget {
                           child: Row(
                             children: [
                               Icon(
-                                AntIcons.like,
+                                LucideIcons.thumbsUp,
                                 size: 18,
                                 color: comment is LikedComment || isLiked
                                     ? Colors.blue
@@ -138,7 +138,7 @@ class CommentBox extends HookConsumerWidget {
                       ),
                       if (comment is Comment && comment.isHearted as bool)
                         Icon(
-                          AntIcons.heart,
+                          LucideIcons.heart,
                           color: Colors.red[600],
                         ),
                     ],

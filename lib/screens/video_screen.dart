@@ -1,4 +1,3 @@
-import 'package:ant_icons/ant_icons.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:custom_text/custom_text.dart';
@@ -9,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 import 'package:sftube/providers/providers.dart';
 import 'package:sftube/utils/utils.dart';
@@ -225,10 +225,10 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                                                               iconWithBottomLabel(
                                                                 icon: isLiked!
                                                                         .value
-                                                                    ? AntIcons
-                                                                        .like
-                                                                    : AntIcons
-                                                                        .like_outline,
+                                                                    ? Icons
+                                                                        .thumb_up
+                                                                    : Icons
+                                                                        .thumb_up_outlined,
                                                                 onPressed:
                                                                     updateLike,
                                                                 label: videoData
@@ -243,8 +243,8 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                                                                         .like,
                                                               ),
                                                               iconWithBottomLabel(
-                                                                icon: AntIcons
-                                                                    .share_alt,
+                                                                icon: Icons
+                                                                    .share_outlined,
                                                                 onPressed: () {
                                                                   Share.share(
                                                                     videoData
@@ -257,7 +257,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                                                               ),
                                                               iconWithBottomLabel(
                                                                 icon: Icons
-                                                                    .download,
+                                                                    .download_outlined,
                                                                 onPressed: downloadsSideWidget
                                                                             .value !=
                                                                         null
@@ -282,8 +282,8 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                                                                     .download,
                                                               ),
                                                               iconWithBottomLabel(
-                                                                icon: AntIcons
-                                                                    .copy_outline,
+                                                                icon:
+                                                                    Icons.copy,
                                                                 onPressed: () {
                                                                   Clipboard
                                                                       .setData(
@@ -304,8 +304,8 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                                                                     .copyLink,
                                                               ),
                                                               iconWithBottomLabel(
-                                                                icon: AntIcons
-                                                                    .unordered_list,
+                                                                icon: LucideIcons
+                                                                    .listPlus,
                                                                 onPressed: () {
                                                                   showPopoverWB<
                                                                       dynamic>(

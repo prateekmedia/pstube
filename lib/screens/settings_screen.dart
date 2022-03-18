@@ -116,6 +116,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
                 .toList(),
           ),
           AdwActionRow(
+            title: context.locals.resetDefault,
+            onActivated: () => resetDefaults(ref),
+          ),
+          AdwActionRow(
             title: '${context.locals.about} ${myApp.name}',
             onActivated: () => showDialog<dynamic>(
               context: context,

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:ant_icons/ant_icons.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:libadwaita_searchbar_ac/libadwaita_searchbar_ac.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:piped_api/piped_api.dart';
 
 import 'package:sftube/providers/providers.dart';
@@ -40,11 +40,11 @@ class MyHomePage extends HookConsumerWidget {
       toggleSearch.value = value ?? !toggleSearch.value;
     }
 
-    final navItems = <String, List<IconData>>{
-      context.locals.home: [AntIcons.home_outline, AntIcons.home],
-      context.locals.playlist: [AntIcons.unordered_list],
-      context.locals.downloads: [Icons.download_outlined, Icons.download],
-      context.locals.settings: [AntIcons.setting_outline, AntIcons.setting],
+    final navItems = <String, IconData>{
+      context.locals.home: LucideIcons.home,
+      context.locals.playlist: LucideIcons.list,
+      context.locals.downloads: LucideIcons.download,
+      context.locals.settings: LucideIcons.settings,
     };
 
     Future addDownload() async {
@@ -131,7 +131,7 @@ class MyHomePage extends HookConsumerWidget {
           AdwHeaderButton(
             isActive: toggleSearch.value,
             onPressed: toggleSearchBar,
-            icon: const Icon(AntIcons.search_outline, size: 20),
+            icon: const Icon(Icons.search, size: 20),
           ),
         ],
         title: toggleSearch.value
@@ -154,24 +154,8 @@ class MyHomePage extends HookConsumerWidget {
             ),
           if (!toggleSearch.value && _currentIndex.value == 2)
             AdwHeaderButton(
-              icon: const Icon(AntIcons.delete_outline),
+              icon: const Icon(LucideIcons.trash),
               onPressed: clearAll,
-            ),
-          if (!toggleSearch.value && _currentIndex.value == 3)
-            GtkPopupMenu(
-              body: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  AdwButton.flat(
-                    child: Text(context.locals.resetDefault),
-                    onPressed: () {
-                      resetDefaults(ref);
-                      context.back();
-                    },
-                  ),
-                ],
-              ),
             ),
         ],
         body: FutureBuilder<Response>(
@@ -287,7 +271,7 @@ class MyHomePage extends HookConsumerWidget {
                       badge: index == 2
                           ? ref.watch(downloadListProvider).downloading
                           : null,
-                      icon: item.value[0],
+                      icon: item.value,
                     );
                   },
                 ),

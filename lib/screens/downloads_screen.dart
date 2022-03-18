@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:ant_icons/ant_icons.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:open_file/open_file.dart';
 
 import 'package:sftube/models/models.dart';
@@ -27,7 +27,7 @@ class DownloadsScreen extends ConsumerWidget {
         children: [
           if (downloadList.isEmpty) ...[
             const SizedBox(height: 60),
-            const Icon(Icons.download, size: 30),
+            const Icon(LucideIcons.download, size: 30),
             const SizedBox(height: 10),
             Text(context.locals.noDownloadsFound).center()
           ] else
@@ -186,10 +186,10 @@ class DownloadItemBuilder extends StatelessWidget {
                     },
               child: Icon(
                 item.cancelToken != null && item.cancelToken!.isCancelled
-                    ? AntIcons.minus_outline
+                    ? LucideIcons.minus
                     : item.total != 0 && item.total != item.downloaded
-                        ? Icons.close
-                        : AntIcons.delete_outline,
+                        ? LucideIcons.x
+                        : LucideIcons.trash,
               ),
             )
           ],
