@@ -107,24 +107,26 @@ class CommentBox extends HookConsumerWidget {
                           )
                         : SelectableText(comment.text as String),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 6),
                   Row(
                     children: [
                       GestureDetector(
                         onTap: updateLike?.call,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: kTabLabelPadding.left,
-                            vertical: 4,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(
+                            color: context.getBackgroundColor
+                                .brighten(context, 20),
+                            borderRadius: BorderRadius.circular(4),
                           ),
                           child: Row(
                             children: [
                               Icon(
-                                LucideIcons.thumbsUp,
+                                comment is LikedComment || isLiked
+                                    ? Icons.thumb_up
+                                    : Icons.thumb_up_outlined,
                                 size: 18,
-                                color: comment is LikedComment || isLiked
-                                    ? Colors.blue
-                                    : null,
                               ),
                               const SizedBox(width: 8),
                               Text(
@@ -136,35 +138,40 @@ class CommentBox extends HookConsumerWidget {
                           ),
                         ),
                       ),
-                      if (comment is Comment && comment.isHearted as bool)
-                        Icon(
-                          LucideIcons.heart,
-                          color: Colors.red[600],
+                      if (comment is Comment && comment.isHearted as bool) ...[
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 4,
+                            vertical: 3,
+                          ),
+                          decoration: BoxDecoration(
+                            color: context.getBackgroundColor
+                                .brighten(context, 20),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Icon(
+                            Icons.favorite,
+                            color: Colors.red[600],
+                            size: 22,
+                          ),
+                        ),
+                      ],
+                      const SizedBox(width: 8),
+                      if (comment is Comment &&
+                          !isInsideReply &&
+                          comment.replyCount as int > 0)
+                        GestureDetector(
+                          onTap: onReplyTap,
+                          child: IconWithLabel(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            label: '${comment.replyCount} '
+                                '${comment.replyCount as int > 1 ? context.locals.replies.toLowerCase() : context.locals.reply}',
+                          ),
                         ),
                     ],
                   ),
-                  const SizedBox(height: 2),
-                  if (comment is Comment &&
-                      !isInsideReply &&
-                      comment.replyCount as int > 0)
-                    InkWell(
-                      onTap: onReplyTap,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: kTabLabelPadding.left,
-                          vertical: 4,
-                        ),
-                        child: Text(
-                          '${comment.replyCount} '
-                          '${comment.replyCount as int > 1 ? context.locals.replies.toLowerCase() : context.locals.reply}',
-                          style: TextStyle(
-                            color: context.isDark
-                                ? const Color.fromARGB(255, 40, 170, 255)
-                                : const Color.fromARGB(255, 6, 95, 212),
-                          ),
-                        ),
-                      ),
-                    ),
                 ],
               ),
             ),
