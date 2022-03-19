@@ -136,7 +136,7 @@ class MyHomePage extends HookConsumerWidget {
         ],
         title: toggleSearch.value
             ? AdwSearchBarAc(
-                search: null,
+                constraints: BoxConstraints.loose(const Size(500, 36)),
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 toggleSearchBar: toggleSearchBar,
                 asyncSuggestions: (str) => str.isNotEmpty

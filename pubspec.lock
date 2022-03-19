@@ -602,14 +602,14 @@ packages:
       name: libadwaita_searchbar
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.3+1"
+    version: "0.5.5"
   libadwaita_searchbar_ac:
     dependency: "direct main"
     description:
       name: libadwaita_searchbar_ac
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.1"
+    version: "0.5.3"
   lints:
     dependency: transitive
     description:

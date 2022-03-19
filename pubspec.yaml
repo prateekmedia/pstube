@@ -30,7 +30,7 @@ dependencies:
   intl: ^0.17.0
   libadwaita: ^1.2.0-dev
   libadwaita_bitsdojo: ^0.5.3
-  libadwaita_searchbar_ac: ^0.5.1
+  libadwaita_searchbar_ac: ^0.5.3
   lucide_icons: ^0.17.11
   open_file: # Upgrade to pub.dev when package > 3.2.1
     git:
