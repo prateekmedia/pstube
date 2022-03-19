@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:readmore/readmore.dart';
 
 import 'package:sftube/models/models.dart';
@@ -114,7 +113,9 @@ class CommentBox extends HookConsumerWidget {
                         onTap: updateLike?.call,
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
+                            horizontal: 10,
+                            vertical: 5,
+                          ),
                           decoration: BoxDecoration(
                             color: context.getBackgroundColor
                                 .brighten(context, 20),
@@ -165,7 +166,9 @@ class CommentBox extends HookConsumerWidget {
                           onTap: onReplyTap,
                           child: IconWithLabel(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
+                              horizontal: 10,
+                              vertical: 5,
+                            ),
                             label: '${comment.replyCount} '
                                 '${comment.replyCount as int > 1 ? context.locals.replies.toLowerCase() : context.locals.reply}',
                           ),

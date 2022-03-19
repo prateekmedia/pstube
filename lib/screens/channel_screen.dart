@@ -46,12 +46,14 @@ class ChannelScreen extends HookWidget {
             ),
             const Divider(height: 26),
             Text(
-              '${channelInfo.value!.viewCount.addCommas} '
+              '${(channelInfo.value!.viewCount ?? 0).addCommas} '
               '${context.locals.views}',
               style: context.textTheme.bodyText2,
             ),
-            const Divider(height: 26),
-            Text(channelInfo.value!.country),
+            if (channelInfo.value!.country != null) ...[
+              const Divider(height: 26),
+              Text(channelInfo.value!.country!),
+            ],
           ]
         : <Widget>[];
 
@@ -222,18 +224,20 @@ class _CustomTabState extends State<_CustomTab>
                             shrinkWrap: true,
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                             children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8),
-                                child: Text(
-                                  context.locals.description,
-                                  style: context.textTheme.headline5,
+                              if (widget.channelInfo!.description != null) ...[
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8),
+                                  child: Text(
+                                    context.locals.description,
+                                    style: context.textTheme.headline5,
+                                  ),
                                 ),
-                              ),
-                              SelectableText(
-                                widget.channelInfo!.description,
-                              ),
-                              const Divider(),
+                                SelectableText(
+                                  widget.channelInfo!.description!,
+                                ),
+                                const Divider(),
+                              ],
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 8),
