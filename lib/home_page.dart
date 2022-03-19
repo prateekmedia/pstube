@@ -137,9 +137,11 @@ class MyHomePage extends HookConsumerWidget {
         title: toggleSearch.value
             ? AdwSearchBarAc(
                 search: null,
+                padding: const EdgeInsets.symmetric(horizontal: 25),
                 toggleSearchBar: toggleSearchBar,
-                asyncSuggestions: (str) =>
-                    YoutubeExplode().search.getQuerySuggestions(str),
+                asyncSuggestions: (str) => str.isNotEmpty
+                    ? YoutubeExplode().search.getQuerySuggestions(str)
+                    : Future.value([]),
                 onSubmitted: (str) => searchedTerm.value = str,
                 controller: _searchController,
               )

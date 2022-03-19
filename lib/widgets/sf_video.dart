@@ -68,7 +68,7 @@ class SFVideo extends HookWidget {
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               padding: const EdgeInsets.all(5),
-                              child: getThumbnail(video, context),
+                              child: getThumbnail(video, context, isRow: isRow),
                             ),
                             if (video != null)
                               Positioned.fill(
@@ -127,7 +127,7 @@ class SFVideo extends HookWidget {
                       children: [
                         Stack(
                           children: [
-                            getThumbnail(video, context),
+                            getThumbnail(video, context, isRow: isRow),
                             if (video != null)
                               Positioned.fill(
                                 child: Align(
@@ -179,7 +179,11 @@ class SFVideo extends HookWidget {
     );
   }
 
-  AspectRatio getThumbnail(Video? video, BuildContext context) {
+  AspectRatio getThumbnail(
+    Video? video,
+    BuildContext context, {
+    required bool isRow,
+  }) {
     return AspectRatio(
       aspectRatio: 16 / 9,
       child: video != null
@@ -187,7 +191,11 @@ class SFVideo extends HookWidget {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.fitWidth,
-                  image: CachedNetworkImageProvider(video.thumbnails.lowResUrl),
+                  image: CachedNetworkImageProvider(
+                    isRow
+                        ? video.thumbnails.lowResUrl
+                        : video.thumbnails.mediumResUrl,
+                  ),
                 ),
               ),
             )

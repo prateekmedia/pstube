@@ -47,7 +47,6 @@ Future<T?> showPopoverWB<T>({
         if (controller != null)
           Center(
             child: Container(
-              constraints: BoxConstraints.loose(const Size(600, 40)),
               padding: padding,
               child: Form(
                 key: _formKey,
@@ -60,7 +59,7 @@ Future<T?> showPopoverWB<T>({
                   style: context.textTheme.bodyText1,
                   decoration: InputDecoration(
                     hintText: hint,
-                    constraints: BoxConstraints.loose(const Size(500, 40)),
+                    isDense: true,
                   ),
                 ),
               ),

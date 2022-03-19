@@ -24,10 +24,10 @@ class _LikedScreenState extends State<LikedScreen>
     super.build(context);
     final _controller = PageController();
     final _currentIndex = useState<int>(0);
-    final _tabs = [
-      context.locals.videos,
-      context.locals.comments,
-    ];
+    final _tabs = {
+      context.locals.videos: LucideIcons.video,
+      context.locals.comments: LucideIcons.messageCircle,
+    };
 
     return Consumer(
       builder: (context, ref, _) {
@@ -40,7 +40,14 @@ class _LikedScreenState extends State<LikedScreen>
           viewSwitcher: AdwViewSwitcher(
             currentIndex: _currentIndex.value,
             onViewChanged: _controller.jumpToPage,
-            tabs: _tabs.map((e) => ViewSwitcherData(title: e)).toList(),
+            tabs: _tabs.entries
+                .map(
+                  (e) => ViewSwitcherData(
+                    title: e.key,
+                    icon: e.value,
+                  ),
+                )
+                .toList(),
           ),
           body: PageView(
             controller: _controller,
