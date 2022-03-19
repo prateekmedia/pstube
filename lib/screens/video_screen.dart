@@ -530,16 +530,22 @@ class ShowDownloadsWidget extends StatelessWidget {
         Expanded(
           child: Container(
             color: context.theme.canvasColor,
-            child: SingleChildScrollView(
-              controller: ScrollController(),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 15,
-                vertical: 12,
+            child: WillPopScope(
+              child: SingleChildScrollView(
+                controller: ScrollController(),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                  vertical: 12,
+                ),
+                child: DownloadsWidget(
+                  video: videoData,
+                  onClose: () => downloadsSideWidget.value = null,
+                ),
               ),
-              child: DownloadsWidget(
-                video: videoData,
-                onClose: () => downloadsSideWidget.value = null,
-              ),
+              onWillPop: () async {
+                context.back();
+                return false;
+              },
             ),
           ),
         ),
@@ -668,54 +674,58 @@ class _CommentsWidgetState extends State<CommentsWidget>
         Expanded(
           child: Container(
             color: context.theme.canvasColor,
-            child: PageView.builder(
-              onPageChanged: (index) => currentPage.value = index,
-              controller: pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 2,
-              itemBuilder: (_, index) => [
-                ListView.builder(
-                  controller: controller,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemCount: _currentPage.value!.length + 1,
-                  itemBuilder: (ctx, idx) {
-                    final comment = idx != _currentPage.value!.length
-                        ? _currentPage.value![idx]
-                        : null;
-                    return idx == _currentPage.value!.length
-                        ? getCircularProgressIndicator()
-                        : BuildCommentBox(
-                            comment: comment!,
-                            onReplyTap: () {
-                              widget.replyComment.value = comment;
-                              pageController.animateToPage(
-                                1,
-                                duration: const Duration(milliseconds: 200),
-                                curve: Curves.easeInOut,
-                              );
-                            },
-                          );
-                  },
-                ),
-                WillPopScope(
-                  child: showReplies(
+            child: WillPopScope(
+              child: PageView.builder(
+                onPageChanged: (index) => currentPage.value = index,
+                controller: pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 2,
+                itemBuilder: (_, index) => [
+                  ListView.builder(
+                    controller: controller,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    itemCount: _currentPage.value!.length + 1,
+                    itemBuilder: (ctx, idx) {
+                      final comment = idx != _currentPage.value!.length
+                          ? _currentPage.value![idx]
+                          : null;
+                      return idx == _currentPage.value!.length
+                          ? getCircularProgressIndicator()
+                          : BuildCommentBox(
+                              comment: comment!,
+                              onReplyTap: () {
+                                widget.replyComment.value = comment;
+                                pageController.animateToPage(
+                                  1,
+                                  duration: const Duration(milliseconds: 200),
+                                  curve: Curves.easeInOut,
+                                );
+                              },
+                            );
+                    },
+                  ),
+                  showReplies(
                     context,
                     widget.replyComment.value,
                     EdgeInsets.symmetric(
                       horizontal: widget.onClose != null ? 16 : 0,
                     ),
                   ),
-                  onWillPop: () async {
-                    await pageController.animateToPage(
-                      0,
-                      duration: const Duration(milliseconds: 200),
-                      curve: Curves.easeInOut,
-                    );
-                    widget.replyComment.value = null;
-                    return false;
-                  },
-                ),
-              ][index],
+                ][index],
+              ),
+              onWillPop: () async {
+                if (widget.replyComment.value != null) {
+                  await pageController.animateToPage(
+                    0,
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.easeInOut,
+                  );
+                  widget.replyComment.value = null;
+                } else {
+                  context.back();
+                }
+                return false;
+              },
             ),
           ),
         ),
