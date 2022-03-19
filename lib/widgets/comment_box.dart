@@ -144,9 +144,11 @@ class CommentBox extends HookConsumerWidget {
                     ],
                   ),
                   const SizedBox(height: 2),
-                  if (comment is Comment && !isInsideReply)
+                  if (comment is Comment &&
+                      !isInsideReply &&
+                      comment.replyCount as int > 0)
                     InkWell(
-                      onTap: comment.replyCount as int > 0 ? onReplyTap : null,
+                      onTap: onReplyTap,
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: kTabLabelPadding.left,
