@@ -55,7 +55,7 @@
     "reply": "svar",
     "cancel": "Avbryt",
     "ok": "OK",
-    "resetDefault": "Tilbakestill alt",
+    "resetSettings": "Tilbakestill alt",
     "noDownloadsFound": "Fant ingen nedlastninger",
     "clearItemFromDownloadList": "Tøm element fra nedlastingsliste?",
     "noLikedVideosFound": "Fant ingen likte videoer.",
@@ -67,5 +67,7 @@
     "networkLostShowingCachedData": "Mistet tilknytning under vising av hurtiglagret data",
     "backOnline": "Tilknyttet igjen",
     "videoNotFound": "Video ikke funnet!",
-    "typeToSearch": "Skriv for å søke"
+    "typeToSearch": "Skriv for å søke",
+    "region": "Region",
+    "lookingForNewVersion": "Looking for new version..."
 }

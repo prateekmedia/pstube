@@ -99,12 +99,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
                     ? isLatest
                         ? context.locals.youAreUsingTheLatestVersion
                         : '$version ${context.locals.isAvailable}'
-                    : 'Looking for new version...',
+                    : context.locals.lookingForNewVersion,
               );
             },
           ),
           AdwComboRow(
-            title: 'Region',
+            title: context.locals.region,
             onSelected: (val) => ref.watch(regionProvider.notifier).region =
                 Regions.values.toList()[val],
             selectedIndex:
@@ -116,8 +116,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
                 .toList(),
           ),
           AdwActionRow(
-            title: context.locals.resetDefault,
-            onActivated: () => resetDefaults(ref),
+            title: context.locals.resetSettings,
+            onActivated: () => resetSettings(ref),
           ),
           AdwActionRow(
             title: '${context.locals.about} ${myApp.name}',

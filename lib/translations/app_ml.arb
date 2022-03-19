@@ -54,7 +54,7 @@
     "reply": "മറുപടി നൽകുക",
     "cancel": "റദ്ദാക്കുക",
     "ok": "ശരി",
-    "resetDefault": "സ്ഥിരസ്ഥിതി പുനഃസജ്ജമാക്കുക",
+    "resetSettings": "സ്ഥിരസ്ഥിതി പുനഃസജ്ജമാക്കുക",
     "noDownloadsFound": "ഡൗൺലോഡുകളൊന്നും കണ്ടെത്തിയില്ല",
     "clearItemFromDownloadList": "ഡൗൺലോഡ് ലിസ്റ്റിൽ നിന്ന് ഇനം മായ്‌ക്കണോ?",
     "noLikedVideosFound": "ലൈക്ക് ചെയ്ത വീഡിയോകളൊന്നും കണ്ടെത്തിയില്ല.",
@@ -66,5 +66,7 @@
     "networkLostShowingCachedData": "നെറ്റ്‌വർക്ക് നഷ്‌ടമായതിനാൽ കാഷെ ചെയ്‌ത ഡാറ്റ കാണിക്കുന്നു",
     "backOnline": "കണക്ഷൻ ഇപ്പോൾ ലഭ്യമാണ്",
     "videoNotFound": "വീഡിയോ കണ്ടെത്തനായില്ല",
-    "typeToSearch": "തിരയാൻ ടൈപ്പ് ചെയ്യുക"
+    "typeToSearch": "തിരയാൻ ടൈപ്പ് ചെയ്യുക",
+    "region": "Region",
+    "lookingForNewVersion": "Looking for new version..."
 }

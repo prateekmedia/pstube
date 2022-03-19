@@ -54,7 +54,7 @@
     "reply": "rispondi",
     "cancel": "CANCELLA",
     "ok": "OK",
-    "resetDefault": "Ripristina predefinito",
+    "resetSettings": "Ripristina predefinito",
     "noDownloadsFound": "Nessun download trovato",
     "clearItemFromDownloadList": "Cancella elemento dall'elenco di download?",
     "noLikedVideosFound": "Nessun video piaciuto trovato.",
@@ -66,5 +66,7 @@
     "networkLostShowingCachedData": "Rete persa che mostra i dati nella cache",
     "backOnline": "Di nuovo online",
     "videoNotFound": "Video non trovato!",
-    "typeToSearch": "Digita per cercare"
+    "typeToSearch": "Digita per cercare",
+    "region": "Region",
+    "lookingForNewVersion": "Looking for new version..."
 }

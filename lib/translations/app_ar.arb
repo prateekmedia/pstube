@@ -54,7 +54,7 @@
     "reply": "رد",
     "cancel": "إلغاء",
     "ok": "حسنا",
-    "resetDefault": "إستعادة الوضع الإفتراضي",
+    "resetSettings": "إستعادة الوضع الإفتراضي",
     "noDownloadsFound": "لم يتم العثور على تنزيلات",
     "clearItemFromDownloadList": "مسح العنصر من قائمة التنزيل؟",
     "noLikedVideosFound": "لم يتم العثور على مقاطع فيديو أعجبتك.",
@@ -66,5 +66,7 @@
     "networkLostShowingCachedData": "فقدت الشبكة عرض البيانات المخزنة مؤقتًا",
     "backOnline": "العودة إلى الاتصال",
     "videoNotFound": "لم يتم العثور على الفيديو!",
-    "typeToSearch": "اكتب للبحث"
+    "typeToSearch": "اكتب للبحث",
+    "region": "Region",
+    "lookingForNewVersion": "Looking for new version..."
 }
