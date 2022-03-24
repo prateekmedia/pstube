@@ -194,6 +194,7 @@ class _CustomListTileState extends ConsumerState<DownloadQualityTile> {
               !await Permission.storage.request().isGranted) return;
           if (!mounted) return;
           widget.onClose != null ? widget.onClose!() : context.back();
+
           await ref.read(downloadListProvider.notifier).addDownload(
                 context,
                 DownloadItem.fromVideo(

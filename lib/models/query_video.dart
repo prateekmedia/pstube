@@ -21,9 +21,12 @@ class QueryVideo {
     required Video video,
     required dynamic stream,
     required this.path,
-  })  : name = '${video.title}(${stream is ThumbnailStreamInfo ? stream.name : stream is AudioOnlyStreamInfo ? stream.bitrate.bitsPerSecond.getBitrate() : '${stream.videoResolution.width}x'
-                '${stream.videoResolution.height}'}).'
-            '${stream is ThumbnailStreamInfo ? stream.containerName : stream is AudioOnlyStreamInfo ? stream.audioCodec.split('.')[0].replaceAll('mp4a', 'm4a') : stream.container.name as String}',
+  })  : name = checkIfExists(
+          path,
+          '${video.title}(${stream is ThumbnailStreamInfo ? stream.name : stream is AudioOnlyStreamInfo ? stream.bitrate.bitsPerSecond.getBitrate() : '${stream.videoResolution.width}x'
+              '${stream.videoResolution.height}'}).'
+          '${stream is ThumbnailStreamInfo ? stream.containerName : stream is AudioOnlyStreamInfo ? stream.audioCodec.split('.')[0].replaceAll('mp4a', 'm4a') : stream.container.name as String}',
+        ),
         id = video.id.value,
         url = stream.url.toString(),
         author = video.author,

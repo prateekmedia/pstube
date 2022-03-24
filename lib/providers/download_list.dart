@@ -43,6 +43,7 @@ class DownloadList extends ChangeNotifier {
     downloadList.insert(0, downloadItem.copyWith(cancelToken: cancelToken));
     refresh();
     BotToast.showText(text: context.locals.downloadStarted);
+
     await Dio().download(
       downloadItem.queryVideo.url,
       downloadItem.queryVideo.path + downloadItem.queryVideo.name,
