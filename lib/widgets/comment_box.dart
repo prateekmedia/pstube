@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:readmore/readmore.dart';
 
 import 'package:pstube/models/models.dart';
 import 'package:pstube/screens/screens.dart';
 import 'package:pstube/utils/utils.dart';
 import 'package:pstube/widgets/widgets.dart';
 
+import 'package:readmore/readmore.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class CommentBox extends HookConsumerWidget {

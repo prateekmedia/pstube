@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:pstube/models/sf_info.dart';
-export 'package:pstube/models/sf_info.dart';
+import 'package:pstube/models/ps_info.dart';
+export 'package:pstube/models/ps_info.dart';
 
 const mobileWidth = 800;
 const primaryColor = Colors.red;
