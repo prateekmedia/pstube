@@ -2,7 +2,7 @@ import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:sftube/utils/utils.dart';
+import 'package:pstube/utils/utils.dart';
 
 class VideoPlayer extends StatefulWidget {
   const VideoPlayer({

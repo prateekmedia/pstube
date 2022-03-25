@@ -51,12 +51,12 @@ jobs:
 
       - name: Rename app
         if: ${{ github.event_name != 'release' }}
-        run: mv build/app/outputs/apk/release/sftube-* build/app/outputs/apk/release/sftube-android-continuous.apk
+        run: mv build/app/outputs/apk/release/pstube-* build/app/outputs/apk/release/pstube-android-continuous.apk
 
       - uses: svenstaro/upload-release-action@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/app/outputs/apk/release/sftube-*
+          file: build/app/outputs/apk/release/pstube-*
           file_glob: true
           prerelease: ${{ github.event_name != 'release' }}
           release_name: ${{ github.event_name == 'release' && github.event.release.name || 'Development Build' }}
@@ -87,42 +87,42 @@ jobs:
       - name: Build RPM Package
         run: |
           cp -fr build/linux/x64/release/bundle linux/packaging/deb/usr/bin
-          sed -i "s:cp -rf :cp -rf $(pwd)/:" linux/packaging/rpm/sftube.spec
+          sed -i "s:cp -rf :cp -rf $(pwd)/:" linux/packaging/rpm/pstube.spec
           cd linux/packaging/deb
-          sed -i "s:FILES_HERE:$(find usr -type f -follow -print | awk '{printf "/%s\\n", $0}'):" ../rpm/sftube.spec
+          sed -i "s:FILES_HERE:$(find usr -type f -follow -print | awk '{printf "/%s\\n", $0}'):" ../rpm/pstube.spec
           cd ../../../
-          rpmbuild -bb linux/packaging/rpm/sftube.spec -D "_topdir $(pwd)/rpmbuild"
-          cp rpmbuild/RPMS/x86_64/*.rpm sftube-linux-${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}-x86_64.rpm
+          rpmbuild -bb linux/packaging/rpm/pstube.spec -D "_topdir $(pwd)/rpmbuild"
+          cp rpmbuild/RPMS/x86_64/*.rpm pstube-linux-${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}-x86_64.rpm
           rm -rf linux/packaging/rpm
 
       - name: Build DEB Package
         run: |
           dpkg-deb --build --root-owner-group linux/packaging/deb
-          cp linux/packaging/*.deb sftube-linux-${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}-x86_64.deb
+          cp linux/packaging/*.deb pstube-linux-${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}-x86_64.deb
 
       - name: Build Tarball
         run: |
           mkdir -p AppDir/
           cp -r linux/packaging/deb/usr AppDir/
-          ln -sr AppDir/usr/bin/sftube AppDir/sftube
-          tar czf sftube-linux-${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}-x86_64.tar.gz -C AppDir/ .
+          ln -sr AppDir/usr/bin/pstube AppDir/pstube
+          tar czf pstube-linux-${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}-x86_64.tar.gz -C AppDir/ .
 
       - name: Build AppImage
         run: |
           echo '#!/bin/sh
           cd "$(dirname "$0")"
-          exec ./sftube' > AppDir/AppRun
+          exec ./pstube' > AppDir/AppRun
           chmod +x AppDir/AppRun
-          ln -sr AppDir/usr/share/icons/hicolor/128x128/apps/sftube.png AppDir/sftube.png
-          cp AppDir/usr/share/applications/sftube.desktop AppDir/sftube.desktop
+          ln -sr AppDir/usr/share/icons/hicolor/128x128/apps/pstube.png AppDir/pstube.png
+          cp AppDir/usr/share/applications/pstube.desktop AppDir/pstube.desktop
           curl -L https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -o appimagetool-x86_64.AppImage
           chmod +x appimagetool-x86_64.AppImage
-          ARCH=x86_64 ./appimagetool-x86_64.AppImage AppDir/ sftube-linux-${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}-x86_64.AppImage
+          ARCH=x86_64 ./appimagetool-x86_64.AppImage AppDir/ pstube-linux-${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}-x86_64.AppImage
 
       - uses: svenstaro/upload-release-action@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: sftube-linux-*
+          file: pstube-linux-*
           file_glob: true
           prerelease: ${{ github.event_name != 'release' }}
           release_name: ${{ github.event_name == 'release' && github.event.release.name || 'Development Build' }}
@@ -150,12 +150,12 @@ jobs:
       - uses: vimtor/action-zip@master
         with:
           files: build/windows/runner/release/
-          dest: sftube-windows-${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}.zip
+          dest: pstube-windows-${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}.zip
 
       - uses: svenstaro/upload-release-action@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: sftube-windows-*
+          file: pstube-windows-*
           file_glob: true
           prerelease: ${{ github.event_name != 'release' }}
           release_name: ${{ github.event_name == 'release' && github.event.release.name || 'Development Build' }}

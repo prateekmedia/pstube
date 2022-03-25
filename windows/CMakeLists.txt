@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.14)
-project(sftube LANGUAGES CXX)
+project(pstube LANGUAGES CXX)
 
-set(BINARY_NAME "sftube")
-set(APPLICATION_ID "com.prateekmedia.sftube")
+set(BINARY_NAME "pstube")
+set(APPLICATION_ID "com.prateekmedia.pstube")
 
 cmake_policy(SET CMP0063 NEW)
 

@@ -10,11 +10,11 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'package:sftube/controller/internet_connectivity.dart';
-import 'package:sftube/home_page.dart';
-import 'package:sftube/models/models.dart';
-import 'package:sftube/providers/providers.dart';
-import 'package:sftube/utils/utils.dart';
+import 'package:pstube/controller/internet_connectivity.dart';
+import 'package:pstube/home_page.dart';
+import 'package:pstube/models/models.dart';
+import 'package:pstube/providers/providers.dart';
+import 'package:pstube/utils/utils.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,7 +33,7 @@ Future<void> main() async {
         ? (await getApplicationDocumentsDirectory()).path
         : (await getDownloadsDirectory())!
             .path
-            .replaceFirst('Downloads', '.sftube'),
+            .replaceFirst('Downloads', '.pstube'),
   );
   await Hive.openBox<dynamic>('playlist');
   await Hive.openBox<List>('likedList');

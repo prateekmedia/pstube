@@ -1,5 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:sftube/utils/shared_prefs.dart';
+import 'package:pstube/utils/shared_prefs.dart';
 
 final rememberChoiceProvider =
     StateNotifierProvider<RememberChoiceNotifier, bool>(

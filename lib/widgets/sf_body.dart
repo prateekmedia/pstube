@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sftube/controller/internet_connectivity.dart';
+import 'package:pstube/controller/internet_connectivity.dart';
 
-import 'package:sftube/utils/utils.dart';
-import 'package:sftube/widgets/widgets.dart';
+import 'package:pstube/utils/utils.dart';
+import 'package:pstube/widgets/widgets.dart';
 
 class SFBody extends StatelessWidget {
   const SFBody({

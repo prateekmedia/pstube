@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:sftube/models/models.dart';
+import 'package:pstube/models/models.dart';
 
 final likedListProvider = ChangeNotifierProvider((ref) => LikedList(ref));
 

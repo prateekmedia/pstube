@@ -5,10 +5,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import 'package:sftube/models/models.dart';
-import 'package:sftube/providers/providers.dart';
-import 'package:sftube/utils/utils.dart';
-import 'package:sftube/widgets/widgets.dart';
+import 'package:pstube/models/models.dart';
+import 'package:pstube/providers/providers.dart';
+import 'package:pstube/utils/utils.dart';
+import 'package:pstube/widgets/widgets.dart';
 
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 

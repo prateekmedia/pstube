@@ -5,8 +5,8 @@ import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
-import 'package:sftube/utils/utils.dart';
-import 'package:sftube/widgets/widgets.dart';
+import 'package:pstube/utils/utils.dart';
+import 'package:pstube/widgets/widgets.dart';
 
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 

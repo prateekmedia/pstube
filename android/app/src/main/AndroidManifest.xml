@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.prateekmedia.sftube">
+    package="com.prateekmedia.pstube">
    <application
-        android:label="SF Tube"
+        android:label="PsTube"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true">

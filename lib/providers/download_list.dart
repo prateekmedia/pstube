@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'package:sftube/models/models.dart';
-import 'package:sftube/utils/utils.dart';
+import 'package:pstube/models/models.dart';
+import 'package:pstube/utils/utils.dart';
 
 final downloadListProvider = ChangeNotifierProvider((ref) => DownloadList(ref));
 

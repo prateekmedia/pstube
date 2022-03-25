@@ -1,5 +1,5 @@
 import 'package:piped_api/piped_api.dart';
-import 'package:sftube/utils/constants.dart';
+import 'package:pstube/utils/constants.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 extension Stream2Video on StreamItem {

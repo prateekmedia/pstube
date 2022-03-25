@@ -10,8 +10,8 @@ import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:piped_api/piped_api.dart';
 
-import 'package:sftube/providers/providers.dart';
-import 'package:sftube/utils/utils.dart';
+import 'package:pstube/providers/providers.dart';
+import 'package:pstube/utils/utils.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
@@ -32,7 +32,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
     http
         .get(
       Uri.parse(
-        'https://api.github.com/repos/prateekmedia/sftube/releases',
+        'https://api.github.com/repos/prateekmedia/pstube/releases',
       ),
     )
         .then((http.Response response) async {
@@ -125,7 +125,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
               context: context,
               builder: (_) => AdwAboutWindow(
                 issueTrackerLink:
-                    'https://github.com/prateekmedia/sftube/issues',
+                    'https://github.com/prateekmedia/pstube/issues',
                 appName: myApp.name,
                 actions: AdwActions(
                   onDoubleTap: appWindow?.maximizeOrRestore,

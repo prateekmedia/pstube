@@ -1,8 +1,8 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=SF Tube
-Icon=sftube
-Exec=sftube %u
-StartupWMClass=sftube
+Name=PsTube
+Icon=pstube
+Exec=pstube %u
+StartupWMClass=pstube
 Categories=Utility;

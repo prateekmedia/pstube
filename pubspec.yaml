@@ -1,4 +1,4 @@
-name: sftube
+name: pstube
 description: Youtube client made using flutter.
 
 publish_to: none
@@ -97,9 +97,9 @@ flutter:
           weight: 700
 
 msix_config:
-  display_name: SF Tube
+  display_name: PsTube
   publisher_display_name: Prateek Sunal
-  identity_name: com.prateekmedia.sftube
+  identity_name: com.prateekmedia.pstube
   msix_version: 2.0.0
   capabilities: "internetClient"
   store: false

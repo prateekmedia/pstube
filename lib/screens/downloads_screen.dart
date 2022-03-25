@@ -7,11 +7,11 @@ import 'package:libadwaita/libadwaita.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:open_file/open_file.dart';
 
-import 'package:sftube/models/models.dart';
-import 'package:sftube/providers/providers.dart';
-import 'package:sftube/screens/screens.dart';
-import 'package:sftube/utils/utils.dart';
-import 'package:sftube/widgets/widgets.dart';
+import 'package:pstube/models/models.dart';
+import 'package:pstube/providers/providers.dart';
+import 'package:pstube/screens/screens.dart';
+import 'package:pstube/utils/utils.dart';
+import 'package:pstube/widgets/widgets.dart';
 
 class DownloadsScreen extends ConsumerWidget {
   const DownloadsScreen({Key? key}) : super(key: key);

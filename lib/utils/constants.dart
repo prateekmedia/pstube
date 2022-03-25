@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:sftube/models/sf_info.dart';
-export 'package:sftube/models/sf_info.dart';
+import 'package:pstube/models/sf_info.dart';
+export 'package:pstube/models/sf_info.dart';
 
 const mobileWidth = 800;
 const primaryColor = Colors.red;
@@ -12,11 +12,11 @@ final videoPlatforms = kIsWeb || Platform.isAndroid || Platform.isIOS;
 const ytCom = 'https://youtube.com';
 
 final myApp = SFInfo(
-  name: 'SF Tube',
-  nickname: 'sftube',
-  url: 'https://github.com/prateekmedia/sftube',
+  name: 'PsTube',
+  nickname: 'pstube',
+  url: 'https://github.com/prateekmedia/pstube',
   description: 'Youtube client made using flutter.',
-  image: 'sftube.png',
+  image: 'pstube.png',
 );
 
 List<SFInfo> developerInfos = <SFInfo>[

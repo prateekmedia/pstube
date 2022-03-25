@@ -10,10 +10,10 @@ import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
-import 'package:sftube/providers/providers.dart';
-import 'package:sftube/utils/utils.dart';
-import 'package:sftube/widgets/video_player.dart';
-import 'package:sftube/widgets/widgets.dart';
+import 'package:pstube/providers/providers.dart';
+import 'package:pstube/utils/utils.dart';
+import 'package:pstube/widgets/video_player.dart';
+import 'package:pstube/widgets/widgets.dart';
 
 import 'package:share_plus/share_plus.dart';
 import 'package:timeago/timeago.dart' as timeago;

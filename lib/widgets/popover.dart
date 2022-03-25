@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
-import 'package:sftube/utils/utils.dart';
+import 'package:pstube/utils/utils.dart';
 
 Future<T?> showPopover<T>({
   required BuildContext context,

@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:sftube/utils/utils.dart';
+import 'package:pstube/utils/utils.dart';
 
 final downloadPathProvider =
     ChangeNotifierProvider((_) => DownloadPathNotifier());

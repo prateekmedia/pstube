@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path/path.dart' as p;
-import 'package:sftube/providers/providers.dart';
+import 'package:pstube/providers/providers.dart';
 
 String checkIfExists(String path, String name) {
   if (File(path + name).existsSync()) {

@@ -1,9 +1,9 @@
-Package: sftube
+Package: pstube
 Version: 0.1.5-1
 Section: base
 Priority: optional
-Homepage: https://github.com/prateekmedia/sftube
+Homepage: https://github.com/prateekmedia/pstube
 Architecture: amd64
 Maintainer: Prateek Sunal <pankajsunal123@gmail.com>
-Description: SF Tube
+Description: PsTube
  Youtube video client made using flutter

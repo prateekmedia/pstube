@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.prateekmedia" "\0"
-            VALUE "FileDescription", "sftube" "\0"
+            VALUE "FileDescription", "pstube" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "sftube" "\0"
+            VALUE "InternalName", "pstube" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2022 com.prateekmedia. All rights reserved." "\0"
-            VALUE "OriginalFilename", "sftube.exe" "\0"
-            VALUE "ProductName", "sftube" "\0"
+            VALUE "OriginalFilename", "pstube.exe" "\0"
+            VALUE "ProductName", "pstube" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

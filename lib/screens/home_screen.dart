@@ -4,8 +4,8 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:piped_api/piped_api.dart';
 
-import 'package:sftube/utils/utils.dart';
-import 'package:sftube/widgets/widgets.dart';
+import 'package:pstube/utils/utils.dart';
+import 'package:pstube/widgets/widgets.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({

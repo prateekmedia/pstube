@@ -11,10 +11,10 @@ import 'package:libadwaita_searchbar_ac/libadwaita_searchbar_ac.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:piped_api/piped_api.dart';
 
-import 'package:sftube/providers/providers.dart';
-import 'package:sftube/screens/screens.dart';
-import 'package:sftube/utils/utils.dart';
-import 'package:sftube/widgets/widgets.dart';
+import 'package:pstube/providers/providers.dart';
+import 'package:pstube/screens/screens.dart';
+import 'package:pstube/utils/utils.dart';
+import 'package:pstube/widgets/widgets.dart';
 
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 

@@ -48,7 +48,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.prateekmedia.sftube"
+        applicationId "com.prateekmedia.pstube"
         minSdkVersion 17
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
@@ -78,7 +78,7 @@ android {
             variant ->
                 variant.outputs.each{
                     output->
-                        project.ext { appName = 'sftube' }
+                        project.ext { appName = 'pstube' }
                         
                         def newName = output.outputFile.name
                         
