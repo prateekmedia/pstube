@@ -7,9 +7,12 @@
 <a href="https://github.com/prateekmedia/pstube/releases"><img alt="GitHub release" src="https://img.shields.io/github/v/release/prateekmedia/pstube"/></a> <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/prateekmedia/pstube?color=blue"/></a> <a href="#build-from-source"><img alt="Build from source" src="https://img.shields.io/badge/Install Manually-git-blue"/></a>
 </p>
 
-<img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/home-desktop.jpg?raw=true" width="550"/>
-<img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/search-desktop.jpg?raw=true" width="550"/>
-<img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/video-desktop.jpg?raw=true" width="550"/>
+<img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/home-desktop.jpg?raw=true" width="200"/>
+<img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/search-desktop.jpg?raw=true" width="200"/>
+<img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/video-desktop.jpg?raw=true" width="200"/>
+<img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/home-mobile.jpg?raw=true" width="200"/>
+<img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/search-mobile.jpg?raw=true" width="200"/>
+<img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/video-mobile.jpg?raw=true" width="200"/>
 
 <h4>Features:</h4>
 <ul>
