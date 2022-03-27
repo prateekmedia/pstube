@@ -44,4 +44,19 @@ List<SFInfo> translatorsInfos = <SFInfo>[
     url: 'https://github.com/comradekingu',
     description: 'Norwegian Bokmål',
   ),
+  SFInfo(
+    name: 'Hari',
+    url: 'https://github.com/hari-python',
+    description: 'Malayalam',
+  ),
+  SFInfo(
+    name: 'ptrarian',
+    url: 'https://github.com/ptrarian',
+    description: 'Indonesian',
+  ),
+  SFInfo(
+    name: 'Kemal Oktay',
+    url: 'https://github.com/oktay454',
+    description: 'Turkish',
+  ),
 ];
