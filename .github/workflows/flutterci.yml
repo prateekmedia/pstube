@@ -88,7 +88,7 @@ jobs:
         run: |
           cp -fr build/linux/x64/release/bundle linux/packaging/deb/usr/share/pstube
           mkdir linux/packaging/deb/usr/bin
-          ln -s linux/packaging/deb/usr/share/pstube/pstube linux/packaging/deb/usr/bin/pstube
+          ln -sr linux/packaging/deb/usr/share/pstube/pstube linux/packaging/deb/usr/bin/pstube
           sed -i "s:cp -rf :cp -rf $(pwd)/:" linux/packaging/rpm/pstube.spec
           cd linux/packaging/deb
           sed -i "s:FILES_HERE:$(find usr \( -type l -o -type f \) -follow -print | awk '{printf "/%s\\n", $0}'):" ../rpm/pstube.spec
@@ -106,7 +106,7 @@ jobs:
         run: |
           mkdir -p AppDir/
           cp -r linux/packaging/deb/usr AppDir/
-          ln -sr AppDir/usr/bin/pstube AppDir/pstube
+          ln -sr AppDir/usr/share/pstube/pstube AppDir/pstube
           tar czf pstube-linux-${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}-x86_64.tar.gz -C AppDir/ .
 
       - name: Build AppImage
