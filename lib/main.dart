@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:adwaita/adwaita.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_locals.dart';
@@ -18,6 +19,12 @@ import 'package:pstube/utils/utils.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Intialize Dart VLC
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    DartVLC.initialize();
+  }
+
   // Connectivity check stream initialised.
   await InternetConnectivity.networkStatusService();
 

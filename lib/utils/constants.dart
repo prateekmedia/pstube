@@ -7,7 +7,7 @@ export 'package:pstube/models/ps_info.dart';
 
 const mobileWidth = 800;
 const primaryColor = Colors.red;
-final videoPlatforms = kIsWeb || Platform.isAndroid || Platform.isIOS;
+final mobVideoPlatforms = kIsWeb || Platform.isAndroid || Platform.isIOS;
 
 const ytCom = 'https://youtube.com';
 

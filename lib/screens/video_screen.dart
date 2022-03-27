@@ -108,7 +108,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                                         child: SFBody(
                                           child: Column(
                                             children: [
-                                              if (videoPlatforms &&
+                                              if (mobVideoPlatforms &&
                                                   snapshot.hasData &&
                                                   snapshot.data != null)
                                                 VideoPlayer(
@@ -150,7 +150,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                                                           fit: BoxFit.fill,
                                                         ),
                                                       ),
-                                                      if (videoPlatforms) ...[
+                                                      if (mobVideoPlatforms) ...[
                                                         Container(
                                                           color: Colors.black
                                                               .withOpacity(
@@ -451,7 +451,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                             },
                           ),
               ),
-              if (!videoPlatforms)
+              if (!mobVideoPlatforms)
                 SizedBox(
                   height: 51,
                   child: AdwHeaderBar(

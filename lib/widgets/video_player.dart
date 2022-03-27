@@ -1,6 +1,5 @@
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:pstube/utils/utils.dart';
 
@@ -25,16 +24,11 @@ class _VideoPlayerState extends State<VideoPlayer> with WidgetsBindingObserver {
   void initState() {
     super.initState();
 
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
     WidgetsBinding.instance!.addObserver(this);
 
     mediaPlayerControllerSetUp();
     _controller.setOverriddenFit(BoxFit.contain);
   }
-
-  final indicator = const CircularProgressIndicator();
 
   void mediaPlayerControllerSetUp() {
     _controller = BetterPlayerController(
@@ -54,7 +48,7 @@ class _VideoPlayerState extends State<VideoPlayer> with WidgetsBindingObserver {
           overflowModalTextColor: context.textTheme.bodyText1!.color!,
           playIcon: Icons.play_arrow,
           playerTheme: BetterPlayerTheme.material,
-          loadingWidget: indicator,
+          loadingWidget: const CircularProgressIndicator(),
           progressBarPlayedColor: context.theme.primaryColor.withOpacity(0.92),
           progressBarBufferedColor: Colors.grey,
           progressBarHandleColor: context.theme.primaryColor,
@@ -78,34 +72,32 @@ class _VideoPlayerState extends State<VideoPlayer> with WidgetsBindingObserver {
     );
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   super.didChangeAppLifecycleState(state);
 
-    switch (state) {
-      case AppLifecycleState.resumed:
-        _controller.setControlsAlwaysVisible(true);
-        break;
-      case AppLifecycleState.inactive:
-        _controller.pause();
-        break;
-      case AppLifecycleState.paused:
-        break;
-      case AppLifecycleState.detached:
-        break;
-    }
-  }
+  //   switch (state) {
+  //     case AppLifecycleState.resumed:
+  //       _controller.setControlsAlwaysVisible(true);
+  //       break;
+  //     case AppLifecycleState.inactive:
+  //       _controller.pause();
+  //       break;
+  //     case AppLifecycleState.paused:
+  //       break;
+  //     case AppLifecycleState.detached:
+  //       break;
+  //   }
+  // }
 
   @override
   void dispose() {
     super.dispose();
     WidgetsBinding.instance!.removeObserver(this);
+
     _controller
       ..clearCache()
       ..dispose();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
   }
 
   @override
