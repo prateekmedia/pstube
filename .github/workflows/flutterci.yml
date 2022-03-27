@@ -83,6 +83,12 @@ jobs:
 
       - name: Build Flutter app
         run: flutter build linux -v
+
+      - name: Bump versions
+        run: |
+          version=$(grep "^version" pubspec.yaml | awk '{print $2}')
+          sed -i "s:VERSION:$(echo $version):" linux/packaging/rpm/pstube.spec
+          sed -i "s:VERSION:$(echo $version):" linux/packaging/deb/DEBIAN/control
  
       - name: Build RPM Package
         run: |
