@@ -91,7 +91,7 @@ jobs:
           ln -s linux/packaging/deb/usr/share/pstube/pstube linux/packaging/deb/usr/bin/pstube
           sed -i "s:cp -rf :cp -rf $(pwd)/:" linux/packaging/rpm/pstube.spec
           cd linux/packaging/deb
-          sed -i "s:FILES_HERE:$(find usr -type f -follow -print | awk '{printf "/%s\\n", $0}'):" ../rpm/pstube.spec
+          sed -i "s:FILES_HERE:$(find usr \( -type l -o -type f \) -follow -print | awk '{printf "/%s\\n", $0}'):" ../rpm/pstube.spec
           cd ../../../
           rpmbuild -bb linux/packaging/rpm/pstube.spec -D "_topdir $(pwd)/rpmbuild"
           cp rpmbuild/RPMS/x86_64/*.rpm pstube-linux-${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}-x86_64.rpm
