@@ -3,7 +3,7 @@ Version:    1.1.0
 Release:    1
 Summary:    Youtube client made using flutter.
 License:    GPL-3.0
-AutoReq: no
+AutoReqProv: no
 
 %description
 Youtube client made using flutter.
