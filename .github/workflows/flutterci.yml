@@ -87,6 +87,7 @@ jobs:
       - name: Build RPM Package
         run: |
           cp -fr build/linux/x64/release/bundle linux/packaging/deb/usr/share/pstube
+          mkdir linux/packaging/deb/usr/bin
           ln -s linux/packaging/deb/usr/share/pstube/pstube linux/packaging/deb/usr/bin/pstube
           sed -i "s:cp -rf :cp -rf $(pwd)/:" linux/packaging/rpm/pstube.spec
           cd linux/packaging/deb
