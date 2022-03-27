@@ -14,7 +14,6 @@ dependencies:
   cached_network_image: ^3.2.0
   connectivity_plus: ^2.2.0
   custom_text: ^0.6.0-dev.1
-  # dart_vlc: ^0.1.7
   dart_vlc: ^0.1.9
   dio: ^4.0.4
   equatable: ^2.0.3
