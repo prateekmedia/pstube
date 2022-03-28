@@ -13,6 +13,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:pstube/providers/providers.dart';
 import 'package:pstube/utils/utils.dart';
 import 'package:pstube/widgets/video_player.dart';
+import 'package:pstube/widgets/vlc_player.dart';
 import 'package:pstube/widgets/widgets.dart';
 
 import 'package:share_plus/share_plus.dart';
@@ -98,6 +99,8 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                                     .streamsClient
                                     .getManifest(videoData.id),
                                 builder: (context, snapshot) {
+                                  final hasData =
+                                      snapshot.hasData && snapshot.data != null;
                                   return Flex(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -108,10 +111,33 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                                         child: SFBody(
                                           child: Column(
                                             children: [
-                                              if (mobVideoPlatforms &&
-                                                  snapshot.hasData &&
-                                                  snapshot.data != null)
+                                              if (mobVideoPlatforms && hasData)
                                                 VideoPlayer(
+                                                  url: snapshot.data!.muxed
+                                                      .firstWhere(
+                                                        (element) => element
+                                                            .qualityLabel
+                                                            .contains(
+                                                          '360',
+                                                        ),
+                                                        orElse: () => snapshot
+                                                            .data!.muxed.first,
+                                                      )
+                                                      .url
+                                                      .toString(),
+                                                  resolutions: snapshot
+                                                      .data!.muxed
+                                                      .asMap()
+                                                      .map(
+                                                        (key, value) =>
+                                                            MapEntry(
+                                                          value.qualityLabel,
+                                                          value.url.toString(),
+                                                        ),
+                                                      ),
+                                                )
+                                              else if (hasData)
+                                                VlcPlayer(
                                                   url: snapshot.data!.muxed
                                                       .firstWhere(
                                                         (element) => element

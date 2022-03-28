@@ -72,24 +72,6 @@ class _VideoPlayerState extends State<VideoPlayer> with WidgetsBindingObserver {
     );
   }
 
-  // @override
-  // void didChangeAppLifecycleState(AppLifecycleState state) {
-  //   super.didChangeAppLifecycleState(state);
-
-  //   switch (state) {
-  //     case AppLifecycleState.resumed:
-  //       _controller.setControlsAlwaysVisible(true);
-  //       break;
-  //     case AppLifecycleState.inactive:
-  //       _controller.pause();
-  //       break;
-  //     case AppLifecycleState.paused:
-  //       break;
-  //     case AppLifecycleState.detached:
-  //       break;
-  //   }
-  // }
-
   @override
   void dispose() {
     super.dispose();
