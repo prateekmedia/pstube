@@ -120,6 +120,20 @@ class ChannelScreen extends HookWidget {
                   channelInfo: channelInfo.value,
                   getStats: getStats,
                   channel: channel.value,
+                  videosScreen: ListView.builder(
+                    shrinkWrap: true,
+                    controller: controller,
+                    itemCount: _currentVidPage.value!.length + 1,
+                    itemBuilder: (ctx, index) =>
+                        index == _currentVidPage.value!.length
+                            ? getCircularProgressIndicator()
+                            : SFVideo(
+                                videoData: _currentVidPage.value![index],
+                                loadData: true,
+                                showChannel: false,
+                                isRow: true,
+                              ),
+                  ),
                   entry: entry,
                 ),
               ),
@@ -138,6 +152,7 @@ class _CustomTab extends StatefulWidget {
     required this.getStats,
     required this.channel,
     required this.entry,
+    required this.videosScreen,
   })  : _currentVidPage = currentVidPage,
         super(key: key);
 
@@ -146,6 +161,7 @@ class _CustomTab extends StatefulWidget {
   final List<Widget> getStats;
   final Channel? channel;
   final MapEntry<int, String> entry;
+  final Widget videosScreen;
 
   @override
   State<_CustomTab> createState() => _CustomTabState();
@@ -198,20 +214,7 @@ class _CustomTabState extends State<_CustomTab>
               ],
             )
           : (widget.entry.key == 1 && widget._currentVidPage != null)
-              ? Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: List.generate(
-                    widget._currentVidPage!.length + 1,
-                    (index) => index == widget._currentVidPage!.length
-                        ? getCircularProgressIndicator()
-                        : SFVideo(
-                            videoData: widget._currentVidPage![index],
-                            loadData: true,
-                            showChannel: false,
-                            isRow: true,
-                          ),
-                  ),
-                )
+              ? widget.videosScreen
               : widget.entry.key == 2 && widget.channelInfo != null
                   ? Flex(
                       direction: Axis.horizontal,
