@@ -4,10 +4,10 @@
 <h1 align="center">PsTube - Formerly FluTube</h1>
 <p align="center"><b>Youtube client made using flutter</b></p>
 <p align="center">
-<a href="https://github.com/prateekmedia/pstube/releases"><img alt="GitHub release" src="https://img.shields.io/github/v/release/prateekmedia/pstube"/></a> <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/prateekmedia/pstube?color=blue"/></a> <a href="#build-from-source"><img alt="Build from source" src="https://img.shields.io/badge/Install Manually-git-blue"/></a>
+<a href="https://github.com/prateekmedia/pstube/releases"><img alt="GitHub release" src="https://img.shields.io/github/v/release/prateekmedia/pstube"/></a> <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/prateekmedia/pstube?color=blue"/></a> <a href="#direct-app-download"><img alt="Download" src="https://img.shields.io/badge/Download-git-blue"/></a> <a href="https://hosted.weblate.org/engage/pstube/"><img src="https://hosted.weblate.org/widgets/pstube/-/app/svg-badge.svg" alt="Translation status" /></a>
 </p>
 
-<img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/home-desktop.jpg?raw=true" width="600"/> <img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/search-desktop.jpg?raw=true" width="600"/> <img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/video-desktop.jpg?raw=true" width="600"/> <img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/home-mobile.jpg?raw=true" width="200"/> <img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/search-mobile.jpg?raw=true" width="200"/> <img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/video-mobile.jpg?raw=true" width="200"/>
+<img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/home-desktop.jpg?raw=true" width="600"/> <img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/search-desktop.jpg?raw=true" width="600"/> <img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/video-desktop.jpg?raw=true" width="600"/> <img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/home-mobile.jpg?raw=true" width="200"/> <img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/search-mobile.jpg?raw=true" width="200"/> <img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/video-mobile.jpg?raw=true" width="200"/> 
 
 <h4>Features:</h4>
 <ul>
@@ -29,10 +29,7 @@
 
 ### Contribute translations
 
-- Simply copy the content of `app_en.arb` located in `lib/translations` to your language like `app_hi.arb`
-- Now Modify the values of every key for example:
-`"preferences": "सेटिंग्स"`
-- Now make a Pull Request or simply create an issue and upload your translations there.
+We use [weblate](https://hosted.weblate.org/engage/pstube/) for translations.
 
 ### Build from source
 
@@ -55,8 +52,4 @@ This project would not be possible without [youtube_explode_dart](https://github
 
 [![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
-PsTube is a Free Software: You can use, study share and improve it at your
-will. Specifically you can redistribute and/or modify it under the terms of the
-[GNU General Public License](https://www.gnu.org/licenses/gpl.html) as
-published by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version
+PsTube is a Free Software: Do whatever you want with this privately for your own use and do public the source code with same license when you release it for public / when you use it commercially.
