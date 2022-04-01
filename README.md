@@ -29,7 +29,7 @@
 
 ### Contribute translations
 
-We use [weblate](https://hosted.weblate.org/engage/pstube/) for translations.
+We use [weblate](https://hosted.weblate.org/projects/pstube/) for translations.
 
 ### Build from source
 
@@ -52,4 +52,5 @@ This project would not be possible without [youtube_explode_dart](https://github
 
 [![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
+TLDR;
 PsTube is a Free Software: Do whatever you want with this privately for your own use and do public the source code with same license when you release it for public / when you use it commercially.
