@@ -1,12 +1,12 @@
 Name:       pstube
 Version:    VERSION
 Release:    1
-Summary:    Youtube client made using flutter.
+Summary:    Watch and download videos without ads
 License:    GPL-3.0
 AutoReqProv: no
 
 %description
-Youtube client made using flutter.
+Ever wondered how the videos in the internet will look without ads, no more wondering just use PsTube.
 
 %prep
 # we have no source, so nothing here

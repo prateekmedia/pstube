@@ -2,14 +2,14 @@
 <img width="100" src="https://raw.githubusercontent.com/prateekmedia/pstube/main/assets/pstube.png">
 </p>
 <h1 align="center">PsTube - Formerly FluTube</h1>
-<p align="center"><b>Youtube client made using flutter</b></p>
+<p align="center"><b>Watch and download videos without ads</b></p>
 <p align="center">
 <a href="https://github.com/prateekmedia/pstube/releases"><img alt="GitHub release" src="https://img.shields.io/github/v/release/prateekmedia/pstube"/></a> <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/prateekmedia/pstube?color=blue"/></a> <a href="#direct-app-download"><img alt="Download" src="https://img.shields.io/badge/Download-git-blue"/></a> <a href="https://hosted.weblate.org/engage/pstube/"><img src="https://hosted.weblate.org/widgets/pstube/-/app/svg-badge.svg" alt="Translation status" /></a>
 </p>
 
 <img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/home-desktop.jpg?raw=true" width="600"/> <img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/search-desktop.jpg?raw=true" width="600"/> <img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/video-desktop.jpg?raw=true" width="600"/> <img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/home-mobile.jpg?raw=true" width="200"/> <img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/search-mobile.jpg?raw=true" width="200"/> <img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/video-mobile.jpg?raw=true" width="200"/> 
 
-<h4>Features:</h4>
+<h4>Features</h4>
 <ul>
     <li>Beautiful user interface</li>
     <li>Lightweight and fast</li>
@@ -19,6 +19,11 @@
     <li>Download videos, audios and thumbnails</li>
     <li>Ads free forever</li>
     <li>Free libre and open source (FLOSS)</li>
+</ul>
+
+<h4>Supported services</h4>
+<ul>
+    <li>Youtube</li>
 </ul>
 
 ### Direct app download

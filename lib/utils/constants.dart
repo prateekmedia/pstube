@@ -15,7 +15,7 @@ final myApp = SFInfo(
   name: 'PsTube',
   nickname: 'pstube',
   url: 'https://github.com/prateekmedia/pstube',
-  description: 'Youtube client made using flutter.',
+  description: 'Watch and download videos without ads',
   image: 'pstube.png',
 );
 

@@ -2,7 +2,7 @@
 <component type="desktop-application">
 	<id>pstube</id>
 	<name>PsTube</name>
-	<summary>Youtube client made using flutter</summary>
+	<summary>Watch and download videos without ads</summary>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-only</project_license>
 	<recommends>
@@ -13,7 +13,7 @@
 	<developer_name>Prateek Sunal</developer_name>
 	<url type="homepage">https://github.com/prateekmedia/pstube</url>
 	<description>
-		<p>Youtube client made using flutter</p>
+		<p>Ever wondered how the videos in the internet will look without ads, no more wondering just use PsTube.</p>
 		<p>Features:</p>
 		<ul>
 			<li>Beautiful user interface</li>
@@ -24,6 +24,10 @@
 			<li>Download videos, audios and thumbnails</li>
 			<li>Ads free forever</li>
 			<li>Free libre and open source (FLOSS)</li>
+		</ul>
+		<p>Supported services:</p>
+		<ul>
+			<li>Youtube</li>
 		</ul>
 	</description>
 	<screenshots>

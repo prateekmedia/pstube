@@ -5,5 +5,5 @@ Priority: optional
 Homepage: https://github.com/prateekmedia/pstube
 Architecture: amd64
 Maintainer: Prateek Sunal <pankajsunal123@gmail.com>
-Description: PsTube
- Youtube video client made using flutter
+Description: Watch and download videos without ads.
+ Ever wondered how the videos in the internet will look without ads, no more wondering just use PsTube.
