@@ -72,6 +72,7 @@ class _VlcPlayerState extends State<VlcPlayer> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Video(
+      // fit: BoxFit.fitHeight,
       player: player,
       height: context.isMobile ? 320 : 480,
       volumeThumbColor: Colors.blue,
