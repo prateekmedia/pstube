@@ -16,7 +16,8 @@ dependencies:
   custom_text: ^0.6.0-dev.1
   dart_vlc: ^0.1.9
   dio: ^4.0.4
-  equatable: ^2.0.3
+  equatable: ^2.0.3 
+  ffmpeg_kit_flutter_min: ^4.5.1-LTS
   file_picker: ^4.3.3
   flutter:
     sdk: flutter
