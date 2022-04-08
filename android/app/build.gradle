@@ -49,7 +49,7 @@ android {
 
     defaultConfig {
         applicationId "com.prateekmedia.pstube"
-        minSdkVersion 17
+        minSdkVersion 24
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
