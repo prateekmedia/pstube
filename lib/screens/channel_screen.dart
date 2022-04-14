@@ -129,7 +129,7 @@ class ChannelScreen extends HookWidget {
                     itemBuilder: (ctx, index) =>
                         index == _currentVidPage.value!.length
                             ? getCircularProgressIndicator()
-                            : SFVideo(
+                            : PSVideo(
                                 videoData: _currentVidPage.value![index],
                                 loadData: true,
                                 showChannel: false,

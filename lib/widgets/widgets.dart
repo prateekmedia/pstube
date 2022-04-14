@@ -8,5 +8,6 @@ export 'icon_with_bottom_label.dart';
 export 'icon_with_label.dart';
 export 'popover.dart';
 export 'ps_body.dart';
+export 'ps_playlist.dart';
 export 'ps_video.dart';
 export 'size_expanded_section.dart';

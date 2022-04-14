@@ -11,8 +11,8 @@ import 'package:pstube/widgets/widgets.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-class SFVideo extends HookWidget {
-  const SFVideo({
+class PSVideo extends HookWidget {
+  const PSVideo({
     Key? key,
     this.videoUrl,
     this.date,

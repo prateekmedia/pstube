@@ -86,7 +86,7 @@ class PlaylistSubScreen extends StatelessWidget {
             ? ListView(
                 children: [
                   for (var videoUrl in videos)
-                    SFVideo(
+                    PSVideo(
                       isRow: !context.isMobile,
                       videoUrl: videoUrl,
                       actions: [

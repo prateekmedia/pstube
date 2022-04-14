@@ -41,7 +41,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                     itemBuilder: (ctx, idx) {
                       final streamItem =
                           widget.snapshot.data!.data[idx] as StreamItem;
-                      return SFVideo(
+                      return PSVideo(
                         loadData: true,
                         date: streamItem.uploadedDate,
                         videoData: streamItem.toVideo,
