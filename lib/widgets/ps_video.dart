@@ -16,6 +16,7 @@ class SFVideo extends HookWidget {
     Key? key,
     this.videoUrl,
     this.date,
+    this.duration,
     this.videoData,
     this.isRow = false,
     this.showChannel = true,
@@ -25,6 +26,7 @@ class SFVideo extends HookWidget {
   }) : super(key: key);
 
   final String? date;
+  final String? duration;
   final String? videoUrl;
   final Video? videoData;
   final bool loadData;
@@ -215,7 +217,7 @@ class SFVideo extends HookWidget {
   }
 
   IconWithLabel getDuration(Video video) => IconWithLabel(
-        label: (video.duration ?? Duration.zero).format(),
+        label: duration ?? (video.duration ?? Duration.zero).format(),
         secColor: SecColor.dark,
       );
 

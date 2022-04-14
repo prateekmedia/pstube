@@ -637,7 +637,7 @@ packages:
       name: libadwaita_searchbar
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.5"
+    version: "0.5.6"
   libadwaita_searchbar_ac:
     dependency: "direct main"
     description:
@@ -1357,12 +1357,10 @@ packages:
   youtube_explode_dart:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "0ce24bf0178571a0fd2706539b8b94db32a7ede3"
-      url: "https://github.com/Hexer10/youtube_explode_dart.git"
-    source: git
-    version: "1.10.10+2"
+      name: youtube_explode_dart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.11.0"
 sdks:
   dart: ">=2.15.0 <3.0.0"
   flutter: ">=2.10.0"

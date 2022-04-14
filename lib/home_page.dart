@@ -13,6 +13,7 @@ import 'package:piped_api/piped_api.dart';
 
 import 'package:pstube/providers/providers.dart';
 import 'package:pstube/screens/screens.dart';
+import 'package:pstube/utils/extensions/yt_explode_dart.dart';
 import 'package:pstube/utils/utils.dart';
 import 'package:pstube/widgets/widgets.dart';
 
@@ -136,9 +137,10 @@ class MyHomePage extends HookConsumerWidget {
         ],
         title: toggleSearch.value
             ? AdwSearchBarAc(
-                constraints: BoxConstraints.loose(const Size(500, 36)),
-                padding: const EdgeInsets.symmetric(horizontal: 25),
+                constraints: BoxConstraints.loose(const Size(500, 40)),
                 toggleSearchBar: toggleSearchBar,
+                hintText: '',
+                search: null,
                 asyncSuggestions: (str) => str.isNotEmpty
                     ? YoutubeExplode().search.getQuerySuggestions(str)
                     : Future.value([]),
@@ -196,7 +198,7 @@ class MyHomePage extends HookConsumerWidget {
                               Future<void> loadVideos() async {
                                 if (!isMounted()) return;
                                 _currentPage.value = await yt.search
-                                    .getVideos(searchedTerm.value);
+                                    .searchContent(searchedTerm.value);
                               }
 
                               final controller = useScrollController();
@@ -240,12 +242,8 @@ class MyHomePage extends HookConsumerWidget {
                                       itemBuilder: (ctx, idx) =>
                                           idx == _currentPage.value!.length
                                               ? getCircularProgressIndicator()
-                                              : SFVideo(
-                                                  videoData:
-                                                      _currentPage.value![idx],
-                                                  isRow: !context.isMobile,
-                                                  loadData: true,
-                                                ),
+                                              : _currentPage.value![idx]
+                                                  .showContent(context),
                                     )
                                   : const Center(
                                       child: CircularProgressIndicator(),

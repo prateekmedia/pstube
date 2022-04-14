@@ -123,7 +123,9 @@ class ChannelScreen extends HookWidget {
                   videosScreen: ListView.builder(
                     shrinkWrap: true,
                     controller: controller,
-                    itemCount: _currentVidPage.value!.length + 1,
+                    itemCount: _currentVidPage.value != null
+                        ? _currentVidPage.value!.length + 1
+                        : 1,
                     itemBuilder: (ctx, index) =>
                         index == _currentVidPage.value!.length
                             ? getCircularProgressIndicator()
