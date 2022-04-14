@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:pstube/utils/extensions/extensions.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class PSPlaylist extends StatelessWidget {
@@ -16,19 +17,24 @@ class PSPlaylist extends StatelessWidget {
     return Row(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.only(left: 24, right: 16),
           child: Stack(
             children: [
-              Container(
-                height: 90,
-                width: 160,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                padding: const EdgeInsets.all(5),
-                child: CachedNetworkImage(
-                  imageUrl: playlist.thumbnails.first.url.toString(),
-                  fit: BoxFit.cover,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Container(
+                  height: 90,
+                  width: 160,
+                  decoration: BoxDecoration(
+                    color: context.getAlt2BackgroundColor,
+                  ),
+                  padding: const EdgeInsets.all(5),
+                  child: playlist.thumbnails.isNotEmpty
+                      ? CachedNetworkImage(
+                          imageUrl: playlist.thumbnails.first.url.toString(),
+                          fit: BoxFit.cover,
+                        )
+                      : null,
                 ),
               ),
               Positioned(

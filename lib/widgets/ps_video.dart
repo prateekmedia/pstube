@@ -64,13 +64,14 @@ class PSVideo extends HookWidget {
                       children: [
                         Stack(
                           children: [
-                            Container(
-                              height: 90,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: SizedBox(
+                                height: 90,
+                                width: 160,
+                                child:
+                                    getThumbnail(video, context, isRow: isRow),
                               ),
-                              padding: const EdgeInsets.all(5),
-                              child: getThumbnail(video, context, isRow: isRow),
                             ),
                             if (video != null)
                               Positioned.fill(
@@ -81,7 +82,7 @@ class PSVideo extends HookWidget {
                               ),
                           ],
                         ),
-                        const SizedBox(width: 6),
+                        const SizedBox(width: 16),
                         Flexible(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,17 +128,20 @@ class PSVideo extends HookWidget {
                     )
                   : Column(
                       children: [
-                        Stack(
-                          children: [
-                            getThumbnail(video, context, isRow: isRow),
-                            if (video != null)
-                              Positioned.fill(
-                                child: Align(
-                                  alignment: const Alignment(0.98, 0.94),
-                                  child: getDuration(video),
-                                ),
-                              )
-                          ],
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Stack(
+                            children: [
+                              getThumbnail(video, context, isRow: isRow),
+                              if (video != null)
+                                Positioned.fill(
+                                  child: Align(
+                                    alignment: const Alignment(0.98, 0.94),
+                                    child: getDuration(video),
+                                  ),
+                                )
+                            ],
+                          ),
                         ),
                         const SizedBox(height: 10),
                         Row(
@@ -192,7 +196,7 @@ class PSVideo extends HookWidget {
           ? Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  fit: BoxFit.fitWidth,
+                  fit: BoxFit.cover,
                   image: CachedNetworkImageProvider(
                     isRow
                         ? video.thumbnails.lowResUrl
