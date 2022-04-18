@@ -31,7 +31,7 @@ dependencies:
   libadwaita: ^1.2.0-dev
   libadwaita_bitsdojo: ^0.5.3
   libadwaita_searchbar_ac: ^0.5.3
-  lucide_icons: ^0.17.11
+  lucide_icons: ^0.30.0
   open_file: # Upgrade to pub.dev when package > 3.2.1
     git:
       url: https://github.com/miDeb/open_file.git
@@ -40,12 +40,12 @@ dependencies:
   page_transition: ^2.0.5
   path: ^1.8.0
   path_provider: ^2.0.8
-  permission_handler: ^8.3.0
+  permission_handler: ^9.2.0
   piped_api:
     git:
       url: https://github.com/TeamPiped/piped_dart
   readmore: ^2.1.0
-  share_plus: ^3.0.4
+  share_plus: ^4.0.4
   shared_preferences: ^2.0.13
   sticky_headers: ^0.2.0
   timeago: ^3.2.1
@@ -56,7 +56,7 @@ dev_dependencies:
   build_runner: ^2.1.2
   flutter_lints: ^1.0.4
   hive_generator: ^1.1.1
-  msix: ^2.8.18
+  msix: ^3.5.1
   very_good_analysis: ^2.4.0
 
 dependency_overrides:
