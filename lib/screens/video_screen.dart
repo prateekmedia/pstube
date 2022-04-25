@@ -1,21 +1,24 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:custom_text/custom_text.dart';
+import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-
+import 'package:pstube/models/models.dart';
 import 'package:pstube/providers/providers.dart';
 import 'package:pstube/utils/utils.dart';
 import 'package:pstube/widgets/video_player.dart';
 import 'package:pstube/widgets/vlc_player.dart';
 import 'package:pstube/widgets/widgets.dart';
-
 import 'package:share_plus/share_plus.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
@@ -42,6 +45,47 @@ class VideoScreen extends StatefulHookConsumerWidget {
 
 class _VideoScreenState extends ConsumerState<VideoScreen>
     with AutomaticKeepAliveClientMixin {
+  List<RelatedVideo> recommendations = [];
+
+  Future<void> getRecommendations() async {
+    final dio = Dio();
+    final cookieJar = PersistCookieJar();
+    dio.interceptors.add(CookieManager(cookieJar));
+
+    final value = await dio
+        .get<String>('https://invidious.kavin.rocks/watch?v=Ahzrv1TQGHY');
+    final html = parse(value.data.toString());
+
+    final playNext = html.querySelectorAll('.pure-u-1 .pure-u-lg-1-5')[1];
+    final links = playNext.querySelectorAll('div.h-box>a');
+    final title = playNext.querySelectorAll('a>p');
+    final uploader = playNext.querySelectorAll('h5>div>b>a');
+    final views = playNext.querySelectorAll('h5>div.pure-u-10-24>b');
+
+    for (var i = 0; i < links.length; i++) {
+      final url = links[i].attributes['href'].toString();
+      final channelUrl = uploader[i].attributes['href'].toString();
+      final duration = links[i].querySelector('div>p.length');
+
+      recommendations.add(
+        RelatedVideo(
+          url: url,
+          title: title[i].innerHtml,
+          uploader: uploader[i].innerHtml,
+          channelUrl: channelUrl,
+          duration: duration.toString(),
+          views: views.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getRecommendations();
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
