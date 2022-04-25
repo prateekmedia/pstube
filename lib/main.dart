@@ -78,6 +78,12 @@ class MyApp extends HookConsumerWidget {
         AppLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
+      localeResolutionCallback: (deviceLocale, supportedLocales) {
+        if (supportedLocales.contains(deviceLocale)) {
+          return deviceLocale;
+        }
+        return const Locale('en');
+      },
       theme: AdwaitaThemeData.light(fontFamily: 'Noto Sans'),
       darkTheme: AdwaitaThemeData.dark(fontFamily: 'Noto Sans'),
       themeMode: ref.watch(themeTypeProvider),
