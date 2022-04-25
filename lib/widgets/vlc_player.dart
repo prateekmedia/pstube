@@ -59,6 +59,13 @@ class _VlcPlayerState extends State<VlcPlayer> with WidgetsBindingObserver {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+
+    player.dispose();
+  }
+
+  @override
   Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
     devices = Devices.all;

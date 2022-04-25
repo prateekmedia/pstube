@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 final _box = Hive.box<dynamic>('playlist');
 
@@ -8,6 +9,21 @@ final playlistProvider = ChangeNotifierProvider((_) => PlaylistNotifier());
 
 class PlaylistNotifier extends ChangeNotifier {
   PlaylistNotifier() : super();
+
+  Future<void> createPlaylistFromExisting(String id) async {
+    final yt = YoutubeExplode();
+    final playlist = await yt.playlists.get(id);
+
+    addPlaylist(playlist.title);
+
+    final videos = yt.playlists.getVideos(id);
+
+    await videos.forEach(
+      (video) {
+        addVideo(playlist.title, video.url);
+      },
+    );
+  }
 
   Map<String, List<String>> playlist = Map<String, List<String>>.from(
     _box.get('playlist', defaultValue: {'Watch later': <String>[]}) as Map,
