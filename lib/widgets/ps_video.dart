@@ -82,7 +82,7 @@ class PSVideo extends HookWidget {
                 ? () => context.pushPage(
                       VideoScreen(
                         video: video,
-                        loadData: loadData,
+                        loadData: isRelated || loadData,
                       ),
                     )
                 : null,
