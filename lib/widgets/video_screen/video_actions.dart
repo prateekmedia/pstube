@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:pstube/providers/providers.dart';
 import 'package:pstube/utils/utils.dart';
+import 'package:pstube/widgets/video_screen/video_action.dart';
 import 'package:pstube/widgets/video_screen/video_screen.dart';
 import 'package:pstube/widgets/widgets.dart';
 import 'package:share_plus/share_plus.dart';
@@ -51,14 +52,14 @@ class VideoActions extends HookConsumerWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          iconWithBottomLabel(
+          VideoAction(
             icon: isLiked.value ? Icons.thumb_up : Icons.thumb_up_outlined,
             onPressed: updateLike,
             label: videoData.engagement.likeCount != null
                 ? videoData.engagement.likeCount!.formatNumber
                 : context.locals.like,
           ),
-          iconWithBottomLabel(
+          VideoAction(
             icon: Icons.share_outlined,
             onPressed: () {
               Share.share(
@@ -67,7 +68,7 @@ class VideoActions extends HookConsumerWidget {
             },
             label: context.locals.share,
           ),
-          iconWithBottomLabel(
+          VideoAction(
             icon: Icons.download_outlined,
             onPressed: downloadsSideWidget.value != null
                 ? () => downloadsSideWidget.value = null
@@ -81,7 +82,7 @@ class VideoActions extends HookConsumerWidget {
                   },
             label: context.locals.download,
           ),
-          iconWithBottomLabel(
+          VideoAction(
             icon: Icons.copy,
             onPressed: () {
               Clipboard.setData(
@@ -95,7 +96,7 @@ class VideoActions extends HookConsumerWidget {
             },
             label: context.locals.copyLink,
           ),
-          iconWithBottomLabel(
+          VideoAction(
             icon: LucideIcons.listPlus,
             onPressed: () {
               showPopoverWB<dynamic>(
