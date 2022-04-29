@@ -60,7 +60,7 @@ class MyHomePage extends HookConsumerWidget {
           _addDownloadController.text = clipboard.text!;
         }
       }
-      return showPopoverWB<dynamic>(
+      return showPopoverForm(
         context: context,
         onConfirm: () {
           context.back();
@@ -76,7 +76,7 @@ class MyHomePage extends HookConsumerWidget {
 
     void clearAll() {
       final deleteFromStorage = ValueNotifier<bool>(false);
-      showPopoverWB<dynamic>(
+      showPopoverForm(
         context: context,
         builder: (ctx) => ValueListenableBuilder<bool>(
           valueListenable: deleteFromStorage,

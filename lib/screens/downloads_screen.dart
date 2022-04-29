@@ -141,7 +141,7 @@ class DownloadItemBuilder extends StatelessWidget {
                       item.cancelToken != null && item.cancelToken!.isCancelled
                   ? () {
                       final deleteFromStorage = ValueNotifier<bool>(true);
-                      showPopoverWB<dynamic>(
+                      showPopoverForm(
                         context: context,
                         title: context.locals.confirm,
                         builder: (ctx) => ValueListenableBuilder<bool>(

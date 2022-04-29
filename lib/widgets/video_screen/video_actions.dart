@@ -45,10 +45,7 @@ class VideoActions extends HookConsumerWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 2,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -85,21 +82,15 @@ class VideoActions extends HookConsumerWidget {
           VideoAction(
             icon: Icons.copy,
             onPressed: () {
-              Clipboard.setData(
-                ClipboardData(
-                  text: videoData.url,
-                ),
-              );
-              BotToast.showText(
-                text: context.locals.copiedToClipboard,
-              );
+              Clipboard.setData(ClipboardData(text: videoData.url));
+              BotToast.showText(text: context.locals.copiedToClipboard);
             },
             label: context.locals.copyLink,
           ),
           VideoAction(
             icon: LucideIcons.listPlus,
             onPressed: () {
-              showPopoverWB<dynamic>(
+              showPopoverForm(
                 context: context,
                 cancelText: context.locals.done,
                 hideConfirm: true,
@@ -108,12 +99,8 @@ class VideoActions extends HookConsumerWidget {
                 hint: context.locals.createNew,
                 onConfirm: () {
                   ref
-                      .read(
-                        playlistProvider.notifier,
-                      )
-                      .addPlaylist(
-                        _textController.value.text,
-                      );
+                      .read(playlistProvider.notifier)
+                      .addPlaylist(_textController.value.text);
                   _textController.value = TextEditingValue.empty;
                 },
                 builder: (ctx) => PlaylistPopup(
