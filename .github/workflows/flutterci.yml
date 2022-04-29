@@ -30,7 +30,7 @@ jobs:
       - name: Setup flutter
         uses: subosito/flutter-action@master
         with:
-          channel: stable
+          channel: beta
 
       - name: Generate android keystore
         id: android_keystore
