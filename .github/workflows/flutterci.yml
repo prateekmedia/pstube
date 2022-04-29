@@ -73,7 +73,7 @@ jobs:
       - name: Setup flutter
         uses: subosito/flutter-action@master
         with:
-          channel: stable
+          channel: beta
 
       - name: Install dependencies
         run: sudo apt-get update -y && sudo apt-get install -y libvlc-dev ninja-build libgtk-3-dev dpkg-dev pkg-config rpm
@@ -82,7 +82,7 @@ jobs:
         run: flutter config --enable-linux-desktop
 
       - name: Build Flutter app
-        run: flutter build linux -v
+        run: flutter build linux
 
       - name: Bump versions
         run: |
@@ -147,7 +147,7 @@ jobs:
       - name: Setup flutter
         uses: subosito/flutter-action@master
         with:
-          channel: stable
+          channel: beta
 
       - name: Enable desktop support
         run: flutter config --enable-windows-desktop
