@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:libadwaita/libadwaita.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:pstube/providers/providers.dart';
 import 'package:pstube/utils/utils.dart';
-import 'package:pstube/widgets/video_screen/video_action.dart';
 import 'package:pstube/widgets/video_screen/video_screen.dart';
 import 'package:pstube/widgets/widgets.dart';
 import 'package:share_plus/share_plus.dart';
@@ -110,6 +110,37 @@ class VideoActions extends HookConsumerWidget {
             },
             label: context.locals.save,
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class VideoAction extends StatelessWidget {
+  const VideoAction({
+    Key? key,
+    required this.icon,
+    this.onPressed,
+    required this.label,
+  }) : super(key: key);
+
+  final IconData icon;
+  final VoidCallback? onPressed;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Column(
+        children: [
+          AdwButton.circular(
+            size: 40,
+            onPressed: onPressed ?? () {},
+            child: Icon(icon),
+          ),
+          const SizedBox(height: 2),
+          Text(label),
         ],
       ),
     );
