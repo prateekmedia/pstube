@@ -4,7 +4,6 @@ export 'channel_info.dart';
 export 'channel_logo.dart';
 export 'comment_box.dart';
 export 'get_circular_progress_indicator.dart';
-export 'icon_with_bottom_label.dart';
 export 'icon_with_label.dart';
 export 'popover.dart';
 export 'ps_body.dart';

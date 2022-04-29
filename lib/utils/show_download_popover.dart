@@ -29,7 +29,7 @@ Future showDownloadPopup(
   );
   final yt = YoutubeExplode();
   Future<Video?> getVideo() => yt.videos.get(videoUrl);
-  return showPopover<dynamic>(
+  return showPopover(
     context: context,
     title: context.locals.downloadQuality,
     padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 12),

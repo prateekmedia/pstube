@@ -3,13 +3,13 @@ import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:pstube/utils/utils.dart';
 
-Future<T?> showPopover<T>({
+Future showPopover({
   required BuildContext context,
   required Widget Function(BuildContext) builder,
   required String title,
   EdgeInsets? padding = const EdgeInsets.symmetric(horizontal: 8),
 }) {
-  return showDialog<T>(
+  return showDialog<dynamic>(
     context: context,
     builder: (ctx) => Popover(
       title: title,
@@ -19,7 +19,7 @@ Future<T?> showPopover<T>({
   );
 }
 
-Future<T?> showPopoverWB<T>({
+Future showPopoverForm({
   required BuildContext context,
   GlobalKey<FormState>? key,
   required String title,
@@ -35,7 +35,7 @@ Future<T?> showPopoverWB<T>({
   bool hideConfirm = false,
 }) {
   final _formKey = key ?? GlobalKey<FormState>();
-  return showPopover<T>(
+  return showPopover(
     context: context,
     title: title,
     padding: padding,

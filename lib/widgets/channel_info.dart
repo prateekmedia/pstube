@@ -38,7 +38,9 @@ class _ChannelInfoState extends State<ChannelInfo>
         ? useFuture(
             useMemoized(
               () => yt.channels.get(widget.channelId),
-              [widget.channelId!],
+              [
+                widget.channelId,
+              ],
             ),
           )
         : widget.channel;

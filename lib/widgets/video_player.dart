@@ -24,7 +24,7 @@ class _VideoPlayerState extends State<VideoPlayer> with WidgetsBindingObserver {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
 
     mediaPlayerControllerSetUp();
     _controller.setOverriddenFit(BoxFit.contain);
@@ -75,7 +75,7 @@ class _VideoPlayerState extends State<VideoPlayer> with WidgetsBindingObserver {
   @override
   void dispose() {
     super.dispose();
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
 
     _controller
       ..clearCache()

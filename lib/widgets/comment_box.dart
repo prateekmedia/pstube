@@ -31,8 +31,8 @@ class CommentBox extends HookConsumerWidget {
     final yt = YoutubeExplode();
     final channelData = useFuture(
       useMemoized(
-        () => yt.channels.get(comment.channelId),
-        [comment.channelId],
+        () => yt.channels.get(comment.channelUrl),
+        [comment.channelUrl],
       ),
     );
     return Container(
@@ -42,7 +42,8 @@ class CommentBox extends HookConsumerWidget {
         children: [
           GestureDetector(
             onTap: () {
-              context.pushPage(ChannelScreen(id: comment.channelId.toString()));
+              context
+                  .pushPage(ChannelScreen(id: comment.channelUrl.toString()));
             },
             child: ChannelLogo(channel: channelData, size: 40),
           ),
@@ -62,7 +63,7 @@ class CommentBox extends HookConsumerWidget {
                               onTap: () {
                                 context.pushPage(
                                   ChannelScreen(
-                                    id: comment.channelId.value as String,
+                                    id: comment.channelUrl.value as String,
                                   ),
                                 );
                               },

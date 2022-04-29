@@ -8,7 +8,7 @@ final regionProvider = StateNotifierProvider<RegionNotifier, Regions>(
     Regions.values.firstWhere(
       (p0) => prefs.getString('region') != null
           ? p0.name == prefs.getString('region')
-          : p0.name == WidgetsBinding.instance!.window.locale.countryCode,
+          : p0.name == WidgetsBinding.instance.window.locale.countryCode,
       orElse: () => Regions.US,
     ),
   ),
@@ -25,7 +25,7 @@ class RegionNotifier extends StateNotifier<Regions> {
   void reset() {
     MyPrefs().prefs.remove('region').whenComplete(
           () => state = Regions.values.firstWhere(
-            (e) => e.name == WidgetsBinding.instance!.window.locale.countryCode,
+            (e) => e.name == WidgetsBinding.instance.window.locale.countryCode,
             orElse: () => Regions.US,
           ),
         );
