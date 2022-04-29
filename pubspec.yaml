@@ -52,7 +52,9 @@ dependencies:
   sticky_headers: ^0.2.0
   timeago: ^3.2.1
   url_launcher: ^6.0.18
-  youtube_explode_dart: ^1.11.0
+  youtube_explode_dart:
+    git:
+      url: https://github.com/prateekmedia/youtube_explode_dart.git
 
 dev_dependencies:
   build_runner: ^2.1.2
