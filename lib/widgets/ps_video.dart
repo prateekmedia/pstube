@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:pstube/models/models.dart';
 
 import 'package:pstube/screens/screens.dart';
 import 'package:pstube/utils/utils.dart';
@@ -16,24 +17,54 @@ class PSVideo extends HookWidget {
     Key? key,
     this.videoUrl,
     this.date,
+    this.views,
     this.duration,
     this.videoData,
     this.isRow = false,
     this.showChannel = true,
-    this.isInsideDownloadPopup = false,
     this.loadData = false,
     this.actions = const [],
-  }) : super(key: key);
+  })  : isRelated = false,
+        super(key: key);
+
+  PSVideo.related({
+    Key? key,
+    required RelatedVideo relatedVideo,
+  })  : actions = [],
+        date = null,
+        showChannel = true,
+        loadData = false,
+        isRow = false,
+        isRelated = true,
+        videoUrl = null,
+        duration = relatedVideo.duration,
+        views = relatedVideo.views,
+        videoData = Video(
+          VideoId(relatedVideo.url),
+          relatedVideo.title,
+          relatedVideo.uploader,
+          ChannelId(relatedVideo.channelUrl),
+          DateTime.now(),
+          DateTime.now(),
+          '',
+          Duration.zero,
+          ThumbnailSet(relatedVideo.url.replaceAll('$ytCom/watch?v=', '')),
+          [''],
+          const Engagement(0, 0, 0),
+          false,
+        ),
+        super(key: key);
 
   final String? date;
+  final String? views;
   final String? duration;
   final String? videoUrl;
   final Video? videoData;
   final bool loadData;
   final bool isRow;
-  final bool isInsideDownloadPopup;
   final bool showChannel;
   final List<Widget> actions;
+  final bool isRelated;
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +87,10 @@ class PSVideo extends HookWidget {
                     )
                 : null,
             child: Padding(
-              padding: isInsideDownloadPopup
-                  ? EdgeInsets.zero
-                  : const EdgeInsets.all(16),
+              padding:
+                  // isInsideDownloadPopup
+                  //     ? EdgeInsets.zero :
+                  const EdgeInsets.all(16),
               child: isRow
                   ? Row(
                       children: [
@@ -107,17 +139,18 @@ class PSVideo extends HookWidget {
                                   Flexible(
                                     child: getViews(video, context),
                                   ),
-                                  Flexible(
-                                    child: getTime(video),
-                                  ),
+                                  if (!isRelated)
+                                    Flexible(
+                                      child: getTime(video),
+                                    ),
                                 ],
                               )
                             ],
                           ),
                         ),
-                        if (!isInsideDownloadPopup) ...[
-                          getDownloadButton(video, context),
-                        ],
+                        // if (!isInsideDownloadPopup) ...[
+                        getDownloadButton(video, context),
+                        // ],
                         ...actions.map(
                           (e) => Padding(
                             padding: const EdgeInsets.only(left: 8),
@@ -158,9 +191,9 @@ class PSVideo extends HookWidget {
                                 ],
                               ),
                             ),
-                            if (!isInsideDownloadPopup) ...[
-                              getDownloadButton(video, context),
-                            ],
+                            // if (!isInsideDownloadPopup) ...[
+                            getDownloadButton(video, context),
+                            // ],
                             ...actions.map(
                               (e) => Padding(
                                 padding: const EdgeInsets.only(left: 8),
@@ -173,7 +206,7 @@ class PSVideo extends HookWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             getViews(video, context),
-                            getTime(video),
+                            if (!isRelated) getTime(video),
                           ],
                         )
                       ],
@@ -258,9 +291,10 @@ class PSVideo extends HookWidget {
 
   IconWithLabel getViews(Video? video, BuildContext context) {
     return IconWithLabel(
-      label: video != null
-          ? '${video.engagement.viewCount.formatNumber} ${context.locals.views}'
-          : '           ',
+      label: views ??
+          (video != null
+              ? '${video.engagement.viewCount.formatNumber} ${context.locals.views}'
+              : '           '),
     );
   }
 

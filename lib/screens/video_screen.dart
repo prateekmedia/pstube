@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:html/parser.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
@@ -13,7 +12,7 @@ import 'package:pstube/widgets/video_screen/video_screen.dart';
 import 'package:pstube/widgets/widgets.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-class VideoScreen extends StatefulHookConsumerWidget {
+class VideoScreen extends StatefulHookWidget {
   const VideoScreen({
     Key? key,
     required this.video,
@@ -30,10 +29,10 @@ class VideoScreen extends StatefulHookConsumerWidget {
   final bool loadData;
 
   @override
-  ConsumerState<VideoScreen> createState() => _VideoScreenState();
+  State<VideoScreen> createState() => _VideoScreenState();
 }
 
-class _VideoScreenState extends ConsumerState<VideoScreen>
+class _VideoScreenState extends State<VideoScreen>
     with AutomaticKeepAliveClientMixin {
   List<RelatedVideo> recommendations = [];
 
@@ -55,16 +54,16 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
     for (var i = 0; i < links.length; i++) {
       final url = links[i].attributes['href'].toString();
       final channelUrl = uploader[i].attributes['href'].toString();
-      final duration = links[i].querySelector('div>p.length');
+      final duration = links[i].querySelector('div>p.length')!.innerHtml;
 
       recommendations.add(
         RelatedVideo(
-          url: url,
+          url: ytCom + url,
           title: title[i].innerHtml,
           uploader: uploader[i].innerHtml,
-          channelUrl: channelUrl,
-          duration: duration.toString(),
-          views: views.toString(),
+          channelUrl: ytCom + channelUrl,
+          duration: duration,
+          views: views[0].innerHtml,
         ),
       );
     }
@@ -144,9 +143,46 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                                         Flexible(
                                           flex: 4,
                                           child: [
-                                            DescriptionWidget(
-                                              video: videoData,
-                                              isInsidePopup: false,
+                                            DefaultTabController(
+                                              length: 2,
+                                              child: Column(
+                                                children: [
+                                                  Expanded(
+                                                    child: TabBarView(
+                                                      children: [
+                                                        DescriptionWidget(
+                                                          video: videoData,
+                                                          isInsidePopup: false,
+                                                        ),
+                                                        if (recommendations
+                                                            .isNotEmpty)
+                                                          ListView.builder(
+                                                            itemBuilder:
+                                                                (_, index) {
+                                                              return PSVideo
+                                                                  .related(
+                                                                relatedVideo:
+                                                                    recommendations[
+                                                                        index],
+                                                              );
+                                                            },
+                                                            itemCount:
+                                                                recommendations
+                                                                    .length,
+                                                          )
+                                                        else
+                                                          getCircularProgressIndicator(),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  const TabBar(
+                                                    tabs: [
+                                                      Tab(text: 'DESCRIPTION'),
+                                                      Tab(text: 'RELATED'),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ].last,
                                         ),
