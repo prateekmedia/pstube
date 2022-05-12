@@ -29,7 +29,7 @@
   "@highResolution": {},
   "maxResolution": "Max",
   "@maxResolution": {},
-  "downloadStarted": "Downloading…",
+  "downloadStarted": "Downloading",
   "@downloadStarted": {},
   "downloadFinished": "Finished",
   "@downloadFinished": {},
@@ -137,6 +137,6 @@
   "@typeToSearch": {},
   "region": "Region",
   "@region": {},
-  "lookingForNewVersion": "Searching for new versions…",
+  "lookingForNewVersion": "Searching for new versions.",
   "@lookingForNewVersion": {}
 }
