@@ -13,8 +13,6 @@ import 'package:piped_api/piped_api.dart';
 import 'package:pstube/providers/providers.dart';
 import 'package:pstube/utils/utils.dart';
 
-import 'package:url_launcher/url_launcher.dart';
-
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
@@ -144,7 +142,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
                         .map(
                           (e) => AdwActionRow(
                             title: e.name,
-                            onActivated: () => launch(e.url),
+                            onActivated: e.url.launchIt,
                           ),
                         )
                         .toList(),
@@ -155,7 +153,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
                         .map(
                           (e) => AdwActionRow(
                             title: e.name,
-                            onActivated: () => launch(e.url),
+                            onActivated: e.url.launchIt,
                           ),
                         )
                         .toList(),

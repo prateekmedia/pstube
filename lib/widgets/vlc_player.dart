@@ -84,7 +84,6 @@ class _VlcPlayerState extends State<VlcPlayer> with WidgetsBindingObserver {
       height: context.isMobile ? 320 : 480,
       volumeThumbColor: Colors.blue,
       volumeActiveColor: Colors.blue,
-      playlistLength: medias.length,
     );
   }
 }

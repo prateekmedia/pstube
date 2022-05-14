@@ -9,7 +9,9 @@
 #include <bitsdojo_window_windows/bitsdojo_window_plugin.h>
 #include <connectivity_plus_windows/connectivity_plus_windows_plugin.h>
 #include <dart_vlc/dart_vlc_plugin.h>
+#include <flutter_native_view/flutter_native_view_plugin.h>
 #include <url_launcher_windows/url_launcher_windows.h>
+#include <window_manager/window_manager_plugin.h>
 
 void RegisterPlugins(flutter::PluginRegistry* registry) {
   BitsdojoWindowPluginRegisterWithRegistrar(
@@ -18,6 +20,10 @@ void RegisterPlugins(flutter::PluginRegistry* registry) {
       registry->GetRegistrarForPlugin("ConnectivityPlusWindowsPlugin"));
   DartVlcPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("DartVlcPlugin"));
+  FlutterNativeViewPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("FlutterNativeViewPlugin"));
   UrlLauncherWindowsRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("UrlLauncherWindows"));
+  WindowManagerPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("WindowManagerPlugin"));
 }
