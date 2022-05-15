@@ -431,7 +431,7 @@ packages:
       name: flutter_hooks
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.18.4"
+    version: "0.18.3"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -457,7 +457,7 @@ packages:
       name: flutter_riverpod
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0-dev.7"
+    version: "2.0.0-dev.6"
   flutter_staggered_grid_view:
     dependency: "direct main"
     description:
@@ -560,7 +560,7 @@ packages:
       name: hooks_riverpod
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0-dev.7"
+    version: "2.0.0-dev.6"
   html:
     dependency: "direct main"
     description:
@@ -984,7 +984,7 @@ packages:
       name: riverpod
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0-dev.7"
+    version: "2.0.0-dev.6"
   rxdart:
     dependency: transitive
     description:
@@ -1399,5 +1399,5 @@ packages:
     source: git
     version: "1.11.0"
 sdks:
-  dart: ">=2.17.0 <3.0.0"
-  flutter: ">=3.0.0"
+  dart: ">=2.17.0-0 <3.0.0"
+  flutter: ">=2.10.0"
