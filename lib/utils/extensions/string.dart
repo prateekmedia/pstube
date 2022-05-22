@@ -1,7 +1,7 @@
-import 'package:url_launcher/url_launcher.dart' as url_launcher;
+import 'package:url_launcher/url_launcher.dart';
 
 extension UrlLauncher on String {
-  Future<bool> launchIt() async => url_launcher.launch(this);
+  Future<bool> launchIt() async => launchUrl(Uri.parse(this));
 
   Duration parseDuration() {
     var hours = 0;

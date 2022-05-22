@@ -57,14 +57,18 @@ class ChannelScreen extends HookWidget {
           ]
         : <Widget>[];
 
+    Future<void> getVideos() async {
+      final yte = YoutubeExplode();
+
+      _currentVidPage.value =
+          await yte.channels.getUploadsFromPage(channel.value!.id.value);
+    }
+
     Future<void> loadInitData() async {
       channel.value = await yt.channels.get(id);
 
       if (!isMounted()) return;
-
-      _currentVidPage.value =
-          await yt.channels.getUploadsFromPage(channel.value!.id.value);
-
+      await getVideos();
       channelInfo.value = await yt.channels.getAboutPage(id);
     }
 

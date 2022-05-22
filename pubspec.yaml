@@ -10,7 +10,9 @@ environment:
 dependencies:
   adwaita: ^0.5.1
   better_player: ^0.0.81
-  bot_toast: ^4.0.1
+  bot_toast:
+    git:
+      url: https://github.com/MMMzq/bot_toast.git
   cached_network_image: ^3.2.0
   connectivity_plus: ^2.2.0
   custom_text: ^0.6.0-dev.1
@@ -76,6 +78,9 @@ dependency_overrides:
     git:
       url: https://github.com/prateekmedia/bitsdojo_window.git
       path: bitsdojo_window_windows
+  dart_vlc:
+    git:
+      url: https://github.com/alexmercerind/dart_vlc.git
 
 flutter:
   generate: true

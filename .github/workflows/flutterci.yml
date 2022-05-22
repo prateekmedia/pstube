@@ -30,7 +30,7 @@ jobs:
       - name: Setup flutter
         uses: subosito/flutter-action@master
         with:
-          channel: beta
+          channel: stable
 
       - name: Generate android keystore
         id: android_keystore
@@ -73,7 +73,7 @@ jobs:
       - name: Setup flutter
         uses: subosito/flutter-action@master
         with:
-          channel: beta
+          channel: stable
 
       - name: Install dependencies
         run: sudo apt-get update -y && sudo apt-get install -y libvlc-dev ninja-build libgtk-3-dev dpkg-dev pkg-config rpm
@@ -147,7 +147,7 @@ jobs:
       - name: Setup flutter
         uses: subosito/flutter-action@master
         with:
-          channel: beta
+          channel: stable
 
       - name: Enable desktop support
         run: flutter config --enable-windows-desktop

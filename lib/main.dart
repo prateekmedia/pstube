@@ -22,7 +22,7 @@ Future<void> main() async {
 
   // Intialize Dart VLC
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-    DartVLC.initialize();
+    await DartVLC.initialize();
   }
 
   // Connectivity check stream initialised.
