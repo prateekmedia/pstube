@@ -127,7 +127,7 @@ packages:
       name: build_resolvers
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.8"
+    version: "2.0.9"
   build_runner:
     dependency: "direct dev"
     description:
@@ -274,7 +274,7 @@ packages:
       name: convert
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.1"
+    version: "3.0.2"
   cookie_jar:
     dependency: transitive
     description:
@@ -295,7 +295,7 @@ packages:
       name: csslib
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.17.1"
+    version: "0.17.2"
   cupertino_icons:
     dependency: transitive
     description:
@@ -329,7 +329,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "8a2528551f01c8308ac159a7e23d404d807e8161"
+      resolved-ref: "3b0571743f0ed2f90aa52ab92e955b55cd10d0dd"
       url: "https://github.com/alexmercerind/dart_vlc.git"
     source: git
     version: "0.2.1"
@@ -395,7 +395,7 @@ packages:
       name: file_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.5.1"
+    version: "4.6.0"
   fixnum:
     dependency: transitive
     description:
@@ -461,7 +461,7 @@ packages:
       name: flutter_riverpod
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0-dev.8"
+    version: "2.0.0-dev.9"
   flutter_staggered_grid_view:
     dependency: "direct main"
     description:
@@ -564,7 +564,7 @@ packages:
       name: hooks_riverpod
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0-dev.8"
+    version: "2.0.0-dev.9"
   html:
     dependency: "direct main"
     description:
@@ -846,7 +846,7 @@ packages:
       name: path_provider_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.6"
+    version: "2.1.7"
   path_provider_macos:
     dependency: transitive
     description:
@@ -867,7 +867,7 @@ packages:
       name: path_provider_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.6"
+    version: "2.0.7"
   pedantic:
     dependency: transitive
     description:
@@ -988,14 +988,14 @@ packages:
       name: riverpod
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0-dev.8"
+    version: "2.0.0-dev.9"
   rxdart:
     dependency: transitive
     description:
       name: rxdart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.27.3"
+    version: "0.27.4"
   share_plus:
     dependency: "direct main"
     description:
