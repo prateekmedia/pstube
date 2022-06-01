@@ -7,7 +7,7 @@ packages:
       name: _fe_analyzer_shared
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "38.0.0"
+    version: "40.0.0"
   adwaita:
     dependency: "direct main"
     description:
@@ -21,7 +21,7 @@ packages:
       name: analyzer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.4.1"
+    version: "4.1.0"
   ansicolor:
     dependency: transitive
     description:
@@ -88,7 +88,7 @@ packages:
       name: bitsdojo_window_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.0"
+    version: "0.1.2"
   bitsdojo_window_windows:
     dependency: "direct overridden"
     description:
@@ -103,10 +103,10 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "8d4535073aa56578409e31c243f485e4517f40e4"
+      resolved-ref: "6312d6a66dacb6d50bd7e701b08bb78f505049c9"
       url: "https://github.com/MMMzq/bot_toast.git"
     source: git
-    version: "4.0.1"
+    version: "4.0.2"
   build:
     dependency: transitive
     description:
@@ -134,14 +134,14 @@ packages:
       name: build_resolvers
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.8"
+    version: "2.0.9"
   build_runner:
     dependency: "direct dev"
     description:
       name: build_runner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.10"
+    version: "2.1.11"
   build_runner_core:
     dependency: transitive
     description:
@@ -162,14 +162,14 @@ packages:
       name: built_value
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "8.3.0"
+    version: "8.3.2"
   cached_network_image:
     dependency: "direct main"
     description:
       name: cached_network_image
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.2.0"
+    version: "3.2.1"
   cached_network_image_platform_interface:
     dependency: transitive
     description:
@@ -191,13 +191,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
-  charcode:
-    dependency: transitive
-    description:
-      name: charcode
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.3.1"
   checked_yaml:
     dependency: transitive
     description:
@@ -232,14 +225,14 @@ packages:
       name: connectivity_plus
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.0"
+    version: "2.3.2"
   connectivity_plus_linux:
     dependency: transitive
     description:
       name: connectivity_plus_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.3.0"
+    version: "1.3.1"
   connectivity_plus_macos:
     dependency: transitive
     description:
@@ -253,28 +246,28 @@ packages:
       name: connectivity_plus_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.1"
   connectivity_plus_web:
     dependency: transitive
     description:
       name: connectivity_plus_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.1"
   connectivity_plus_windows:
     dependency: transitive
     description:
       name: connectivity_plus_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.1"
   convert:
     dependency: transitive
     description:
       name: convert
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.1"
+    version: "3.0.2"
   cookie_jar:
     dependency: transitive
     description:
@@ -295,7 +288,7 @@ packages:
       name: csslib
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.17.1"
+    version: "0.17.2"
   cupertino_icons:
     dependency: transitive
     description:
@@ -309,7 +302,7 @@ packages:
       name: custom_text
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.0-dev.2"
+    version: "0.6.0-dev.3"
   dart_style:
     dependency: transitive
     description:
@@ -322,17 +315,17 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "09f9d6624d482fded21285e3dd5ec52e897e52b8"
+      resolved-ref: "3b0571743f0ed2f90aa52ab92e955b55cd10d0dd"
       url: "https://github.com/alexmercerind/dart_vlc.git"
     source: git
-    version: "0.2.0"
+    version: "0.2.1"
   dart_vlc_ffi:
     dependency: transitive
     description:
       name: dart_vlc_ffi
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.7"
+    version: "0.1.8"
   dbus:
     dependency: transitive
     description:
@@ -388,7 +381,7 @@ packages:
       name: file_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.5.1"
+    version: "4.6.1"
   fixnum:
     dependency: transitive
     description:
@@ -407,7 +400,7 @@ packages:
       name: flutter_blurhash
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.8"
+    version: "0.7.0"
   flutter_cache_manager:
     dependency: transitive
     description:
@@ -440,7 +433,7 @@ packages:
       name: flutter_native_view
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.1+1"
+    version: "0.0.2"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -454,7 +447,7 @@ packages:
       name: flutter_riverpod
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0-dev.7"
+    version: "2.0.0-dev.9"
   flutter_staggered_grid_view:
     dependency: "direct main"
     description:
@@ -494,7 +487,7 @@ packages:
       name: frontend_server_client
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.2"
+    version: "2.1.3"
   fwfh_text_style:
     dependency: transitive
     description:
@@ -529,7 +522,7 @@ packages:
       name: hive
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "2.2.1"
   hive_flutter:
     dependency: "direct main"
     description:
@@ -543,14 +536,14 @@ packages:
       name: hive_generator
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.2"
+    version: "1.1.3"
   hooks_riverpod:
     dependency: "direct main"
     description:
       name: hooks_riverpod
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0-dev.7"
+    version: "2.0.0-dev.9"
   html:
     dependency: "direct main"
     description:
@@ -578,7 +571,7 @@ packages:
       name: http_parser
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0"
+    version: "4.0.1"
   image:
     dependency: transitive
     description:
@@ -718,7 +711,7 @@ packages:
       name: octo_image
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
+    version: "1.0.2"
   open_file:
     dependency: "direct main"
     description:
@@ -832,7 +825,7 @@ packages:
       name: path_provider_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.6"
+    version: "2.1.7"
   path_provider_macos:
     dependency: transitive
     description:
@@ -853,7 +846,7 @@ packages:
       name: path_provider_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.6"
+    version: "2.0.7"
   pedantic:
     dependency: transitive
     description:
@@ -953,14 +946,14 @@ packages:
       name: riverpod
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0-dev.7"
+    version: "2.0.0-dev.9"
   rxdart:
     dependency: transitive
     description:
       name: rxdart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.27.3"
+    version: "0.27.4"
   share_plus:
     dependency: "direct main"
     description:
@@ -1217,7 +1210,7 @@ packages:
       name: url_launcher_ios
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.16"
+    version: "6.0.17"
   url_launcher_linux:
     dependency: transitive
     description:
@@ -1336,7 +1329,7 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.5.2"
+    version: "2.6.1"
   window_manager:
     dependency: transitive
     description:

@@ -7,7 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pstube/models/models.dart';
 import 'package:pstube/utils/utils.dart';
 
-final downloadListProvider = ChangeNotifierProvider((ref) => DownloadList(ref));
+final downloadListProvider = ChangeNotifierProvider(DownloadList.new);
 
 final _box = Hive.box<dynamic>('downloadList');
 
