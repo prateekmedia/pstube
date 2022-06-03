@@ -14,6 +14,7 @@ class VideoWidget extends StatelessWidget {
     Key? key,
     required this.hasData,
     required this.videoData,
+    required this.showRelatedVideo,
     required this.downloadsSideWidget,
     required this.commentSideWidget,
     required this.replyComment,
@@ -23,6 +24,7 @@ class VideoWidget extends StatelessWidget {
 
   final bool hasData;
   final Video videoData;
+  final VoidCallback showRelatedVideo;
   final ValueNotifier<Widget?> downloadsSideWidget;
   final ValueNotifier<Widget?> commentSideWidget;
   final ValueNotifier<Comment?> replyComment;
@@ -130,6 +132,7 @@ class VideoWidget extends StatelessWidget {
                   ),
                   VideoActions(
                     videoData: videoData,
+                    showRelatedVideo: showRelatedVideo,
                     downloadsSideWidget: downloadsSideWidget,
                     commentSideWidget: commentSideWidget,
                     snapshot: snapshot,

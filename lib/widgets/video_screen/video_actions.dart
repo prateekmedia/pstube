@@ -16,11 +16,13 @@ class VideoActions extends HookConsumerWidget {
   const VideoActions({
     Key? key,
     required this.videoData,
+    required this.showRelatedVideo,
     required this.downloadsSideWidget,
     required this.commentSideWidget,
     required this.snapshot,
   }) : super(key: key);
 
+  final VoidCallback showRelatedVideo;
   final Video videoData;
   final ValueNotifier<Widget?> downloadsSideWidget;
   final ValueNotifier<Widget?> commentSideWidget;
@@ -44,73 +46,82 @@ class VideoActions extends HookConsumerWidget {
       }
     }
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          VideoAction(
-            icon: isLiked.value ? Icons.thumb_up : Icons.thumb_up_outlined,
-            onPressed: updateLike,
-            label: videoData.engagement.likeCount != null
-                ? videoData.engagement.likeCount!.formatNumber
-                : context.locals.like,
-          ),
-          VideoAction(
-            icon: Icons.share_outlined,
-            onPressed: () {
-              Share.share(
-                videoData.url,
-              );
-            },
-            label: context.locals.share,
-          ),
-          VideoAction(
-            icon: Icons.download_outlined,
-            onPressed: downloadsSideWidget.value != null
-                ? () => downloadsSideWidget.value = null
-                : () {
-                    commentSideWidget.value = null;
-                    downloadsSideWidget.value = ShowDownloadsWidget(
-                      manifest: snapshot.data,
-                      downloadsSideWidget: downloadsSideWidget,
-                      videoData: videoData,
-                    );
-                  },
-            label: context.locals.download,
-          ),
-          VideoAction(
-            icon: Icons.copy,
-            onPressed: () {
-              Clipboard.setData(ClipboardData(text: videoData.url));
-              BotToast.showText(text: context.locals.copiedToClipboard);
-            },
-            label: context.locals.copyLink,
-          ),
-          VideoAction(
-            icon: LucideIcons.listPlus,
-            onPressed: () {
-              showPopoverForm(
-                context: context,
-                cancelText: context.locals.done,
-                hideConfirm: true,
-                controller: _textController,
-                title: context.locals.save,
-                hint: context.locals.createNew,
-                onConfirm: () {
-                  ref
-                      .read(playlistProvider.notifier)
-                      .addPlaylist(_textController.value.text);
-                  _textController.value = TextEditingValue.empty;
+    return Center(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              VideoAction(
+                icon: isLiked.value ? Icons.thumb_up : Icons.thumb_up_outlined,
+                onPressed: updateLike,
+                label: videoData.engagement.likeCount != null
+                    ? videoData.engagement.likeCount!.formatNumber
+                    : context.locals.like,
+              ),
+              VideoAction(
+                icon: Icons.share_outlined,
+                onPressed: () => Share.share(videoData.url),
+                label: context.locals.share,
+              ),
+              VideoAction(
+                icon: Icons.download_outlined,
+                onPressed: downloadsSideWidget.value != null
+                    ? () => downloadsSideWidget.value = null
+                    : () {
+                        commentSideWidget.value = null;
+                        downloadsSideWidget.value = VideoPopupWrapper(
+                          downloadWidget: DownloadsWidget(
+                            video: videoData,
+                            onClose: () => downloadsSideWidget.value = null,
+                          ),
+                          onClose: () => downloadsSideWidget.value = null,
+                          title: context.locals.downloadQuality,
+                        );
+                      },
+                label: context.locals.download,
+              ),
+              VideoAction(
+                icon: Icons.copy,
+                onPressed: () {
+                  Clipboard.setData(ClipboardData(text: videoData.url));
+                  BotToast.showText(text: context.locals.copiedToClipboard);
                 },
-                builder: (ctx) => PlaylistPopup(
-                  videoData: videoData,
-                ),
-              );
-            },
-            label: context.locals.save,
+                label: context.locals.copyLink,
+              ),
+              VideoAction(
+                icon: LucideIcons.listPlus,
+                onPressed: () {
+                  showPopoverForm(
+                    context: context,
+                    cancelText: context.locals.done,
+                    hideConfirm: true,
+                    controller: _textController,
+                    title: context.locals.save,
+                    hint: context.locals.createNew,
+                    onConfirm: () {
+                      ref
+                          .read(playlistProvider.notifier)
+                          .addPlaylist(_textController.value.text);
+                      _textController.value = TextEditingValue.empty;
+                    },
+                    builder: (ctx) => PlaylistPopup(
+                      videoData: videoData,
+                    ),
+                  );
+                },
+                label: context.locals.save,
+              ),
+              VideoAction(
+                icon: LucideIcons.video,
+                onPressed: showRelatedVideo,
+                label: 'Related',
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

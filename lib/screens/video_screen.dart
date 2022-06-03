@@ -129,6 +129,7 @@ class _VideoScreenState extends State<VideoScreen>
                                           child: VideoWidget(
                                             hasData: hasData,
                                             videoData: videoData,
+                                            showRelatedVideo: () {},
                                             downloadsSideWidget:
                                                 downloadsSideWidget,
                                             commentSideWidget:
@@ -143,46 +144,9 @@ class _VideoScreenState extends State<VideoScreen>
                                         Flexible(
                                           flex: 4,
                                           child: [
-                                            DefaultTabController(
-                                              length: 2,
-                                              child: Column(
-                                                children: [
-                                                  Expanded(
-                                                    child: TabBarView(
-                                                      children: [
-                                                        DescriptionWidget(
-                                                          video: videoData,
-                                                          isInsidePopup: false,
-                                                        ),
-                                                        if (recommendations
-                                                            .isNotEmpty)
-                                                          ListView.builder(
-                                                            itemBuilder:
-                                                                (_, index) {
-                                                              return PSVideo
-                                                                  .related(
-                                                                relatedVideo:
-                                                                    recommendations[
-                                                                        index],
-                                                              );
-                                                            },
-                                                            itemCount:
-                                                                recommendations
-                                                                    .length,
-                                                          )
-                                                        else
-                                                          getCircularProgressIndicator(),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  const TabBar(
-                                                    tabs: [
-                                                      Tab(text: 'DESCRIPTION'),
-                                                      Tab(text: 'RELATED'),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
+                                            DescriptionWidget(
+                                              video: videoData,
+                                              isInsidePopup: false,
                                             ),
                                           ].last,
                                         ),

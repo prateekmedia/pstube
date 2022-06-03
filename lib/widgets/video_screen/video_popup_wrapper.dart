@@ -2,19 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:pstube/utils/utils.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-class ShowDownloadsWidget extends StatelessWidget {
-  const ShowDownloadsWidget({
+class VideoPopupWrapper extends StatelessWidget {
+  const VideoPopupWrapper({
     Key? key,
-    required this.downloadsSideWidget,
-    required this.videoData,
-    this.manifest,
+    required this.title,
+    required this.onClose,
+    required this.downloadWidget,
   }) : super(key: key);
 
-  final ValueNotifier<Widget?> downloadsSideWidget;
-  final Video videoData;
-  final StreamManifest? manifest;
+  final Widget downloadWidget;
+  final VoidCallback onClose;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +23,9 @@ class ShowDownloadsWidget extends StatelessWidget {
           style: const HeaderBarStyle(
             autoPositionWindowButtons: false,
           ),
-          title: Text(
-            context.locals.downloadQuality,
-          ),
+          title: Text(title),
           actions: AdwActions(
-            onClose: () => downloadsSideWidget.value = null,
+            onClose: onClose,
             onHeaderDrag: appWindow?.startDragging,
             onDoubleTap: appWindow?.maximizeOrRestore,
           ),
@@ -43,10 +40,7 @@ class ShowDownloadsWidget extends StatelessWidget {
                   horizontal: 15,
                   vertical: 12,
                 ),
-                child: DownloadsWidget(
-                  video: videoData,
-                  onClose: () => downloadsSideWidget.value = null,
-                ),
+                child: downloadWidget,
               ),
               onWillPop: () async {
                 context.back();

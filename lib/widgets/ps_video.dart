@@ -134,7 +134,7 @@ class PSVideo extends HookWidget {
                                   ],
                                 ),
                               buildColumnOrRow(
-                                isRow: showChannel && !context.isMobile,
+                                isRow: !context.isMobile,
                                 children: [
                                   Flexible(
                                     child: getViews(video, context),

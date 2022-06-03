@@ -245,36 +245,39 @@ class _CustomTabState extends State<_CustomTab>
                                 SelectableText(
                                   widget.channelInfo!.description!,
                                 ),
-                                const Divider(),
                               ],
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8),
-                                child: Text(
-                                  context.locals.links,
-                                  style: context.textTheme.headline5,
+                              if (widget
+                                  .channelInfo!.channelLinks.isNotEmpty) ...[
+                                const Divider(),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8),
+                                  child: Text(
+                                    context.locals.links,
+                                    style: context.textTheme.headline5,
+                                  ),
                                 ),
-                              ),
-                              Wrap(
-                                children: [
-                                  for (ChannelLink link
-                                      in widget.channelInfo!.channelLinks)
-                                    AdwButton.pill(
-                                      onPressed: link.url.toString().launchIt,
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 12,
-                                        vertical: 12,
-                                      ),
-                                      margin: const EdgeInsets.symmetric(
-                                        horizontal: 3,
-                                        vertical: 3,
-                                      ),
-                                      child: Text(link.title),
-                                      //   labelStyle: context.textTheme.bodyText2,
-                                      // ),
-                                    )
-                                ],
-                              ),
+                                Wrap(
+                                  children: [
+                                    for (ChannelLink link
+                                        in widget.channelInfo!.channelLinks)
+                                      AdwButton.pill(
+                                        onPressed: link.url.toString().launchIt,
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 12,
+                                        ),
+                                        margin: const EdgeInsets.symmetric(
+                                          horizontal: 3,
+                                          vertical: 3,
+                                        ),
+                                        child: Text(link.title),
+                                        //   labelStyle: context.textTheme.bodyText2,
+                                        // ),
+                                      )
+                                  ],
+                                ),
+                              ],
                               if (context.isMobile) ...[
                                 const Divider(),
                                 ...widget.getStats,
