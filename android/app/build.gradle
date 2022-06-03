@@ -6,10 +6,10 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-def keyProps = new Properties()
-def keyPropsFile = rootProject.file('key.properties')
-if (keyPropsFile.exists()) {
-   keyProps.load(new FileInputStream(keyPropsFile))
+def keyProperties = new Properties()
+def keyPropertiesFile = rootProject.file('key.properties')
+if (keyPropertiesFile.exists()) {
+   keyProperties.load(new FileInputStream(keyPropertiesFile))
 }
 
 def flutterRoot = localProperties.getProperty('flutter.sdk')
@@ -33,6 +33,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     compileSdkVersion flutter.compileSdkVersion
+    ndkVersion flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

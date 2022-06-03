@@ -10,12 +10,12 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
-
-import 'package:pstube/controller/internet_connectivity.dart';
-import 'package:pstube/home_page.dart';
-import 'package:pstube/models/models.dart';
-import 'package:pstube/providers/providers.dart';
-import 'package:pstube/utils/utils.dart';
+import 'package:pstube/config/info/app_info.dart';
+import 'package:pstube/data/controller/internet_connectivity.dart';
+import 'package:pstube/data/models/models.dart';
+import 'package:pstube/data/services/services.dart';
+import 'package:pstube/ui/screens/home_page.dart';
+import 'package:pstube/ui/states/states.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,14 +50,14 @@ Future<void> main() async {
 }
 
 class MyApp extends HookConsumerWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.read(downloadPathProvider).init();
     final botToastBuilder = BotToastInit();
     return MaterialApp(
-      title: myApp.name,
+      title: AppInfo.myApp.name,
       builder: (context, child) {
         Widget myBuilder(BuildContext ctx, Widget child) {
           return ScrollConfiguration(
