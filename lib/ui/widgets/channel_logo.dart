@@ -7,7 +7,11 @@ import 'package:pstube/data/extensions/extensions.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class ChannelLogo extends StatefulHookWidget {
-  const ChannelLogo({Key? key, this.channel, this.size = 60}) : super(key: key);
+  const ChannelLogo({
+    super.key,
+    this.channel,
+    this.size = 60,
+  });
 
   final AsyncSnapshot<Channel>? channel;
   final double size;

@@ -8,8 +8,8 @@ class SizeExpandedSection extends StatefulWidget {
     this.axis = Axis.vertical,
     this.duration,
     this.animationCurve,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final Widget? child;
   final bool? expand;
   final Axis axis;

@@ -12,7 +12,7 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class VideoWidget extends StatelessWidget {
   const VideoWidget({
-    Key? key,
+    super.key,
     required this.hasData,
     required this.videoData,
     required this.showRelatedVideo,
@@ -21,7 +21,7 @@ class VideoWidget extends StatelessWidget {
     required this.replyComment,
     required this.snapshot,
     required this.commentsSnapshot,
-  }) : super(key: key);
+  });
 
   final bool hasData;
   final Video videoData;
@@ -85,7 +85,7 @@ class VideoWidget extends StatelessWidget {
                   ),
                 ),
                 if (Constants.mobVideoPlatforms) ...[
-                  Container(
+                  ColoredBox(
                     color: Colors.black.withOpacity(0.25),
                   ),
                   const Align(

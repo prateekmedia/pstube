@@ -4,10 +4,10 @@ import 'package:pstube/data/extensions/extensions.dart';
 
 class VlcPlayer extends StatefulWidget {
   const VlcPlayer({
-    Key? key,
+    super.key,
     required this.url,
     required this.resolutions,
-  }) : super(key: key);
+  });
 
   final String url;
   final Map<String, String> resolutions;

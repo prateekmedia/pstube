@@ -6,10 +6,10 @@ import 'package:pstube/ui/widgets/widgets.dart';
 
 class SFBody extends StatelessWidget {
   const SFBody({
-    Key? key,
+    super.key,
     required this.child,
     this.expanded = true,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final bool expanded;
@@ -27,8 +27,8 @@ class SFBody extends StatelessWidget {
 
 class NetStatus extends StatelessWidget {
   const NetStatus({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

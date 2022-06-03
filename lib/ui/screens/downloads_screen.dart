@@ -15,7 +15,7 @@ import 'package:pstube/ui/states/states.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 
 class DownloadsScreen extends ConsumerWidget {
-  const DownloadsScreen({Key? key}) : super(key: key);
+  const DownloadsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -45,10 +45,10 @@ class DownloadsScreen extends ConsumerWidget {
 
 class DownloadItemBuilder extends StatelessWidget {
   const DownloadItemBuilder({
-    Key? key,
+    super.key,
     required this.item,
     required this.downloadListUtils,
-  }) : super(key: key);
+  });
 
   final DownloadItem item;
   final DownloadList downloadListUtils;

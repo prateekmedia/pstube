@@ -15,15 +15,14 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class VideoScreen extends StatefulHookWidget {
   const VideoScreen({
-    Key? key,
+    super.key,
     required this.video,
     this.videoId,
     this.loadData = false,
-  })  : assert(
+  }) : assert(
           videoId != null || video != null,
           "VideoId and video both can't be null",
-        ),
-        super(key: key);
+        );
 
   final Video? video;
   final String? videoId;

@@ -10,7 +10,7 @@ import 'package:pstube/ui/widgets/widgets.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class ChannelScreen extends HookWidget {
-  const ChannelScreen({Key? key, required this.id}) : super(key: key);
+  const ChannelScreen({super.key, required this.id});
   final String id;
 
   @override
@@ -151,15 +151,13 @@ class ChannelScreen extends HookWidget {
 
 class _CustomTab extends StatefulWidget {
   const _CustomTab({
-    Key? key,
     required ChannelUploadsList? currentVidPage,
     required this.channelInfo,
     required this.getStats,
     required this.channel,
     required this.entry,
     required this.videosScreen,
-  })  : _currentVidPage = currentVidPage,
-        super(key: key);
+  }) : _currentVidPage = currentVidPage;
 
   final ChannelUploadsList? _currentVidPage;
   final ChannelAbout? channelInfo;

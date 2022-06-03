@@ -11,7 +11,7 @@ import 'package:pstube/ui/states/states.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 
 class LikedScreen extends StatefulHookWidget {
-  const LikedScreen({Key? key}) : super(key: key);
+  const LikedScreen({super.key});
 
   @override
   State<LikedScreen> createState() => _LikedScreenState();
@@ -68,9 +68,9 @@ class _LikedScreenState extends State<LikedScreen>
 
 class LikedVideoList extends StatefulWidget {
   const LikedVideoList({
-    Key? key,
+    super.key,
     required this.likedList,
-  }) : super(key: key);
+  });
 
   final LikedList likedList;
 
@@ -107,9 +107,9 @@ class _LikedVideoListState extends State<LikedVideoList>
 
 class LikedCommentList extends StatefulWidget {
   const LikedCommentList({
-    Key? key,
+    super.key,
     required this.likedList,
-  }) : super(key: key);
+  });
 
   final LikedList likedList;
 

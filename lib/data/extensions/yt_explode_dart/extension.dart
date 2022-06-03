@@ -1,7 +1,7 @@
 // ignore_for_file: implementation_imports
 
 import 'package:flutter/material.dart';
-import 'package:pstube/data/extensions/context/extension.dart';
+import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 import 'package:youtube_explode_dart/src/search/base_search_content.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';

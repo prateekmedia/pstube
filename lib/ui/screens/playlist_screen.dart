@@ -9,7 +9,7 @@ import 'package:pstube/ui/states/states.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 
 class PlaylistScreen extends ConsumerStatefulWidget {
-  const PlaylistScreen({Key? key}) : super(key: key);
+  const PlaylistScreen({super.key});
 
   @override
   ConsumerState<PlaylistScreen> createState() => _PlaylistScreenState();
@@ -58,10 +58,10 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen>
 
 class PlaylistSubScreen extends StatelessWidget {
   const PlaylistSubScreen({
-    Key? key,
+    super.key,
     required this.playlistName,
     required this.ref,
-  }) : super(key: key);
+  });
 
   final String playlistName;
   final WidgetRef ref;

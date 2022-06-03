@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pstube/data/services/my_prefs.dart';
 
 class ThemeTypeNotifier extends StateNotifier<ThemeMode> {
-  ThemeTypeNotifier(ThemeMode state) : super(state);
+  ThemeTypeNotifier(super.state);
 
   set themeType(int newThemeType) {
     state =

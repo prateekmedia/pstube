@@ -9,9 +9,9 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class PSPlaylist extends ConsumerWidget {
   const PSPlaylist({
-    Key? key,
+    super.key,
     required this.playlist,
-  }) : super(key: key);
+  });
 
   final SearchPlaylist playlist;
 

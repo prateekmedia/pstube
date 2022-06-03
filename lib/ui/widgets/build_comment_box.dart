@@ -10,11 +10,11 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class BuildCommentBox extends StatefulHookConsumerWidget {
   const BuildCommentBox({
-    Key? key,
+    super.key,
     required this.comment,
     required this.onReplyTap,
     this.isInsideReply = false,
-  }) : super(key: key);
+  });
 
   final bool isInsideReply;
   final VoidCallback? onReplyTap;

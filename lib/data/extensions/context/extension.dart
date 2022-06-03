@@ -22,7 +22,7 @@ extension ContextExtensions on BuildContext {
 
   Widget backLeading({VoidCallback? onBack, bool isCircular = false}) =>
       isCircular
-          ? Container(
+          ? DecoratedBox(
               decoration: ShapeDecoration(
                 color: theme.canvasColor,
                 shape: const StadiumBorder(),

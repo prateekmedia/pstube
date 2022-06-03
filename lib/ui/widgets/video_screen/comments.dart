@@ -8,11 +8,11 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class CommentsWidget extends StatefulHookWidget {
   const CommentsWidget({
-    Key? key,
+    super.key,
     this.onClose,
     required this.replyComment,
     required this.snapshot,
-  }) : super(key: key);
+  });
 
   final ValueNotifier<Comment?> replyComment;
   final AsyncSnapshot<CommentsList?> snapshot;
@@ -92,7 +92,7 @@ class _CommentsWidgetState extends State<CommentsWidget>
           ),
         ),
         Expanded(
-          child: Container(
+          child: ColoredBox(
             color: context.theme.canvasColor,
             child: WillPopScope(
               child: PageView.builder(

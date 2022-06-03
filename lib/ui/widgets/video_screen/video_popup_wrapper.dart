@@ -5,11 +5,11 @@ import 'package:pstube/data/extensions/extensions.dart';
 
 class VideoPopupWrapper extends StatelessWidget {
   const VideoPopupWrapper({
-    Key? key,
+    super.key,
     required this.title,
     required this.onClose,
     required this.downloadWidget,
-  }) : super(key: key);
+  });
 
   final Widget downloadWidget;
   final VoidCallback onClose;
@@ -31,7 +31,7 @@ class VideoPopupWrapper extends StatelessWidget {
           ),
         ),
         Expanded(
-          child: Container(
+          child: ColoredBox(
             color: context.theme.canvasColor,
             child: WillPopScope(
               child: SingleChildScrollView(

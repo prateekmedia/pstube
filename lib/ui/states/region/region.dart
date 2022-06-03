@@ -4,7 +4,7 @@ import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/services/my_prefs.dart';
 
 class RegionNotifier extends StateNotifier<Regions> {
-  RegionNotifier(Regions state) : super(state);
+  RegionNotifier(super.state);
 
   set region(Regions newRegion) {
     state = Regions.values.firstWhere((element) => element == newRegion);

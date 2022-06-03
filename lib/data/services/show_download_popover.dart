@@ -51,11 +51,11 @@ Future showDownloadPopup(
 
 class DownloadsWidget extends ConsumerWidget {
   const DownloadsWidget({
-    Key? key,
+    super.key,
     required this.video,
     this.manifest,
     this.onClose,
-  }) : super(key: key);
+  });
 
   final Video video;
   final StreamManifest? manifest;
@@ -169,11 +169,11 @@ Widget linksHeader(
 
 class DownloadQualityTile extends ConsumerStatefulWidget {
   const DownloadQualityTile({
-    Key? key,
+    super.key,
     required this.stream,
     required this.video,
     this.onClose,
-  }) : super(key: key);
+  });
 
   final dynamic stream;
   final Video video;

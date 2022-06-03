@@ -7,10 +7,10 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class DescriptionWidget extends StatelessWidget {
   const DescriptionWidget({
-    Key? key,
+    super.key,
     required this.video,
     this.isInsidePopup = true,
-  }) : super(key: key);
+  });
 
   final bool isInsidePopup;
   final Video video;

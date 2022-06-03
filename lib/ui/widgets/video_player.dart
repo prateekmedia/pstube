@@ -4,10 +4,10 @@ import 'package:pstube/data/extensions/extensions.dart';
 
 class VideoPlayer extends StatefulWidget {
   const VideoPlayer({
-    Key? key,
+    super.key,
     required this.url,
     required this.resolutions,
-  }) : super(key: key);
+  });
 
   final String url;
   final Map<String, String> resolutions;

@@ -13,7 +13,7 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class PSVideo extends HookWidget {
   const PSVideo({
-    Key? key,
+    super.key,
     this.videoUrl,
     this.date,
     this.views,
@@ -23,11 +23,10 @@ class PSVideo extends HookWidget {
     this.showChannel = true,
     this.loadData = false,
     this.actions = const [],
-  })  : isRelated = false,
-        super(key: key);
+  }) : isRelated = false;
 
   PSVideo.related({
-    Key? key,
+    super.key,
     required RelatedVideo relatedVideo,
   })  : actions = [],
         date = null,
@@ -56,8 +55,7 @@ class PSVideo extends HookWidget {
           [''],
           const Engagement(0, 0, 0),
           false,
-        ),
-        super(key: key);
+        );
 
   final String? date;
   final String? views;
@@ -230,7 +228,7 @@ class PSVideo extends HookWidget {
     return AspectRatio(
       aspectRatio: 16 / 9,
       child: video != null
-          ? Container(
+          ? DecoratedBox(
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
@@ -245,7 +243,7 @@ class PSVideo extends HookWidget {
           : Row(
               children: [
                 Flexible(
-                  child: Container(
+                  child: DecoratedBox(
                     decoration: BoxDecoration(
                       color: context.getBackgroundColor,
                       borderRadius: BorderRadius.circular(10),

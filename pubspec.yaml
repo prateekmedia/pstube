@@ -59,11 +59,10 @@ dependencies:
       url: https://github.com/prateekmedia/youtube_explode_dart.git
 
 dev_dependencies:
-  build_runner: ^2.1.2
-  flutter_lints: ^1.0.4
-  hive_generator: ^1.1.1
-  msix: ^2.8.18
-  very_good_analysis: ^2.4.0
+  build_runner: ^2.1.11
+  hive_generator: ^1.1.3
+  msix: ^3.6.2
+  very_good_analysis: ^3.0.0
 
 dependency_overrides:
   bitsdojo_window_linux:

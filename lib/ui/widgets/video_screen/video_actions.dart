@@ -15,13 +15,13 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class VideoActions extends HookConsumerWidget {
   const VideoActions({
-    Key? key,
+    super.key,
     required this.videoData,
     required this.showRelatedVideo,
     required this.downloadsSideWidget,
     required this.commentSideWidget,
     required this.snapshot,
-  }) : super(key: key);
+  });
 
   final VoidCallback showRelatedVideo;
   final Video videoData;
@@ -130,11 +130,11 @@ class VideoActions extends HookConsumerWidget {
 
 class VideoAction extends StatelessWidget {
   const VideoAction({
-    Key? key,
+    super.key,
     required this.icon,
     this.onPressed,
     required this.label,
-  }) : super(key: key);
+  });
 
   final IconData icon;
   final VoidCallback? onPressed;

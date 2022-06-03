@@ -7,16 +7,15 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class ChannelInfo extends StatefulHookWidget {
   const ChannelInfo({
-    Key? key,
+    super.key,
     required this.channel,
     this.channelId,
     this.textColor,
     this.isOnVideo = false,
-  })  : assert(
+  }) : assert(
           channel != null || channelId != null,
           "Channel and ChannelId both can't be null",
-        ),
-        super(key: key);
+        );
 
   final AsyncSnapshot<Channel>? channel;
   final String? channelId;

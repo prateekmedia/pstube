@@ -9,9 +9,9 @@ import 'package:pstube/ui/widgets/widgets.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({
-    Key? key,
+    super.key,
     required this.snapshot,
-  }) : super(key: key);
+  });
 
   final AsyncSnapshot<Response> snapshot;
 

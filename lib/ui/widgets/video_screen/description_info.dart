@@ -3,10 +3,10 @@ import 'package:pstube/data/extensions/extensions.dart';
 
 class DescriptionInfoWidget extends StatelessWidget {
   const DescriptionInfoWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.body,
-  }) : super(key: key);
+  });
 
   final String title;
   final String body;

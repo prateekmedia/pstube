@@ -12,13 +12,13 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class CommentBox extends HookConsumerWidget {
   const CommentBox({
-    Key? key,
+    super.key,
     required this.comment,
     required this.onReplyTap,
     this.isInsideReply = false,
     this.isLiked = false,
     this.updateLike,
-  }) : super(key: key);
+  });
 
   final bool isInsideReply;
   final VoidCallback? onReplyTap;

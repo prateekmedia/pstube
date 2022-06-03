@@ -5,9 +5,9 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class PlaylistPopup extends ConsumerWidget {
   const PlaylistPopup({
-    Key? key,
+    super.key,
     required this.videoData,
-  }) : super(key: key);
+  });
 
   final Video videoData;
 
