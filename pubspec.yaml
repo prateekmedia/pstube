@@ -5,7 +5,7 @@ publish_to: none
 version: 2.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
   adwaita: ^0.5.1
