@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:libadwaita/libadwaita.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pstube/data/extensions/extensions.dart';
 
@@ -75,15 +74,15 @@ class DownloadsWidget extends ConsumerWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AdwActionRow(
-                      end: Checkbox(
-                        value: ref.watch(rememberChoiceProvider),
-                        onChanged: (value) => ref
-                            .watch(rememberChoiceProvider.notifier)
-                            .value = value!,
-                      ),
-                      title: 'Remember my choice',
-                    ),
+                    // AdwActionRow(
+                    //   end: Checkbox(
+                    //     value: ref.watch(rememberChoiceProvider),
+                    //     onChanged: (value) => ref
+                    //         .watch(rememberChoiceProvider.notifier)
+                    //         .value = value!,
+                    //   ),
+                    //   title: 'Remember my choice',
+                    // ),
                     if (ref.watch(thumbnailDownloaderProvider)) ...[
                       linksHeader(
                         context,

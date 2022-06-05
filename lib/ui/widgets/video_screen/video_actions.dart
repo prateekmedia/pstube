@@ -128,7 +128,7 @@ class VideoActions extends HookConsumerWidget {
                         downloadsSideWidget.value = null;
                         relatedVideoWidget.value = VideoPopupWrapper(
                           onClose: () => relatedVideoWidget.value = null,
-                          title: "Related Video",
+                          title: 'Related Video',
                           child: Column(
                             children: [
                               for (var rv in recommendations)
