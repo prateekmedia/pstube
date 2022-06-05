@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:pstube/data/extensions/extensions.dart';
+import 'package:pstube/data/models/models.dart';
 import 'package:pstube/data/services/services.dart';
 import 'package:pstube/ui/states/states.dart';
 import 'package:pstube/ui/widgets/video_screen/video_screen.dart';
@@ -17,14 +18,16 @@ class VideoActions extends HookConsumerWidget {
   const VideoActions({
     super.key,
     required this.videoData,
-    required this.showRelatedVideo,
+    required this.relatedVideoWidget,
+    required this.recommendations,
     required this.downloadsSideWidget,
     required this.commentSideWidget,
     required this.snapshot,
   });
 
-  final VoidCallback showRelatedVideo;
   final Video videoData;
+  final List<RelatedVideo> recommendations;
+  final ValueNotifier<Widget?> relatedVideoWidget;
   final ValueNotifier<Widget?> downloadsSideWidget;
   final ValueNotifier<Widget?> commentSideWidget;
   final AsyncSnapshot<StreamManifest> snapshot;
@@ -73,13 +76,14 @@ class VideoActions extends HookConsumerWidget {
                     ? () => downloadsSideWidget.value = null
                     : () {
                         commentSideWidget.value = null;
+                        relatedVideoWidget.value = null;
                         downloadsSideWidget.value = VideoPopupWrapper(
-                          downloadWidget: DownloadsWidget(
+                          onClose: () => downloadsSideWidget.value = null,
+                          title: context.locals.downloadQuality,
+                          child: DownloadsWidget(
                             video: videoData,
                             onClose: () => downloadsSideWidget.value = null,
                           ),
-                          onClose: () => downloadsSideWidget.value = null,
-                          title: context.locals.downloadQuality,
                         );
                       },
                 label: context.locals.download,
@@ -117,7 +121,22 @@ class VideoActions extends HookConsumerWidget {
               ),
               VideoAction(
                 icon: LucideIcons.video,
-                onPressed: showRelatedVideo,
+                onPressed: relatedVideoWidget.value != null
+                    ? () => relatedVideoWidget.value = null
+                    : () {
+                        commentSideWidget.value = null;
+                        downloadsSideWidget.value = null;
+                        relatedVideoWidget.value = VideoPopupWrapper(
+                          onClose: () => relatedVideoWidget.value = null,
+                          title: "Related Video",
+                          child: Column(
+                            children: [
+                              for (var rv in recommendations)
+                                PSVideo.related(relatedVideo: rv),
+                            ],
+                          ),
+                        );
+                      },
                 label: 'Related',
               ),
             ],

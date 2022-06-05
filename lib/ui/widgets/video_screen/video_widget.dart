@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pstube/data/extensions/extensions.dart';
+import 'package:pstube/data/models/models.dart';
 import 'package:pstube/data/services/services.dart';
 import 'package:pstube/ui/widgets/video_player.dart';
 import 'package:pstube/ui/widgets/video_screen/video_actions.dart';
@@ -15,19 +16,21 @@ class VideoWidget extends StatelessWidget {
     super.key,
     required this.hasData,
     required this.videoData,
-    required this.showRelatedVideo,
     required this.downloadsSideWidget,
+    required this.relatedVideoWidget,
     required this.commentSideWidget,
     required this.replyComment,
     required this.snapshot,
     required this.commentsSnapshot,
+    required this.recommendations,
   });
 
+  final List<RelatedVideo> recommendations;
   final bool hasData;
   final Video videoData;
-  final VoidCallback showRelatedVideo;
   final ValueNotifier<Widget?> downloadsSideWidget;
   final ValueNotifier<Widget?> commentSideWidget;
+  final ValueNotifier<Widget?> relatedVideoWidget;
   final ValueNotifier<Comment?> replyComment;
   final AsyncSnapshot<StreamManifest> snapshot;
   final AsyncSnapshot<CommentsList?> commentsSnapshot;
@@ -133,10 +136,11 @@ class VideoWidget extends StatelessWidget {
                   ),
                   VideoActions(
                     videoData: videoData,
-                    showRelatedVideo: showRelatedVideo,
                     downloadsSideWidget: downloadsSideWidget,
+                    relatedVideoWidget: relatedVideoWidget,
                     commentSideWidget: commentSideWidget,
                     snapshot: snapshot,
+                    recommendations: recommendations,
                   ),
                   const Divider(),
                   ChannelInfo(
@@ -177,7 +181,8 @@ class VideoWidget extends StatelessWidget {
               if (context.isMobile) ...[
                 if (commentSideWidget.value != null) commentSideWidget.value!,
                 if (downloadsSideWidget.value != null)
-                  downloadsSideWidget.value!
+                  downloadsSideWidget.value!,
+                if (relatedVideoWidget.value != null) relatedVideoWidget.value!
               ],
             ],
           ),

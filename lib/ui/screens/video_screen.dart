@@ -60,7 +60,7 @@ class _VideoScreenState extends State<VideoScreen>
         RelatedVideo(
           url: Constants.ytCom + url,
           title: title[i].innerHtml,
-          uploader: uploader[i].innerHtml,
+          uploader: uploader[i].innerHtml.split('&nbsp')[0],
           channelUrl: Constants.ytCom + channelUrl,
           duration: duration,
           views: views[0].innerHtml,
@@ -95,6 +95,7 @@ class _VideoScreenState extends State<VideoScreen>
     final replyComment = useState<Comment?>(null);
     final commentSideWidget = useState<Widget?>(null);
     final downloadsSideWidget = useState<Widget?>(null);
+    final relatedVideoWidget = useState<Widget?>(null);
 
     return SafeArea(
       child: Stack(
@@ -129,7 +130,6 @@ class _VideoScreenState extends State<VideoScreen>
                                           child: VideoWidget(
                                             hasData: hasData,
                                             videoData: videoData,
-                                            showRelatedVideo: () {},
                                             downloadsSideWidget:
                                                 downloadsSideWidget,
                                             commentSideWidget:
@@ -137,6 +137,9 @@ class _VideoScreenState extends State<VideoScreen>
                                             replyComment: replyComment,
                                             snapshot: snapshot,
                                             commentsSnapshot: commentsSnapshot,
+                                            relatedVideoWidget:
+                                                relatedVideoWidget,
+                                            recommendations: recommendations,
                                           ),
                                         ),
                                       ),
@@ -188,6 +191,8 @@ class _VideoScreenState extends State<VideoScreen>
                           commentSideWidget.value!,
                         if (downloadsSideWidget.value != null)
                           downloadsSideWidget.value!,
+                        if (relatedVideoWidget.value != null)
+                          relatedVideoWidget.value!,
                       ],
                     ].last,
                   ),

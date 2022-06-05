@@ -8,10 +8,10 @@ class VideoPopupWrapper extends StatelessWidget {
     super.key,
     required this.title,
     required this.onClose,
-    required this.downloadWidget,
+    required this.child,
   });
 
-  final Widget downloadWidget;
+  final Widget child;
   final VoidCallback onClose;
   final String title;
 
@@ -40,7 +40,7 @@ class VideoPopupWrapper extends StatelessWidget {
                   horizontal: 15,
                   vertical: 12,
                 ),
-                child: downloadWidget,
+                child: child,
               ),
               onWillPop: () async {
                 context.back();
