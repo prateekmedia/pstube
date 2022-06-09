@@ -48,7 +48,7 @@ class _ChannelInfoState extends State<ChannelInfo>
       onTap: widget.isOnVideo && data != null || widget.channelId != null
           ? () => context.pushPage(
                 ChannelScreen(
-                  id: widget.channelId ?? data!.id.value,
+                  channelId: widget.channelId ?? data!.id.value,
                 ),
               )
           : null,

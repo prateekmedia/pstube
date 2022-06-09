@@ -43,7 +43,7 @@ class CommentBox extends HookConsumerWidget {
           GestureDetector(
             onTap: () => context.pushPage(
               ChannelScreen(
-                id: comment.channelUrl.toString(),
+                channelId: comment.channelUrl.toString(),
               ),
             ),
             child: ChannelLogo(channel: channelData, size: 40),
@@ -64,7 +64,8 @@ class CommentBox extends HookConsumerWidget {
                               onTap: () {
                                 context.pushPage(
                                   ChannelScreen(
-                                    id: comment.channelUrl.value as String,
+                                    channelId:
+                                        comment.channelUrl.value as String,
                                   ),
                                 );
                               },

@@ -270,7 +270,8 @@ class PSVideo extends HookWidget {
   GestureDetector getAuthor(Video? video, BuildContext context) =>
       GestureDetector(
         onTap: (video != null)
-            ? () => context.pushPage(ChannelScreen(id: video.channelId.value))
+            ? () => context
+                .pushPage(ChannelScreen(channelId: video.channelId.value))
             : null,
         child: IconWithLabel(
           label: video != null ? video.author : '                ',
