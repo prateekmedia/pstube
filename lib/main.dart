@@ -14,7 +14,7 @@ import 'package:pstube/config/info/app_info.dart';
 import 'package:pstube/data/controller/internet_connectivity.dart';
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/data/services/services.dart';
-import 'package:pstube/ui/screens/home_page.dart';
+import 'package:pstube/ui/screens/home_page/home_page.dart';
 import 'package:pstube/ui/states/states.dart';
 
 Future<void> main() async {

@@ -12,7 +12,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/data/services/services.dart';
-import 'package:pstube/ui/screens/screens.dart';
+import 'package:pstube/ui/screens/home_page/tabs.dart';
 import 'package:pstube/ui/states/states.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
@@ -165,10 +165,10 @@ class MyHomePage extends HookConsumerWidget {
           future: videos,
           builder: (context, snapshot) {
             final mainScreens = [
-              HomeScreen(snapshot: snapshot),
-              const PlaylistScreen(),
-              const DownloadsScreen(),
-              const SettingsScreen(),
+              HomeTab(snapshot: snapshot),
+              const PlaylistTab(),
+              const DownloadsTab(),
+              const SettingsTab(),
             ];
 
             return Column(

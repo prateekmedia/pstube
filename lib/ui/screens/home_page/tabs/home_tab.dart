@@ -7,8 +7,8 @@ import 'package:pstube/data/extensions/extensions.dart';
 
 import 'package:pstube/ui/widgets/widgets.dart';
 
-class HomeScreen extends ConsumerStatefulWidget {
-  const HomeScreen({
+class HomeTab extends ConsumerStatefulWidget {
+  const HomeTab({
     super.key,
     required this.snapshot,
   });
@@ -19,7 +19,7 @@ class HomeScreen extends ConsumerStatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends ConsumerState<HomeScreen>
+class _HomeScreenState extends ConsumerState<HomeTab>
     with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {

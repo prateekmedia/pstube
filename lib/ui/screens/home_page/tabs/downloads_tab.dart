@@ -14,8 +14,8 @@ import 'package:pstube/ui/states/download_list/download_list.dart';
 import 'package:pstube/ui/states/states.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 
-class DownloadsScreen extends ConsumerWidget {
-  const DownloadsScreen({super.key});
+class DownloadsTab extends ConsumerWidget {
+  const DownloadsTab({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

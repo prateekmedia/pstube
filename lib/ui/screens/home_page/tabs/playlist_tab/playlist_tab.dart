@@ -4,18 +4,18 @@ import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:pstube/data/extensions/extensions.dart';
-import 'package:pstube/ui/screens/screens.dart';
+import 'package:pstube/ui/screens/home_page/tabs/playlist_tab/liked_screen/liked_screen.dart';
 import 'package:pstube/ui/states/states.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 
-class PlaylistScreen extends ConsumerStatefulWidget {
-  const PlaylistScreen({super.key});
+class PlaylistTab extends ConsumerStatefulWidget {
+  const PlaylistTab({super.key});
 
   @override
-  ConsumerState<PlaylistScreen> createState() => _PlaylistScreenState();
+  ConsumerState<PlaylistTab> createState() => _PlaylistScreenState();
 }
 
-class _PlaylistScreenState extends ConsumerState<PlaylistScreen>
+class _PlaylistScreenState extends ConsumerState<PlaylistTab>
     with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {

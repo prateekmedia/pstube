@@ -14,14 +14,14 @@ import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/data/services/services.dart';
 import 'package:pstube/ui/states/states.dart';
 
-class SettingsScreen extends ConsumerStatefulWidget {
-  const SettingsScreen({super.key});
+class SettingsTab extends ConsumerStatefulWidget {
+  const SettingsTab({super.key});
 
   @override
-  ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
+  ConsumerState<SettingsTab> createState() => _SettingsScreenState();
 }
 
-class _SettingsScreenState extends ConsumerState<SettingsScreen>
+class _SettingsScreenState extends ConsumerState<SettingsTab>
     with AutomaticKeepAliveClientMixin {
   late String version = '';
 
