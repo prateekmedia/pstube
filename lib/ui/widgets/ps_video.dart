@@ -208,7 +208,10 @@ class PSVideo extends HookWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             getViews(video, context),
-                            if (!isRelated) getTime(video),
+                            if (!isRelated)
+                              Flexible(
+                                child: getTime(video),
+                              ),
                           ],
                         )
                       ],

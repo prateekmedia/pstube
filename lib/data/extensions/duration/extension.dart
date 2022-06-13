@@ -1,5 +1,9 @@
 extension DurationExtensions on Duration {
   String format() {
+    if (inSeconds == 0) {
+      return 'Shorts';
+    }
+
     final totalSecs = inSeconds;
     final hours = totalSecs ~/ 3600;
     final minutes = (totalSecs % 3600) ~/ 60;

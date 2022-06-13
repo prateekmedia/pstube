@@ -9,7 +9,7 @@ import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/data/services/services.dart';
-import 'package:pstube/ui/widgets/video_screen/video_screen.dart';
+import 'package:pstube/ui/screens/video_screen/src/export.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 

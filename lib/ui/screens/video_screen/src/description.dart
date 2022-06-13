@@ -2,7 +2,7 @@ import 'package:custom_text/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pstube/data/extensions/extensions.dart';
-import 'package:pstube/ui/widgets/video_screen/video_screen.dart';
+import 'package:pstube/ui/screens/video_screen/src/export.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class DescriptionWidget extends StatelessWidget {

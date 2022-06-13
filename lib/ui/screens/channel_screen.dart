@@ -61,7 +61,7 @@ class ChannelScreen extends HookWidget {
       _currentVidPage.value = channel.value!.relatedStreams;
     }
 
-    Future<void> loadInitData() async {
+    Future<void> loadChannelData() async {
       channel.value = (await PipedApi().getUnauthenticatedApi().channelInfoId(
                 channelId: channelId,
               ))
@@ -69,17 +69,17 @@ class ChannelScreen extends HookWidget {
 
       if (!isMounted()) return;
       await getVideos();
-      final yes = channel.value!.nextpage;
+    }
+
+    Future<void> loadAboutPage() async {
       channelInfo.value = await yt.channels.getAboutPage(channelId);
     }
 
     Future<void> _getMoreData() async {
-      print('What Yo');
       if (isMounted() &&
           controller.position.pixels == controller.position.maxScrollExtent) {
-        final yes = channel.value!.nextpage;
+        // final yes = channel.value!.nextpage;
 
-        print('What $yes');
         // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
         _currentVidPage.notifyListeners();
       }
@@ -87,7 +87,8 @@ class ChannelScreen extends HookWidget {
 
     useEffect(
       () {
-        loadInitData();
+        loadChannelData();
+        loadAboutPage();
         controller.addListener(_getMoreData);
         return () => controller.removeListener(_getMoreData);
       },

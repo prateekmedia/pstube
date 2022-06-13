@@ -187,66 +187,8 @@ class MyHomePage extends HookConsumerWidget {
                 else
                   Flexible(
                     child: searchedTerm.value.isNotEmpty
-                        ? HookBuilder(
-                            builder: (_) {
-                              final isMounted = useIsMounted();
-                              final yt = YoutubeExplode();
-                              final _currentPage = useState<SearchList?>(null);
-
-                              Future<void> loadVideos() async {
-                                if (!isMounted()) return;
-                                _currentPage.value = await yt.search
-                                    .searchContent(searchedTerm.value);
-                              }
-
-                              final controller = useScrollController();
-
-                              Future<void> _getMoreData() async {
-                                if (_currentPage.value != null &&
-                                    isMounted() &&
-                                    controller.position.pixels ==
-                                        controller.position.maxScrollExtent) {
-                                  final page =
-                                      await _currentPage.value!.nextPage();
-
-                                  if (page == null ||
-                                      page.isEmpty ||
-                                      !isMounted()) return;
-
-                                  _currentPage.value!.addAll(page);
-                                  // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-                                  _currentPage.notifyListeners();
-                                }
-                              }
-
-                              useEffect(
-                                () {
-                                  loadVideos();
-                                  controller.addListener(_getMoreData);
-                                  searchedTerm.addListener(loadVideos);
-                                  return () {
-                                    searchedTerm.removeListener(loadVideos);
-                                    controller.removeListener(_getMoreData);
-                                  };
-                                },
-                                [controller],
-                              );
-
-                              return _currentPage.value != null
-                                  ? ListView.builder(
-                                      shrinkWrap: true,
-                                      controller: controller,
-                                      itemCount: _currentPage.value!.length + 1,
-                                      itemBuilder: (ctx, idx) =>
-                                          idx == _currentPage.value!.length
-                                              ? getCircularProgressIndicator()
-                                              : _currentPage.value![idx]
-                                                  .showContent(context),
-                                    )
-                                  : const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                            },
+                        ? SearchScreen(
+                            searchedTerm: searchedTerm,
                           )
                         : Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -280,5 +222,71 @@ class MyHomePage extends HookConsumerWidget {
             : null,
       ),
     );
+  }
+}
+
+class SearchScreen extends HookWidget {
+  const SearchScreen({
+    super.key,
+    required this.searchedTerm,
+  });
+
+  final ValueNotifier<String> searchedTerm;
+
+  @override
+  Widget build(BuildContext context) {
+    final isMounted = useIsMounted();
+    final yt = YoutubeExplode();
+    final _currentPage = useState<SearchList?>(null);
+
+    Future<void> loadVideos() async {
+      if (!isMounted()) return;
+      _currentPage.value = await yt.search.searchContent(searchedTerm.value);
+    }
+
+    final controller = useScrollController();
+
+    Future<void> _getMoreData() async {
+      if (_currentPage.value != null &&
+          isMounted() &&
+          controller.position.pixels == controller.position.maxScrollExtent) {
+        final page = await _currentPage.value!.nextPage();
+
+        if (page == null || page.isEmpty || !isMounted()) return;
+
+        _currentPage.value!.addAll(page);
+        // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+        _currentPage.notifyListeners();
+      }
+    }
+
+    useEffect(
+      () {
+        loadVideos();
+        controller.addListener(_getMoreData);
+        searchedTerm.addListener(loadVideos);
+        return () {
+          searchedTerm.removeListener(loadVideos);
+          controller.removeListener(_getMoreData);
+        };
+      },
+      [controller],
+    );
+
+    return _currentPage.value != null
+        ? ListView.separated(
+            separatorBuilder: (context, index) => Divider(
+              color: context.getBackgroundColor.withOpacity(0.6),
+            ),
+            shrinkWrap: true,
+            controller: controller,
+            itemCount: _currentPage.value!.length + 1,
+            itemBuilder: (ctx, idx) => idx == _currentPage.value!.length
+                ? getCircularProgressIndicator()
+                : _currentPage.value![idx].showContent(context),
+          )
+        : const Center(
+            child: CircularProgressIndicator(),
+          );
   }
 }

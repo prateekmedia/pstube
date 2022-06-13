@@ -16,7 +16,7 @@ dependencies:
   cached_network_image: ^3.2.0
   connectivity_plus: ^2.2.0
   custom_text: ^0.6.0-dev.1
-  dart_vlc: ^0.1.9
+  dart_vlc: ^0.2.1
   dio: ^4.0.4
   dio_cookie_manager: ^2.0.0
   equatable: ^2.0.3 
@@ -35,7 +35,7 @@ dependencies:
   libadwaita: ^1.2.0-dev
   libadwaita_bitsdojo: ^0.5.3
   libadwaita_searchbar_ac: ^0.5.3
-  lucide_icons: ^0.17.11
+  lucide_icons: ^0.61.0
   open_file: # Upgrade to pub.dev when package > 3.2.1
     git:
       url: https://github.com/miDeb/open_file.git
@@ -44,14 +44,14 @@ dependencies:
   page_transition: ^2.0.5
   path: ^1.8.0
   path_provider: ^2.0.8
-  permission_handler: ^8.3.0
+  permission_handler: ^9.2.0
   piped_api:
     git:
       url: https://github.com/TeamPiped/piped_dart
   readmore: ^2.1.0
-  share_plus: ^3.0.4
+  share_plus: ^4.0.8
   shared_preferences: ^2.0.13
-  sticky_headers: ^0.2.0
+  sticky_headers: ^0.3.0+2
   timeago: ^3.2.1
   url_launcher: ^6.0.18
   youtube_explode_dart:
@@ -65,21 +65,9 @@ dev_dependencies:
   very_good_analysis: ^3.0.0
 
 dependency_overrides:
-  bitsdojo_window_linux:
-    git:
-      url: https://github.com/prateekmedia/bitsdojo_window.git
-      path: bitsdojo_window_linux
-  bitsdojo_window_macos:
-    git:
-      url: https://github.com/prateekmedia/bitsdojo_window.git
-      path: bitsdojo_window_macos
-  bitsdojo_window_windows:
-    git:
-      url: https://github.com/prateekmedia/bitsdojo_window.git
-      path: bitsdojo_window_windows
-  dart_vlc:
-    git:
-      url: https://github.com/alexmercerind/dart_vlc.git
+  built_collection: ^5.0.0
+  built_value: ^8.1.0
+  dio: ^4.0.4
 
 flutter:
   generate: true
