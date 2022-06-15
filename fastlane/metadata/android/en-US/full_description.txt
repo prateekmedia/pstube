@@ -1,6 +1,7 @@
-Ever wondered how the videos in the internet look without ads, no more wondering here comes your saviour.
+Ever wondered how the videos in the internet look without ads, no more wondering here comes your savior.
 
-Features
+<b>Features:</b>
+
 * Beautiful user interface
 * Lightweight and fast
 * No Login Required
