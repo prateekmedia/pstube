@@ -1,1 +1,9 @@
-Ever wondered how the videos in the internet will look without ads, no more wondering just use PsTube.
+Ever wondered how the videos in the internet look without ads, no more wondering here comes your saviour.
+
+Features
+* Beautiful user interface
+* Lightweight and fast
+* No Login Required
+* Keep your liked videos and comments
+* Playlists support
+* Download videos, audios and thumbnails
