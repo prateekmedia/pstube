@@ -1,5 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+import 'package:newpipeextractor_dart/models/comment.dart';
 
 part 'liked_comment.g.dart';
 
@@ -13,12 +13,12 @@ class LikedComment {
     required this.likeCount,
   });
 
-  LikedComment.fromComment(Comment comment)
-      : channelId = comment.channelId.value,
-        author = comment.author,
-        text = comment.text,
-        publishedTime = comment.publishedTime,
-        likeCount = comment.likeCount;
+  LikedComment.fromComment(YoutubeComment comment)
+      : channelId = comment.uploaderUrl ?? '',
+        author = comment.author ?? '',
+        text = comment.commentText ?? '',
+        publishedTime = comment.uploadDate ?? '',
+        likeCount = comment.likeCount ?? 0;
 
   @HiveField(0)
   String channelId;

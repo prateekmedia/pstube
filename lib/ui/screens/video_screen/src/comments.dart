@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
+import 'package:newpipeextractor_dart/models/comment.dart';
 import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/ui/screens/video_screen/src/build_comment_box.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
@@ -15,8 +16,8 @@ class CommentsWidget extends StatefulHookWidget {
     required this.snapshot,
   });
 
-  final ValueNotifier<Comment?> replyComment;
-  final AsyncSnapshot<CommentsList?> snapshot;
+  final ValueNotifier<YoutubeComment?> replyComment;
+  final AsyncSnapshot<List<YoutubeComment>> snapshot;
   final VoidCallback? onClose;
 
   @override
@@ -30,7 +31,7 @@ class _CommentsWidgetState extends State<CommentsWidget>
     super.build(context);
     final isMounted = useIsMounted();
     final pageController = PageController();
-    final _currentPage = useState<CommentsList?>(widget.snapshot.data);
+    final _currentPage = useState<List<YoutubeComment>?>(widget.snapshot.data);
     final controller = useScrollController();
     final currentPage = useState<int>(0);
 
@@ -38,13 +39,13 @@ class _CommentsWidgetState extends State<CommentsWidget>
       if (_currentPage.value != null &&
           isMounted() &&
           controller.position.pixels == controller.position.maxScrollExtent) {
-        final page = await (_currentPage.value)!.nextPage();
+        // final page = await (_currentPage.value)!.nextPage();
 
-        if (page == null || page.isEmpty || !isMounted()) return;
+        // if (page == null || page.isEmpty || !isMounted()) return;
 
-        _currentPage.value!.addAll(page);
+        // _currentPage.value!.addAll(page);
         // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-        _currentPage.notifyListeners();
+        // _currentPage.notifyListeners();
       }
     }
 
@@ -88,7 +89,7 @@ class _CommentsWidgetState extends State<CommentsWidget>
           ],
           title: Text(
             (currentPage.value == 0)
-                ? '${(widget.snapshot.data != null ? widget.snapshot.data!.totalLength : 0).formatNumber} ${context.locals.comments.toLowerCase()}'
+                ? '${(widget.snapshot.data != null ? widget.snapshot.data!.length : 0).formatNumber} ${context.locals.comments.toLowerCase()}'
                 : context.locals.replies,
           ),
         ),
@@ -158,13 +159,19 @@ class _CommentsWidgetState extends State<CommentsWidget>
   bool get wantKeepAlive => true;
 }
 
-Widget showReplies(BuildContext context, Comment? comment, EdgeInsets padding) {
+Widget showReplies(
+  BuildContext context,
+  YoutubeComment? comment,
+  EdgeInsets padding,
+) {
   final yt = YoutubeExplode();
   Future<CommentsList?>? getReplies() async {
     if (comment == null) return null;
-    final replies = await yt.videos.commentsClient.getReplies(comment);
+    // final replies = await yt.videos.commentsClient.getReplies(comment);
     yt.close();
-    return replies;
+    // return replies;
+    // TODO(prateekmedia): This
+    return null;
   }
 
   return comment != null
@@ -176,26 +183,26 @@ Widget showReplies(BuildContext context, Comment? comment, EdgeInsets padding) {
               comment: comment,
               onReplyTap: null,
               isInsideReply: true,
-            ),
-            FutureBuilder<List<Comment>?>(
-              future: getReplies(),
-              builder: (context, snapshot) {
-                return snapshot.data != null
-                    ? Container(
-                        padding: const EdgeInsets.only(left: 50),
-                        child: Column(
-                          children: [
-                            for (Comment reply in snapshot.data!)
-                              BuildCommentBox(
-                                comment: reply,
-                                onReplyTap: null,
-                                isInsideReply: true,
-                              ),
-                          ],
-                        ),
-                      )
-                    : getCircularProgressIndicator();
-              },
+              // ),
+              // FutureBuilder<List<Comment>?>(
+              //   future: getReplies(),
+              //   builder: (context, snapshot) {
+              //     return snapshot.data != null
+              //         ? Container(
+              //             padding: const EdgeInsets.only(left: 50),
+              //             child: Column(
+              //               children: [
+              //                 for (YoutubeComment reply in snapshot.data!)
+              //                   BuildCommentBox(
+              //                     comment: reply,
+              //                     onReplyTap: null,
+              //                     isInsideReply: true,
+              //                   ),
+              //               ],
+              //             ),
+              //           )
+              //         : getCircularProgressIndicator();
+              //   },
             ),
           ],
         )

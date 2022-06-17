@@ -43,6 +43,7 @@ class PSVideo extends HookWidget {
           relatedVideo.uploader,
           ChannelId(relatedVideo.channelUrl),
           DateTime.now(),
+          '',
           DateTime.now(),
           '',
           Duration.zero,

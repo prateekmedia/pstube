@@ -296,7 +296,7 @@ packages:
       name: cupertino_icons
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.4"
+    version: "1.0.5"
   custom_text:
     dependency: "direct main"
     description:
@@ -421,6 +421,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.18.4"
+  flutter_inappwebview:
+    dependency: transitive
+    description:
+      name: flutter_inappwebview
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.4.3+7"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -697,6 +704,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.6.2"
+  newpipeextractor_dart:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: master
+      resolved-ref: "228b6ee34d557061ccc0abba76f058fc6667c493"
+      url: "https://github.com/SongTube/newpipeextractor_dart"
+    source: git
+    version: "0.0.1"
   nm:
     dependency: transitive
     description:
@@ -1390,8 +1406,8 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "499de3e5393d27ec37345fca86a07b906ac4be27"
-      url: "https://github.com/prateekmedia/youtube_explode_dart.git"
+      resolved-ref: cc04091011a8aa625b988890d113d16f7c5bc3ca
+      url: "https://github.com/hexer10/youtube_explode_dart.git"
     source: git
     version: "1.11.0"
 sdks:

@@ -43,6 +43,7 @@ extension SVE on SearchVideo {
       author,
       ChannelId(channelId),
       DateTime.now(),
+      uploadDate,
       DateTime.now(),
       description,
       Duration.zero,

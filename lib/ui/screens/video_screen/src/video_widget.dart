@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:newpipeextractor_dart/models/comment.dart';
 import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/data/services/services.dart';
@@ -30,9 +31,9 @@ class VideoWidget extends StatelessWidget {
   final ValueNotifier<Widget?> downloadsSideWidget;
   final ValueNotifier<Widget?> commentSideWidget;
   final ValueNotifier<Widget?> relatedVideoWidget;
-  final ValueNotifier<Comment?> replyComment;
+  final ValueNotifier<YoutubeComment?> replyComment;
   final AsyncSnapshot<StreamManifest> snapshot;
-  final AsyncSnapshot<CommentsList?> commentsSnapshot;
+  final AsyncSnapshot<List<YoutubeComment>> commentsSnapshot;
 
   @override
   Widget build(BuildContext context) {
@@ -166,7 +167,7 @@ class VideoWidget extends StatelessWidget {
                     ),
                     trailing: Text(
                       (commentsSnapshot.data != null
-                              ? commentsSnapshot.data!.totalLength
+                              ? commentsSnapshot.data!.length
                               : 0)
                           .formatNumber,
                     ),

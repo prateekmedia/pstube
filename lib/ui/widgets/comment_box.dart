@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:newpipeextractor_dart/models/comment.dart';
 import 'package:pstube/data/extensions/extensions.dart';
 
 import 'package:pstube/data/models/models.dart';
@@ -142,7 +143,8 @@ class CommentBox extends HookConsumerWidget {
                           ),
                         ),
                       ),
-                      if (comment is Comment && comment.isHearted as bool) ...[
+                      if (comment is YoutubeComment &&
+                          ((comment as YoutubeComment).hearted ?? false)) ...[
                         const SizedBox(width: 8),
                         Container(
                           padding: const EdgeInsets.symmetric(
@@ -162,7 +164,7 @@ class CommentBox extends HookConsumerWidget {
                         ),
                       ],
                       const SizedBox(width: 8),
-                      if (comment is Comment &&
+                      if (comment is YoutubeComment &&
                           !isInsideReply &&
                           comment.replyCount as int > 0)
                         GestureDetector(

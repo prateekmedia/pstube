@@ -9,6 +9,7 @@ extension Stream2Video on StreamItem {
         uploaderName ?? '',
         ChannelId('${Constants.ytCom}$uploaderUrl'),
         DateTime.now(),
+        uploadedDate,
         DateTime.now(),
         '',
         Duration(seconds: duration),

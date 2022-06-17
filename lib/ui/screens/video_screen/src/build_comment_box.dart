@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:newpipeextractor_dart/models/comment.dart';
 
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/ui/states/states.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
-
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class BuildCommentBox extends StatefulHookConsumerWidget {
   const BuildCommentBox({
@@ -18,7 +17,7 @@ class BuildCommentBox extends StatefulHookConsumerWidget {
 
   final bool isInsideReply;
   final VoidCallback? onReplyTap;
-  final Comment comment;
+  final YoutubeComment comment;
 
   @override
   ConsumerState<BuildCommentBox> createState() => _BuildCommentBoxState();
