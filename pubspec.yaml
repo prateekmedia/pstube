@@ -36,6 +36,10 @@ dependencies:
   libadwaita_bitsdojo: ^0.5.3
   libadwaita_searchbar_ac: ^0.5.3
   lucide_icons: ^0.61.0
+  newpipeextractor_dart:
+    git:
+        url: https://github.com/SongTube/newpipeextractor_dart
+        ref: master
   open_file: # Upgrade to pub.dev when package > 3.2.1
     git:
       url: https://github.com/miDeb/open_file.git

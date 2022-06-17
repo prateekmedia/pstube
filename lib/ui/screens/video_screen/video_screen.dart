@@ -6,6 +6,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:html/parser.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
+import 'package:newpipeextractor_dart/extractors/comments.dart';
+import 'package:newpipeextractor_dart/models/comment.dart';
 import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/data/services/services.dart';
@@ -41,8 +43,10 @@ class _VideoScreenState extends State<VideoScreen>
     final cookieJar = PersistCookieJar();
     dio.interceptors.add(CookieManager(cookieJar));
 
-    final value = await dio
-        .get<String>('https://invidious.kavin.rocks/watch?v=Ahzrv1TQGHY');
+    final value = await dio.get<String>(
+      'https://invidious.kavin.rocks/watch?v='
+      '${widget.video != null ? widget.video!.id : widget.videoId}',
+    );
     final html = parse(value.data.toString());
 
     final playNext = html.querySelectorAll('.pure-u-1 .pure-u-lg-1-5')[1];
@@ -92,7 +96,7 @@ class _VideoScreenState extends State<VideoScreen>
     final videoData = videoSnapshot != null && videoSnapshot.hasData
         ? videoSnapshot.data
         : widget.video;
-    final replyComment = useState<Comment?>(null);
+    final replyComment = useState<YoutubeComment?>(null);
     final commentSideWidget = useState<Widget?>(null);
     final downloadsSideWidget = useState<Widget?>(null);
     final relatedVideoWidget = useState<Widget?>(null);
@@ -107,9 +111,9 @@ class _VideoScreenState extends State<VideoScreen>
                     ? Center(child: Text(context.locals.videoNotFound))
                     : videoData == null
                         ? getCircularProgressIndicator()
-                        : FutureBuilder<CommentsList?>(
+                        : FutureBuilder<List<YoutubeComment>>(
                             future:
-                                yt.videos.commentsClient.getComments(videoData),
+                                CommentsExtractor.getComments(videoData.url),
                             builder: (context, commentsSnapshot) {
                               return FutureBuilder<StreamManifest>(
                                 future: YoutubeExplode()

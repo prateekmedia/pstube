@@ -296,7 +296,7 @@ packages:
       name: cupertino_icons
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.4"
+    version: "1.0.5"
   custom_text:
     dependency: "direct main"
     description:
@@ -421,6 +421,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.18.4"
+  flutter_inappwebview:
+    dependency: transitive
+    description:
+      name: flutter_inappwebview
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.4.3+7"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -697,6 +704,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.6.2"
+  newpipeextractor_dart:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: master
+      resolved-ref: "228b6ee34d557061ccc0abba76f058fc6667c493"
+      url: "https://github.com/SongTube/newpipeextractor_dart"
+    source: git
+    version: "0.0.1"
   nm:
     dependency: transitive
     description:
