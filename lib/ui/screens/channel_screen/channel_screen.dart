@@ -20,52 +20,30 @@ class ChannelScreen extends HookWidget {
     final yt = YoutubeExplode();
     final channel = useState<ChannelInfo?>(null);
     final channelInfo = useState<ChannelAbout?>(null);
-    final _currentVidPage = useState<BuiltList<StreamItem>?>(null);
+    final currentVidPage = useState<BuiltList<StreamItem>?>(null);
     final _pageController = usePageController();
-    final controller = useScrollController();
     final _currentIndex = useState<int>(0);
     final _tabs = <String, IconData>{
       context.locals.home: LucideIcons.home,
       context.locals.videos: LucideIcons.video,
       context.locals.about: LucideIcons.info,
     };
-
-    final getStats = channelInfo.value != null
-        ? <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Text(
-                context.locals.stats,
-                style: context.textTheme.headline5,
-              ),
-            ),
-            const Divider(height: 26),
-            Text(
-              '${context.locals.joined} ${channelInfo.value!.joinDate}',
-              style: context.textTheme.bodyText2,
-            ),
-            const Divider(height: 26),
-            Text(
-              '${(channelInfo.value!.viewCount ?? 0).addCommas} '
-              '${context.locals.views}',
-              style: context.textTheme.bodyText2,
-            ),
-            if (channelInfo.value!.country != null) ...[
-              const Divider(height: 26),
-              Text(channelInfo.value!.country!),
-            ],
-          ]
-        : <Widget>[];
+    final controller = useScrollController();
+    final nextPageToken = useState<String?>(null);
 
     Future<void> getVideos() async {
-      _currentVidPage.value = channel.value!.relatedStreams;
+      currentVidPage.value = channel.value!.relatedStreams;
     }
 
+    final api = PipedApi().getUnauthenticatedApi();
+
     Future<void> loadChannelData() async {
-      channel.value = (await PipedApi().getUnauthenticatedApi().channelInfoId(
-                channelId: channelId,
-              ))
+      channel.value = (await api.channelInfoId(
+        channelId: channelId,
+      ))
           .data;
+
+      nextPageToken.value = channel.value!.nextpage;
 
       if (!isMounted()) return;
       await getVideos();
@@ -75,20 +53,37 @@ class ChannelScreen extends HookWidget {
       channelInfo.value = await yt.channels.getAboutPage(channelId);
     }
 
-    Future<void> _getMoreData() async {
-      if (isMounted() &&
-          controller.position.pixels == controller.position.maxScrollExtent) {
-        // final yes = channel.value!.nextpage;
-
-        // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-        _currentVidPage.notifyListeners();
+    Future _getMoreData() async {
+      if (!isMounted() ||
+          channel.value == null ||
+          nextPageToken.value == null ||
+          controller.position.pixels != controller.position.maxScrollExtent) {
+        return;
       }
+
+      final nextPage = await api.channelNextPage(
+        channelId: channel.value!.id!,
+        nextpage: nextPageToken.value!,
+      );
+
+      if (nextPage.data == null && nextPage.data!.relatedStreams != null) {
+        return;
+      }
+
+      nextPageToken.value = nextPage.data!.nextpage;
+
+      currentVidPage.value = currentVidPage.value!.rebuild(
+        (b) => b.addAll(
+          nextPage.data!.relatedStreams!.toList(),
+        ),
+      );
     }
 
     useEffect(
       () {
         loadChannelData();
         loadAboutPage();
+
         controller.addListener(_getMoreData);
         return () => controller.removeListener(_getMoreData);
       },
@@ -127,18 +122,18 @@ class ChannelScreen extends HookWidget {
                 child: _KeepAliveTab(
                   isHomeVisible: entry.key == 0 && channel.value != null,
                   isVideosVisible:
-                      entry.key == 1 && _currentVidPage.value != null,
+                      entry.key == 1 && currentVidPage.value != null,
                   isAboutVisible: entry.key == 2 && channelInfo.value != null,
                   homeTab: ChannelHomeTab(
                     channel: channel.value,
                   ),
+                  controller: controller,
                   videosTab: ChannelVideosTab(
-                    controller: controller,
-                    currentVidPage: _currentVidPage,
+                    channel: channel.value,
+                    currentVidPage: currentVidPage,
                   ),
                   aboutTab: ChannelAboutTab(
                     channelInfo: channelInfo.value,
-                    getStats: getStats,
                   ),
                 ),
               ),
@@ -157,6 +152,7 @@ class _KeepAliveTab extends StatefulWidget {
     required this.homeTab,
     required this.videosTab,
     required this.aboutTab,
+    this.controller,
   });
 
   final bool isHomeVisible;
@@ -165,6 +161,7 @@ class _KeepAliveTab extends StatefulWidget {
   final Widget homeTab;
   final Widget videosTab;
   final Widget aboutTab;
+  final ScrollController? controller;
 
   @override
   State<_KeepAliveTab> createState() => _KeepAliveTabState();
@@ -176,6 +173,7 @@ class _KeepAliveTabState extends State<_KeepAliveTab>
   Widget build(BuildContext context) {
     super.build(context);
     return AdwClamp.scrollable(
+      controller: widget.isVideosVisible ? widget.controller : null,
       maximumSize: 1200,
       child: widget.isHomeVisible
           ? widget.homeTab

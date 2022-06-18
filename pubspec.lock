@@ -137,14 +137,14 @@ packages:
     source: hosted
     version: "7.2.3"
   built_collection:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: built_collection
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.1.1"
   built_value:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: built_value
       url: "https://pub.dartlang.org"
@@ -900,7 +900,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "4ab4098c9a77cd4d52bbb0e03e65c32f3258c131"
+      resolved-ref: abc390a2e1673d3a3c28f70cb7428dff6b0960d6
       url: "https://github.com/TeamPiped/piped_dart"
     source: git
     version: "1.0.0"

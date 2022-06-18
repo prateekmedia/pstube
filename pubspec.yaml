@@ -64,10 +64,7 @@ dev_dependencies:
   msix: ^3.6.2
   very_good_analysis: ^3.0.0
 
-dependency_overrides:
-  built_collection: ^5.0.0
-  built_value: ^8.1.0
-  dio: ^4.0.4
+# dependency_overrides:
 
 flutter:
   generate: true
