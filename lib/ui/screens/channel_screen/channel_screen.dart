@@ -111,34 +111,43 @@ class ChannelScreen extends HookWidget {
         controller: _pageController,
         onPageChanged: (idx) => _currentIndex.value = idx,
         // These are the contents of the tab views, below the tabs.
-        children: _tabs.keys
-            .toList()
-            .asMap()
-            .entries
-            .map(
-              (MapEntry<int, String> entry) => SafeArea(
-                top: false,
-                bottom: false,
-                child: _KeepAliveTab(
-                  isHomeVisible: entry.key == 0 && channel.value != null,
-                  isVideosVisible:
-                      entry.key == 1 && currentVidPage.value != null,
-                  isAboutVisible: entry.key == 2 && channelInfo.value != null,
-                  homeTab: ChannelHomeTab(
-                    channel: channel.value,
-                  ),
-                  controller: controller,
-                  videosTab: ChannelVideosTab(
-                    channel: channel.value,
-                    currentVidPage: currentVidPage,
-                  ),
-                  aboutTab: ChannelAboutTab(
-                    channelInfo: channelInfo.value,
-                  ),
-                ),
-              ),
-            )
-            .toList(),
+        children: _tabs.keys.toList().asMap().entries.map(
+          (MapEntry<int, String> entry) {
+            ScrollController? scrollController;
+            late Widget tab;
+            late bool isVisible;
+
+            switch (entry.key) {
+              case 0:
+                tab = ChannelHomeTab(
+                  channel: channel.value,
+                );
+                isVisible = channel.value != null;
+                break;
+              case 1:
+                scrollController = controller;
+                tab = ChannelVideosTab(
+                  channel: channel.value,
+                  currentVidPage: currentVidPage,
+                );
+                isVisible = currentVidPage.value != null;
+                break;
+              case 2:
+                tab = ChannelAboutTab(
+                  channelInfo: channelInfo.value,
+                );
+                isVisible = currentVidPage.value != null;
+                break;
+              default:
+            }
+
+            return _KeepAliveTab(
+              controller: scrollController,
+              isVisible: isVisible,
+              tab: tab,
+            );
+          },
+        ).toList(),
       ),
     );
   }
@@ -146,21 +155,13 @@ class ChannelScreen extends HookWidget {
 
 class _KeepAliveTab extends StatefulWidget {
   const _KeepAliveTab({
-    required this.isHomeVisible,
-    required this.isVideosVisible,
-    required this.isAboutVisible,
-    required this.homeTab,
-    required this.videosTab,
-    required this.aboutTab,
+    required this.isVisible,
+    required this.tab,
     this.controller,
   });
 
-  final bool isHomeVisible;
-  final bool isVideosVisible;
-  final bool isAboutVisible;
-  final Widget homeTab;
-  final Widget videosTab;
-  final Widget aboutTab;
+  final bool isVisible;
+  final Widget tab;
   final ScrollController? controller;
 
   @override
@@ -172,16 +173,18 @@ class _KeepAliveTabState extends State<_KeepAliveTab>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return AdwClamp.scrollable(
-      controller: widget.isVideosVisible ? widget.controller : null,
-      maximumSize: 1200,
-      child: widget.isHomeVisible
-          ? widget.homeTab
-          : widget.isVideosVisible
-              ? widget.videosTab
-              : widget.isAboutVisible
-                  ? widget.aboutTab
-                  : getCircularProgressIndicator(),
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: AdwClamp.scrollable(
+        controller: widget.controller,
+        maximumSize: 1200,
+        child: Visibility(
+          visible: widget.isVisible,
+          replacement: getCircularProgressIndicator(),
+          child: widget.tab,
+        ),
+      ),
     );
   }
 
