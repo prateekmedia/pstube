@@ -1390,8 +1390,8 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "499de3e5393d27ec37345fca86a07b906ac4be27"
-      url: "https://github.com/prateekmedia/youtube_explode_dart.git"
+      resolved-ref: cc04091011a8aa625b988890d113d16f7c5bc3ca
+      url: "https://github.com/hexer10/youtube_explode_dart.git"
     source: git
     version: "1.11.0"
 sdks:
