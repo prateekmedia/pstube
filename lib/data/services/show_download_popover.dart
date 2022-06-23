@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/extensions/extensions.dart';
 
 import 'package:pstube/data/models/models.dart';
@@ -19,25 +21,33 @@ final Widget _progressIndicator = SizedBox(
 Future showDownloadPopup(
   BuildContext context, {
   StreamManifest? manifest,
-  Video? video,
+  VideoData? video,
   String? videoUrl,
 }) {
   assert(
     video != null || videoUrl != null,
     "Both video and videoUrl can't be null",
   );
-  final yt = YoutubeExplode();
-  Future<Video?> getVideo() => yt.videos.get(videoUrl);
+  Future<Response<VideoInfo>?> getVideo() =>
+      PipedApi().getUnauthenticatedApi().streamInfo(
+            videoId: videoUrl!,
+          );
   return showPopover(
     context: context,
     title: context.locals.downloadQuality,
     padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 12),
-    builder: (ctx) => FutureBuilder<Video?>(
-      future: videoUrl != null ? getVideo().whenComplete(yt.close) : null,
+    builder: (ctx) => FutureBuilder<Response<VideoInfo>?>(
+      future: videoUrl != null ? getVideo() : null,
       builder: (context, snapshot) {
-        return video != null || snapshot.hasData && snapshot.data != null
+        return video != null ||
+                snapshot.hasData &&
+                    snapshot.data != null &&
+                    snapshot.data!.data != null
             ? DownloadsWidget(
-                video: video ?? snapshot.data!,
+                video: video ??
+                    VideoData.fromVideoInfo(
+                      snapshot.data!.data!,
+                    ),
                 manifest: manifest,
               )
             : snapshot.hasError
@@ -56,7 +66,7 @@ class DownloadsWidget extends ConsumerWidget {
     this.onClose,
   });
 
-  final Video video;
+  final VideoData video;
   final StreamManifest? manifest;
   final VoidCallback? onClose;
 
@@ -65,7 +75,9 @@ class DownloadsWidget extends ConsumerWidget {
     return SafeArea(
       child: FutureBuilder<StreamManifest>(
         future: manifest == null
-            ? YoutubeExplode().videos.streamsClient.getManifest(video.id.value)
+            ? YoutubeExplode().videos.streamsClient.getManifest(
+                  video.id.value,
+                )
             : null,
         builder: (context, snapshot) {
           final data = manifest ?? snapshot.data;
@@ -175,7 +187,7 @@ class DownloadQualityTile extends ConsumerStatefulWidget {
   });
 
   final dynamic stream;
-  final Video video;
+  final VideoData video;
   final VoidCallback? onClose;
 
   @override

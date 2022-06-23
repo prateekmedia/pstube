@@ -18,3 +18,15 @@ extension UrlLauncher on String {
     return Duration(hours: hours, minutes: minutes, microseconds: micros);
   }
 }
+
+extension NullableExtension on String? {
+  bool get isNullOrWhiteSpace {
+    if (this == null) {
+      return true;
+    }
+    if (this!.trim().isEmpty) {
+      return true;
+    }
+    return false;
+  }
+}

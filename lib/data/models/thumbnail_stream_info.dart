@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pstube/data/extensions/extensions.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+import 'package:pstube/data/models/models.dart';
 
 class ThumbnailStreamInfo {
   ThumbnailStreamInfo({
@@ -14,7 +14,7 @@ class ThumbnailStreamInfo {
   final String containerName;
 }
 
-extension CreateThumbnailStreamInfo on ThumbnailSet {
+extension CreateThumbnailStreamInfo on Thumbnails {
   List<ThumbnailStreamInfo> toStreamInfo(BuildContext context) => [
         ThumbnailStreamInfo(
           name: context.locals.lowResolution,

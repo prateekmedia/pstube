@@ -1,13 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pstube/data/extensions/extensions.dart';
-import 'package:pstube/data/models/models.dart';
+import 'package:pstube/data/models/video_data.dart';
 import 'package:pstube/data/services/services.dart';
 import 'package:pstube/ui/screens/video_screen/src/export.dart';
+import 'package:pstube/ui/widgets/channel_info.dart';
 import 'package:pstube/ui/widgets/video_player.dart';
 import 'package:pstube/ui/widgets/vlc_player.dart';
-import 'package:pstube/ui/widgets/widgets.dart';
-import 'package:timeago/timeago.dart' as timeago;
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class VideoWidget extends StatelessWidget {
@@ -21,12 +20,10 @@ class VideoWidget extends StatelessWidget {
     required this.replyComment,
     required this.snapshot,
     required this.commentsSnapshot,
-    required this.recommendations,
   });
 
-  final List<RelatedVideo> recommendations;
   final bool hasData;
-  final Video videoData;
+  final VideoData videoData;
   final ValueNotifier<Widget?> downloadsSideWidget;
   final ValueNotifier<Widget?> commentSideWidget;
   final ValueNotifier<Widget?> relatedVideoWidget;
@@ -109,7 +106,7 @@ class VideoWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          videoData.title,
+                          videoData.title!,
                           style: context.textTheme.headline3,
                         ),
                         const SizedBox(
@@ -118,14 +115,12 @@ class VideoWidget extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              '${videoData.engagement.viewCount.formatNumber}'
+                              '${videoData.views?.formatNumber ?? 0}'
                               ' views',
                             ),
                             Text(
-                              videoData.publishDate != null
-                                  ? '  •  ${timeago.format(
-                                      videoData.publishDate!,
-                                    )}'
+                              videoData.uploadDate != null
+                                  ? '  •  ${videoData.uploadDate!}'
                                   : '',
                             ),
                           ],
@@ -139,12 +134,11 @@ class VideoWidget extends StatelessWidget {
                     relatedVideoWidget: relatedVideoWidget,
                     commentSideWidget: commentSideWidget,
                     snapshot: snapshot,
-                    recommendations: recommendations,
                   ),
                   const Divider(),
                   ChannelInfo(
                     channel: null,
-                    channelId: videoData.channelId.value,
+                    channelId: videoData.uploaderId!.value,
                     isOnVideo: true,
                   ),
                   const Divider(height: 4),
@@ -174,7 +168,10 @@ class VideoWidget extends StatelessWidget {
                   const Divider(
                     height: 4,
                   ),
-                  if (context.isMobile) DescriptionWidget(video: videoData),
+                  if (context.isMobile)
+                    DescriptionWidget(
+                      video: videoData,
+                    ),
                 ],
               ),
               if (context.isMobile) ...[

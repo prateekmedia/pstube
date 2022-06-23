@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:pstube/data/extensions/extensions.dart';
+import 'package:pstube/data/models/video_data.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 import 'package:youtube_explode_dart/src/search/base_search_content.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
@@ -18,12 +19,12 @@ extension BSC on BaseSearchContent {
         ),
       );
     } else if (this is SearchVideo) {
-      final item = this as SearchVideo;
+      final searchVideo = this as SearchVideo;
       return PSVideo(
-        videoData: (this as SearchVideo).toVideo,
+        videoData: VideoData.fromSearchVideo(searchVideo),
         isRow: !context.isMobile,
-        date: item.uploadDate,
-        duration: item.duration,
+        date: searchVideo.uploadDate,
+        duration: searchVideo.duration,
         loadData: true,
       );
     } else {
@@ -43,6 +44,7 @@ extension SVE on SearchVideo {
       author,
       ChannelId(channelId),
       DateTime.now(),
+      uploadDate,
       DateTime.now(),
       description,
       Duration.zero,

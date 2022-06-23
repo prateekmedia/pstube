@@ -1,15 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/extensions/extensions.dart';
-import 'package:pstube/data/models/models.dart';
+import 'package:pstube/data/models/video_data.dart';
 import 'package:pstube/data/services/services.dart';
 import 'package:pstube/ui/screens/screens.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
-import 'package:timeago/timeago.dart' as timeago;
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class PSVideo extends HookWidget {
   const PSVideo({
@@ -23,45 +23,50 @@ class PSVideo extends HookWidget {
     this.showChannel = true,
     this.loadData = false,
     this.actions = const [],
-  }) : isRelated = false;
+    this.isRelated = false,
+  });
 
-  PSVideo.related({
+  PSVideo.streamItem({
     super.key,
-    required RelatedVideo relatedVideo,
-  })  : actions = [],
-        date = null,
-        showChannel = true,
-        loadData = false,
-        isRow = false,
-        isRelated = true,
-        videoUrl = null,
-        duration = relatedVideo.duration,
-        views = relatedVideo.views,
-        videoData = Video(
-          VideoId(relatedVideo.url),
-          relatedVideo.title,
-          relatedVideo.uploader,
-          ChannelId(relatedVideo.channelUrl),
-          DateTime.now(),
-          DateTime.now(),
-          '',
-          Duration.zero,
-          ThumbnailSet(
-            relatedVideo.url.replaceAll(
-              '${Constants.ytCom}/watch?v=',
-              '',
-            ),
-          ),
-          [''],
-          const Engagement(0, 0, 0),
-          false,
-        );
+    this.videoUrl,
+    this.date,
+    this.views,
+    this.duration,
+    required StreamItem? streamItem,
+    this.isRow = false,
+    this.showChannel = true,
+    this.loadData = false,
+    this.actions = const [],
+    this.isRelated = false,
+  }) : videoData = streamItem != null
+            ? VideoData.fromStreamItem(
+                streamItem,
+              )
+            : null;
+
+  PSVideo.videoInfo({
+    super.key,
+    this.videoUrl,
+    this.date,
+    this.views,
+    this.duration,
+    required VideoInfo? videoInfo,
+    this.isRow = false,
+    this.showChannel = true,
+    this.loadData = false,
+    this.actions = const [],
+  })  : isRelated = true,
+        videoData = videoInfo != null
+            ? VideoData.fromVideoInfo(
+                videoInfo,
+              )
+            : null;
 
   final String? date;
   final String? views;
   final String? duration;
   final String? videoUrl;
-  final Video? videoData;
+  final VideoData? videoData;
   final bool loadData;
   final bool isRow;
   final bool showChannel;
@@ -70,13 +75,18 @@ class PSVideo extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final yt = YoutubeExplode();
-    Future<Video?> getVideo() => yt.videos.get(videoUrl);
+    Future<Response<VideoInfo>?> getVideo() =>
+        PipedApi().getUnauthenticatedApi().streamInfo(
+              videoId: videoUrl!,
+            );
 
-    return FutureBuilder<Video?>(
-      future: videoUrl != null ? getVideo().whenComplete(yt.close) : null,
+    return FutureBuilder<Response<VideoInfo>?>(
+      future: videoUrl != null ? getVideo() : null,
       builder: (context, snapshot) {
-        final video = snapshot.data ?? videoData;
+        final video = snapshot.data != null && snapshot.data!.data != null
+            ? VideoData.fromVideoInfo(snapshot.data!.data!)
+            : videoData;
+
         return Padding(
           padding: const EdgeInsets.all(8),
           child: InkWell(
@@ -224,7 +234,7 @@ class PSVideo extends HookWidget {
   }
 
   AspectRatio getThumbnail(
-    Video? video,
+    VideoData? video,
     BuildContext context, {
     required bool isRow,
   }) {
@@ -258,34 +268,42 @@ class PSVideo extends HookWidget {
     );
   }
 
-  IconWithLabel getDuration(Video video) => IconWithLabel(
-        label: duration ?? (video.duration ?? Duration.zero).format(),
+  IconWithLabel getDuration(VideoData video) => IconWithLabel(
+        label: duration ?? Duration(seconds: video.duration ?? 0).format(),
         secColor: SecColor.dark,
       );
 
-  Text getTitle(Video? video) => Text(
-        video != null ? video.title : '           ',
+  Text getTitle(VideoData? video) => Text(
+        video != null && video.title != null ? video.title! : '           ',
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
         style: const TextStyle(fontSize: 14),
       );
 
-  GestureDetector getAuthor(Video? video, BuildContext context) =>
+  GestureDetector getAuthor(VideoData? video, BuildContext context) =>
       GestureDetector(
-        onTap: (video != null)
-            ? () => context
-                .pushPage(ChannelScreen(channelId: video.channelId.value))
+        onTap: video != null && video.uploaderId != null
+            ? () => context.pushPage(
+                  ChannelScreen(
+                    channelId: video.uploaderId!.value,
+                  ),
+                )
             : null,
         child: IconWithLabel(
-          label: video != null ? video.author : '                ',
+          label: video != null && video.uploader != null
+              ? video.uploader!
+              : '                ',
           secColor: SecColor.dark,
         ),
       );
 
-  AdwButton getDownloadButton(Video? video, BuildContext context) =>
+  AdwButton getDownloadButton(VideoData? video, BuildContext context) =>
       AdwButton.circular(
         onPressed: video != null
-            ? () => showDownloadPopup(context, video: video)
+            ? () => showDownloadPopup(
+                  context,
+                  video: video,
+                )
             : null,
         size: 36,
         child: Icon(
@@ -295,18 +313,18 @@ class PSVideo extends HookWidget {
         ),
       );
 
-  IconWithLabel getViews(Video? video, BuildContext context) {
+  IconWithLabel getViews(VideoData? video, BuildContext context) {
     return IconWithLabel(
       label: views ??
           (video != null
-              ? '${video.engagement.viewCount.formatNumber} ${context.locals.views}'
+              ? '${(video.views ?? 0).formatNumber} ${context.locals.views}'
               : '           '),
     );
   }
 
-  IconWithLabel getTime(Video? video) => IconWithLabel(
-        label: video != null
-            ? date ?? timeago.format(video.uploadDate ?? DateTime.now())
+  IconWithLabel getTime(VideoData? video) => IconWithLabel(
+        label: video != null && video.uploadDate != null
+            ? video.uploadDate!
             : '           ',
       );
 }

@@ -1,9 +1,8 @@
 import 'package:custom_text/custom_text.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:pstube/data/extensions/extensions.dart';
+import 'package:pstube/data/models/models.dart';
 import 'package:pstube/ui/screens/video_screen/src/export.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class DescriptionWidget extends StatelessWidget {
   const DescriptionWidget({
@@ -13,7 +12,7 @@ class DescriptionWidget extends StatelessWidget {
   });
 
   final bool isInsidePopup;
-  final Video video;
+  final VideoData video;
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +33,11 @@ class DescriptionWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             DescriptionInfoWidget(
-              title: video.engagement.viewCount.addCommas,
+              title: (video.views ?? 0).addCommas,
               body: context.locals.views,
             ),
             DescriptionInfoWidget(
-              title: DateFormat('dd MMM yyy')
-                  .format(video.publishDate ?? DateTime.now()),
+              title: video.uploadDate ?? '',
               body: context.locals.uploadDate,
             ),
           ],
@@ -48,7 +46,7 @@ class DescriptionWidget extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(vertical: 4),
           child: CustomText(
-            video.description,
+            video.description ?? '',
             onTap: (Type type, link) => link.launchIt(),
             definitions: const [
               TextDefinition(matcher: UrlMatcher()),

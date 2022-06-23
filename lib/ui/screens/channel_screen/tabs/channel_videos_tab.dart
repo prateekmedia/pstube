@@ -2,7 +2,6 @@ import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:piped_api/piped_api.dart';
-import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/ui/widgets/widgets.dart' hide ChannelInfo;
 
 class ChannelVideosTab extends HookWidget {
@@ -28,9 +27,9 @@ class ChannelVideosTab extends HookWidget {
 
         final streamItem = currentVidPage.value![index];
 
-        return PSVideo(
+        return PSVideo.streamItem(
           date: streamItem.uploadedDate,
-          videoData: streamItem.toVideo,
+          streamItem: streamItem,
           loadData: true,
           showChannel: false,
           isRow: true,

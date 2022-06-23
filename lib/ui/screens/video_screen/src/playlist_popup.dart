@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pstube/data/models/models.dart';
 import 'package:pstube/ui/states/states.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class PlaylistPopup extends ConsumerWidget {
   const PlaylistPopup({
@@ -9,7 +9,7 @@ class PlaylistPopup extends ConsumerWidget {
     required this.videoData,
   });
 
-  final Video videoData;
+  final VideoData videoData;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,13 +19,14 @@ class PlaylistPopup extends ConsumerWidget {
       children: [
         for (var entry in playlist.entries)
           CheckboxListTile(
-            value: entry.value.contains(videoData.url),
-            onChanged: (value) {
-              if (value!) {
-                playlistP.addVideo(entry.key, videoData.url);
-              } else {
-                playlistP.removeVideo(entry.key, videoData.url);
+            value: entry.value.contains(videoData.id.url),
+            onChanged: (isTrue) {
+              if (isTrue!) {
+                playlistP.addVideo(entry.key, videoData.id.url);
+                return;
               }
+
+              playlistP.removeVideo(entry.key, videoData.id.url);
             },
             title: Text(entry.key),
           ),

@@ -41,10 +41,9 @@ class _HomeScreenState extends ConsumerState<HomeTab>
                     itemBuilder: (ctx, idx) {
                       final streamItem =
                           widget.snapshot.data!.data[idx] as StreamItem;
-                      return PSVideo(
+                      return PSVideo.streamItem(
                         loadData: true,
-                        date: streamItem.uploadedDate,
-                        videoData: streamItem.toVideo,
+                        streamItem: streamItem,
                       );
                     },
                     itemCount: widget.snapshot.data!.data.length as int,

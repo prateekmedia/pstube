@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:pstube/data/models/models.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class DownloadItem {
   DownloadItem({
@@ -11,7 +10,7 @@ class DownloadItem {
   });
 
   DownloadItem.fromVideo({
-    required Video video,
+    required VideoData video,
     required dynamic stream,
     required String path,
     this.downloaded = 0,

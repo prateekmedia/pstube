@@ -18,8 +18,9 @@ class QueryVideo {
     required this.duration,
     required this.thumbnail,
   });
+
   QueryVideo.fromVideo({
-    required Video video,
+    required VideoData video,
     required dynamic stream,
     required this.path,
   })  : name = checkIfExists(
@@ -29,8 +30,8 @@ class QueryVideo {
           '${stream is ThumbnailStreamInfo ? stream.containerName : stream is AudioOnlyStreamInfo ? stream.audioCodec.split('.')[0].replaceAll('mp4a', 'm4a') : stream.container.name as String}',
         ),
         id = video.id.value,
-        url = stream.url.toString(),
-        author = video.author,
+        url = stream.id.toString(),
+        author = video.uploader ?? '',
         quality = stream is ThumbnailStreamInfo
             ? stream.name
             : stream is AudioOnlyStreamInfo

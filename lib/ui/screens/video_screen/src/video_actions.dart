@@ -6,7 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:pstube/data/extensions/extensions.dart';
-import 'package:pstube/data/models/models.dart';
+import 'package:pstube/data/models/video_data.dart';
 import 'package:pstube/data/services/services.dart';
 import 'package:pstube/ui/screens/video_screen/src/export.dart';
 import 'package:pstube/ui/states/states.dart';
@@ -19,14 +19,12 @@ class VideoActions extends HookConsumerWidget {
     super.key,
     required this.videoData,
     required this.relatedVideoWidget,
-    required this.recommendations,
     required this.downloadsSideWidget,
     required this.commentSideWidget,
     required this.snapshot,
   });
 
-  final Video videoData;
-  final List<RelatedVideo> recommendations;
+  final VideoData videoData;
   final ValueNotifier<Widget?> relatedVideoWidget;
   final ValueNotifier<Widget?> downloadsSideWidget;
   final ValueNotifier<Widget?> commentSideWidget;
@@ -36,7 +34,7 @@ class VideoActions extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final likedList = ref.watch(likedListProvider);
     final isLiked = useState<bool>(
-      likedList.likedVideoList.contains(videoData.url),
+      likedList.likedVideoList.contains(videoData.id),
     );
     final _textController = TextEditingController();
 
@@ -44,9 +42,9 @@ class VideoActions extends HookConsumerWidget {
       isLiked.value = !isLiked.value;
 
       if (isLiked.value) {
-        likedList.addVideo(videoData.url);
+        likedList.addVideo(videoData.id.url);
       } else {
-        likedList.removeVideo(videoData.url);
+        likedList.removeVideo(videoData.id.url);
       }
     }
 
@@ -61,13 +59,15 @@ class VideoActions extends HookConsumerWidget {
               VideoAction(
                 icon: isLiked.value ? Icons.thumb_up : Icons.thumb_up_outlined,
                 onPressed: updateLike,
-                label: videoData.engagement.likeCount != null
-                    ? videoData.engagement.likeCount!.formatNumber
+                label: videoData.likes != null
+                    ? videoData.likes!.formatNumber
                     : context.locals.like,
               ),
               VideoAction(
                 icon: Icons.share_outlined,
-                onPressed: () => Share.share(videoData.url),
+                onPressed: () => Share.share(
+                  videoData.id.url,
+                ),
                 label: context.locals.share,
               ),
               VideoAction(
@@ -91,7 +91,11 @@ class VideoActions extends HookConsumerWidget {
               VideoAction(
                 icon: Icons.copy,
                 onPressed: () {
-                  Clipboard.setData(ClipboardData(text: videoData.url));
+                  Clipboard.setData(
+                    ClipboardData(
+                      text: videoData.id.url,
+                    ),
+                  );
                   BotToast.showText(text: context.locals.copiedToClipboard);
                 },
                 label: context.locals.copyLink,
@@ -131,8 +135,11 @@ class VideoActions extends HookConsumerWidget {
                           title: 'Related Video',
                           child: Column(
                             children: [
-                              for (var rv in recommendations)
-                                PSVideo.related(relatedVideo: rv),
+                              for (var rv in videoData.relatedStreams!)
+                                PSVideo.streamItem(
+                                  streamItem: rv,
+                                  isRelated: true,
+                                ),
                             ],
                           ),
                         );
