@@ -10,12 +10,12 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 extension BSC on BaseSearchContent {
   Widget showContent(BuildContext context) {
     if (this is SearchChannel) {
-      final item = this as SearchChannel;
+      final searchChannel = this as SearchChannel;
       return Padding(
         padding: const EdgeInsets.all(10),
         child: ChannelInfo(
           channel: null,
-          channelId: item.id.value,
+          channelId: searchChannel.id.value,
         ),
       );
     } else if (this is SearchVideo) {
@@ -28,30 +28,10 @@ extension BSC on BaseSearchContent {
         loadData: true,
       );
     } else {
-      final item = this as SearchPlaylist;
+      final searchPlaylist = this as SearchPlaylist;
       return PSPlaylist(
-        playlist: item,
+        playlist: searchPlaylist,
       );
     }
-  }
-}
-
-extension SVE on SearchVideo {
-  Video get toVideo {
-    return Video(
-      id,
-      title,
-      author,
-      ChannelId(channelId),
-      DateTime.now(),
-      uploadDate,
-      DateTime.now(),
-      description,
-      Duration.zero,
-      ThumbnailSet(id.value),
-      [],
-      Engagement(viewCount, 0, 0),
-      isLive,
-    );
   }
 }
