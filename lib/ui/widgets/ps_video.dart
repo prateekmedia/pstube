@@ -6,7 +6,7 @@ import 'package:libadwaita/libadwaita.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/extensions/extensions.dart';
-import 'package:pstube/data/models/video_data.dart';
+import 'package:pstube/data/models/models.dart';
 import 'package:pstube/data/services/services.dart';
 import 'package:pstube/ui/screens/screens.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
@@ -46,7 +46,7 @@ class PSVideo extends HookWidget {
 
   PSVideo.videoInfo({
     super.key,
-    this.videoUrl,
+    required this.videoUrl,
     this.date,
     this.views,
     this.duration,
@@ -59,6 +59,7 @@ class PSVideo extends HookWidget {
         videoData = videoInfo != null
             ? VideoData.fromVideoInfo(
                 videoInfo,
+                VideoId(videoUrl!),
               )
             : null;
 
@@ -84,7 +85,10 @@ class PSVideo extends HookWidget {
       future: videoUrl != null ? getVideo() : null,
       builder: (context, snapshot) {
         final video = snapshot.data != null && snapshot.data!.data != null
-            ? VideoData.fromVideoInfo(snapshot.data!.data!)
+            ? VideoData.fromVideoInfo(
+                snapshot.data!.data!,
+                VideoId(videoUrl!),
+              )
             : videoData;
 
         return Padding(

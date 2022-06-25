@@ -11,7 +11,7 @@ import 'package:pstube/data/models/models.dart';
 import 'package:pstube/ui/states/states.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yexp;
 
 final Widget _progressIndicator = SizedBox(
   height: 100,
@@ -20,7 +20,7 @@ final Widget _progressIndicator = SizedBox(
 
 Future showDownloadPopup(
   BuildContext context, {
-  StreamManifest? manifest,
+  yexp.StreamManifest? manifest,
   VideoData? video,
   String? videoUrl,
 }) {
@@ -47,6 +47,7 @@ Future showDownloadPopup(
                 video: video ??
                     VideoData.fromVideoInfo(
                       snapshot.data!.data!,
+                      VideoId(videoUrl!),
                     ),
                 manifest: manifest,
               )
@@ -67,15 +68,15 @@ class DownloadsWidget extends ConsumerWidget {
   });
 
   final VideoData video;
-  final StreamManifest? manifest;
+  final yexp.StreamManifest? manifest;
   final VoidCallback? onClose;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
-      child: FutureBuilder<StreamManifest>(
+      child: FutureBuilder<yexp.StreamManifest>(
         future: manifest == null
-            ? YoutubeExplode().videos.streamsClient.getManifest(
+            ? yexp.YoutubeExplode().videos.streamsClient.getManifest(
                   video.id.value,
                 )
             : null,
@@ -225,7 +226,7 @@ class _CustomListTileState extends ConsumerState<DownloadQualityTile> {
                   Text(
                     (widget.stream is ThumbnailStreamInfo
                             ? widget.stream.containerName as String
-                            : widget.stream is AudioOnlyStreamInfo
+                            : widget.stream is yexp.AudioOnlyStreamInfo
                                 ? widget.stream.audioCodec
                                     .split('.')[0]
                                     .replaceAll('mp4a', 'm4a') as String
@@ -241,10 +242,10 @@ class _CustomListTileState extends ConsumerState<DownloadQualityTile> {
               ),
               Align(
                 child: Text(
-                  widget.stream is VideoStreamInfo
-                      ? (widget.stream as VideoStreamInfo).qualityLabel
-                      : widget.stream is AudioOnlyStreamInfo
-                          ? (widget.stream as AudioOnlyStreamInfo)
+                  widget.stream is yexp.VideoStreamInfo
+                      ? (widget.stream as yexp.VideoStreamInfo).qualityLabel
+                      : widget.stream is yexp.AudioOnlyStreamInfo
+                          ? (widget.stream as yexp.AudioOnlyStreamInfo)
                               .bitrate
                               .bitsPerSecond
                               .getBitrate()

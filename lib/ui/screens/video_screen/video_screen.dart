@@ -4,11 +4,11 @@ import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/extensions/extensions.dart';
-import 'package:pstube/data/models/video_data.dart';
+import 'package:pstube/data/models/models.dart';
 import 'package:pstube/data/services/services.dart';
 import 'package:pstube/ui/screens/video_screen/src/export.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yexp;
 
 class VideoScreen extends StatefulHookWidget {
   const VideoScreen({
@@ -35,11 +35,13 @@ class _VideoScreenState extends State<VideoScreen>
   Widget build(BuildContext context) {
     super.build(context);
 
+    final videoId = widget.videoId ?? widget.video!.id.value;
+
     final videoSnapshot = widget.loadData || widget.videoId != null
         ? useFuture(
             useMemoized(
               () => PipedApi().getUnauthenticatedApi().streamInfo(
-                    videoId: widget.videoId ?? widget.video!.id.value,
+                    videoId: videoId,
                   ),
             ),
           )
@@ -47,10 +49,13 @@ class _VideoScreenState extends State<VideoScreen>
     final videoData = videoSnapshot != null &&
             videoSnapshot.data != null &&
             videoSnapshot.data!.data != null
-        ? VideoData.fromVideoInfo(videoSnapshot.data!.data!)
+        ? VideoData.fromVideoInfo(
+            videoSnapshot.data!.data!,
+            VideoId(videoId),
+          )
         : widget.video;
 
-    final replyComment = useState<Comment?>(null);
+    final replyComment = useState<yexp.Comment?>(null);
     final commentSideWidget = useState<Widget?>(null);
     final downloadsSideWidget = useState<Widget?>(null);
     final relatedVideoWidget = useState<Widget?>(null);
@@ -65,14 +70,14 @@ class _VideoScreenState extends State<VideoScreen>
                     ? Center(child: Text(context.locals.videoNotFound))
                     : videoData == null
                         ? getCircularProgressIndicator()
-                        : FutureBuilder<CommentsList?>(
+                        : FutureBuilder<yexp.CommentsList?>(
                             // TODO(prateekmedia): Find Another way to support comments
                             // future: yt.videos.commentsClient.getComments(
                             //   videoData,
                             // ),
                             builder: (context, commentsSnapshot) {
-                              return FutureBuilder<StreamManifest>(
-                                future: YoutubeExplode()
+                              return FutureBuilder<yexp.StreamManifest>(
+                                future: yexp.YoutubeExplode()
                                     .videos
                                     .streamsClient
                                     .getManifest(videoData.id),

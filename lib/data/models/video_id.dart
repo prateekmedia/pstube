@@ -1,7 +1,7 @@
 import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/data/services/constants.dart';
 
-/// Encapsulates a valid YouTube video ID.
+/// The id of the video.
 class VideoId {
   VideoId(
     String idOrUrl,

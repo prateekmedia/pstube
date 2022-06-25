@@ -46,12 +46,14 @@ class VideoData {
         description = null, //streamItem.description,
         likes = 0;
 
-  VideoData.fromVideoInfo(VideoInfo videoInfo)
-      : durationString = null,
+  VideoData.fromVideoInfo(
+    VideoInfo videoInfo,
+    VideoId videoId,
+  )   : durationString = null,
         duration = videoInfo.duration,
-        thumbnails = Thumbnails(videoId: ''),
+        thumbnails = Thumbnails(videoId: videoId.value),
         title = videoInfo.title,
-        id = VideoId(''), // videoInfo.url,
+        id = videoId,
         relatedStreams = videoInfo.relatedStreams,
         views = 0, //videoInfo.views,
         audioStreams = videoInfo.audioStreams,
@@ -118,7 +120,7 @@ class VideoData {
   /// Whether or not the channel has a verified badge.
   final bool? uploaderVerified;
 
-  /// The relative URL to the video.
+  /// The id of the video.
   final VideoId id;
 
   /// The number of views the video has.
