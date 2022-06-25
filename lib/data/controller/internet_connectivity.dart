@@ -5,11 +5,10 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 enum NetworkStatus { online, offline, restored }
 
 class InternetConnectivity {
-  static final StreamController _networkController =
-      StreamController<NetworkStatus>.broadcast();
+  static final StreamController<NetworkStatus> _networkController =
+      StreamController.broadcast();
 
-  static Stream<NetworkStatus> get networkStream =>
-      _networkController.stream as Stream<NetworkStatus>;
+  static Stream<NetworkStatus> get networkStream => _networkController.stream;
 
   static NetworkStatus _status = NetworkStatus.online;
   static NetworkStatus get status => _status;

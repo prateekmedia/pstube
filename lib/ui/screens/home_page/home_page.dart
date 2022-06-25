@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:built_collection/built_collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -46,7 +47,7 @@ class MyHomePage extends HookConsumerWidget {
       context.locals.settings: LucideIcons.settings,
     };
 
-    Future addDownload() async {
+    Future<dynamic> addDownload() async {
       if (_addDownloadController.text.isEmpty) {
         final clipboard = await Clipboard.getData(Clipboard.kTextPlain);
         final youtubeRegEx = RegExp(
@@ -161,7 +162,7 @@ class MyHomePage extends HookConsumerWidget {
               onPressed: clearAll,
             ),
         ],
-        body: FutureBuilder<Response>(
+        body: FutureBuilder<Response<BuiltList<StreamItem>>>(
           future: videos,
           builder: (context, snapshot) {
             final mainScreens = [
@@ -193,7 +194,9 @@ class MyHomePage extends HookConsumerWidget {
                         : Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Center(child: Text(context.locals.typeToSearch)),
+                              Center(
+                                child: Text(context.locals.typeToSearch),
+                              ),
                             ],
                           ),
                   ),

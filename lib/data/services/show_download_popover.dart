@@ -18,7 +18,7 @@ final Widget _progressIndicator = SizedBox(
   child: getCircularProgressIndicator(),
 );
 
-Future showDownloadPopup(
+Future<dynamic> showDownloadPopup(
   BuildContext context, {
   yexp.StreamManifest? manifest,
   VideoData? video,

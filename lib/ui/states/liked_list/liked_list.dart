@@ -3,14 +3,15 @@ import 'package:hive/hive.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pstube/data/models/models.dart';
 
-final _box = Hive.box<List>('likedList');
+final _box = Hive.box<List<dynamic>>('likedList');
 
 class LikedList extends ChangeNotifier {
   LikedList(this.ref);
   final ChangeNotifierProviderRef ref;
 
-  List likedVideoList = _box.get('likedVideoList', defaultValue: <dynamic>[])!;
-  List likedCommentList =
+  List<dynamic> likedVideoList =
+      _box.get('likedVideoList', defaultValue: <dynamic>[])!;
+  List<dynamic> likedCommentList =
       _box.get('likedCommentList', defaultValue: <dynamic>[])!;
 
   void addVideo(String url) {

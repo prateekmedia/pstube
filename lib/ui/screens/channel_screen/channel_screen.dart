@@ -53,7 +53,7 @@ class ChannelScreen extends HookWidget {
       channelInfo.value = await yt.channels.getAboutPage(channelId);
     }
 
-    Future _getMoreData() async {
+    Future<dynamic> _getMoreData() async {
       if (!isMounted() ||
           channel.value == null ||
           nextPageToken.value == null ||

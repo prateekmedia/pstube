@@ -3,7 +3,7 @@ import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:pstube/data/extensions/extensions.dart';
 
-Future showPopover({
+Future<dynamic> showPopover({
   required BuildContext context,
   required Widget Function(BuildContext) builder,
   required String title,
@@ -19,7 +19,7 @@ Future showPopover({
   );
 }
 
-Future showPopoverForm({
+Future<dynamic> showPopoverForm({
   required BuildContext context,
   GlobalKey<FormState>? key,
   required String title,

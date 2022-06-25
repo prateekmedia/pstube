@@ -43,7 +43,7 @@ Future<void> main() async {
             .replaceFirst('Downloads', '.pstube'),
   );
   await Hive.openBox<dynamic>('playlist');
-  await Hive.openBox<List>('likedList');
+  await Hive.openBox<List<dynamic>>('likedList');
   await Hive.openBox<dynamic>('downloadList');
 
   runApp(const ProviderScope(child: MyApp()));

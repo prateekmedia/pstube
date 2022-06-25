@@ -17,7 +17,7 @@ extension ContextExtensions on BuildContext {
     Navigator.of(this).pop();
   }
 
-  Future pushPage(Widget page) => Navigator.of(this)
+  Future<dynamic> pushPage(Widget page) => Navigator.of(this)
       .push(PageTransition(type: PageTransitionType.rightToLeft, child: page));
 
   Widget backLeading({VoidCallback? onBack, bool isCircular = false}) =>
