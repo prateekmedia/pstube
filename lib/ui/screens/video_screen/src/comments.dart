@@ -1,22 +1,26 @@
+import 'package:built_collection/built_collection.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
+import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/ui/screens/video_screen/src/build_comment_box.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class CommentsWidget extends StatefulHookWidget {
   const CommentsWidget({
     super.key,
     this.onClose,
+    required this.videoId,
     required this.replyComment,
     required this.snapshot,
   });
 
+  final String videoId;
   final ValueNotifier<Comment?> replyComment;
-  final AsyncSnapshot<CommentsList?> snapshot;
+  final AsyncSnapshot<Response<CommentsPage>?> snapshot;
   final VoidCallback? onClose;
 
   @override
@@ -30,22 +34,45 @@ class _CommentsWidgetState extends State<CommentsWidget>
     super.build(context);
     final isMounted = useIsMounted();
     final pageController = PageController();
-    final _currentPage = useState<CommentsList?>(widget.snapshot.data);
+    final _currentPage = useState<BuiltList<Comment>?>(
+      widget.snapshot.data?.data?.comments,
+    );
     final controller = useScrollController();
     final currentPage = useState<int>(0);
+    final nextPageToken = useState<String?>(
+      widget.snapshot.data?.data?.nextpage,
+    );
+    final isLoading = useState<bool>(false);
 
     Future<void> _getMoreData() async {
-      if (_currentPage.value != null &&
-          isMounted() &&
-          controller.position.pixels == controller.position.maxScrollExtent) {
-        final page = await (_currentPage.value)!.nextPage();
-
-        if (page == null || page.isEmpty || !isMounted()) return;
-
-        _currentPage.value!.addAll(page);
-        // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-        _currentPage.notifyListeners();
+      if (isLoading.value ||
+          !isMounted() ||
+          _currentPage.value == null ||
+          nextPageToken.value == null ||
+          controller.position.pixels != controller.position.maxScrollExtent) {
+        return;
       }
+
+      isLoading.value = true;
+
+      final nextPage =
+          await PipedApi().getUnauthenticatedApi().commentsNextPage(
+                videoId: widget.videoId,
+                nextpage: nextPageToken.value!,
+              );
+
+      if (nextPage.data == null && nextPage.data!.comments == null) {
+        return;
+      }
+
+      nextPageToken.value = nextPage.data!.nextpage;
+
+      _currentPage.value = _currentPage.value!.rebuild(
+        (b) => b.addAll(
+          nextPage.data!.comments!.toList(),
+        ),
+      );
+      isLoading.value = false;
     }
 
     useEffect(
@@ -86,11 +113,6 @@ class _CommentsWidgetState extends State<CommentsWidget>
             else
               const SizedBox(),
           ],
-          title: Text(
-            (currentPage.value == 0)
-                ? '${(widget.snapshot.data != null ? widget.snapshot.data!.totalLength : 0).formatNumber} ${context.locals.comments.toLowerCase()}'
-                : context.locals.replies,
-          ),
         ),
         Expanded(
           child: ColoredBox(
@@ -159,12 +181,13 @@ class _CommentsWidgetState extends State<CommentsWidget>
 }
 
 Widget showReplies(BuildContext context, Comment? comment, EdgeInsets padding) {
-  final yt = YoutubeExplode();
-  Future<CommentsList?>? getReplies() async {
-    if (comment == null) return null;
-    final replies = await yt.videos.commentsClient.getReplies(comment);
-    yt.close();
-    return replies;
+  // final api = PipedApi().getUnauthenticatedApi().comments(videoId: videoId);
+  Future<List<Comment>>? getReplies() async {
+    // if (comment == null) return null;
+    // final replies = await yt.videos.commentsClient.getReplies(comment);
+    // yt.close();
+    // return replies;
+    return [];
   }
 
   return comment != null

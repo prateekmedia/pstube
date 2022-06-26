@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/models/models.dart';
 
 class DownloadItem {
@@ -11,7 +12,7 @@ class DownloadItem {
 
   DownloadItem.fromVideo({
     required VideoData video,
-    required dynamic stream,
+    required Stream stream,
     required String path,
     this.downloaded = 0,
     this.total = 0,

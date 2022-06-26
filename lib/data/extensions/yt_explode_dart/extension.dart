@@ -13,8 +13,7 @@ extension BSC on BaseSearchContent {
       final searchChannel = this as SearchChannel;
       return Padding(
         padding: const EdgeInsets.all(10),
-        child: ChannelInfo(
-          channel: null,
+        child: ChannelDetails(
           channelId: searchChannel.id.value,
         ),
       );

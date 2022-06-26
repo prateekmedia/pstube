@@ -1,54 +1,50 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/ui/screens/screens.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-class ChannelInfo extends StatefulHookWidget {
-  const ChannelInfo({
+class ChannelDetails extends StatefulHookWidget {
+  const ChannelDetails({
     super.key,
-    required this.channel,
-    this.channelId,
+    required this.channelId,
     this.textColor,
     this.isOnVideo = false,
-  }) : assert(
-          channel != null || channelId != null,
-          "Channel and ChannelId both can't be null",
-        );
+  });
 
-  final AsyncSnapshot<Channel>? channel;
-  final String? channelId;
+  final String channelId;
   final bool isOnVideo;
   final Color? textColor;
 
   @override
-  State<ChannelInfo> createState() => _ChannelInfoState();
+  State<ChannelDetails> createState() => _ChannelInfoState();
 }
 
-class _ChannelInfoState extends State<ChannelInfo>
+class _ChannelInfoState extends State<ChannelDetails>
     with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
     final size = widget.isOnVideo ? 40 : 60;
-    final yt = YoutubeExplode();
-    final channelData = widget.channelId != null
-        ? useFuture(
-            useMemoized(
-              () => yt.channels.get(widget.channelId),
-              [
-                widget.channelId,
-              ],
-            ),
-          )
-        : widget.channel;
-    final data = widget.channel?.data ?? channelData?.data;
+    final api = PipedApi().getUnauthenticatedApi();
+    final channelData = useFuture<Response<ChannelInfo>>(
+      useMemoized(
+        () => api.channelInfoId(
+          channelId: widget.channelId,
+        ),
+        [
+          widget.channelId,
+        ],
+      ),
+    ).data?.data;
+
     return GestureDetector(
-      onTap: widget.isOnVideo && data != null || widget.channelId != null
+      onTap: widget.isOnVideo && channelData != null
           ? () => context.pushPage(
                 ChannelScreen(
-                  channelId: widget.channelId ?? data!.id.value,
+                  channelId: widget.channelId,
                 ),
               )
           : null,
@@ -58,20 +54,23 @@ class _ChannelInfoState extends State<ChannelInfo>
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
             child: Row(
               children: [
-                ChannelLogo(channel: channelData, size: size.toDouble()),
+                ChannelLogo(
+                  channel: channelData,
+                  size: size.toDouble(),
+                ),
                 const SizedBox(width: 20),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      data != null ? data.title : '',
+                      channelData?.name ?? '',
                       style: context.textTheme.headline4,
                     ),
                     Text(
-                      data != null
-                          ? data.subscribersCount == null
+                      channelData != null
+                          ? channelData.subscriberCount == null
                               ? context.locals.hidden
-                              : '${data.subscribersCount!.formatNumber} '
+                              : '${channelData.subscriberCount!.formatNumber} '
                                   '${context.locals.subscribers}'
                           : '',
                       style: context.textTheme.bodyText2,

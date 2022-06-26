@@ -33,7 +33,7 @@ class LikedList extends ChangeNotifier {
         .where(
           (dynamic element) =>
               (element.author == comment.author) &&
-              (element.text == comment.text),
+              (element.commentText == comment.text),
         )
         .isEmpty) {
       likedCommentList.add(comment);

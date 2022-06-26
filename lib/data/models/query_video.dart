@@ -1,8 +1,8 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/data/services/services.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 part 'query_video.g.dart';
 
@@ -21,23 +21,23 @@ class QueryVideo {
 
   QueryVideo.fromVideo({
     required VideoData video,
-    required dynamic stream,
+    required Stream stream,
     required this.path,
   })  : name = checkIfExists(
           path,
-          '${video.title}(${stream is ThumbnailStreamInfo ? stream.name : stream is AudioOnlyStreamInfo ? stream.bitrate.bitsPerSecond.getBitrate() : '${stream.videoResolution.width}x'
-              '${stream.videoResolution.height}'}).'
-          '${stream is ThumbnailStreamInfo ? stream.containerName : stream is AudioOnlyStreamInfo ? stream.audioCodec.split('.')[0].replaceAll('mp4a', 'm4a') : stream.container.name as String}',
+          '${video.title}(${stream.quality ?? ""}).'
+          '${stream.format!.getName}',
         ),
         id = video.id.value,
-        url = stream.id.toString(),
+        url = stream.url!,
         author = video.uploader ?? '',
-        quality = stream is ThumbnailStreamInfo
-            ? stream.name
-            : stream is AudioOnlyStreamInfo
-                ? stream.bitrate.bitsPerSecond.getBitrate()
-                : '${stream.videoResolution.width}x'
-                    '${stream.videoResolution.height}',
+        quality =
+            // stream is ThumbnailStreamInfo
+            //     ? stream.name
+            //     : stream is Stream
+            //         ?
+            stream.quality ?? '',
+        // : '',
         duration = (video.duration ?? Duration.zero).toString(),
         thumbnail = video.thumbnails.lowResUrl;
 

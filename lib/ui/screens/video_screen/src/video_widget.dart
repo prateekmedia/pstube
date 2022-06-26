@@ -1,13 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/data/models/video_data.dart';
 import 'package:pstube/data/services/services.dart';
 import 'package:pstube/ui/screens/video_screen/src/export.dart';
-import 'package:pstube/ui/widgets/channel_info.dart';
+import 'package:pstube/ui/widgets/channel_details.dart';
 import 'package:pstube/ui/widgets/video_player.dart';
 import 'package:pstube/ui/widgets/vlc_player.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yexp;
 
 class VideoWidget extends StatelessWidget {
   const VideoWidget({
@@ -28,8 +30,8 @@ class VideoWidget extends StatelessWidget {
   final ValueNotifier<Widget?> commentSideWidget;
   final ValueNotifier<Widget?> relatedVideoWidget;
   final ValueNotifier<Comment?> replyComment;
-  final AsyncSnapshot<StreamManifest> snapshot;
-  final AsyncSnapshot<CommentsList?> commentsSnapshot;
+  final AsyncSnapshot<yexp.StreamManifest> snapshot;
+  final AsyncSnapshot<Response<CommentsPage>> commentsSnapshot;
 
   @override
   Widget build(BuildContext context) {
@@ -136,8 +138,7 @@ class VideoWidget extends StatelessWidget {
                     snapshot: snapshot,
                   ),
                   const Divider(),
-                  ChannelInfo(
-                    channel: null,
+                  ChannelDetails(
                     channelId: videoData.uploaderId!.value,
                     isOnVideo: true,
                   ),
@@ -153,16 +154,11 @@ class VideoWidget extends StatelessWidget {
                                   onClose: () => commentSideWidget.value = null,
                                   replyComment: replyComment,
                                   snapshot: commentsSnapshot,
+                                  videoId: videoData.id.value,
                                 );
                               },
                     title: Text(
                       context.locals.comments,
-                    ),
-                    trailing: Text(
-                      (commentsSnapshot.data != null
-                              ? commentsSnapshot.data!.totalLength
-                              : 0)
-                          .formatNumber,
                     ),
                   ),
                   const Divider(

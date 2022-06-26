@@ -1,24 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:piped_api/piped_api.dart';
+import 'package:pstube/data/models/comment_data.dart';
 
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/ui/states/states.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
-
 class BuildCommentBox extends StatefulHookConsumerWidget {
-  const BuildCommentBox({
+  BuildCommentBox({
     super.key,
-    required this.comment,
+    required Comment comment,
     required this.onReplyTap,
     this.isInsideReply = false,
-  });
+  })  : comment = CommentData.fromComment(comment),
+        updateLike = null;
+
+  BuildCommentBox.liked({
+    super.key,
+    required LikedComment comment,
+    required this.onReplyTap,
+    this.isInsideReply = false,
+    this.updateLike,
+  }) : comment = CommentData.fromLikedComment(comment);
 
   final bool isInsideReply;
   final VoidCallback? onReplyTap;
-  final Comment comment;
+  final CommentData comment;
+  final VoidCallback? updateLike;
 
   @override
   ConsumerState<BuildCommentBox> createState() => _BuildCommentBoxState();
@@ -30,7 +40,7 @@ class _BuildCommentBoxState extends ConsumerState<BuildCommentBox>
   Widget build(BuildContext context) {
     super.build(context);
     final likedList = ref.watch(likedListProvider);
-    final isLiked = useState<bool>(false);
+    final isLiked = useState<bool>(widget.updateLike != null);
 
     void updateLike() {
       isLiked.value = !isLiked.value;
@@ -47,7 +57,8 @@ class _BuildCommentBoxState extends ConsumerState<BuildCommentBox>
       onReplyTap: widget.onReplyTap,
       isLiked: isLiked.value,
       isInsideReply: widget.isInsideReply,
-      updateLike: updateLike,
+      updateLike: widget.updateLike ?? updateLike,
+      isLikedComment: widget.updateLike != null,
     );
   }
 

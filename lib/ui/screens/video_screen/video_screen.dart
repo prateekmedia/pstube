@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:libadwaita/libadwaita.dart';
@@ -55,7 +56,7 @@ class _VideoScreenState extends State<VideoScreen>
           )
         : widget.video;
 
-    final replyComment = useState<yexp.Comment?>(null);
+    final replyComment = useState<Comment?>(null);
     final commentSideWidget = useState<Widget?>(null);
     final downloadsSideWidget = useState<Widget?>(null);
     final relatedVideoWidget = useState<Widget?>(null);
@@ -63,106 +64,98 @@ class _VideoScreenState extends State<VideoScreen>
     return SafeArea(
       child: Stack(
         children: [
-          Stack(
-            children: [
-              Scaffold(
-                body: widget.video == null && videoSnapshot == null
-                    ? Center(child: Text(context.locals.videoNotFound))
-                    : videoData == null
-                        ? getCircularProgressIndicator()
-                        : FutureBuilder<yexp.CommentsList?>(
-                            // TODO(prateekmedia): Find Another way to support comments
-                            // future: yt.videos.commentsClient.getComments(
-                            //   videoData,
-                            // ),
-                            builder: (context, commentsSnapshot) {
-                              return FutureBuilder<yexp.StreamManifest>(
-                                future: yexp.YoutubeExplode()
-                                    .videos
-                                    .streamsClient
-                                    .getManifest(videoData.id),
-                                builder: (context, snapshot) {
-                                  final hasData =
-                                      snapshot.hasData && snapshot.data != null;
-                                  return Flex(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    direction: Axis.horizontal,
-                                    children: [
-                                      Flexible(
-                                        flex: 8,
-                                        child: SFBody(
-                                          child: VideoWidget(
-                                            hasData: hasData,
-                                            videoData: videoData,
-                                            downloadsSideWidget:
-                                                downloadsSideWidget,
-                                            commentSideWidget:
-                                                commentSideWidget,
-                                            replyComment: replyComment,
-                                            snapshot: snapshot,
-                                            commentsSnapshot: commentsSnapshot,
-                                            relatedVideoWidget:
-                                                relatedVideoWidget,
-                                          ),
-                                        ),
+          Scaffold(
+            body: widget.video == null && videoSnapshot == null
+                ? Center(child: Text(context.locals.videoNotFound))
+                : videoData == null
+                    ? getCircularProgressIndicator()
+                    : FutureBuilder<Response<CommentsPage>>(
+                        future: PipedApi().getUnauthenticatedApi().comments(
+                              videoId: videoData.id.value,
+                            ),
+                        builder: (context, commentsSnapshot) {
+                          return FutureBuilder<yexp.StreamManifest>(
+                            future: yexp.YoutubeExplode()
+                                .videos
+                                .streamsClient
+                                .getManifest(videoData.id),
+                            builder: (context, snapshot) {
+                              final hasData =
+                                  snapshot.hasData && snapshot.data != null;
+                              return Flex(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                direction: Axis.horizontal,
+                                children: [
+                                  Flexible(
+                                    flex: 8,
+                                    child: SFBody(
+                                      child: VideoWidget(
+                                        hasData: hasData,
+                                        videoData: videoData,
+                                        downloadsSideWidget:
+                                            downloadsSideWidget,
+                                        commentSideWidget: commentSideWidget,
+                                        replyComment: replyComment,
+                                        snapshot: snapshot,
+                                        commentsSnapshot: commentsSnapshot,
+                                        relatedVideoWidget: relatedVideoWidget,
                                       ),
-                                      if (!context.isMobile)
-                                        Flexible(
-                                          flex: 4,
-                                          child: [
-                                            DescriptionWidget(
-                                              video: videoData,
-                                              isInsidePopup: false,
-                                            ),
-                                          ].last,
+                                    ),
+                                  ),
+                                  if (!context.isMobile)
+                                    Flexible(
+                                      flex: 4,
+                                      child: [
+                                        DescriptionWidget(
+                                          video: videoData,
+                                          isInsidePopup: false,
                                         ),
-                                    ],
-                                  );
-                                },
+                                      ].last,
+                                    ),
+                                ],
                               );
                             },
-                          ),
+                          );
+                        },
+                      ),
+          ),
+          if (!Constants.mobVideoPlatforms)
+            SizedBox(
+              height: 51,
+              child: AdwHeaderBar(
+                actions: AdwActions().bitsdojo,
+                start: [
+                  context.backLeading(isCircular: true),
+                ],
+                style: const HeaderBarStyle(isTransparent: true),
               ),
-              if (!Constants.mobVideoPlatforms)
-                SizedBox(
-                  height: 51,
-                  child: AdwHeaderBar(
-                    actions: AdwActions().bitsdojo,
-                    start: [
-                      context.backLeading(isCircular: true),
-                    ],
-                    style: const HeaderBarStyle(isTransparent: true),
-                  ),
-                )
-              else
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                    margin: const EdgeInsets.only(left: 6, top: 4),
-                    child: context.backLeading(isCircular: true),
-                  ),
-                ),
-              Align(
-                alignment: Alignment.topRight,
-                child: Material(
-                  child: SizedBox(
-                    width: context.width / 3,
-                    child: [
-                      const SizedBox(),
-                      if (!context.isMobile) ...[
-                        if (commentSideWidget.value != null)
-                          commentSideWidget.value!,
-                        if (downloadsSideWidget.value != null)
-                          downloadsSideWidget.value!,
-                        if (relatedVideoWidget.value != null)
-                          relatedVideoWidget.value!,
-                      ],
-                    ].last,
-                  ),
-                ),
+            )
+          else
+            Align(
+              alignment: Alignment.topLeft,
+              child: Container(
+                margin: const EdgeInsets.only(left: 6, top: 4),
+                child: context.backLeading(isCircular: true),
               ),
-            ],
+            ),
+          Align(
+            alignment: Alignment.topRight,
+            child: Material(
+              child: SizedBox(
+                width: context.width / 3,
+                child: [
+                  const SizedBox(),
+                  if (!context.isMobile) ...[
+                    if (commentSideWidget.value != null)
+                      commentSideWidget.value!,
+                    if (downloadsSideWidget.value != null)
+                      downloadsSideWidget.value!,
+                    if (relatedVideoWidget.value != null)
+                      relatedVideoWidget.value!,
+                  ],
+                ].last,
+              ),
+            ),
           ),
         ],
       ),

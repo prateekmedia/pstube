@@ -1,7 +1,7 @@
 import 'package:pstube/data/extensions/extensions.dart';
 
 class UploaderId {
-  UploaderId(String val) : value = parseUploaderId(val)!;
+  UploaderId(String val) : value = parseUploaderId(val) ?? '';
 
   final String value;
 

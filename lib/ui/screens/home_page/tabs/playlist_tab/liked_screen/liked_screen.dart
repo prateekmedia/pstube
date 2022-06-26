@@ -6,6 +6,7 @@ import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/data/models/models.dart';
+import 'package:pstube/ui/screens/video_screen/src/build_comment_box.dart';
 import 'package:pstube/ui/states/liked_list/liked_list.dart';
 import 'package:pstube/ui/states/states.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
@@ -132,11 +133,10 @@ class _LikedCommentListState extends State<LikedCommentList>
           Text(context.locals.noLikedCommentsFound).center()
         ] else
           for (final comment in widget.likedList.likedCommentList)
-            CommentBox(
-              comment: comment,
+            BuildCommentBox.liked(
+              comment: comment as LikedComment,
               onReplyTap: null,
-              updateLike: () =>
-                  widget.likedList.removeComment(comment as LikedComment),
+              updateLike: () => widget.likedList.removeComment(comment),
             ),
       ],
     );

@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/extensions/extensions.dart';
+import 'package:pstube/data/models/comment_data.dart';
 
 import 'package:pstube/data/models/models.dart';
+import 'package:pstube/data/services/constants.dart';
 import 'package:pstube/ui/screens/screens.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 
 import 'package:readmore/readmore.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class CommentBox extends HookConsumerWidget {
   const CommentBox({
@@ -17,24 +19,33 @@ class CommentBox extends HookConsumerWidget {
     required this.onReplyTap,
     this.isInsideReply = false,
     this.isLiked = false,
+    this.isLikedComment = false,
     this.updateLike,
   });
 
   final bool isInsideReply;
   final VoidCallback? onReplyTap;
-  final dynamic comment;
+  final CommentData comment;
   final VoidCallback? updateLike;
   final bool isLiked;
+  final bool isLikedComment;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final yt = YoutubeExplode();
+    final api = PipedApi().getUnauthenticatedApi();
     final channelData = useFuture(
       useMemoized(
-        () => yt.channels.get(comment.channelUrl),
-        [comment.channelUrl],
+        () => api.channelInfoId(
+          channelId: UploaderId(
+            Constants.ytCom + comment.commentorUrl,
+          ).value,
+        ),
+        [
+          comment.commentorUrl,
+        ],
       ),
     );
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Row(
@@ -43,10 +54,14 @@ class CommentBox extends HookConsumerWidget {
           GestureDetector(
             onTap: () => context.pushPage(
               ChannelScreen(
-                channelId: comment.channelUrl.toString(),
+                channelId: comment.commentorUrl,
               ),
             ),
-            child: ChannelLogo(channel: channelData, size: 40),
+            child: ChannelLogo(
+              channel: channelData.data?.data,
+              size: 40,
+              author: comment.author,
+            ),
           ),
           Flexible(
             child: Container(
@@ -64,13 +79,12 @@ class CommentBox extends HookConsumerWidget {
                               onTap: () {
                                 context.pushPage(
                                   ChannelScreen(
-                                    channelId:
-                                        comment.channelUrl.value as String,
+                                    channelId: comment.commentorUrl,
                                   ),
                                 );
                               },
                               child: IconWithLabel(
-                                label: comment.author as String,
+                                label: comment.author,
                                 margin: EdgeInsets.zero,
                                 secColor: SecColor.dark,
                               ),
@@ -80,7 +94,7 @@ class CommentBox extends HookConsumerWidget {
                       ),
                       const SizedBox(width: 10),
                       IconWithLabel(
-                        label: comment.publishedTime as String,
+                        label: comment.commentedTime,
                         style:
                             context.textTheme.bodyText2!.copyWith(fontSize: 12),
                       ),
@@ -91,7 +105,7 @@ class CommentBox extends HookConsumerWidget {
                     padding: const EdgeInsets.only(left: 10),
                     child: !isInsideReply
                         ? ReadMoreText(
-                            comment.text as String,
+                            comment.commentText,
                             style: context.textTheme.bodyText2!
                                 .copyWith(color: context.brightness.textColor),
                             trimLines: 4,
@@ -107,7 +121,7 @@ class CommentBox extends HookConsumerWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           )
-                        : SelectableText(comment.text as String),
+                        : SelectableText(comment.commentText),
                   ),
                   const SizedBox(height: 6),
                   Row(
@@ -134,7 +148,7 @@ class CommentBox extends HookConsumerWidget {
                               ),
                               const SizedBox(width: 8),
                               Text(
-                                (comment.likeCount as int).formatNumber,
+                                (comment.likeCount).formatNumber,
                                 style: context.textTheme.bodyText2!
                                     .copyWith(fontSize: 12),
                               ),
@@ -142,7 +156,8 @@ class CommentBox extends HookConsumerWidget {
                           ),
                         ),
                       ),
-                      if (comment is Comment && comment.isHearted as bool) ...[
+                      if (comment is Comment &&
+                          ((comment as Comment).hearted ?? false)) ...[
                         const SizedBox(width: 8),
                         Container(
                           padding: const EdgeInsets.symmetric(
@@ -162,9 +177,7 @@ class CommentBox extends HookConsumerWidget {
                         ),
                       ],
                       const SizedBox(width: 8),
-                      if (comment is Comment &&
-                          !isInsideReply &&
-                          comment.replyCount as int > 0)
+                      if (!isLikedComment && !isInsideReply)
                         GestureDetector(
                           onTap: onReplyTap,
                           child: IconWithLabel(
@@ -172,8 +185,7 @@ class CommentBox extends HookConsumerWidget {
                               horizontal: 10,
                               vertical: 5,
                             ),
-                            label: '${comment.replyCount} '
-                                '${comment.replyCount as int > 1 ? context.locals.replies.toLowerCase() : context.locals.reply}',
+                            label: context.locals.replies,
                           ),
                         ),
                     ],

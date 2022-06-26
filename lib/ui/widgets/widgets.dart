@@ -1,5 +1,5 @@
 export 'build_column_or_row.dart';
-export 'channel_info.dart';
+export 'channel_details.dart';
 export 'channel_logo.dart';
 export 'comment_box.dart';
 export 'get_circular_progress_indicator.dart';

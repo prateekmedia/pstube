@@ -1,5 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+import 'package:pstube/data/models/comment_data.dart';
 
 part 'liked_comment.g.dart';
 
@@ -13,11 +13,11 @@ class LikedComment {
     required this.likeCount,
   });
 
-  LikedComment.fromComment(Comment comment)
-      : channelId = comment.channelId.value,
+  LikedComment.fromComment(CommentData comment)
+      : channelId = comment.commentorUrl,
         author = comment.author,
-        text = comment.text,
-        publishedTime = comment.publishedTime,
+        text = comment.commentText,
+        publishedTime = comment.commentedTime,
         likeCount = comment.likeCount;
 
   @HiveField(0)

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:piped_api/piped_api.dart';
@@ -49,7 +50,6 @@ Future<dynamic> showDownloadPopup(
                       snapshot.data!.data!,
                       VideoId(videoUrl!),
                     ),
-                manifest: manifest,
               )
             : snapshot.hasError
                 ? Text(context.locals.error)
@@ -63,26 +63,31 @@ class DownloadsWidget extends ConsumerWidget {
   const DownloadsWidget({
     super.key,
     required this.video,
-    this.manifest,
     this.onClose,
   });
 
   final VideoData video;
-  final yexp.StreamManifest? manifest;
   final VoidCallback? onClose;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    Future<VideoData?> getVideo() async {
+      final res = await PipedApi().getUnauthenticatedApi().streamInfo(
+            videoId: video.id.value,
+          );
+
+      if (res.data == null) return null;
+
+      return VideoData.fromVideoInfo(res.data!, video.id);
+    }
+
     return SafeArea(
-      child: FutureBuilder<yexp.StreamManifest>(
-        future: manifest == null
-            ? yexp.YoutubeExplode().videos.streamsClient.getManifest(
-                  video.id.value,
-                )
-            : null,
+      child: FutureBuilder<VideoData?>(
+        future: video.audioStreams == null ? getVideo() : null,
         builder: (context, snapshot) {
-          final data = manifest ?? snapshot.data;
-          return snapshot.hasData || manifest != null
+          final data = video.audioStreams != null ? video : snapshot.data;
+
+          return snapshot.hasData || data != null
               ? Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,13 +108,13 @@ class DownloadsWidget extends ConsumerWidget {
                         label: context.locals.thumbnail,
                         padding: const EdgeInsets.only(top: 6, bottom: 14),
                       ),
-                      for (var thumbnail
-                          in video.thumbnails.toStreamInfo(context))
-                        DownloadQualityTile(
-                          stream: thumbnail,
-                          video: video,
-                          onClose: onClose,
-                        ),
+                      // for (var thumbnail
+                      //     in video.thumbnails.toStreamInfo(context))
+                      //   DownloadQualityTile(
+                      //     stream: thumbnail,
+                      //     video: video,
+                      //     onClose: onClose,
+                      //   ),
                     ],
                     linksHeader(
                       context,
@@ -117,7 +122,10 @@ class DownloadsWidget extends ConsumerWidget {
                       label: context.locals.videoPlusAudio,
                       padding: const EdgeInsets.only(top: 6, bottom: 14),
                     ),
-                    for (var videoStream in data!.muxed.sortByVideoQuality())
+                    for (var videoStream in data!.videoStreams!
+                        .where((p0) => !(p0.videoOnly ?? false))
+                        .toList()
+                        .reversed)
                       DownloadQualityTile(
                         stream: videoStream,
                         video: video,
@@ -128,7 +136,7 @@ class DownloadsWidget extends ConsumerWidget {
                       icon: Icons.audiotrack,
                       label: context.locals.audioOnly,
                     ),
-                    for (var audioStream in data.audioOnly.reversed)
+                    for (var audioStream in data.audioStreams!)
                       DownloadQualityTile(
                         stream: audioStream,
                         video: video,
@@ -139,8 +147,9 @@ class DownloadsWidget extends ConsumerWidget {
                       icon: Icons.videocam,
                       label: context.locals.videoOnly,
                     ),
-                    for (var videoStream
-                        in data.videoOnly.where((element) => element.tag < 200))
+                    for (var videoStream in data.videoStreams!
+                        .where((p0) => p0.videoOnly ?? false)
+                        .toList())
                       DownloadQualityTile(
                         stream: videoStream,
                         video: video,
@@ -179,7 +188,7 @@ Widget linksHeader(
   );
 }
 
-class DownloadQualityTile extends ConsumerStatefulWidget {
+class DownloadQualityTile extends HookConsumerWidget {
   const DownloadQualityTile({
     super.key,
     required this.stream,
@@ -187,31 +196,49 @@ class DownloadQualityTile extends ConsumerStatefulWidget {
     this.onClose,
   });
 
-  final dynamic stream;
+  final Stream stream;
   final VideoData video;
   final VoidCallback? onClose;
 
   @override
-  ConsumerState<DownloadQualityTile> createState() => _CustomListTileState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final size = useState<int>(0);
 
-class _CustomListTileState extends ConsumerState<DownloadQualityTile> {
-  @override
-  Widget build(BuildContext context) {
+    Future<void> getSize() async {
+      final dio = Dio();
+      try {
+        // ignore: inference_failure_on_function_invocation
+        final r = await dio.head(stream.url!);
+        size.value = int.tryParse(r.headers['content-length']![0]) ?? 0;
+      } catch (e) {
+        debugPrint('$e');
+      }
+    }
+
+    useEffect(
+      () {
+        getSize();
+        return;
+      },
+      [],
+    );
+
+    final isMounted = useIsMounted();
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: InkWell(
         onTap: () async {
           if ((Platform.isAndroid || Platform.isIOS) &&
               !await Permission.storage.request().isGranted) return;
-          if (!mounted) return;
-          widget.onClose != null ? widget.onClose!() : context.back();
+          if (!isMounted()) return;
+          onClose != null ? onClose!() : context.back();
 
           await ref.read(downloadListProvider.notifier).addDownload(
                 context,
                 DownloadItem.fromVideo(
-                  video: widget.video,
-                  stream: widget.stream,
+                  video: video,
+                  stream: stream,
                   path: ref.watch(downloadPathProvider).path,
                 ),
               );
@@ -224,34 +251,24 @@ class _CustomListTileState extends ConsumerState<DownloadQualityTile> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    (widget.stream is ThumbnailStreamInfo
-                            ? widget.stream.containerName as String
-                            : widget.stream is yexp.AudioOnlyStreamInfo
-                                ? widget.stream.audioCodec
-                                    .split('.')[0]
-                                    .replaceAll('mp4a', 'm4a') as String
-                                : widget.stream.container.name as String)
-                        .toUpperCase(),
+                    // widget.stream is ThumbnailStreamInfo
+                    //       ? widget.stream.containerName as String
+                    //       :
+                    stream.format!.getName,
                   ),
                   Text(
-                    widget.stream is ThumbnailStreamInfo
+                    stream is ThumbnailStreamInfo
                         ? ''
-                        : (widget.stream.size.totalBytes as int).getFileSize(),
+                        : size.value.getFileSize(),
                   ),
                 ],
               ),
               Align(
                 child: Text(
-                  widget.stream is yexp.VideoStreamInfo
-                      ? (widget.stream as yexp.VideoStreamInfo).qualityLabel
-                      : widget.stream is yexp.AudioOnlyStreamInfo
-                          ? (widget.stream as yexp.AudioOnlyStreamInfo)
-                              .bitrate
-                              .bitsPerSecond
-                              .getBitrate()
-                          : widget.stream is ThumbnailStreamInfo
-                              ? (widget.stream as ThumbnailStreamInfo).name
-                              : '',
+                  stream.quality!,
+                  // : widget.stream is ThumbnailStreamInfo
+                  //     ? (widget.stream as ThumbnailStreamInfo).name
+                  //     : '',
                   style: context.textTheme.headline5,
                   textAlign: TextAlign.center,
                 ),

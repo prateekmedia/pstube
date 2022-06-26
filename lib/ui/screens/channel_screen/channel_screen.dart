@@ -7,7 +7,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/ui/screens/channel_screen/tabs/tabs.dart';
-import 'package:pstube/ui/widgets/widgets.dart' hide ChannelInfo;
+import 'package:pstube/ui/widgets/widgets.dart' hide ChannelDetails;
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class ChannelScreen extends HookWidget {
@@ -30,6 +30,7 @@ class ChannelScreen extends HookWidget {
     };
     final controller = useScrollController();
     final nextPageToken = useState<String?>(null);
+    final isLoading = useState<bool>(false);
 
     Future<void> getVideos() async {
       currentVidPage.value = channel.value!.relatedStreams;
@@ -54,19 +55,22 @@ class ChannelScreen extends HookWidget {
     }
 
     Future<dynamic> _getMoreData() async {
-      if (!isMounted() ||
+      if (isLoading.value ||
+          !isMounted() ||
           channel.value == null ||
           nextPageToken.value == null ||
           controller.position.pixels != controller.position.maxScrollExtent) {
         return;
       }
 
+      isLoading.value = true;
+
       final nextPage = await api.channelNextPage(
         channelId: channel.value!.id!,
         nextpage: nextPageToken.value!,
       );
 
-      if (nextPage.data == null && nextPage.data!.relatedStreams != null) {
+      if (nextPage.data == null && nextPage.data?.relatedStreams != null) {
         return;
       }
 
@@ -77,6 +81,7 @@ class ChannelScreen extends HookWidget {
           nextPage.data!.relatedStreams!.toList(),
         ),
       );
+      isLoading.value = false;
     }
 
     useEffect(

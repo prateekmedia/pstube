@@ -42,6 +42,7 @@ Future<void> main() async {
             .path
             .replaceFirst('Downloads', '.pstube'),
   );
+
   await Hive.openBox<dynamic>('playlist');
   await Hive.openBox<List<dynamic>>('likedList');
   await Hive.openBox<dynamic>('downloadList');
