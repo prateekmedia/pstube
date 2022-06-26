@@ -419,10 +419,10 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: ca13e45180a8c3e32fd728a625c64b156e275797
-      url: "https://github.com/SongTube/flutter-ffmpeg.git"
+      resolved-ref: c82f4505ce5df116401ad4536e3c26950c6070bd
+      url: "https://github.com/prateekmedia/flutter-ffmpeg.git"
     source: git
-    version: "0.3.1"
+    version: "0.4.2"
   flutter_hooks:
     dependency: "direct main"
     description:
