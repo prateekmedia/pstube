@@ -73,6 +73,8 @@ android {
 
         release {
             signingConfig signingConfigs.release
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         
         applicationVariants.all{
