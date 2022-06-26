@@ -374,20 +374,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.1"
-  ffmpeg_kit_flutter_audio:
-    dependency: "direct main"
-    description:
-      name: ffmpeg_kit_flutter_audio
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.5.1"
-  ffmpeg_kit_flutter_platform_interface:
-    dependency: transitive
-    description:
-      name: ffmpeg_kit_flutter_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.1"
   file:
     dependency: transitive
     description:
@@ -428,6 +414,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.3.0"
+  flutter_ffmpeg:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: c82f4505ce5df116401ad4536e3c26950c6070bd
+      url: "https://github.com/prateekmedia/flutter-ffmpeg.git"
+    source: git
+    version: "0.4.2"
   flutter_hooks:
     dependency: "direct main"
     description:
