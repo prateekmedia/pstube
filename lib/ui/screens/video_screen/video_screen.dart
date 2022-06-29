@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:piped_api/piped_api.dart';
@@ -9,9 +10,10 @@ import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/data/services/services.dart';
 import 'package:pstube/ui/screens/video_screen/src/export.dart';
+import 'package:pstube/ui/states/states.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 
-class VideoScreen extends StatefulHookWidget {
+class VideoScreen extends StatefulHookConsumerWidget {
   const VideoScreen({
     super.key,
     required this.video,
@@ -27,11 +29,37 @@ class VideoScreen extends StatefulHookWidget {
   final bool loadData;
 
   @override
-  State<VideoScreen> createState() => _VideoScreenState();
+  ConsumerState<VideoScreen> createState() => _VideoScreenState();
 }
 
-class _VideoScreenState extends State<VideoScreen>
+class _VideoScreenState extends ConsumerState<VideoScreen>
     with AutomaticKeepAliveClientMixin {
+  void initVideo() {
+    ref.read(videosProvider).disposeVideos();
+    if (widget.loadData || widget.videoId != null) {
+      ref.read(videosProvider).addVideoUrl(
+            widget.videoId ?? widget.video!.id.value,
+            widget.video,
+          );
+    } else {
+      ref.read(videosProvider).addVideoData(
+            widget.video!,
+          );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initVideo();
+  }
+
+  @override
+  void dispose() {
+    ref.read(videosProvider).disposeVideos();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -47,14 +75,9 @@ class _VideoScreenState extends State<VideoScreen>
             ),
           )
         : null;
-    final videoData = videoSnapshot != null &&
-            videoSnapshot.data != null &&
-            videoSnapshot.data!.data != null
-        ? VideoData.fromVideoInfo(
-            videoSnapshot.data!.data!,
-            VideoId(videoId),
-          )
-        : widget.video;
+    final videosP = ref.watch(videosProvider);
+
+    final videoData = videosP.videos.isNotEmpty ? videosP.videos.last : null;
 
     final replyComment = useState<Comment?>(null);
     final sideWidget = useState<Widget?>(null);

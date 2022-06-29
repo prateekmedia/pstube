@@ -24,6 +24,7 @@ class PSVideo extends HookWidget {
     this.loadData = false,
     this.actions = const [],
     this.isRelated = false,
+    this.onTap,
   });
 
   PSVideo.streamItem({
@@ -38,6 +39,7 @@ class PSVideo extends HookWidget {
     this.loadData = false,
     this.actions = const [],
     this.isRelated = false,
+    this.onTap,
   }) : videoData = streamItem != null
             ? VideoData.fromStreamItem(
                 streamItem,
@@ -55,6 +57,7 @@ class PSVideo extends HookWidget {
     this.showChannel = true,
     this.loadData = false,
     this.actions = const [],
+    this.onTap,
   })  : isRelated = true,
         videoData = videoInfo != null
             ? VideoData.fromVideoInfo(
@@ -73,6 +76,7 @@ class PSVideo extends HookWidget {
   final bool showChannel;
   final List<Widget> actions;
   final bool isRelated;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -94,14 +98,15 @@ class PSVideo extends HookWidget {
         return Padding(
           padding: const EdgeInsets.all(8),
           child: InkWell(
-            onTap: video != null
-                ? () => context.pushPage(
-                      VideoScreen(
-                        video: video,
-                        loadData: isRelated || loadData,
-                      ),
-                    )
-                : null,
+            onTap: onTap ??
+                (video != null
+                    ? () => context.pushPage(
+                          VideoScreen(
+                            video: video,
+                            loadData: isRelated || loadData,
+                          ),
+                        )
+                    : null),
             child: Padding(
               padding:
                   // isInsideDownloadPopup

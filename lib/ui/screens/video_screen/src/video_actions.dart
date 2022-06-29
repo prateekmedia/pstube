@@ -133,10 +133,20 @@ class VideoActions extends HookConsumerWidget {
                               title: 'Related Video',
                               child: Column(
                                 children: [
-                                  for (var rv in videoData.relatedStreams!)
+                                  for (var streamItem
+                                      in videoData.relatedStreams!)
                                     PSVideo.streamItem(
-                                      streamItem: rv,
+                                      streamItem: streamItem,
                                       isRelated: true,
+                                      onTap: () {
+                                        ref.read(videosProvider).addVideoData(
+                                              VideoData.fromStreamItem(
+                                                streamItem,
+                                              ),
+                                              loadMore: true,
+                                            );
+                                        emptySide();
+                                      },
                                     ),
                                 ],
                               ),
