@@ -24,9 +24,6 @@ dependencies:
   file_picker: ^4.3.3
   flutter:
     sdk: flutter
-  flutter_ffmpeg:
-    git:
-      url: https://github.com/prateekmedia/flutter-ffmpeg.git
   flutter_hooks: ^0.18.2+1
   flutter_html: ^3.0.0-alpha.5
   flutter_localizations:
