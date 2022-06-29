@@ -8,6 +8,7 @@ class CommentData {
     required this.commentText,
     required this.commentedTime,
     required this.likeCount,
+    required this.hearted,
   });
 
   CommentData.fromLikedComment(LikedComment likedComment)
@@ -26,10 +27,10 @@ class CommentData {
         likeCount = comment.likeCount ?? 0,
         hearted = comment.hearted;
 
-  String commentorUrl;
-  String author;
-  String commentText;
-  String commentedTime;
-  int likeCount;
-  bool? hearted;
+  final String commentorUrl;
+  final String author;
+  final String commentText;
+  final String commentedTime;
+  final int likeCount;
+  final bool? hearted;
 }

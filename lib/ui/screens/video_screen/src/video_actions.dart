@@ -13,12 +13,10 @@ import 'package:pstube/ui/screens/video_screen/src/export.dart';
 import 'package:pstube/ui/states/states.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class VideoActions extends HookConsumerWidget {
   const VideoActions({
     super.key,
-    required this.snapshot,
     required this.sideWidget,
     required this.videoData,
     required this.sideType,
@@ -28,7 +26,6 @@ class VideoActions extends HookConsumerWidget {
   final VideoData videoData;
   final ValueNotifier<Widget?> sideWidget;
   final ValueNotifier<SideType?> sideType;
-  final AsyncSnapshot<StreamManifest> snapshot;
   final VoidCallback emptySide;
 
   @override

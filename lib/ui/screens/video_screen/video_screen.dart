@@ -10,7 +10,6 @@ import 'package:pstube/data/models/models.dart';
 import 'package:pstube/data/services/services.dart';
 import 'package:pstube/ui/screens/video_screen/src/export.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yexp;
 
 class VideoScreen extends StatefulHookWidget {
   const VideoScreen({
@@ -74,49 +73,37 @@ class _VideoScreenState extends State<VideoScreen>
                               videoId: videoData.id.value,
                             ),
                         builder: (context, commentsSnapshot) {
-                          return FutureBuilder<yexp.StreamManifest>(
-                            future: yexp.YoutubeExplode()
-                                .videos
-                                .streamsClient
-                                .getManifest(videoData.id),
-                            builder: (context, snapshot) {
-                              final hasData =
-                                  snapshot.hasData && snapshot.data != null;
-                              return Flex(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                direction: Axis.horizontal,
-                                children: [
-                                  Flexible(
-                                    flex: 8,
-                                    child: SFBody(
-                                      child: VideoWidget(
-                                        hasData: hasData,
-                                        videoData: videoData,
-                                        sideType: sideType,
-                                        sideWidget: sideWidget,
-                                        replyComment: replyComment,
-                                        snapshot: snapshot,
-                                        commentsSnapshot: commentsSnapshot,
-                                        emptySide: () {
-                                          sideWidget.value = null;
-                                          sideType.value = null;
-                                        },
-                                      ),
-                                    ),
+                          return Flex(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            direction: Axis.horizontal,
+                            children: [
+                              Flexible(
+                                flex: 8,
+                                child: SFBody(
+                                  child: VideoWidget(
+                                    videoData: videoData,
+                                    sideType: sideType,
+                                    sideWidget: sideWidget,
+                                    replyComment: replyComment,
+                                    commentsSnapshot: commentsSnapshot,
+                                    emptySide: () {
+                                      sideWidget.value = null;
+                                      sideType.value = null;
+                                    },
                                   ),
-                                  if (!context.isMobile)
-                                    Flexible(
-                                      flex: 4,
-                                      child: [
-                                        DescriptionWidget(
-                                          video: videoData,
-                                          isInsidePopup: false,
-                                        ),
-                                      ].last,
+                                ),
+                              ),
+                              if (!context.isMobile)
+                                Flexible(
+                                  flex: 4,
+                                  child: [
+                                    DescriptionWidget(
+                                      video: videoData,
+                                      isInsidePopup: false,
                                     ),
-                                ],
-                              );
-                            },
+                                  ].last,
+                                ),
+                            ],
                           );
                         },
                       ),

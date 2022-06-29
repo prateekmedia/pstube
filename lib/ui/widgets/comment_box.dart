@@ -122,7 +122,7 @@ class CommentBox extends HookConsumerWidget {
                           child: Row(
                             children: [
                               Icon(
-                                comment is LikedComment || isLiked
+                                isLiked
                                     ? Icons.thumb_up
                                     : Icons.thumb_up_outlined,
                                 size: 18,
@@ -137,8 +137,7 @@ class CommentBox extends HookConsumerWidget {
                           ),
                         ),
                       ),
-                      if (comment is Comment &&
-                          ((comment as Comment).hearted ?? false)) ...[
+                      if (comment.hearted ?? false) ...[
                         const SizedBox(width: 8),
                         Container(
                           padding: const EdgeInsets.symmetric(

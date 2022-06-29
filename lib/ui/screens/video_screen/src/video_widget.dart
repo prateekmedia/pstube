@@ -8,29 +8,22 @@ import 'package:pstube/data/models/video_data.dart';
 import 'package:pstube/data/services/services.dart';
 import 'package:pstube/ui/screens/video_screen/src/export.dart';
 import 'package:pstube/ui/widgets/channel_details.dart';
-import 'package:pstube/ui/widgets/video_player.dart';
-import 'package:pstube/ui/widgets/vlc_player.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yexp;
 
 class VideoWidget extends StatelessWidget {
   const VideoWidget({
     super.key,
-    required this.hasData,
     required this.videoData,
     required this.sideType,
     required this.sideWidget,
     required this.replyComment,
-    required this.snapshot,
     required this.commentsSnapshot,
     required this.emptySide,
   });
 
-  final bool hasData;
   final VideoData videoData;
   final ValueNotifier<SideType?> sideType;
   final ValueNotifier<Widget?> sideWidget;
   final ValueNotifier<Comment?> replyComment;
-  final AsyncSnapshot<yexp.StreamManifest> snapshot;
   final AsyncSnapshot<Response<CommentsPage>> commentsSnapshot;
   final VoidCallback emptySide;
 
@@ -38,41 +31,9 @@ class VideoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        if (Constants.mobVideoPlatforms && hasData)
-          VideoPlayer(
-            url: snapshot.data!.muxed
-                .firstWhere(
-                  (element) => element.qualityLabel.contains(
-                    '360',
-                  ),
-                  orElse: () => snapshot.data!.muxed.first,
-                )
-                .url
-                .toString(),
-            resolutions: snapshot.data!.muxed.asMap().map(
-                  (key, value) => MapEntry(
-                    value.qualityLabel,
-                    value.url.toString(),
-                  ),
-                ),
-          )
-        else if (hasData)
-          VlcPlayer(
-            url: snapshot.data!.muxed
-                .firstWhere(
-                  (element) => element.qualityLabel.contains(
-                    '360',
-                  ),
-                  orElse: () => snapshot.data!.muxed.first,
-                )
-                .url
-                .toString(),
-            resolutions: snapshot.data!.muxed.asMap().map(
-                  (key, value) => MapEntry(
-                    value.qualityLabel,
-                    value.url.toString(),
-                  ),
-                ),
+        if (videoData.videoStreams != null)
+          PlatformVideoPlayer(
+            videoData: videoData,
           )
         else
           AspectRatio(
@@ -132,7 +93,6 @@ class VideoWidget extends StatelessWidget {
                     ),
                   ),
                   VideoActions(
-                    snapshot: snapshot,
                     videoData: videoData,
                     sideType: sideType,
                     sideWidget: sideWidget,
