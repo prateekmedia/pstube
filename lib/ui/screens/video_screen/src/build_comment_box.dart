@@ -13,7 +13,7 @@ class BuildCommentBox extends StatefulHookConsumerWidget {
     super.key,
     required Comment comment,
     required this.onReplyTap,
-    this.isInsideReply = false,
+    this.hideReplyBtn = false,
   })  : comment = CommentData.fromComment(comment),
         updateLike = null;
 
@@ -21,11 +21,11 @@ class BuildCommentBox extends StatefulHookConsumerWidget {
     super.key,
     required LikedComment comment,
     required this.onReplyTap,
-    this.isInsideReply = false,
+    this.hideReplyBtn = false,
     this.updateLike,
   }) : comment = CommentData.fromLikedComment(comment);
 
-  final bool isInsideReply;
+  final bool hideReplyBtn;
   final VoidCallback? onReplyTap;
   final CommentData comment;
   final VoidCallback? updateLike;
@@ -56,7 +56,7 @@ class _BuildCommentBoxState extends ConsumerState<BuildCommentBox>
       comment: widget.comment,
       onReplyTap: widget.onReplyTap,
       isLiked: isLiked.value,
-      isInsideReply: widget.isInsideReply,
+      isInsideReply: widget.hideReplyBtn,
       updateLike: widget.updateLike ?? updateLike,
       isLikedComment: widget.updateLike != null,
     );

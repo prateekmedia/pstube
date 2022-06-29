@@ -1,5 +1,5 @@
-import 'package:custom_text/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/ui/screens/video_screen/src/export.dart';
@@ -43,22 +43,13 @@ class DescriptionWidget extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 15),
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 4),
-          child: CustomText(
-            video.description ?? '',
-            onTap: (Type type, link) => link.launchIt(),
-            definitions: const [
-              TextDefinition(matcher: UrlMatcher()),
-              TextDefinition(matcher: EmailMatcher()),
-            ],
-            matchStyle: const TextStyle(color: Colors.lightBlue),
-            // `tapStyle` is not used if both `onTap` and `onLongPress`
-            // are null or not set.
-            tapStyle: const TextStyle(color: Colors.yellow),
-            style: TextStyle(fontSize: isInsidePopup ? 16 : 17),
+        if ((video.description ?? '').isNotEmpty)
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Html(
+              data: video.description,
+            ),
           ),
-        ),
       ],
     );
   }

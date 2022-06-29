@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:pstube/data/enums/enums.dart';
 import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/data/models/video_data.dart';
 import 'package:pstube/data/services/services.dart';
@@ -17,18 +18,18 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 class VideoActions extends HookConsumerWidget {
   const VideoActions({
     super.key,
-    required this.videoData,
-    required this.relatedVideoWidget,
-    required this.downloadsSideWidget,
-    required this.commentSideWidget,
     required this.snapshot,
+    required this.sideWidget,
+    required this.videoData,
+    required this.sideType,
+    required this.emptySide,
   });
 
   final VideoData videoData;
-  final ValueNotifier<Widget?> relatedVideoWidget;
-  final ValueNotifier<Widget?> downloadsSideWidget;
-  final ValueNotifier<Widget?> commentSideWidget;
+  final ValueNotifier<Widget?> sideWidget;
+  final ValueNotifier<SideType?> sideType;
   final AsyncSnapshot<StreamManifest> snapshot;
+  final VoidCallback emptySide;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -72,17 +73,16 @@ class VideoActions extends HookConsumerWidget {
               ),
               VideoAction(
                 icon: Icons.download_outlined,
-                onPressed: downloadsSideWidget.value != null
-                    ? () => downloadsSideWidget.value = null
+                onPressed: sideType.value == SideType.download
+                    ? emptySide
                     : () {
-                        commentSideWidget.value = null;
-                        relatedVideoWidget.value = null;
-                        downloadsSideWidget.value = VideoPopupWrapper(
-                          onClose: () => downloadsSideWidget.value = null,
+                        sideType.value = SideType.download;
+                        sideWidget.value = VideoPopupWrapper(
+                          onClose: emptySide,
                           title: context.locals.downloadQuality,
                           child: DownloadsWidget(
                             video: videoData,
-                            onClose: () => downloadsSideWidget.value = null,
+                            onClose: emptySide,
                           ),
                         );
                       },
@@ -125,25 +125,26 @@ class VideoActions extends HookConsumerWidget {
               ),
               VideoAction(
                 icon: LucideIcons.video,
-                onPressed: relatedVideoWidget.value != null
-                    ? () => relatedVideoWidget.value = null
-                    : () {
-                        commentSideWidget.value = null;
-                        downloadsSideWidget.value = null;
-                        relatedVideoWidget.value = VideoPopupWrapper(
-                          onClose: () => relatedVideoWidget.value = null,
-                          title: 'Related Video',
-                          child: Column(
-                            children: [
-                              for (var rv in videoData.relatedStreams!)
-                                PSVideo.streamItem(
-                                  streamItem: rv,
-                                  isRelated: true,
-                                ),
-                            ],
-                          ),
-                        );
-                      },
+                onPressed: videoData.relatedStreams == null
+                    ? null
+                    : sideType.value == SideType.related
+                        ? emptySide
+                        : () {
+                            sideType.value = SideType.related;
+                            sideWidget.value = VideoPopupWrapper(
+                              onClose: emptySide,
+                              title: 'Related Video',
+                              child: Column(
+                                children: [
+                                  for (var rv in videoData.relatedStreams!)
+                                    PSVideo.streamItem(
+                                      streamItem: rv,
+                                      isRelated: true,
+                                    ),
+                                ],
+                              ),
+                            );
+                          },
                 label: 'Related',
               ),
             ],
@@ -174,7 +175,7 @@ class VideoAction extends StatelessWidget {
         children: [
           AdwButton.circular(
             size: 40,
-            onPressed: onPressed ?? () {},
+            onPressed: onPressed,
             child: Icon(icon),
           ),
           const SizedBox(height: 2),

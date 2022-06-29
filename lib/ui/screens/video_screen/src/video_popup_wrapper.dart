@@ -22,6 +22,7 @@ class VideoPopupWrapper extends StatelessWidget {
         AdwHeaderBar(
           style: const HeaderBarStyle(
             autoPositionWindowButtons: false,
+            height: 46,
           ),
           title: Text(title),
           actions: AdwActions(

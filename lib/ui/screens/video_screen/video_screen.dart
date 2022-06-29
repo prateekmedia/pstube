@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:piped_api/piped_api.dart';
+import 'package:pstube/data/enums/enums.dart';
 import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/data/services/services.dart';
@@ -57,9 +58,8 @@ class _VideoScreenState extends State<VideoScreen>
         : widget.video;
 
     final replyComment = useState<Comment?>(null);
-    final commentSideWidget = useState<Widget?>(null);
-    final downloadsSideWidget = useState<Widget?>(null);
-    final relatedVideoWidget = useState<Widget?>(null);
+    final sideWidget = useState<Widget?>(null);
+    final sideType = useState<SideType?>(null);
 
     return SafeArea(
       child: Stack(
@@ -92,13 +92,15 @@ class _VideoScreenState extends State<VideoScreen>
                                       child: VideoWidget(
                                         hasData: hasData,
                                         videoData: videoData,
-                                        downloadsSideWidget:
-                                            downloadsSideWidget,
-                                        commentSideWidget: commentSideWidget,
+                                        sideType: sideType,
+                                        sideWidget: sideWidget,
                                         replyComment: replyComment,
                                         snapshot: snapshot,
                                         commentsSnapshot: commentsSnapshot,
-                                        relatedVideoWidget: relatedVideoWidget,
+                                        emptySide: () {
+                                          sideWidget.value = null;
+                                          sideType.value = null;
+                                        },
                                       ),
                                     ),
                                   ),
@@ -146,12 +148,7 @@ class _VideoScreenState extends State<VideoScreen>
                 child: [
                   const SizedBox(),
                   if (!context.isMobile) ...[
-                    if (commentSideWidget.value != null)
-                      commentSideWidget.value!,
-                    if (downloadsSideWidget.value != null)
-                      downloadsSideWidget.value!,
-                    if (relatedVideoWidget.value != null)
-                      relatedVideoWidget.value!,
+                    if (sideWidget.value != null) sideWidget.value!,
                   ],
                 ].last,
               ),

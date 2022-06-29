@@ -69,59 +69,40 @@ class CommentBox extends HookConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                context.pushPage(
-                                  ChannelScreen(
-                                    channelId: comment.commentorUrl,
-                                  ),
-                                );
-                              },
-                              child: IconWithLabel(
-                                label: comment.author,
-                                margin: EdgeInsets.zero,
-                                secColor: SecColor.dark,
-                              ),
-                            ),
-                          ],
+                  GestureDetector(
+                    onTap: () {
+                      context.pushPage(
+                        ChannelScreen(
+                          channelId: comment.commentorUrl,
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                      IconWithLabel(
-                        label: comment.commentedTime,
-                        style:
-                            context.textTheme.bodyText2!.copyWith(fontSize: 12),
-                      ),
-                    ],
+                      );
+                    },
+                    child: IconWithLabel(
+                      label: comment.author,
+                      margin: EdgeInsets.zero,
+                      secColor: SecColor.dark,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
-                    child: !isInsideReply
-                        ? ReadMoreText(
-                            comment.commentText,
-                            style: context.textTheme.bodyText2!
-                                .copyWith(color: context.brightness.textColor),
-                            trimLines: 4,
-                            trimMode: TrimMode.Line,
-                            trimCollapsedText: '\n${context.locals.readMore}',
-                            trimExpandedText: '\n${context.locals.showLess}',
-                            lessStyle: context.textTheme.bodyText1!.copyWith(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            moreStyle: context.textTheme.bodyText1!.copyWith(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )
-                        : SelectableText(comment.commentText),
+                    child: ReadMoreText(
+                      comment.commentText,
+                      style: context.textTheme.bodyText2!
+                          .copyWith(color: context.brightness.textColor),
+                      trimLines: 4,
+                      trimMode: TrimMode.Line,
+                      trimCollapsedText: '\n${context.locals.readMore}',
+                      trimExpandedText: '\n${context.locals.showLess}',
+                      lessStyle: context.textTheme.bodyText1!.copyWith(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      moreStyle: context.textTheme.bodyText1!.copyWith(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 6),
                   Row(
@@ -177,6 +158,12 @@ class CommentBox extends HookConsumerWidget {
                         ),
                       ],
                       const SizedBox(width: 8),
+                      IconWithLabel(
+                        label: comment.commentedTime,
+                        style:
+                            context.textTheme.bodyText2!.copyWith(fontSize: 12),
+                      ),
+                      const Spacer(),
                       if (!isLikedComment && !isInsideReply)
                         GestureDetector(
                           onTap: onReplyTap,

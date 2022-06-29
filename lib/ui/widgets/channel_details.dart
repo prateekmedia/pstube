@@ -59,23 +59,26 @@ class _ChannelInfoState extends State<ChannelDetails>
                   size: size.toDouble(),
                 ),
                 const SizedBox(width: 20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      channelData?.name ?? '',
-                      style: context.textTheme.headline4,
-                    ),
-                    Text(
-                      channelData != null
-                          ? channelData.subscriberCount == null
-                              ? context.locals.hidden
-                              : '${channelData.subscriberCount!.formatNumber} '
-                                  '${context.locals.subscribers}'
-                          : '',
-                      style: context.textTheme.bodyText2,
-                    ),
-                  ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        channelData?.name ?? '',
+                        overflow: TextOverflow.clip,
+                        style: context.textTheme.headline4,
+                      ),
+                      Text(
+                        channelData != null
+                            ? channelData.subscriberCount == null
+                                ? context.locals.hidden
+                                : '${channelData.subscriberCount!.formatNumber} '
+                                    '${context.locals.subscribers}'
+                            : '',
+                        style: context.textTheme.bodyText2,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

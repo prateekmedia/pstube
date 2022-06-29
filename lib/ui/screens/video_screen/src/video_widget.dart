@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:piped_api/piped_api.dart';
+import 'package:pstube/data/enums/enums.dart';
 import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/data/models/video_data.dart';
 import 'package:pstube/data/services/services.dart';
@@ -16,22 +17,22 @@ class VideoWidget extends StatelessWidget {
     super.key,
     required this.hasData,
     required this.videoData,
-    required this.downloadsSideWidget,
-    required this.relatedVideoWidget,
-    required this.commentSideWidget,
+    required this.sideType,
+    required this.sideWidget,
     required this.replyComment,
     required this.snapshot,
     required this.commentsSnapshot,
+    required this.emptySide,
   });
 
   final bool hasData;
   final VideoData videoData;
-  final ValueNotifier<Widget?> downloadsSideWidget;
-  final ValueNotifier<Widget?> commentSideWidget;
-  final ValueNotifier<Widget?> relatedVideoWidget;
+  final ValueNotifier<SideType?> sideType;
+  final ValueNotifier<Widget?> sideWidget;
   final ValueNotifier<Comment?> replyComment;
   final AsyncSnapshot<yexp.StreamManifest> snapshot;
   final AsyncSnapshot<Response<CommentsPage>> commentsSnapshot;
+  final VoidCallback emptySide;
 
   @override
   Widget build(BuildContext context) {
@@ -131,11 +132,14 @@ class VideoWidget extends StatelessWidget {
                     ),
                   ),
                   VideoActions(
-                    videoData: videoData,
-                    downloadsSideWidget: downloadsSideWidget,
-                    relatedVideoWidget: relatedVideoWidget,
-                    commentSideWidget: commentSideWidget,
                     snapshot: snapshot,
+                    videoData: videoData,
+                    sideType: sideType,
+                    sideWidget: sideWidget,
+                    emptySide: () {
+                      sideWidget.value = null;
+                      sideType.value = null;
+                    },
                   ),
                   const Divider(),
                   ChannelDetails(
@@ -146,17 +150,18 @@ class VideoWidget extends StatelessWidget {
                   ListTile(
                     onTap: commentsSnapshot.data == null
                         ? null
-                        : commentSideWidget.value != null
-                            ? () => commentSideWidget.value = null
+                        : sideType.value == SideType.comment
+                            ? emptySide
                             : () {
-                                downloadsSideWidget.value = null;
-                                commentSideWidget.value = CommentsWidget(
-                                  onClose: () => commentSideWidget.value = null,
+                                sideType.value = SideType.comment;
+                                sideWidget.value = CommentsWidget(
+                                  onClose: emptySide,
                                   replyComment: replyComment,
                                   snapshot: commentsSnapshot,
                                   videoId: videoData.id.value,
                                 );
                               },
+                    enabled: commentsSnapshot.data != null,
                     title: Text(
                       context.locals.comments,
                     ),
@@ -171,10 +176,7 @@ class VideoWidget extends StatelessWidget {
                 ],
               ),
               if (context.isMobile) ...[
-                if (commentSideWidget.value != null) commentSideWidget.value!,
-                if (downloadsSideWidget.value != null)
-                  downloadsSideWidget.value!,
-                if (relatedVideoWidget.value != null) relatedVideoWidget.value!
+                if (sideWidget.value != null) sideWidget.value!,
               ],
             ],
           ),

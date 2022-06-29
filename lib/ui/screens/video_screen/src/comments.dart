@@ -86,6 +86,11 @@ class _CommentsWidgetState extends State<CommentsWidget>
     return Column(
       children: [
         AdwHeaderBar(
+          title: Text(
+            currentPage.value == 0
+                ? context.locals.comments
+                : context.locals.replies,
+          ),
           actions: AdwActions(
             onClose: widget.onClose ?? context.back,
             onHeaderDrag: appWindow?.startDragging,
@@ -93,6 +98,7 @@ class _CommentsWidgetState extends State<CommentsWidget>
           ),
           style: const HeaderBarStyle(
             autoPositionWindowButtons: false,
+            height: 46,
           ),
           start: [
             if (currentPage.value == 1)
@@ -144,13 +150,14 @@ class _CommentsWidgetState extends State<CommentsWidget>
                                   curve: Curves.easeInOut,
                                 );
                               },
+                              hideReplyBtn: comment.repliesPage == null,
                             );
                     },
                   ),
-                  showReplies(
-                    context,
-                    widget.replyComment.value,
-                    EdgeInsets.symmetric(
+                  RepliesPage(
+                    videoId: widget.videoId,
+                    comment: widget.replyComment.value,
+                    padding: EdgeInsets.symmetric(
                       horizontal: widget.onClose != null ? 16 : 0,
                     ),
                   ),
@@ -180,47 +187,120 @@ class _CommentsWidgetState extends State<CommentsWidget>
   bool get wantKeepAlive => true;
 }
 
-Widget showReplies(BuildContext context, Comment? comment, EdgeInsets padding) {
-  // final api = PipedApi().getUnauthenticatedApi().comments(videoId: videoId);
-  Future<List<Comment>>? getReplies() async {
-    // if (comment == null) return null;
-    // final replies = await yt.videos.commentsClient.getReplies(comment);
-    // yt.close();
-    // return replies;
-    return [];
-  }
+class RepliesPage extends HookWidget {
+  const RepliesPage({
+    super.key,
+    required this.videoId,
+    required this.comment,
+    required this.padding,
+  });
 
-  return comment != null
-      ? ListView(
-          controller: ScrollController(),
-          padding: padding,
-          children: [
-            BuildCommentBox(
-              comment: comment,
-              onReplyTap: null,
-              isInsideReply: true,
-            ),
-            FutureBuilder<List<Comment>?>(
-              future: getReplies(),
-              builder: (context, snapshot) {
-                return snapshot.data != null
-                    ? Container(
-                        padding: const EdgeInsets.only(left: 50),
-                        child: Column(
-                          children: [
-                            for (Comment reply in snapshot.data!)
-                              BuildCommentBox(
-                                comment: reply,
-                                onReplyTap: null,
-                                isInsideReply: true,
-                              ),
-                          ],
+  final String videoId;
+  final Comment? comment;
+  final EdgeInsets padding;
+
+  @override
+  Widget build(BuildContext context) {
+    final _currentPage = useState<BuiltList<Comment>?>(null);
+    final controller = useScrollController();
+    final repliesToken = useState<String?>(
+      comment?.repliesPage,
+    );
+    final isLoading = useState<bool>(true);
+    final isMounted = useIsMounted();
+
+    Future<void> _getMoreData() async {
+      if (isLoading.value ||
+          !isMounted() ||
+          _currentPage.value == null ||
+          repliesToken.value == null ||
+          controller.position.pixels != controller.position.maxScrollExtent) {
+        return;
+      }
+
+      isLoading.value = true;
+
+      final nextPage =
+          await PipedApi().getUnauthenticatedApi().commentsNextPage(
+                videoId: videoId,
+                nextpage: repliesToken.value!,
+              );
+
+      if (nextPage.data == null && nextPage.data!.comments == null) {
+        return;
+      }
+
+      repliesToken.value = nextPage.data!.nextpage;
+
+      _currentPage.value = _currentPage.value!.rebuild(
+        (b) => b.addAll(
+          nextPage.data!.comments!.toList(),
+        ),
+      );
+      isLoading.value = false;
+    }
+
+    Future<void> loadData() async {
+      if (repliesToken.value == null) {
+        isLoading.value = false;
+        return;
+      }
+      final nextPage =
+          await PipedApi().getUnauthenticatedApi().commentsNextPage(
+                videoId: videoId,
+                nextpage: repliesToken.value!,
+              );
+      if (nextPage.data == null) return;
+
+      _currentPage.value = nextPage.data!.comments;
+      isLoading.value = false;
+    }
+
+    useEffect(
+      () {
+        loadData();
+        controller.addListener(_getMoreData);
+        return () => controller.removeListener(_getMoreData);
+      },
+      [controller],
+    );
+
+    return comment != null
+        ? ListView(
+            controller: controller,
+            padding: padding,
+            children: [
+              BuildCommentBox(
+                comment: comment!,
+                onReplyTap: null,
+                hideReplyBtn: true,
+              ),
+              if (_currentPage.value != null)
+                Container(
+                  padding: const EdgeInsets.only(left: 50),
+                  child: Column(
+                    children: [
+                      for (Comment reply in _currentPage.value!)
+                        BuildCommentBox(
+                          comment: reply,
+                          onReplyTap: null,
+                          hideReplyBtn: true,
                         ),
-                      )
-                    : getCircularProgressIndicator();
-              },
-            ),
-          ],
-        )
-      : getCircularProgressIndicator();
+                      if (repliesToken.value != null)
+                        getCircularProgressIndicator(),
+                    ],
+                  ),
+                )
+              else if (isLoading.value)
+                getCircularProgressIndicator()
+              else
+                const Center(
+                  child: IconWithLabel(
+                    label: 'No replies found.',
+                  ),
+                ),
+            ],
+          )
+        : getCircularProgressIndicator();
+  }
 }
