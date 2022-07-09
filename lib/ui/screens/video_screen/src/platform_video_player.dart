@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/data/services/services.dart';
-import 'package:pstube/ui/widgets/video_player.dart';
-import 'package:pstube/ui/widgets/vlc_player.dart';
+import 'package:pstube/ui/widgets/video_player_desktop.dart';
+import 'package:pstube/ui/widgets/video_player_mobile.dart';
 
 class PlatformVideoPlayer extends StatelessWidget {
   const PlatformVideoPlayer({super.key, required this.videoData});
@@ -18,16 +18,8 @@ class PlatformVideoPlayer extends StatelessWidget {
         .toList();
 
     return (Constants.mobVideoPlatforms)
-        ? VideoPlayer(
-            url: videoStreams
-                .firstWhere(
-                  (element) => element.quality!.contains(
-                    '360',
-                  ),
-                  orElse: () => videoStreams.first,
-                )
-                .url
-                .toString(),
+        ? VideoPlayerMobile(
+            defaultQuality: 360,
             resolutions: videoStreams.asMap().map(
                   (key, value) => MapEntry(
                     value.quality!,
@@ -35,7 +27,7 @@ class PlatformVideoPlayer extends StatelessWidget {
                   ),
                 ),
           )
-        : VlcPlayer(
+        : VideoPlayerDesktop(
             url: videoStreams
                 .firstWhere(
                   (element) => element.quality!.contains(

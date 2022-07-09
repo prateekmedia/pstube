@@ -1,8 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/models/models.dart';
-import 'package:pstube/data/services/constants.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yte;
 
 class VideoData {
   VideoData({
@@ -30,7 +28,7 @@ class VideoData {
         duration = streamItem.duration,
         thumbnails = Thumbnails(videoId: streamItem.url),
         title = streamItem.title,
-        id = VideoId(Constants.ytCom + streamItem.url),
+        id = VideoId.addPrefix(streamItem.url),
         relatedStreams = null, // streamItem.relatedStreams,
         views = streamItem.views,
         audioStreams = null, // streamItem.audioStreams,
@@ -40,7 +38,7 @@ class VideoData {
         uploaderAvatar = streamItem.uploaderAvatar,
         uploader = streamItem.uploaderName,
         uploaderId = streamItem.uploaderUrl != null
-            ? UploaderId(Constants.ytCom + streamItem.uploaderUrl!)
+            ? UploaderId.addPrefix(streamItem.uploaderUrl!)
             : null,
         uploaderVerified = streamItem.uploaderVerified,
         description = null, //streamItem.description,
@@ -63,30 +61,30 @@ class VideoData {
         uploaderAvatar = videoInfo.uploaderAvatar,
         uploader = videoInfo.uploader,
         uploaderId = videoInfo.uploaderUrl != null
-            ? UploaderId(Constants.ytCom + videoInfo.uploaderUrl!)
+            ? UploaderId.addPrefix(videoInfo.uploaderUrl!)
             : null,
         uploaderVerified = videoInfo.uploaderVerified,
         description = videoInfo.description,
         likes = videoInfo.likes;
 
-  VideoData.fromSearchVideo(yte.SearchVideo searchVideo)
-      : durationString = searchVideo.duration,
-        thumbnails = Thumbnails(videoId: searchVideo.id.value),
-        title = searchVideo.title,
-        id = VideoId(searchVideo.id.value),
-        description = searchVideo.description,
-        uploadDate = searchVideo.uploadDate,
-        uploader = searchVideo.author,
-        views = searchVideo.viewCount,
-        uploaderId = UploaderId(searchVideo.channelId),
-        duration = null,
+  VideoData.fromSearchItem(SearchItem searchItem)
+      : duration = searchItem.duration,
+        thumbnails = Thumbnails(videoId: searchItem.url),
+        title = searchItem.title,
+        id = VideoId.addPrefix(searchItem.url),
+        description = searchItem.description,
+        uploadDate = searchItem.uploadedDate,
+        uploader = searchItem.uploaderName,
+        views = searchItem.views,
+        uploaderId = UploaderId.addPrefix(searchItem.uploaderUrl!),
+        durationString = null,
         audioStreams = null,
         videoStreams = null,
         relatedStreams = null,
         likes = null,
-        uploaded = null,
-        uploaderAvatar = null,
-        uploaderVerified = null;
+        uploaded = searchItem.uploaded,
+        uploaderAvatar = searchItem.uploaderAvatar,
+        uploaderVerified = searchItem.uploaderVerified;
 
   final BuiltList<StreamItem>? relatedStreams;
 

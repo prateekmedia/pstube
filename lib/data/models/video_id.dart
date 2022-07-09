@@ -7,6 +7,10 @@ class VideoId {
     String idOrUrl,
   ) : value = parseVideoId(idOrUrl)!;
 
+  VideoId.addPrefix(
+    String idOrUrl,
+  ) : value = parseVideoId(Constants.ytCom + idOrUrl)!;
+
   static final _regMatchExp = RegExp(r'youtube\..+?/watch.*?v=(.*?)(?:&|/|$)');
   static final _shortMatchExp = RegExp(r'youtu\.be/(.*?)(?:\?|&|/|$)');
   static final _embedMatchExp = RegExp(r'youtube\..+?/embed/(.*?)(?:\?|&|/|$)');

@@ -1,7 +1,11 @@
 import 'package:pstube/data/extensions/extensions.dart';
+import 'package:pstube/data/services/constants.dart';
 
 class UploaderId {
   UploaderId(String val) : value = parseUploaderId(val) ?? '';
+
+  UploaderId.addPrefix(String val)
+      : value = parseUploaderId(Constants.ytCom + val) ?? '';
 
   final String value;
 

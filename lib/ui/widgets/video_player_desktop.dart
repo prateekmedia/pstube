@@ -2,8 +2,8 @@ import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
 import 'package:pstube/data/extensions/extensions.dart';
 
-class VlcPlayer extends StatefulWidget {
-  const VlcPlayer({
+class VideoPlayerDesktop extends StatefulWidget {
+  const VideoPlayerDesktop({
     super.key,
     required this.url,
     required this.resolutions,
@@ -13,10 +13,11 @@ class VlcPlayer extends StatefulWidget {
   final Map<String, String> resolutions;
 
   @override
-  State<VlcPlayer> createState() => _VlcPlayerState();
+  State<VideoPlayerDesktop> createState() => _VideoPlayerDesktopState();
 }
 
-class _VlcPlayerState extends State<VlcPlayer> with WidgetsBindingObserver {
+class _VideoPlayerDesktopState extends State<VideoPlayerDesktop>
+    with WidgetsBindingObserver {
   Player player = Player(id: 0);
   CurrentState current = CurrentState();
   PositionState position = PositionState();

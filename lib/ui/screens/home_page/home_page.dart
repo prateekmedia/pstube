@@ -16,7 +16,7 @@ import 'package:pstube/data/services/services.dart';
 import 'package:pstube/ui/screens/home_page/tabs.dart';
 import 'package:pstube/ui/states/states.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yexp;
 
 class MyHomePage extends HookConsumerWidget {
   const MyHomePage({super.key});
@@ -64,7 +64,10 @@ class MyHomePage extends HookConsumerWidget {
         onConfirm: () {
           context.back();
           if (_addDownloadController.value.text.isNotEmpty) {
-            showDownloadPopup(context, videoUrl: _addDownloadController.text);
+            showDownloadPopup(
+              context,
+              videoUrl: _addDownloadController.text,
+            );
           }
         },
         hint: 'https://youtube.com/watch?v=***********',
@@ -141,7 +144,7 @@ class MyHomePage extends HookConsumerWidget {
                 hintText: '',
                 search: null,
                 asyncSuggestions: (str) => str.isNotEmpty
-                    ? YoutubeExplode().search.getQuerySuggestions(str)
+                    ? yexp.YoutubeExplode().search.getQuerySuggestions(str)
                     : Future.value([]),
                 onSubmitted: (str) => searchedTerm.value = str,
                 controller: _searchController,
@@ -239,28 +242,55 @@ class SearchScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final isMounted = useIsMounted();
-    final yt = YoutubeExplode();
-    final _currentPage = useState<SearchList?>(null);
+    final api = PipedApi().getUnauthenticatedApi();
+    final _currentPage = useState<BuiltList<SearchItem>?>(null);
+    final nextPageToken = useState<String?>(null);
+    final isLoading = useState<bool>(false);
+    final filter = useState<SearchFilter>(SearchFilter.all);
 
     Future<void> loadVideos() async {
       if (!isMounted()) return;
-      _currentPage.value = await yt.search.searchContent(searchedTerm.value);
+      final page = (await api.search(
+        q: searchedTerm.value,
+        filter: SearchFilter.all,
+      ))
+          .data;
+
+      if (page?.items == null) return;
+
+      _currentPage.value = page!.items;
     }
 
     final controller = useScrollController();
 
     Future<void> _getMoreData() async {
-      if (_currentPage.value != null &&
-          isMounted() &&
-          controller.position.pixels == controller.position.maxScrollExtent) {
-        final page = await _currentPage.value!.nextPage();
-
-        if (page == null || page.isEmpty || !isMounted()) return;
-
-        _currentPage.value!.addAll(page);
-        // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-        _currentPage.notifyListeners();
+      if (isLoading.value ||
+          !isMounted() ||
+          nextPageToken.value == null ||
+          controller.position.pixels != controller.position.maxScrollExtent) {
+        return;
       }
+
+      isLoading.value = true;
+
+      final nextPage = await api.searchNextPage(
+        nextpage: nextPageToken.value!,
+        q: searchedTerm.value,
+        filter: filter.value,
+      );
+
+      if (nextPage.data == null && nextPage.data?.items != null) {
+        return;
+      }
+
+      nextPageToken.value = nextPage.data!.nextpage;
+
+      _currentPage.value = _currentPage.value!.rebuild(
+        (b) => b.addAll(
+          nextPage.data!.items!.toList(),
+        ),
+      );
+      isLoading.value = false;
     }
 
     useEffect(
@@ -276,7 +306,7 @@ class SearchScreen extends HookWidget {
       [controller],
     );
 
-    return _currentPage.value != null
+    return _currentPage.value != null && !isLoading.value
         ? ListView.separated(
             separatorBuilder: (context, index) => Divider(
               color: context.getBackgroundColor.withOpacity(0.6),

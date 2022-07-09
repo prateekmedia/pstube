@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/extensions/extensions.dart';
+import 'package:pstube/data/models/playlist_data.dart';
 import 'package:pstube/ui/states/states.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class PSPlaylist extends ConsumerWidget {
   const PSPlaylist({
@@ -13,7 +14,17 @@ class PSPlaylist extends ConsumerWidget {
     required this.playlist,
   });
 
-  final SearchPlaylist playlist;
+  PSPlaylist.searchItem({
+    super.key,
+    required SearchItem searchItem,
+  }) : playlist = PlaylistData(
+          name: searchItem.name!,
+          thumbnail: searchItem.thumbnail,
+          url: searchItem.url,
+          videos: searchItem.videos!,
+        );
+
+  final PlaylistData playlist;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -34,12 +45,10 @@ class PSPlaylist extends ConsumerWidget {
                       color: context.getAlt2BackgroundColor,
                     ),
                     padding: const EdgeInsets.all(5),
-                    child: playlist.thumbnails.isNotEmpty
-                        ? CachedNetworkImage(
-                            imageUrl: playlist.thumbnails.first.url.toString(),
-                            fit: BoxFit.cover,
-                          )
-                        : null,
+                    child: CachedNetworkImage(
+                      imageUrl: playlist.thumbnail,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 Positioned(
@@ -54,7 +63,7 @@ class PSPlaylist extends ConsumerWidget {
                       children: [
                         const Icon(LucideIcons.list, size: 18),
                         const SizedBox(width: 6),
-                        Text('${playlist.playlistVideoCount} videos'),
+                        Text('${playlist.videos} videos'),
                       ],
                     ),
                   ),
@@ -62,19 +71,16 @@ class PSPlaylist extends ConsumerWidget {
               ],
             ),
           ),
-          Expanded(child: Text(playlist.playlistTitle)),
+          Expanded(child: Text(playlist.name)),
           AdwButton.circular(
-            onPressed: playlist.playlistVideoCount != 0
-                ? () => ref
-                    .read(playlistProvider)
-                    .addPlaylist(playlist.playlistTitle)
+            onPressed: playlist.videos != 0
+                ? () => ref.read(playlistProvider).addPlaylist(playlist.name)
                 : null,
             size: 36,
             child: Icon(
               LucideIcons.plus,
               size: 20,
-              color:
-                  playlist.playlistVideoCount == 0 ? Colors.transparent : null,
+              color: playlist.videos == 0 ? Colors.transparent : null,
             ),
           ),
         ],

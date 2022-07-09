@@ -12,8 +12,6 @@ import 'package:pstube/data/models/models.dart';
 import 'package:pstube/ui/states/states.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 
-import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yexp;
-
 final Widget _progressIndicator = SizedBox(
   height: 100,
   child: getCircularProgressIndicator(),
@@ -21,7 +19,6 @@ final Widget _progressIndicator = SizedBox(
 
 Future<dynamic> showDownloadPopup(
   BuildContext context, {
-  yexp.StreamManifest? manifest,
   VideoData? video,
   String? videoUrl,
 }) {
