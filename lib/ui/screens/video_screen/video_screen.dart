@@ -55,12 +55,6 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
   }
 
   @override
-  void dispose() {
-    ref.read(videosProvider).disposeVideos();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     super.build(context);
 

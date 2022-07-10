@@ -10,7 +10,6 @@ class VideosChangeNotifier extends ChangeNotifier {
 
   Future<void> addVideoUrl(String videoId, VideoData? value) async {
     isLoading = true;
-    notifyListeners();
 
     if (value != null) {
       videos.add(
@@ -90,6 +89,5 @@ class VideosChangeNotifier extends ChangeNotifier {
 
   void disposeVideos() {
     videos = [];
-    notifyListeners();
   }
 }

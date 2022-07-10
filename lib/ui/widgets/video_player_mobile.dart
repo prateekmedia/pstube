@@ -9,7 +9,7 @@ class VideoPlayerMobile extends StatefulWidget {
   });
 
   final int defaultQuality;
-  final Map<String, String> resolutions;
+  final List<VideoQalityUrls> resolutions;
 
   @override
   State<VideoPlayerMobile> createState() => _VideoPlayerState();
@@ -35,19 +35,11 @@ class _VideoPlayerState extends State<VideoPlayerMobile>
         videoPlayerOptions: VideoPlayerOptions(
           allowBackgroundPlayback: true,
         ),
-        videoUrls: widget.resolutions.entries
-            .map(
-              (entry) => VideoQalityUrls(
-                quality: int.tryParse(
-                      entry.key.substring(0, entry.key.length - 1),
-                    ) ??
-                    0,
-                url: entry.value,
-              ),
-            )
-            .toList(),
+        videoUrls: widget.resolutions,
       ),
     );
+
+    _controller.initialise();
   }
 
   @override

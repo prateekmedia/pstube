@@ -1,6 +1,4 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:piped_api/piped_api.dart';
-import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/data/services/services.dart';
 
@@ -21,23 +19,17 @@ class QueryVideo {
 
   QueryVideo.fromVideo({
     required VideoData video,
-    required Stream stream,
+    required StreamData stream,
     required this.path,
   })  : name = checkIfExists(
           path,
-          '${video.title}(${stream.quality ?? ""}).'
-          '${stream.format!.getName}',
+          '${video.title}(${stream.quality}).'
+          '${stream.format}',
         ),
         id = video.id.value,
-        url = stream.url!,
+        url = stream.url,
         author = video.uploader ?? '',
-        quality =
-            // stream is ThumbnailStreamInfo
-            //     ? stream.name
-            //     : stream is Stream
-            //         ?
-            stream.quality ?? '',
-        // : '',
+        quality = stream.quality,
         duration = (video.duration ?? Duration.zero).toString(),
         thumbnail = video.thumbnails.lowResUrl;
 

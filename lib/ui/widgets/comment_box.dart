@@ -105,7 +105,7 @@ class CommentBox extends HookConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 6),
-                  Row(
+                  Wrap(
                     children: [
                       GestureDetector(
                         onTap: updateLike?.call,
@@ -114,18 +114,22 @@ class CommentBox extends HookConsumerWidget {
                             horizontal: 10,
                             vertical: 5,
                           ),
+                          margin: const EdgeInsets.symmetric(
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             color: context.getBackgroundColor
                                 .brighten(context, 20),
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Icon(
                                 isLiked
                                     ? Icons.thumb_up
                                     : Icons.thumb_up_outlined,
-                                size: 18,
+                                size: 16,
                               ),
                               const SizedBox(width: 8),
                               Text(
@@ -137,32 +141,17 @@ class CommentBox extends HookConsumerWidget {
                           ),
                         ),
                       ),
-                      if (comment.hearted ?? false) ...[
-                        const SizedBox(width: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 4,
-                            vertical: 3,
-                          ),
-                          decoration: BoxDecoration(
-                            color: context.getBackgroundColor
-                                .brighten(context, 20),
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Icon(
-                            Icons.favorite,
-                            color: Colors.red[600],
-                            size: 22,
-                          ),
-                        ),
-                      ],
                       const SizedBox(width: 8),
                       IconWithLabel(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 5,
+                        ),
+                        margin: const EdgeInsets.symmetric(vertical: 4),
                         label: comment.commentedTime,
                         style:
                             context.textTheme.bodyText2!.copyWith(fontSize: 12),
                       ),
-                      const Spacer(),
                       if (!isLikedComment && !isInsideReply)
                         GestureDetector(
                           onTap: onReplyTap,
@@ -171,7 +160,11 @@ class CommentBox extends HookConsumerWidget {
                               horizontal: 10,
                               vertical: 5,
                             ),
+                            margin: const EdgeInsets.symmetric(vertical: 4)
+                                .copyWith(left: 4),
                             label: context.locals.replies,
+                            style: context.textTheme.bodyText2!
+                                .copyWith(fontSize: 12),
                           ),
                         ),
                     ],

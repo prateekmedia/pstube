@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pod_player/pod_player.dart';
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/data/services/services.dart';
 import 'package:pstube/ui/widgets/video_player_desktop.dart';
@@ -20,12 +21,18 @@ class PlatformVideoPlayer extends StatelessWidget {
     return (Constants.mobVideoPlatforms)
         ? VideoPlayerMobile(
             defaultQuality: 360,
-            resolutions: videoStreams.asMap().map(
-                  (key, value) => MapEntry(
-                    value.quality!,
-                    value.url.toString(),
+            resolutions: videoStreams
+                .map(
+                  (value) => VideoQalityUrls(
+                    quality: int.tryParse(
+                          value.quality!
+                              .substring(0, value.quality!.length - 1),
+                        ) ??
+                        0,
+                    url: value.url.toString(),
                   ),
-                ),
+                )
+                .toList(),
           )
         : VideoPlayerDesktop(
             url: videoStreams

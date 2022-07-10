@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:libadwaita/libadwaita.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/extensions/extensions.dart';
@@ -89,15 +90,18 @@ class DownloadsWidget extends ConsumerWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // AdwActionRow(
-                    //   end: Checkbox(
-                    //     value: ref.watch(rememberChoiceProvider),
-                    //     onChanged: (value) => ref
-                    //         .watch(rememberChoiceProvider.notifier)
-                    //         .value = value!,
-                    //   ),
-                    //   title: 'Remember my choice',
-                    // ),
+                    AdwActionRow(
+                      contentPadding: EdgeInsets.zero,
+                      onActivated: () =>
+                          ref.read(rememberChoiceProvider.notifier).toggle,
+                      start: Checkbox(
+                        value: ref.watch(rememberChoiceProvider),
+                        onChanged: (value) => ref
+                            .read(rememberChoiceProvider.notifier)
+                            .value = value!,
+                      ),
+                      title: 'Remember my choice',
+                    ),
                     if (ref.watch(thumbnailDownloaderProvider)) ...[
                       linksHeader(
                         context,
@@ -105,13 +109,13 @@ class DownloadsWidget extends ConsumerWidget {
                         label: context.locals.thumbnail,
                         padding: const EdgeInsets.only(top: 6, bottom: 14),
                       ),
-                      // for (var thumbnail
-                      //     in video.thumbnails.toStreamInfo(context))
-                      //   DownloadQualityTile(
-                      //     stream: thumbnail,
-                      //     video: video,
-                      //     onClose: onClose,
-                      //   ),
+                      for (var thumbnail
+                          in video.thumbnails.toStreamInfo(context))
+                        DownloadQualityTile.thumbnail(
+                          stream: thumbnail,
+                          video: video,
+                          onClose: onClose,
+                        ),
                     ],
                     linksHeader(
                       context,
@@ -186,14 +190,29 @@ Widget linksHeader(
 }
 
 class DownloadQualityTile extends HookConsumerWidget {
-  const DownloadQualityTile({
+  DownloadQualityTile({
     super.key,
-    required this.stream,
+    required Stream stream,
     required this.video,
     this.onClose,
-  });
+  }) : stream = StreamData(
+          quality: stream.quality!,
+          format: stream.format!.getName,
+          url: stream.url!,
+        );
 
-  final Stream stream;
+  DownloadQualityTile.thumbnail({
+    super.key,
+    required ThumbnailStreamInfo stream,
+    required this.video,
+    this.onClose,
+  }) : stream = StreamData(
+          quality: stream.name,
+          format: stream.containerName,
+          url: stream.url,
+        );
+
+  final StreamData stream;
   final VideoData video;
   final VoidCallback? onClose;
 
@@ -205,7 +224,7 @@ class DownloadQualityTile extends HookConsumerWidget {
       final dio = Dio();
       try {
         // ignore: inference_failure_on_function_invocation
-        final r = await dio.head(stream.url!);
+        final r = await dio.head(stream.url);
         size.value = int.tryParse(r.headers['content-length']![0]) ?? 0;
       } catch (e) {
         debugPrint('$e');
@@ -248,24 +267,16 @@ class DownloadQualityTile extends HookConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    // widget.stream is ThumbnailStreamInfo
-                    //       ? widget.stream.containerName as String
-                    //       :
-                    stream.format!.getName,
+                    stream.format,
                   ),
                   Text(
-                    stream is ThumbnailStreamInfo
-                        ? ''
-                        : size.value.getFileSize(),
+                    size.value.getFileSize(),
                   ),
                 ],
               ),
               Align(
                 child: Text(
-                  stream.quality!,
-                  // : widget.stream is ThumbnailStreamInfo
-                  //     ? (widget.stream as ThumbnailStreamInfo).name
-                  //     : '',
+                  stream.quality,
                   style: context.textTheme.headline5,
                   textAlign: TextAlign.center,
                 ),
