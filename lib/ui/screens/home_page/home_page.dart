@@ -66,7 +66,11 @@ class MyHomePage extends HookConsumerWidget {
           if (_addDownloadController.value.text.isNotEmpty) {
             showDownloadPopup(
               context,
-              videoUrl: _addDownloadController.text,
+              videoUrl: _addDownloadController.text
+                  .split('/')
+                  .last
+                  .split('watch?v=')
+                  .last,
             );
           }
         },
