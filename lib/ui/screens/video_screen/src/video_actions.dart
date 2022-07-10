@@ -57,7 +57,7 @@ class VideoActions extends HookConsumerWidget {
               VideoAction(
                 icon: isLiked.value ? Icons.thumb_up : Icons.thumb_up_outlined,
                 onPressed: updateLike,
-                label: videoData.likes != null
+                label: videoData.likes != null && videoData.likes! >= 0
                     ? videoData.likes!.formatNumber
                     : context.locals.like,
               ),

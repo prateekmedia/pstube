@@ -11,9 +11,13 @@ class IconWithLabel extends StatelessWidget {
     this.margin = const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
     this.padding = const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
     this.secColor = SecColor.light,
+    this.width,
+    this.centerLabel = false,
   });
 
   final String label;
+  final bool centerLabel;
+  final double? width;
   final TextStyle? style;
   final EdgeInsets margin;
   final EdgeInsets padding;
@@ -21,9 +25,16 @@ class IconWithLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final text = Text(
+      label,
+      style: style,
+      overflow: TextOverflow.ellipsis,
+    );
+
     return Container(
       margin: margin,
       padding: padding,
+      width: width,
       decoration: BoxDecoration(
         color: context.getBackgroundColor.brighten(
           context,
@@ -31,11 +42,11 @@ class IconWithLabel extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(4),
       ),
-      child: Text(
-        label,
-        style: style,
-        overflow: TextOverflow.ellipsis,
-      ),
+      child: centerLabel
+          ? Center(
+              child: text,
+            )
+          : text,
     );
   }
 }

@@ -66,30 +66,11 @@ class VideoWidget extends StatelessWidget {
                 children: [
                   Container(
                     padding: const EdgeInsets.all(12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          videoData.title!,
-                          style: context.textTheme.headline3,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              '${videoData.views?.formatNumber ?? 0}'
-                              ' views',
-                            ),
-                            Text(
-                              videoData.uploadDate != null
-                                  ? '  •  ${videoData.uploadDate!}'
-                                  : '',
-                            ),
-                          ],
-                        ),
-                      ],
+                    child: Text(
+                      videoData.title!,
+                      style: context.textTheme.headline4!.copyWith(
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ),
                   VideoActions(

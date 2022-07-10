@@ -51,6 +51,7 @@ dependencies:
       url: https://github.com/TeamPiped/piped_dart
   pod_player: ^0.0.8
   readmore: ^2.1.0
+  responsive_framework: ^0.2.0
   share_plus: ^4.0.8
   shared_preferences: ^2.0.13
   sticky_headers: ^0.3.0+2

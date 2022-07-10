@@ -98,6 +98,7 @@ class ChannelAboutTab extends StatelessWidget {
             ],
           ),
         ),
+        const SizedBox(width: 10),
         if (!context.isMobile)
           Flexible(
             flex: 2,

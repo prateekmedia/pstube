@@ -82,7 +82,7 @@ class PSVideo extends HookWidget {
   Widget build(BuildContext context) {
     Future<Response<VideoInfo>?> getVideo() =>
         PipedApi().getUnauthenticatedApi().streamInfo(
-              videoId: videoUrl!,
+              videoId: videoUrl!.split('v=').last,
             );
 
     return FutureBuilder<Response<VideoInfo>?>(

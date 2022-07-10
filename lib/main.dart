@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:adwaita/adwaita.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dart_vlc/dart_vlc.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_locals.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -16,6 +15,7 @@ import 'package:pstube/data/models/models.dart';
 import 'package:pstube/data/services/services.dart';
 import 'package:pstube/ui/screens/home_page/home_page.dart';
 import 'package:pstube/ui/states/states.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,9 +61,18 @@ class MyApp extends HookConsumerWidget {
       title: AppInfo.myApp.name,
       builder: (context, child) {
         Widget myBuilder(BuildContext ctx, Widget child) {
-          return ScrollConfiguration(
-            behavior: const CupertinoScrollBehavior(),
-            child: child,
+          return ResponsiveWrapper.builder(
+            child,
+            minWidth: 480,
+            defaultScale: true,
+            defaultScaleLandscape: true,
+            defaultScaleFactor: 1.11,
+            defaultScaleFactorLandscape: 0.9,
+            breakpoints: [
+              const ResponsiveBreakpoint.resize(480, name: MOBILE),
+              const ResponsiveBreakpoint.resize(800, name: TABLET),
+              const ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+            ],
           );
         }
 
@@ -85,8 +94,10 @@ class MyApp extends HookConsumerWidget {
         }
         return const Locale('en');
       },
-      theme: AdwaitaThemeData.light(fontFamily: 'Noto Sans'),
-      darkTheme: AdwaitaThemeData.dark(fontFamily: 'Noto Sans'),
+      theme: AdwaitaThemeData.light(fontFamily: 'Noto Sans')
+          .copyWith(useMaterial3: true),
+      darkTheme: AdwaitaThemeData.dark(fontFamily: 'Noto Sans')
+          .copyWith(useMaterial3: true),
       themeMode: ref.watch(themeTypeProvider),
       debugShowCheckedModeBanner: false,
       home: const MyHomePage(),

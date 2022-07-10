@@ -219,12 +219,14 @@ class DownloadQualityTile extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final size = useState<int>(0);
+    final isMounted = useIsMounted();
 
     Future<void> getSize() async {
       final dio = Dio();
       try {
         // ignore: inference_failure_on_function_invocation
         final r = await dio.head(stream.url);
+        if (!isMounted()) return;
         size.value = int.tryParse(r.headers['content-length']![0]) ?? 0;
       } catch (e) {
         debugPrint('$e');
@@ -233,13 +235,13 @@ class DownloadQualityTile extends HookConsumerWidget {
 
     useEffect(
       () {
-        getSize();
+        if (size.value == 0) {
+          getSize();
+        }
         return;
       },
       [],
     );
-
-    final isMounted = useIsMounted();
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),

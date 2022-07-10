@@ -250,7 +250,7 @@ class SearchScreen extends HookWidget {
     final _currentPage = useState<BuiltList<SearchItem>?>(null);
     final nextPageToken = useState<String?>(null);
     final isLoading = useState<bool>(false);
-    final filter = useState<SearchFilter>(SearchFilter.all);
+    final filter = useState<SearchFilter>(SearchFilter.videos);
 
     Future<void> loadVideos() async {
       if (!isMounted()) return;
