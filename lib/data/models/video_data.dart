@@ -53,7 +53,7 @@ class VideoData {
         title = videoInfo.title,
         id = videoId,
         relatedStreams = videoInfo.relatedStreams,
-        views = 0, //videoInfo.views,
+        views = videoInfo.views,
         audioStreams = videoInfo.audioStreams,
         videoStreams = videoInfo.videoStreams,
         uploaded = null,
