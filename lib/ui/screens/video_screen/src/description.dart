@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/data/models/models.dart';
+import 'package:pstube/foundation/extensions/extensions.dart';
 import 'package:pstube/ui/screens/video_screen/src/export.dart';
 
 class DescriptionWidget extends StatelessWidget {

@@ -10,9 +10,9 @@ import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:piped_api/piped_api.dart';
 import 'package:pstube/config/info/app_info.dart';
-import 'package:pstube/data/extensions/extensions.dart';
-import 'package:pstube/data/services/services.dart';
-import 'package:pstube/ui/states/states.dart';
+import 'package:pstube/foundation/extensions/extensions.dart';
+import 'package:pstube/foundation/services.dart';
+import 'package:pstube/states/states.dart';
 
 class SettingsTab extends ConsumerStatefulWidget {
   const SettingsTab({super.key});

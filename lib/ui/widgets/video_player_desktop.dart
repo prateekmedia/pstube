@@ -1,6 +1,6 @@
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
-import 'package:pstube/data/extensions/extensions.dart';
+import 'package:pstube/foundation/extensions/extensions.dart';
 
 class VideoPlayerDesktop extends StatefulWidget {
   const VideoPlayerDesktop({

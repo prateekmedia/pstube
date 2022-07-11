@@ -4,12 +4,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:open_file/open_file.dart';
-import 'package:pstube/data/extensions/extensions.dart';
-
 import 'package:pstube/data/models/models.dart';
+import 'package:pstube/foundation/extensions/extensions.dart';
+import 'package:pstube/states/download_list/download_list.dart';
+import 'package:pstube/states/states.dart';
 import 'package:pstube/ui/screens/screens.dart';
-import 'package:pstube/ui/states/download_list/download_list.dart';
-import 'package:pstube/ui/states/states.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 
 class DownloadsTab extends ConsumerWidget {

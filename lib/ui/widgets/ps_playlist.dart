@@ -4,9 +4,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:piped_api/piped_api.dart';
-import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/data/models/playlist_data.dart';
-import 'package:pstube/ui/states/states.dart';
+import 'package:pstube/foundation/extensions/extensions.dart';
+import 'package:pstube/states/states.dart';
 
 class PSPlaylist extends ConsumerWidget {
   const PSPlaylist({

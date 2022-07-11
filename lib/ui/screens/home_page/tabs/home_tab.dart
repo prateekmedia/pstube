@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:piped_api/piped_api.dart';
-import 'package:pstube/data/extensions/extensions.dart';
+import 'package:pstube/foundation/extensions/extensions.dart';
 
 import 'package:pstube/ui/widgets/widgets.dart';
 

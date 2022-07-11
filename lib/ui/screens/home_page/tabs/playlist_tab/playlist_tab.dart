@@ -3,9 +3,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:pstube/data/extensions/extensions.dart';
+import 'package:pstube/foundation/extensions/extensions.dart';
+import 'package:pstube/states/states.dart';
 import 'package:pstube/ui/screens/home_page/tabs/playlist_tab/liked_screen/liked_screen.dart';
-import 'package:pstube/ui/states/states.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 
 class PlaylistTab extends ConsumerStatefulWidget {

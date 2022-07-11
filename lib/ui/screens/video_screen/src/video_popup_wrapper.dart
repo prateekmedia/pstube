@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
-import 'package:pstube/data/extensions/extensions.dart';
+import 'package:pstube/foundation/extensions/extensions.dart';
 
 class VideoPopupWrapper extends StatelessWidget {
   const VideoPopupWrapper({

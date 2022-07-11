@@ -5,7 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:piped_api/piped_api.dart';
-import 'package:pstube/data/extensions/extensions.dart';
+import 'package:pstube/foundation/extensions/extensions.dart';
 import 'package:pstube/ui/screens/video_screen/src/build_comment_box.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 

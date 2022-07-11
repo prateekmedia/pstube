@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pstube/data/controller/internet_connectivity.dart';
-import 'package:pstube/data/extensions/extensions.dart';
+import 'package:pstube/foundation/controller/internet_connectivity.dart';
+import 'package:pstube/foundation/extensions/extensions.dart';
 
 import 'package:pstube/ui/widgets/widgets.dart';
 

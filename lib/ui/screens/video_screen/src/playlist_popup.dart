@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pstube/data/models/models.dart';
-import 'package:pstube/ui/states/states.dart';
+import 'package:pstube/states/states.dart';
 
 class PlaylistPopup extends ConsumerWidget {
   const PlaylistPopup({

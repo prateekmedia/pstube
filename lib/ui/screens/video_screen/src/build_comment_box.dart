@@ -5,7 +5,7 @@ import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/models/comment_data.dart';
 
 import 'package:pstube/data/models/models.dart';
-import 'package:pstube/ui/states/states.dart';
+import 'package:pstube/states/states.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 
 class BuildCommentBox extends StatefulHookConsumerWidget {

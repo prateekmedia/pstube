@@ -3,9 +3,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/enums/enums.dart';
-import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/data/models/video_data.dart';
-import 'package:pstube/data/services/services.dart';
+import 'package:pstube/foundation/extensions/extensions.dart';
+import 'package:pstube/foundation/services.dart';
 import 'package:pstube/ui/screens/video_screen/src/export.dart';
 import 'package:pstube/ui/widgets/channel_details.dart';
 

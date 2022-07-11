@@ -5,7 +5,7 @@ import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:piped_api/piped_api.dart';
-import 'package:pstube/data/extensions/extensions.dart';
+import 'package:pstube/foundation/extensions/extensions.dart';
 import 'package:pstube/ui/screens/channel_screen/tabs/tabs.dart';
 import 'package:pstube/ui/widgets/widgets.dart' hide ChannelDetails;
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';

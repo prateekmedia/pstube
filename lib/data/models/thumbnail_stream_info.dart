@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/data/models/models.dart';
+import 'package:pstube/foundation/extensions/extensions.dart';
 
 class ThumbnailStreamInfo {
   ThumbnailStreamInfo({

@@ -6,11 +6,11 @@ import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/enums/enums.dart';
-import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/data/models/models.dart';
-import 'package:pstube/data/services/services.dart';
+import 'package:pstube/foundation/extensions/extensions.dart';
+import 'package:pstube/foundation/services.dart';
+import 'package:pstube/states/states.dart';
 import 'package:pstube/ui/screens/video_screen/src/export.dart';
-import 'package:pstube/ui/states/states.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 
 class VideoScreen extends StatefulHookConsumerWidget {

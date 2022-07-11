@@ -10,11 +10,11 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pstube/config/info/app_info.dart';
-import 'package:pstube/data/controller/internet_connectivity.dart';
 import 'package:pstube/data/models/models.dart';
-import 'package:pstube/data/services/services.dart';
+import 'package:pstube/foundation/controller/internet_connectivity.dart';
+import 'package:pstube/foundation/services.dart';
+import 'package:pstube/states/states.dart';
 import 'package:pstube/ui/screens/home_page/home_page.dart';
-import 'package:pstube/ui/states/states.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 Future<void> main() async {

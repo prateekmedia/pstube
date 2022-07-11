@@ -1,4 +1,4 @@
-import 'package:pstube/data/services/services.dart';
+import 'package:pstube/foundation/services.dart';
 
 class AppInfo {
   static final myApp = SFInfo(

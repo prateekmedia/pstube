@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libadwaita/libadwaita.dart';
-import 'package:pstube/data/extensions/extensions.dart';
+import 'package:pstube/foundation/extensions/extensions.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class ChannelAboutTab extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pstube/data/models/models.dart';
-import 'package:pstube/data/services/services.dart';
+import 'package:pstube/foundation/services.dart';
 
 part 'query_video.g.dart';
 

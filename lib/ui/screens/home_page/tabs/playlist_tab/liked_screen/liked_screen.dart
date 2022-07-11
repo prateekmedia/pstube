@@ -4,11 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:pstube/data/extensions/extensions.dart';
 import 'package:pstube/data/models/models.dart';
+import 'package:pstube/foundation/extensions/extensions.dart';
+import 'package:pstube/states/liked_list/liked_list.dart';
+import 'package:pstube/states/states.dart';
 import 'package:pstube/ui/screens/video_screen/src/build_comment_box.dart';
-import 'package:pstube/ui/states/liked_list/liked_list.dart';
-import 'package:pstube/ui/states/states.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 
 class LikedScreen extends StatefulHookWidget {
