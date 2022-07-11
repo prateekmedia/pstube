@@ -37,6 +37,7 @@ class DownloadList extends ChangeNotifier {
     DownloadItem downloadItem,
   ) async {
     final cancelToken = CancelToken();
+    final text = context.locals.downloadFinished;
 
     downloadList.insert(0, downloadItem.copyWith(cancelToken: cancelToken));
     refresh();
@@ -59,7 +60,7 @@ class DownloadList extends ChangeNotifier {
     if (currentItem.downloaded == currentItem.total && currentItem.total != 0) {
       refresh(value: true);
     }
-    BotToast.showText(text: context.locals.downloadFinished);
+    BotToast.showText(text: text);
   }
 
   void refresh({bool? value}) {

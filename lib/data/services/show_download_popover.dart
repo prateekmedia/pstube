@@ -248,7 +248,11 @@ class DownloadQualityTile extends HookConsumerWidget {
       child: InkWell(
         onTap: () async {
           if ((Platform.isAndroid || Platform.isIOS) &&
-              !await Permission.storage.request().isGranted) return;
+                  !await Permission.storage.request().isGranted ||
+              !await Permission.accessMediaLocation.request().isGranted &&
+                  !await Permission.manageExternalStorage.request().isGranted) {
+            return;
+          }
           if (!isMounted()) return;
           onClose != null ? onClose!() : context.back();
 

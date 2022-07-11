@@ -24,7 +24,7 @@ class QueryVideo {
   })  : name = checkIfExists(
           path,
           '${video.title}(${stream.quality}).'
-          '${stream.format}',
+          '${stream.format.toLowerCase()}',
         ),
         id = video.id.value,
         url = stream.url,

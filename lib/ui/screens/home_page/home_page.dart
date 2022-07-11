@@ -62,8 +62,8 @@ class MyHomePage extends HookConsumerWidget {
       return showPopoverForm(
         context: context,
         onConfirm: () {
-          context.back();
           if (_addDownloadController.value.text.isNotEmpty) {
+            context.back();
             showDownloadPopup(
               context,
               videoUrl: _addDownloadController.text

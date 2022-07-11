@@ -75,8 +75,8 @@ class DownloadItemBuilder extends StatelessWidget {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 60,
-                      width: 100,
+                      height: 54,
+                      width: 130,
                       child: CachedNetworkImage(
                         imageUrl: item.queryVideo.thumbnail,
                         fit: BoxFit.cover,
@@ -95,7 +95,7 @@ class DownloadItemBuilder extends StatelessWidget {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
+                padding: const EdgeInsets.only(left: 8, right: 2),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

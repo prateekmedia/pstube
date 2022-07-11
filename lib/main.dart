@@ -76,8 +76,8 @@ class MyApp extends HookConsumerWidget {
           );
         }
 
-        child = myBuilder(context, child!);
         child = botToastBuilder(context, child);
+        child = myBuilder(context, child);
         return child;
       },
       navigatorObservers: [BotToastNavigatorObserver()],
