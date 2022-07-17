@@ -515,6 +515,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.5"
+  handy_window:
+    dependency: "direct main"
+    description:
+      name: handy_window
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.6"
   hive:
     dependency: "direct main"
     description:

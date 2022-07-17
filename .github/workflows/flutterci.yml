@@ -155,10 +155,14 @@ jobs:
       - name: Build Flutter app
         run: flutter build windows
 
-      - uses: vimtor/action-zip@master
-        with:
-          files: build/windows/runner/release/
-          dest: pstube-windows-${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}.zip
+      - run: cp -r build/windows/runner/Release pstube-windows-exe
+      - run: tar.exe -a -c -f pstube-windows-${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}.zip pstube-windows-exe
+
+      - run: |
+          "%programfiles(x86)%\Inno Setup 6\iscc.exe" "PsTube_InnoSetup.iss"
+        shell: cmd
+
+      - run: cp Output/* ./pstube-windows-${{ github.event_name == 'release' && github.event.release.tag_name || 'continuous' }}.exe
 
       - uses: svenstaro/upload-release-action@latest
         with:
