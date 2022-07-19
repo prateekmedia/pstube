@@ -254,15 +254,17 @@ class SearchScreen extends HookWidget {
 
     Future<void> loadVideos() async {
       if (!isMounted()) return;
+      isLoading.value = true;
       final page = (await api.search(
         q: searchedTerm.value,
-        filter: SearchFilter.all,
+        filter: filter.value,
       ))
           .data;
 
       if (page?.items == null) return;
 
       _currentPage.value = page!.items;
+      isLoading.value = false;
     }
 
     final controller = useScrollController();

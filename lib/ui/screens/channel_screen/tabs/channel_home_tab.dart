@@ -45,7 +45,8 @@ class ChannelHomeTab extends StatelessWidget {
                 children: [
                   Text(channel!.name ?? ''),
                   Text(
-                    channel!.subscriberCount != null
+                    channel!.subscriberCount != null &&
+                            channel!.subscriberCount != -1
                         ? '${channel!.subscriberCount!.addCommas} ${context.locals.subscribers}'
                         : context.locals.hidden,
                   ),

@@ -70,7 +70,8 @@ class _ChannelInfoState extends State<ChannelDetails>
                       ),
                       Text(
                         channelData != null
-                            ? channelData.subscriberCount == null
+                            ? channelData.subscriberCount == null ||
+                                    channelData.subscriberCount == -1
                                 ? context.locals.hidden
                                 : '${channelData.subscriberCount!.formatNumber} '
                                     '${context.locals.subscribers}'
