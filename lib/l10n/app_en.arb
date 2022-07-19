@@ -138,5 +138,7 @@
   "region": "Region",
   "@region": {},
   "lookingForNewVersion": "Searching for new versions.",
-  "@lookingForNewVersion": {}
+  "@lookingForNewVersion": {},
+  "cinema": "Cinema",
+  "@cinema": {}
 }

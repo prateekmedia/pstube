@@ -35,6 +35,7 @@ class _VideoPlayerDesktopState extends State<VideoPlayerDesktop>
       player.currentStream.listen((current) {
         setState(() => this.current = current);
       });
+
       player.positionStream.listen((position) {
         setState(() => this.position = position);
       });
@@ -80,8 +81,13 @@ class _VideoPlayerDesktopState extends State<VideoPlayerDesktop>
   @override
   Widget build(BuildContext context) {
     return Video(
+      progressBarThumbGlowColor: Colors.red.withOpacity(0.2),
+      progressBarThumbColor: Colors.red,
+      progressBarActiveColor: Colors.red,
       // fit: BoxFit.fitHeight,
+      showFullscreenButton: true,
       player: player,
+
       height: context.isMobile ? 320 : 480,
       volumeThumbColor: Colors.blue,
       volumeActiveColor: Colors.blue,

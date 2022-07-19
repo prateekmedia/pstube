@@ -241,6 +241,7 @@ class RepliesPage extends HookWidget {
     }
 
     Future<void> loadData() async {
+      _currentPage.value = null;
       if (repliesToken.value == null) {
         isLoading.value = false;
         return;

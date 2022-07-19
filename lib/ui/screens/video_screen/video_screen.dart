@@ -76,6 +76,8 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
     final replyComment = useState<Comment?>(null);
     final sideWidget = useState<Widget?>(null);
     final sideType = useState<SideType?>(null);
+    final isCinemaMode =
+        useState<bool>(MyPrefs().prefs.getBool('isCinema') ?? false);
 
     return SafeArea(
       child: Stack(
@@ -103,6 +105,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                                     sideWidget: sideWidget,
                                     replyComment: replyComment,
                                     commentsSnapshot: commentsSnapshot,
+                                    isCinemaMode: isCinemaMode,
                                     emptySide: () {
                                       sideWidget.value = null;
                                       sideType.value = null;
@@ -110,7 +113,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                                   ),
                                 ),
                               ),
-                              if (!context.isMobile)
+                              if (!context.isMobile && !isCinemaMode.value)
                                 Flexible(
                                   flex: 4,
                                   child: [

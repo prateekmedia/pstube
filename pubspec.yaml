@@ -16,7 +16,9 @@ dependencies:
   cached_network_image: ^3.2.0
   connectivity_plus: ^2.2.0
   custom_text: ^0.6.0-dev.1
-  dart_vlc: ^0.3.0
+  dart_vlc: #^0.3.0
+    git:
+      url: https://github.com/alexmercerind/dart_vlc
   dio: ^4.0.4
   dio_cookie_manager: ^2.0.0
   equatable: ^2.0.3 

@@ -314,9 +314,11 @@ packages:
   dart_vlc:
     dependency: "direct main"
     description:
-      name: dart_vlc
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: dab71e97fcfc98a604d3231dbd0892bf58b10574
+      url: "https://github.com/alexmercerind/dart_vlc"
+    source: git
     version: "0.3.0"
   dart_vlc_ffi:
     dependency: transitive

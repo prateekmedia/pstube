@@ -21,8 +21,10 @@ class VideoActions extends HookConsumerWidget {
     required this.videoData,
     required this.sideType,
     required this.emptySide,
+    required this.isCinemaMode,
   });
 
+  final ValueNotifier<bool> isCinemaMode;
   final VideoData videoData;
   final ValueNotifier<Widget?> sideWidget;
   final ValueNotifier<SideType?> sideType;
@@ -61,6 +63,15 @@ class VideoActions extends HookConsumerWidget {
                     ? videoData.likes!.formatNumber
                     : context.locals.like,
               ),
+              if (!context.isMobile)
+                VideoAction(
+                  icon: Icons.theaters_outlined,
+                  onPressed: () {
+                    isCinemaMode.value = !isCinemaMode.value;
+                    MyPrefs().prefs.setBool('isCinema', isCinemaMode.value);
+                  },
+                  label: context.locals.cinema,
+                ),
               VideoAction(
                 icon: Icons.share_outlined,
                 onPressed: () => Share.share(

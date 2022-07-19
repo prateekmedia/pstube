@@ -18,8 +18,10 @@ class VideoWidget extends StatelessWidget {
     required this.replyComment,
     required this.commentsSnapshot,
     required this.emptySide,
+    required this.isCinemaMode,
   });
 
+  final ValueNotifier<bool> isCinemaMode;
   final VideoData videoData;
   final ValueNotifier<SideType?> sideType;
   final ValueNotifier<Widget?> sideWidget;
@@ -76,6 +78,7 @@ class VideoWidget extends StatelessWidget {
                   VideoActions(
                     videoData: videoData,
                     sideType: sideType,
+                    isCinemaMode: isCinemaMode,
                     sideWidget: sideWidget,
                     emptySide: () {
                       sideWidget.value = null;
@@ -110,7 +113,9 @@ class VideoWidget extends StatelessWidget {
                   const Divider(
                     height: 4,
                   ),
-                  if (context.isMobile)
+                  if (context.isMobile ||
+                      sideType.value != null ||
+                      isCinemaMode.value)
                     DescriptionWidget(
                       video: videoData,
                     ),
