@@ -6,13 +6,25 @@ import 'package:pstube/data/models/models.dart';
 final _box = Hive.box<List<dynamic>>('likedList');
 
 class LikedList extends ChangeNotifier {
-  LikedList(this.ref);
+  LikedList(this.ref) {
+    init();
+  }
   final ChangeNotifierProviderRef ref;
 
-  List<dynamic> likedVideoList =
-      _box.get('likedVideoList', defaultValue: <dynamic>[])!;
-  List<dynamic> likedCommentList =
-      _box.get('likedCommentList', defaultValue: <dynamic>[])!;
+  late List<String> likedVideoList;
+  late List<LikedComment> likedCommentList;
+
+  void init() {
+    likedVideoList = _box.get(
+      'likedVideoList',
+      defaultValue: <String>[],
+    )!.cast<String>();
+
+    likedCommentList = _box.get(
+      'likedCommentList',
+      defaultValue: <dynamic>[],
+    )!.cast<LikedComment>();
+  }
 
   void addVideo(String url) {
     if (!likedVideoList.contains(url)) {

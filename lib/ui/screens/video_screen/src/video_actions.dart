@@ -34,7 +34,7 @@ class VideoActions extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final likedList = ref.watch(likedListProvider);
     final isLiked = useState<bool>(
-      likedList.likedVideoList.contains(videoData.id),
+      likedList.likedVideoList.contains(videoData.id.url),
     );
     final _textController = TextEditingController();
 

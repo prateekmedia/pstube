@@ -33,9 +33,10 @@ class DownloadPathNotifier extends ChangeNotifier {
                   AppInfo.myApp.nickname,
                 ) +
                 (Platform.isWindows ? r'\' : '/'));
-    if (Platform.isAndroid && !await Permission.storage.request().isGranted ||
-        !await Permission.accessMediaLocation.request().isGranted &&
-            !await Permission.manageExternalStorage.request().isGranted) {
+    if (Platform.isAndroid &&
+        (!await Permission.storage.request().isGranted ||
+            !await Permission.accessMediaLocation.request().isGranted &&
+                !await Permission.manageExternalStorage.request().isGranted)) {
       return;
     }
     if (!Directory(path).existsSync()) await Directory(path).create();

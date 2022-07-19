@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:pstube/data/models/models.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
 import 'package:pstube/states/liked_list/liked_list.dart';
 import 'package:pstube/states/states.dart';
@@ -96,7 +95,7 @@ class _LikedVideoListState extends State<LikedVideoList>
         ] else
           for (final url in widget.likedList.likedVideoList)
             PSVideo(
-              videoUrl: url as String,
+              videoUrl: url,
               isRow: !context.isMobile,
             ),
       ],
@@ -135,7 +134,7 @@ class _LikedCommentListState extends State<LikedCommentList>
         ] else
           for (final comment in widget.likedList.likedCommentList)
             BuildCommentBox.liked(
-              comment: comment as LikedComment,
+              comment: comment,
               onReplyTap: null,
               updateLike: () => widget.likedList.removeComment(comment),
             ),

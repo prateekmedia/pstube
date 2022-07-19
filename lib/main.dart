@@ -46,6 +46,7 @@ Future<void> main() async {
   await Hive.openBox<dynamic>('playlist');
   await Hive.openBox<List<dynamic>>('likedList');
   await Hive.openBox<dynamic>('downloadList');
+  await Hive.openBox<List<dynamic>>('historyList');
 
   runApp(const ProviderScope(child: MyApp()));
 }

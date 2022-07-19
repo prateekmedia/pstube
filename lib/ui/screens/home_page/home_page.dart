@@ -13,6 +13,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:piped_api/piped_api.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
 import 'package:pstube/foundation/services.dart';
+import 'package:pstube/states/history/provider.dart';
 import 'package:pstube/states/states.dart';
 import 'package:pstube/ui/screens/home_page/tabs.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
@@ -149,7 +150,7 @@ class MyHomePage extends HookConsumerWidget {
                 search: null,
                 asyncSuggestions: (str) => str.isNotEmpty
                     ? yexp.YoutubeExplode().search.getQuerySuggestions(str)
-                    : Future.value([]),
+                    : Future.value(ref.watch(historyProvider.notifier).history),
                 onSubmitted: (str) => searchedTerm.value = str,
                 controller: _searchController,
               )
@@ -235,7 +236,7 @@ class MyHomePage extends HookConsumerWidget {
   }
 }
 
-class SearchScreen extends HookWidget {
+class SearchScreen extends HookConsumerWidget {
   const SearchScreen({
     super.key,
     required this.searchedTerm,
@@ -244,7 +245,7 @@ class SearchScreen extends HookWidget {
   final ValueNotifier<String> searchedTerm;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isMounted = useIsMounted();
     final api = PipedApi().getUnauthenticatedApi();
     final _currentPage = useState<BuiltList<SearchItem>?>(null);
@@ -254,6 +255,7 @@ class SearchScreen extends HookWidget {
 
     Future<void> loadVideos() async {
       if (!isMounted()) return;
+      ref.read(historyProvider).addSearchedTerm(searchedTerm.value);
       isLoading.value = true;
       final page = (await api.search(
         q: searchedTerm.value,
