@@ -128,7 +128,9 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                         },
                       ),
           ),
-          if (!Constants.mobVideoPlatforms)
+          if (!Constants.mobVideoPlatforms &&
+              (videoData?.videoStreams == null ||
+                  (!isCinemaMode.value && !context.isMobile)))
             SizedBox(
               height: 51,
               child: AdwHeaderBar(
@@ -139,7 +141,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                 style: const HeaderBarStyle(isTransparent: true),
               ),
             )
-          else
+          else if (videoData?.videoStreams == null)
             Align(
               alignment: Alignment.topLeft,
               child: Container(

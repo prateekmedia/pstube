@@ -95,10 +95,14 @@ class MyApp extends HookConsumerWidget {
         }
         return const Locale('en');
       },
-      theme: AdwaitaThemeData.light(fontFamily: 'Noto Sans')
-          .copyWith(useMaterial3: true),
-      darkTheme: AdwaitaThemeData.dark(fontFamily: 'Noto Sans')
-          .copyWith(useMaterial3: true),
+      theme: AdwaitaThemeData.light(fontFamily: 'Noto Sans').copyWith(
+        useMaterial3: true,
+        primaryColor: Colors.red,
+      ),
+      darkTheme: AdwaitaThemeData.dark(fontFamily: 'Noto Sans').copyWith(
+        primaryColor: Colors.red,
+        useMaterial3: true,
+      ),
       themeMode: ref.watch(themeTypeProvider),
       debugShowCheckedModeBanner: false,
       home: const MyHomePage(),

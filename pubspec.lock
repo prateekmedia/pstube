@@ -44,7 +44,7 @@ packages:
     source: hosted
     version: "2.9.0"
   audio_video_progress_bar:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: audio_video_progress_bar
       url: "https://pub.dartlang.org"

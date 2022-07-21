@@ -34,6 +34,7 @@ class VideoWidget extends StatelessWidget {
       children: [
         if (videoData.videoStreams != null)
           PlatformVideoPlayer(
+            isCinemaMode: isCinemaMode,
             videoData: videoData,
           )
         else

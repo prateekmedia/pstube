@@ -6,8 +6,13 @@ import 'package:pstube/ui/widgets/video_player_desktop.dart';
 import 'package:pstube/ui/widgets/video_player_mobile.dart';
 
 class PlatformVideoPlayer extends StatelessWidget {
-  const PlatformVideoPlayer({super.key, required this.videoData});
+  const PlatformVideoPlayer({
+    super.key,
+    required this.videoData,
+    required this.isCinemaMode,
+  });
 
+  final ValueNotifier<bool> isCinemaMode;
   final VideoData videoData;
 
   @override
@@ -35,6 +40,7 @@ class PlatformVideoPlayer extends StatelessWidget {
                 .toList(),
           )
         : VideoPlayerDesktop(
+            isCinemaMode: isCinemaMode,
             url: videoStreams
                 .firstWhere(
                   (element) => element.quality!.contains(
