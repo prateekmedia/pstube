@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pod_player/pod_player.dart';
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/foundation/services.dart';
-import 'package:pstube/ui/widgets/video_player_desktop.dart';
+import 'package:pstube/ui/widgets/video_player_desktop/video_player_desktop.dart';
 import 'package:pstube/ui/widgets/video_player_mobile.dart';
 
 class PlatformVideoPlayer extends StatelessWidget {

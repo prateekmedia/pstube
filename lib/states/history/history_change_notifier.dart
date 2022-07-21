@@ -26,7 +26,5 @@ class HistoryChangeNotifier extends ChangeNotifier {
 
     history.insert(0, term);
     _box.put('history', history);
-
-    notifyListeners();
   }
 }

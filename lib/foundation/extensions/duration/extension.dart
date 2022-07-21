@@ -1,7 +1,7 @@
 extension DurationExtensions on Duration {
-  String format() {
+  String format([String defaultVal = 'Shorts']) {
     if (inSeconds == 0) {
-      return 'Shorts';
+      return defaultVal;
     }
 
     final totalSecs = inSeconds;
