@@ -4,6 +4,7 @@ import 'package:adwaita/adwaita.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:pstube/foundation/extensions/context/extension.dart';
@@ -50,7 +51,7 @@ class ControlsDesktopStyle {
   final Color? volumeThumbColor;
 }
 
-class ControlsWrapperDesktop extends StatefulWidget {
+class ControlsWrapperDesktop extends HookWidget {
   const ControlsWrapperDesktop({
     super.key,
     required this.child,
@@ -65,72 +66,82 @@ class ControlsWrapperDesktop extends StatefulWidget {
   final ControlsDesktopStyle style;
 
   @override
-  State<ControlsWrapperDesktop> createState() => _ControlsWrapperDesktopState();
-}
+  Widget build(BuildContext context) {
+    final _hideControls = useState<bool>(false);
+    final _displayTapped = useState<bool>(false);
+    final isMounted = useIsMounted();
 
-class _ControlsWrapperDesktopState extends State<ControlsWrapperDesktop>
-    with SingleTickerProviderStateMixin {
-  bool _hideControls = false;
-  bool _displayTapped = false;
-  Timer? _hideTimer;
-  late StreamSubscription<PlaybackState> playPauseStream;
-  late AnimationController playPauseController;
-
-  Player get player => widget.player;
-
-  @override
-  void initState() {
-    super.initState();
-    playPauseController = AnimationController(
-      vsync: this,
+    final _hideTimer = useState<Timer?>(null);
+    late StreamSubscription<PlaybackState> playPauseStream;
+    final playPauseController = useAnimationController(
       duration: const Duration(milliseconds: 400),
     );
-    playPauseStream = player.playbackStream
-        .listen((event) => setPlaybackMode(isPlaying: event.isPlaying));
-    if (player.playback.isPlaying) playPauseController.forward();
-  }
 
-  @override
-  void dispose() {
-    playPauseStream.cancel();
-    playPauseController.dispose();
-    super.dispose();
-  }
-
-  void setPlaybackMode({required bool isPlaying}) {
-    if (isPlaying) {
-      playPauseController.forward();
-    } else {
-      playPauseController.reverse();
+    void setPlaybackMode({required bool isPlaying}) {
+      if (isPlaying) {
+        playPauseController.forward();
+      } else {
+        playPauseController.reverse();
+      }
     }
-    setState(() {});
-  }
 
-  @override
-  Widget build(BuildContext context) {
+    void _startHideTimer() {
+      _hideTimer.value = Timer(const Duration(seconds: 2), () {
+        if (!isMounted()) return;
+        _hideControls.value = true;
+      });
+    }
+
+    void _cancelAndRestartTimer() {
+      if (_hideTimer.value != null) {
+        _hideTimer.value!.cancel();
+        _hideTimer.value = null;
+      }
+
+      if (!isMounted()) return;
+      _startHideTimer();
+
+      _hideControls.value = false;
+      _displayTapped.value = true;
+    }
+
+    useEffect(
+      () {
+        playPauseStream = player.playbackStream
+            .listen((event) => setPlaybackMode(isPlaying: event.isPlaying));
+        if (player.playback.isPlaying) playPauseController.forward();
+        return () {
+          playPauseStream.cancel();
+        };
+      },
+      [player],
+    );
+
     return GestureDetector(
       onTap: () {
-        if (player.playback.isPlaying) {
-          if (_displayTapped) {
-            setState(() => _hideControls = true);
-          } else {
-            _cancelAndRestartTimer();
-          }
-        } else {
-          setState(() => _hideControls = true);
+        if (!player.playback.isPlaying) {
+          _hideControls.value = true;
+          return;
         }
+
+        if (!_displayTapped.value) {
+          _cancelAndRestartTimer();
+          return;
+        }
+
+        _hideControls.value = !_hideControls.value;
       },
       child: MouseRegion(
         onHover: (_) => _cancelAndRestartTimer(),
         child: AbsorbPointer(
-          absorbing: _hideControls,
+          absorbing: _hideControls.value,
           child: Stack(
             children: [
-              widget.child,
+              child,
               Positioned.fill(
                 child: AnimatedOpacity(
                   duration: const Duration(milliseconds: 300),
-                  opacity: _hideControls ? 0.0 : 1.0,
+                  opacity: _hideControls.value ? 0.0 : 1.0,
                   child: Stack(
                     children: [
                       const DecoratedBox(
@@ -150,8 +161,7 @@ class _ControlsWrapperDesktopState extends State<ControlsWrapperDesktop>
                           ),
                         ),
                       ),
-                      if (!widget.data.isFullscreen &&
-                          widget.data.showWindowControls)
+                      if (!data.isFullscreen && data.showWindowControls)
                         Positioned(
                           left: 0,
                           right: 0,
@@ -204,28 +214,22 @@ class _ControlsWrapperDesktopState extends State<ControlsWrapperDesktop>
                                   total: total,
                                   barHeight: 3,
                                   progressBarColor:
-                                      widget.style.progressBarActiveColor,
-                                  thumbColor:
-                                      widget.style.progressBarThumbColor,
-                                  baseBarColor:
-                                      widget.style.progressBarInactiveColor,
+                                      style.progressBarActiveColor,
+                                  thumbColor: style.progressBarThumbColor,
+                                  baseBarColor: style.progressBarInactiveColor,
                                   thumbGlowColor:
-                                      widget.style.progressBarThumbGlowColor,
+                                      style.progressBarThumbGlowColor,
                                   thumbRadius:
-                                      widget.style.progressBarThumbRadius ??
-                                          10.0,
+                                      style.progressBarThumbRadius ?? 10.0,
                                   thumbGlowRadius:
-                                      widget.style.progressBarThumbGlowRadius ??
-                                          30.0,
+                                      style.progressBarThumbGlowRadius ?? 30.0,
                                   timeLabelLocation: TimeLabelLocation.none,
-                                  timeLabelType: widget.data.showTimeLeft!
+                                  timeLabelType: data.showTimeLeft!
                                       ? TimeLabelType.remainingTime
                                       : TimeLabelType.totalTime,
                                   timeLabelTextStyle:
-                                      widget.style.progressBarTextStyle,
-                                  onSeek: (duration) {
-                                    player.seek(duration);
-                                  },
+                                      style.progressBarTextStyle,
+                                  onSeek: player.seek,
                                 ),
                               );
                             },
@@ -233,7 +237,7 @@ class _ControlsWrapperDesktopState extends State<ControlsWrapperDesktop>
                         ),
                       ),
                       StreamBuilder<CurrentState>(
-                        stream: widget.player.currentStream,
+                        stream: player.currentStream,
                         builder: (context, snapshot) {
                           return Positioned(
                             left: 0,
@@ -241,7 +245,6 @@ class _ControlsWrapperDesktopState extends State<ControlsWrapperDesktop>
                             bottom: 10,
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 const SizedBox(width: 10),
                                 if ((snapshot.data?.medias.length ?? 0) > 1)
@@ -249,7 +252,7 @@ class _ControlsWrapperDesktopState extends State<ControlsWrapperDesktop>
                                     color: Colors.white,
                                     iconSize: 30,
                                     icon: const Icon(Icons.skip_previous),
-                                    onPressed: () => player.previous(),
+                                    onPressed: player.previous,
                                   ),
                                 IconButton(
                                   color: Colors.white,
@@ -274,16 +277,19 @@ class _ControlsWrapperDesktopState extends State<ControlsWrapperDesktop>
                                     color: Colors.white,
                                     iconSize: 30,
                                     icon: const Icon(Icons.skip_next),
-                                    onPressed: () => player.next(),
+                                    onPressed: player.next,
                                   ),
                                 VolumeControl(
                                   player: player,
-                                  thumbColor: widget.style.volumeThumbColor,
-                                  inactiveColor:
-                                      widget.style.volumeInactiveColor,
-                                  activeColor: widget.style.volumeActiveColor,
-                                  backgroundColor:
-                                      widget.style.volumeBackgroundColor,
+                                  thumbColor: style.volumeThumbColor,
+                                  inactiveColor: style.volumeInactiveColor,
+                                  activeColor: style.volumeActiveColor,
+                                  backgroundColor: style.volumeBackgroundColor,
+                                ),
+                                Text(
+                                  'data',
+                                  style: context.textTheme.bodyText1!
+                                      .copyWith(color: Colors.white),
                                 ),
                               ],
                             ),
@@ -297,9 +303,9 @@ class _ControlsWrapperDesktopState extends State<ControlsWrapperDesktop>
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             AdwButton.circular(
-                              onPressed: widget.data.onFullscreenTap,
+                              onPressed: data.onFullscreenTap,
                               child: Icon(
-                                !widget.data.isFullscreen
+                                !data.isFullscreen
                                     ? Icons.fullscreen
                                     : Icons.fullscreen_exit,
                                 color: Colors.white,
@@ -318,32 +324,9 @@ class _ControlsWrapperDesktopState extends State<ControlsWrapperDesktop>
       ),
     );
   }
-
-  void _cancelAndRestartTimer() {
-    _hideTimer?.cancel();
-
-    if (mounted) {
-      _startHideTimer();
-
-      setState(() {
-        _hideControls = false;
-        _displayTapped = true;
-      });
-    }
-  }
-
-  void _startHideTimer() {
-    _hideTimer = Timer(const Duration(seconds: 3), () {
-      if (mounted) {
-        setState(() {
-          _hideControls = true;
-        });
-      }
-    });
-  }
 }
 
-class VolumeControl extends StatefulWidget {
+class VolumeControl extends HookWidget {
   const VolumeControl({
     required this.player,
     required this.activeColor,
@@ -352,6 +335,7 @@ class VolumeControl extends StatefulWidget {
     required this.thumbColor,
     super.key,
   });
+
   final Player player;
   final Color? activeColor;
   final Color? inactiveColor;
@@ -359,30 +343,28 @@ class VolumeControl extends StatefulWidget {
   final Color? thumbColor;
 
   @override
-  _VolumeControlState createState() => _VolumeControlState();
-}
-
-class _VolumeControlState extends State<VolumeControl> {
-  double volume = 0.5;
-  bool _showVolume = false;
-  double unmutedVolume = 0.5;
-
-  Player get player => widget.player;
-
-  @override
   Widget build(BuildContext context) {
+    final volume = useState<double>(player.general.volume);
+    final _showVolume = useState<bool>(false);
+    final unmutedVolume = useState<double>(0.5);
+
+    void muteUnmute() {
+      if (player.general.volume > 0) {
+        unmutedVolume.value = player.general.volume;
+        player.setVolume(0);
+      } else {
+        player.setVolume(unmutedVolume.value);
+      }
+    }
+
     return SizedBox(
       height: 45,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           MouseRegion(
-            onEnter: (_) {
-              setState(() => _showVolume = true);
-            },
-            onExit: (_) {
-              setState(() => _showVolume = false);
-            },
+            onEnter: (_) => _showVolume.value = true,
+            onExit: (_) => _showVolume.value = false,
             child: AdwButton.circular(
               onPressed: muteUnmute,
               child: Icon(
@@ -394,30 +376,27 @@ class _VolumeControlState extends State<VolumeControl> {
           ),
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 250),
-            child: _showVolume
+            child: _showVolume.value
                 ? AbsorbPointer(
-                    absorbing: !_showVolume,
+                    absorbing: !_showVolume.value,
                     child: MouseRegion(
-                      onEnter: (_) {
-                        setState(() => _showVolume = true);
-                      },
-                      onExit: (_) {
-                        setState(() => _showVolume = false);
-                      },
+                      onEnter: (_) => _showVolume.value = true,
+                      onExit: (_) => _showVolume.value = false,
                       child: SizedBox(
-                        width: 250,
+                        width: 120,
                         height: 45,
                         child: SliderTheme(
                           data: SliderThemeData(
-                            activeTrackColor: widget.activeColor,
-                            inactiveTrackColor: widget.inactiveColor,
-                            thumbColor: widget.thumbColor,
+                            overlayShape: SliderComponentShape.noThumb,
+                            activeTrackColor: activeColor,
+                            inactiveTrackColor: inactiveColor,
+                            thumbColor: thumbColor,
                           ),
                           child: Slider(
-                            value: player.general.volume,
-                            onChanged: (volume) {
-                              player.setVolume(volume);
-                              setState(() {});
+                            value: volume.value,
+                            onChanged: (vol) {
+                              player.setVolume(vol);
+                              volume.value = vol;
                             },
                           ),
                         ),
@@ -439,15 +418,5 @@ class _VolumeControlState extends State<VolumeControl> {
     } else {
       return Icons.volume_off_sharp;
     }
-  }
-
-  void muteUnmute() {
-    if (player.general.volume > 0) {
-      unmutedVolume = player.general.volume;
-      player.setVolume(0);
-    } else {
-      player.setVolume(unmutedVolume);
-    }
-    setState(() {});
   }
 }
