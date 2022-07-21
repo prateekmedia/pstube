@@ -38,7 +38,8 @@ class PlayerStateNotifier extends ChangeNotifier {
       _playlistMode = playMode.first;
     }
     final boxFit = BoxFit.values.where(
-        (element) => element.name == MyPrefs().prefs.getString('boxFit'));
+      (element) => element.name == MyPrefs().prefs.getString('boxFit'),
+    );
     if (boxFit.isNotEmpty) {
       _boxFit = boxFit.first;
     }
