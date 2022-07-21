@@ -48,7 +48,7 @@ class DescriptionWidget extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 4),
             child: SelectableHtml(
-              data: video.description!.replaceAll('\n', r'<br>'),
+              data: video.description!.replaceAll('\n', '<br>'),
               onLinkTap: (link, _, __, ___) {
                 if (link != null) {
                   launchUrlString(link);
