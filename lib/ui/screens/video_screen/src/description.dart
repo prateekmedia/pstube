@@ -3,6 +3,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
 import 'package:pstube/ui/screens/video_screen/src/export.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class DescriptionWidget extends StatelessWidget {
   const DescriptionWidget({
@@ -46,8 +47,15 @@ class DescriptionWidget extends StatelessWidget {
         if ((video.description ?? '').isNotEmpty)
           Container(
             padding: const EdgeInsets.symmetric(vertical: 4),
-            child: Html(
-              data: video.description,
+            child: SelectableHtml(
+              data: video.description!.replaceAll('\n', r'<br>'),
+              onLinkTap: (link, _, __, ___) {
+                if (link != null) {
+                  launchUrlString(link);
+                  return;
+                }
+                debugPrint('Link is Empty');
+              },
             ),
           ),
       ],

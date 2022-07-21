@@ -21,6 +21,7 @@ Future<dynamic> showDownloadPopup(
   BuildContext context, {
   VideoData? video,
   String? videoUrl,
+  bool isClickable = false,
 }) {
   assert(
     video != null || videoUrl != null,
@@ -33,7 +34,10 @@ Future<dynamic> showDownloadPopup(
   return showPopover(
     context: context,
     title: context.locals.downloadQuality,
-    padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 12),
+    padding: EdgeInsets.symmetric(
+      horizontal: context.isMobile ? 14 : 26,
+      vertical: 6,
+    ),
     builder: (ctx) => FutureBuilder<Response<VideoInfo>?>(
       future: videoUrl != null ? getVideo() : null,
       builder: (context, snapshot) {
@@ -42,6 +46,7 @@ Future<dynamic> showDownloadPopup(
                     snapshot.data != null &&
                     snapshot.data!.data != null
             ? DownloadsWidget(
+                isClickable: isClickable,
                 video: video ??
                     VideoData.fromVideoInfo(
                       snapshot.data!.data!,
@@ -61,10 +66,12 @@ class DownloadsWidget extends ConsumerWidget {
     super.key,
     required this.video,
     this.onClose,
+    this.isClickable = false,
   });
 
   final VideoData video;
   final VoidCallback? onClose;
+  final bool isClickable;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -89,9 +96,15 @@ class DownloadsWidget extends ConsumerWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    PSVideo(
+                      videoData: video,
+                      isRow: true,
+                      isInsidePopup: true,
+                      isClickable: isClickable,
+                    ),
                     AdwActionRow(
                       contentPadding: EdgeInsets.zero,
-                      onActivated: () =>
+                      onActivated:
                           ref.read(rememberChoiceProvider.notifier).toggle,
                       start: Checkbox(
                         value: ref.watch(rememberChoiceProvider),

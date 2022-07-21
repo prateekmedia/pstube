@@ -9,12 +9,10 @@ class RememberChoiceNotifier extends StateNotifier<bool> {
     MyPrefs().prefs.setBool('remember_choice', state);
   }
 
-  void toggle() {
-    state = !state;
-    MyPrefs().prefs.setBool('remember_choice', state);
-  }
+  void toggle() => value = !state;
 
-  void reset() {
-    MyPrefs().prefs.remove('remember_choice').whenComplete(() => state = false);
-  }
+  void reset() => MyPrefs()
+      .prefs
+      .remove('remember_choice')
+      .whenComplete(() => state = false);
 }

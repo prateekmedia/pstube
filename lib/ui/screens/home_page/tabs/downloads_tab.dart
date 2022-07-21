@@ -82,7 +82,7 @@ class DownloadItemBuilder extends StatelessWidget {
                       ),
                     ),
                     IconWithLabel(
-                      width: 100,
+                      width: 130,
                       margin: EdgeInsets.zero,
                       label: item.queryVideo.duration.parseDuration().format(),
                       centerLabel: true,

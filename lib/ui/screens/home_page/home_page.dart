@@ -67,6 +67,7 @@ class MyHomePage extends HookConsumerWidget {
             context.back();
             showDownloadPopup(
               context,
+              isClickable: true,
               videoUrl: _addDownloadController.text
                   .split('/')
                   .last
@@ -148,7 +149,7 @@ class MyHomePage extends HookConsumerWidget {
                 toggleSearchBar: toggleSearchBar,
                 hintText: '',
                 search: null,
-                asyncSuggestions: (str) => str.isNotEmpty
+                asyncSuggestions: (str) => str.trim().isNotEmpty
                     ? yexp.YoutubeExplode().search.getQuerySuggestions(str)
                     : Future.value(ref.watch(historyProvider.notifier).history),
                 onSubmitted: (str) => searchedTerm.value = str,
@@ -159,10 +160,7 @@ class MyHomePage extends HookConsumerWidget {
           if (!toggleSearch.value)
             AdwHeaderButton(
               onPressed: addDownload,
-              icon: const Icon(
-                Icons.add,
-                size: 17,
-              ),
+              icon: const Icon(Icons.add, size: 17),
             ),
           if (!toggleSearch.value && _currentIndex.value == 2)
             AdwHeaderButton(

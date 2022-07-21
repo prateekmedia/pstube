@@ -25,6 +25,8 @@ class PSVideo extends HookWidget {
     this.actions = const [],
     this.isRelated = false,
     this.onTap,
+    this.isInsidePopup = false,
+    this.isClickable = true,
   });
 
   PSVideo.streamItem({
@@ -40,7 +42,9 @@ class PSVideo extends HookWidget {
     this.actions = const [],
     this.isRelated = false,
     this.onTap,
-  }) : videoData = streamItem != null
+    this.isClickable = true,
+  })  : isInsidePopup = false,
+        videoData = streamItem != null
             ? VideoData.fromStreamItem(
                 streamItem,
               )
@@ -58,7 +62,9 @@ class PSVideo extends HookWidget {
     this.loadData = false,
     this.actions = const [],
     this.onTap,
-  })  : isRelated = true,
+    this.isClickable = true,
+  })  : isInsidePopup = false,
+        isRelated = true,
         videoData = videoInfo != null
             ? VideoData.fromVideoInfo(
                 videoInfo,
@@ -77,6 +83,8 @@ class PSVideo extends HookWidget {
   final List<Widget> actions;
   final bool isRelated;
   final VoidCallback? onTap;
+  final bool isInsidePopup;
+  final bool isClickable;
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +107,7 @@ class PSVideo extends HookWidget {
           padding: const EdgeInsets.all(8),
           child: InkWell(
             onTap: onTap ??
-                (video != null
+                (video != null && isClickable
                     ? () => context.pushPage(
                           VideoScreen(
                             video: video,
@@ -120,10 +128,9 @@ class PSVideo extends HookWidget {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(15),
                               child: SizedBox(
-                                height: 90,
-                                width: 160,
-                                child:
-                                    getThumbnail(video, context, isRow: isRow),
+                                height: context.isMobile ? 73 : 90,
+                                width: context.isMobile ? 130 : 160,
+                                child: getThumbnail(video, context),
                               ),
                             ),
                             if (video != null)
@@ -169,9 +176,9 @@ class PSVideo extends HookWidget {
                             ],
                           ),
                         ),
-                        // if (!isInsideDownloadPopup) ...[
-                        getDownloadButton(video, context),
-                        // ],
+                        if (!isInsidePopup) ...[
+                          getDownloadButton(video, context),
+                        ],
                         ...actions.map(
                           (e) => Padding(
                             padding: const EdgeInsets.only(left: 8),
@@ -186,7 +193,7 @@ class PSVideo extends HookWidget {
                           borderRadius: BorderRadius.circular(15),
                           child: Stack(
                             children: [
-                              getThumbnail(video, context, isRow: isRow),
+                              getThumbnail(video, context),
                               if (video != null)
                                 Positioned.fill(
                                   child: Align(
@@ -242,11 +249,7 @@ class PSVideo extends HookWidget {
     );
   }
 
-  AspectRatio getThumbnail(
-    VideoData? video,
-    BuildContext context, {
-    required bool isRow,
-  }) {
+  AspectRatio getThumbnail(VideoData? video, BuildContext context) {
     return AspectRatio(
       aspectRatio: 16 / 9,
       child: video != null
@@ -255,9 +258,7 @@ class PSVideo extends HookWidget {
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image: CachedNetworkImageProvider(
-                    isRow
-                        ? video.thumbnails.lowResUrl
-                        : video.thumbnails.mediumResUrl,
+                    video.thumbnails.mediumResUrl,
                   ),
                 ),
               ),
@@ -311,6 +312,7 @@ class PSVideo extends HookWidget {
         onPressed: video != null
             ? () => showDownloadPopup(
                   context,
+                  isClickable: true,
                   video: video,
                 )
             : null,
