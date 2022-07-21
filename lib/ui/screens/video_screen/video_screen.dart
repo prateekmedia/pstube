@@ -147,20 +147,16 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                 child: context.backLeading(isCircular: true),
               ),
             ),
-          Align(
-            alignment: Alignment.topRight,
-            child: Material(
-              child: SizedBox(
-                width: context.width / 3,
-                child: [
-                  const SizedBox(),
-                  if (!context.isMobile) ...[
-                    if (sideWidget.value != null) sideWidget.value!,
-                  ],
-                ].last,
+          if (!context.isMobile && sideWidget.value != null)
+            Align(
+              alignment: Alignment.topRight,
+              child: Material(
+                child: SizedBox(
+                  width: context.width / 3,
+                  child: sideWidget.value,
+                ),
               ),
             ),
-          ),
         ],
       ),
     );

@@ -5,7 +5,6 @@ import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/enums/enums.dart';
 import 'package:pstube/data/models/video_data.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
-import 'package:pstube/foundation/services.dart';
 import 'package:pstube/ui/screens/video_screen/src/export.dart';
 import 'package:pstube/ui/widgets/channel_details.dart';
 
@@ -38,25 +37,29 @@ class VideoWidget extends StatelessWidget {
             videoData: videoData,
           )
         else
-          AspectRatio(
-            aspectRatio: 16 / 9,
+          ConstrainedBox(
+            constraints: BoxConstraints.tightFor(
+              height: context.isMobile ? 320 : 480,
+              width: context.isMobile ? 569 : 853,
+            ),
             child: Stack(
               children: [
-                AspectRatio(
-                  aspectRatio: 16 / 9,
+                Container(
+                  constraints: BoxConstraints.tightFor(
+                    height: context.isMobile ? 320 : 480,
+                    width: context.isMobile ? 569 : 853,
+                  ),
                   child: CachedNetworkImage(
                     imageUrl: videoData.thumbnails.mediumResUrl,
-                    fit: BoxFit.fill,
+                    fit: BoxFit.cover,
                   ),
                 ),
-                if (Constants.mobVideoPlatforms) ...[
-                  ColoredBox(
-                    color: Colors.black.withOpacity(0.25),
-                  ),
-                  const Align(
-                    child: CircularProgressIndicator(),
-                  ),
-                ]
+                ColoredBox(
+                  color: Colors.black.withOpacity(0.25),
+                ),
+                const Align(
+                  child: CircularProgressIndicator(),
+                ),
               ],
             ),
           ),
