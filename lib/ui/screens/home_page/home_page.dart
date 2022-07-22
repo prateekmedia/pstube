@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:built_collection/built_collection.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -10,11 +8,12 @@ import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:libadwaita_searchbar_ac/libadwaita_searchbar_ac.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:piped_api/piped_api.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
 import 'package:pstube/foundation/services.dart';
+import 'package:pstube/foundation/services/piped_service.dart';
 import 'package:pstube/states/history/provider.dart';
 import 'package:pstube/states/states.dart';
+import 'package:pstube/ui/screens/home_page/search_screen.dart';
 import 'package:pstube/ui/screens/home_page/tabs.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yexp;
@@ -30,11 +29,14 @@ class MyHomePage extends HookConsumerWidget {
     final toggleSearch = useState<bool>(false);
     final searchedTerm = useState<String>('');
     final _controller = PageController(initialPage: _currentIndex.value);
-    final videos = useMemoized(
-      () => PipedApi().getUnauthenticatedApi().trending(
-            region: ref.watch(regionProvider),
-          ),
-    );
+    final videos = ref.watch(trendingVideosProvider);
+
+    final mainScreens = [
+      HomeTab(snapshot: videos),
+      const PlaylistTab(),
+      const DownloadsTab(),
+      const SettingsTab(),
+    ];
 
     void toggleSearchBar({bool? value}) {
       searchedTerm.value = '';
@@ -168,47 +170,35 @@ class MyHomePage extends HookConsumerWidget {
               onPressed: clearAll,
             ),
         ],
-        body: FutureBuilder<Response<BuiltList<StreamItem>>>(
-          future: videos,
-          builder: (context, snapshot) {
-            final mainScreens = [
-              HomeTab(snapshot: snapshot),
-              const PlaylistTab(),
-              const DownloadsTab(),
-              const SettingsTab(),
-            ];
-
-            return Column(
-              children: [
-                if (!toggleSearch.value)
-                  Flexible(
-                    child: SFBody(
-                      child: PageView.builder(
-                        controller: _controller,
-                        itemCount: mainScreens.length,
-                        itemBuilder: (context, index) => mainScreens[index],
-                        onPageChanged: (index) => _currentIndex.value = index,
-                      ),
-                    ),
-                  )
-                else
-                  Flexible(
-                    child: searchedTerm.value.isNotEmpty
-                        ? SearchScreen(
-                            searchedTerm: searchedTerm,
-                          )
-                        : Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Center(
-                                child: Text(context.locals.typeToSearch),
-                              ),
-                            ],
-                          ),
+        body: Column(
+          children: [
+            if (!toggleSearch.value)
+              Flexible(
+                child: SFBody(
+                  child: PageView.builder(
+                    controller: _controller,
+                    itemCount: mainScreens.length,
+                    itemBuilder: (context, index) => mainScreens[index],
+                    onPageChanged: (index) => _currentIndex.value = index,
                   ),
-              ],
-            );
-          },
+                ),
+              )
+            else
+              Flexible(
+                child: searchedTerm.value.isNotEmpty
+                    ? SearchScreen(
+                        searchedTerm: searchedTerm,
+                      )
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Center(
+                            child: Text(context.locals.typeToSearch),
+                          ),
+                        ],
+                      ),
+              ),
+          ],
         ),
         viewSwitcher: !toggleSearch.value
             ? AdwViewSwitcher(
@@ -231,101 +221,5 @@ class MyHomePage extends HookConsumerWidget {
             : null,
       ),
     );
-  }
-}
-
-class SearchScreen extends HookConsumerWidget {
-  const SearchScreen({
-    super.key,
-    required this.searchedTerm,
-  });
-
-  final ValueNotifier<String> searchedTerm;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isMounted = useIsMounted();
-    final api = PipedApi().getUnauthenticatedApi();
-    final _currentPage = useState<BuiltList<SearchItem>?>(null);
-    final nextPageToken = useState<String?>(null);
-    final isLoading = useState<bool>(false);
-    final filter = useState<SearchFilter>(SearchFilter.videos);
-
-    Future<void> loadVideos() async {
-      if (!isMounted()) return;
-      ref.read(historyProvider).addSearchedTerm(searchedTerm.value);
-      isLoading.value = true;
-      final page = (await api.search(
-        q: searchedTerm.value,
-        filter: filter.value,
-      ))
-          .data;
-
-      if (page?.items == null) return;
-
-      _currentPage.value = page!.items;
-      isLoading.value = false;
-    }
-
-    final controller = useScrollController();
-
-    Future<void> _getMoreData() async {
-      if (isLoading.value ||
-          !isMounted() ||
-          nextPageToken.value == null ||
-          controller.position.pixels != controller.position.maxScrollExtent) {
-        return;
-      }
-
-      isLoading.value = true;
-
-      final nextPage = await api.searchNextPage(
-        nextpage: nextPageToken.value!,
-        q: searchedTerm.value,
-        filter: filter.value,
-      );
-
-      if (nextPage.data == null && nextPage.data?.items != null) {
-        return;
-      }
-
-      nextPageToken.value = nextPage.data!.nextpage;
-
-      _currentPage.value = _currentPage.value!.rebuild(
-        (b) => b.addAll(
-          nextPage.data!.items!.toList(),
-        ),
-      );
-      isLoading.value = false;
-    }
-
-    useEffect(
-      () {
-        loadVideos();
-        controller.addListener(_getMoreData);
-        searchedTerm.addListener(loadVideos);
-        return () {
-          searchedTerm.removeListener(loadVideos);
-          controller.removeListener(_getMoreData);
-        };
-      },
-      [controller],
-    );
-
-    return _currentPage.value != null && !isLoading.value
-        ? ListView.separated(
-            separatorBuilder: (context, index) => Divider(
-              color: context.getBackgroundColor.withOpacity(0.6),
-            ),
-            shrinkWrap: true,
-            controller: controller,
-            itemCount: _currentPage.value!.length + 1,
-            itemBuilder: (ctx, idx) => idx == _currentPage.value!.length
-                ? getCircularProgressIndicator()
-                : _currentPage.value![idx].showContent(context),
-          )
-        : const Center(
-            child: CircularProgressIndicator(),
-          );
   }
 }

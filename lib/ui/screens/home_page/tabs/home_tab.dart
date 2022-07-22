@@ -14,7 +14,7 @@ class HomeTab extends ConsumerStatefulWidget {
     required this.snapshot,
   });
 
-  final AsyncSnapshot<Response<BuiltList<StreamItem>>> snapshot;
+  final AsyncValue<Response<BuiltList<StreamItem>>> snapshot;
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -26,9 +26,8 @@ class _HomeScreenState extends ConsumerState<HomeTab>
   Widget build(BuildContext context) {
     super.build(context);
 
-    return (widget.snapshot.hasData &&
-            widget.snapshot.data != null &&
-            widget.snapshot.data!.data != null)
+    return (widget.snapshot.asData != null &&
+            widget.snapshot.value!.data != null)
         ? SingleChildScrollView(
             child: Column(
               children: [
@@ -42,13 +41,13 @@ class _HomeScreenState extends ConsumerState<HomeTab>
                     shrinkWrap: true,
                     primary: false,
                     itemBuilder: (ctx, idx) {
-                      final streamItem = widget.snapshot.data!.data![idx];
+                      final streamItem = widget.snapshot.value!.data![idx];
                       return PSVideo.streamItem(
                         loadData: true,
                         streamItem: streamItem,
                       );
                     },
-                    itemCount: widget.snapshot.data!.data!.length,
+                    itemCount: widget.snapshot.value!.data!.length,
                   ),
                 ),
               ],
