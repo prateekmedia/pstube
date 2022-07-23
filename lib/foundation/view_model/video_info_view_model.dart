@@ -1,5 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pstube/data/models/video_data.dart';
+import 'package:pstube/data/models/models.dart';
 import 'package:pstube/foundation/services/piped_service.dart';
 
 final videoViewModelProvider = Provider<VideoViewModel>((ref) {
@@ -7,10 +7,10 @@ final videoViewModelProvider = Provider<VideoViewModel>((ref) {
   return VideoViewModel(pipedService);
 });
 
-FutureProvider<VideoData?> videoInfoProvider(String videoUrl) =>
+FutureProvider<VideoData?> videoInfoProvider(VideoId videoId) =>
     FutureProvider((ref) async {
       final videoViewModel = ref.watch(videoViewModelProvider);
-      return videoViewModel.getInfo(videoUrl);
+      return videoViewModel.getInfo(videoId);
     });
 
 class VideoViewModel {
@@ -18,6 +18,7 @@ class VideoViewModel {
 
   final PipedService pipedService;
 
-  Future<VideoData?> getInfo(String videoUrl) =>
-      pipedService.getVideoData(videoUrl);
+  Future<VideoData?> getInfo(VideoId videoId) {
+    return pipedService.getVideoData(videoId);
+  }
 }

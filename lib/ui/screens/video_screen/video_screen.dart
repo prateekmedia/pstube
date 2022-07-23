@@ -34,7 +34,7 @@ class VideoScreen extends StatefulHookConsumerWidget {
 
 class _VideoScreenState extends ConsumerState<VideoScreen>
     with AutomaticKeepAliveClientMixin {
-  late final videoId = widget.videoId ?? widget.video!.id.url;
+  late final videoId = widget.videoId ?? widget.video!.id.value;
   void initVideo() {
     ref.read(videosProvider).disposeVideos();
     if (widget.loadData || widget.videoId != null) {
@@ -49,8 +49,8 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
     }
   }
 
-  void getComments() {
-    ref.read(commentsProvider).getComments(videoId);
+  Future<void> getComments() async {
+    await ref.read(commentsProvider).getComments(videoId);
   }
 
   @override
@@ -65,7 +65,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
     super.build(context);
 
     final videoSnapshot = widget.loadData || widget.videoId != null
-        ? ref.watch(videoInfoProvider(videoId))
+        ? ref.read(videoInfoProvider(VideoId(videoId)))
         : null;
     final videosP = ref.watch(videosProvider);
 

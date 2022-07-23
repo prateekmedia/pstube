@@ -46,7 +46,7 @@ class PSVideo extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return FutureBuilder<VideoData?>(
       future: videoUrl != null
-          ? ref.watch(pipedServiceProvider).getVideoData(videoUrl!)
+          ? ref.watch(pipedServiceProvider).getVideoData(VideoId(videoUrl!))
           : null,
       builder: (context, snapshot) {
         final video = snapshot.data ?? videoData;

@@ -36,9 +36,9 @@ class PipedService {
     return data;
   }
 
-  Future<VideoData?> getVideoData(String videoUrl) async {
+  Future<VideoData?> getVideoData(VideoId videoId) async {
     final data = (await PipedApi().getUnauthenticatedApi().streamInfo(
-              videoId: videoUrl.split('v=').last,
+              videoId: videoId.value,
             ))
         .data;
 
@@ -46,7 +46,7 @@ class PipedService {
 
     return VideoData.fromVideoInfo(
       data,
-      VideoId(videoUrl),
+      videoId,
     );
   }
 

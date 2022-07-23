@@ -5,9 +5,11 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_locals.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pstube/config/info/app_info.dart';
 import 'package:pstube/data/models/models.dart';
@@ -49,6 +51,18 @@ Future<void> main() async {
   await Hive.openBox<List<dynamic>>('historyList');
 
   runApp(const ProviderScope(child: MyApp()));
+  if (!Constants.mobVideoPlatforms) {
+    doWhenWindowReady(() {
+      final win = appWindow!;
+      const initialSize = Size(400, 450);
+      const size = Size(1000, 600);
+      win
+        ..title = 'PsTube'
+        ..size = size
+        ..minSize = initialSize
+        ..show();
+    });
+  }
 }
 
 class MyApp extends HookConsumerWidget {
@@ -56,8 +70,14 @@ class MyApp extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.read(downloadPathProvider).init();
     final botToastBuilder = BotToastInit();
+    useEffect(
+      () {
+        ref.read(downloadPathProvider).init();
+        return;
+      },
+      [],
+    );
     return MaterialApp(
       title: AppInfo.myApp.name,
       builder: (context, child) {

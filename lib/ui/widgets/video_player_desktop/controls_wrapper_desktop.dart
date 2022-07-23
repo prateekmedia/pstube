@@ -296,7 +296,7 @@ class ControlsWrapperDesktop extends HookConsumerWidget {
                                     ),
                                     const SizedBox(width: 10),
                                     Text(
-                                      '${progress.format('---')} / ${total.format('---')}',
+                                      '${progress.format('0:00')} / ${total.format('0:00')}',
                                       style: context.textTheme.bodyText1!
                                           .copyWith(color: Colors.white),
                                     ),

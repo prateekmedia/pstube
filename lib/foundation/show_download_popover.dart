@@ -9,6 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
+import 'package:pstube/foundation/view_model/video_info_view_model.dart';
 import 'package:pstube/states/states.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 
@@ -27,10 +28,7 @@ Future<dynamic> showDownloadPopup(
     video != null || videoUrl != null,
     "Both video and videoUrl can't be null",
   );
-  Future<Response<VideoInfo>?> getVideo() =>
-      PipedApi().getUnauthenticatedApi().streamInfo(
-            videoId: videoUrl!,
-          );
+
   return showPopover(
     context: context,
     title: context.locals.downloadQuality,
@@ -38,27 +36,46 @@ Future<dynamic> showDownloadPopup(
       horizontal: context.isMobile ? 14 : 26,
       vertical: 6,
     ),
-    builder: (ctx) => FutureBuilder<Response<VideoInfo>?>(
-      future: videoUrl != null ? getVideo() : null,
-      builder: (context, snapshot) {
-        return video != null ||
-                snapshot.hasData &&
-                    snapshot.data != null &&
-                    snapshot.data!.data != null
-            ? DownloadsWidget(
-                isClickable: isClickable,
-                video: video ??
-                    VideoData.fromVideoInfo(
-                      snapshot.data!.data!,
-                      VideoId(videoUrl!),
-                    ),
-              )
-            : snapshot.hasError
-                ? Text(context.locals.error)
-                : _progressIndicator;
-      },
+    builder: (_) => _DownloadWrapper(
+      video: video,
+      videoUrl: videoUrl,
+      isClickable: isClickable,
     ),
   );
+}
+
+class _DownloadWrapper extends ConsumerWidget {
+  const _DownloadWrapper({
+    required this.video,
+    required this.videoUrl,
+    required this.isClickable,
+  });
+
+  final VideoData? video;
+  final String? videoUrl;
+  final bool isClickable;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final videoData = videoUrl != null || video?.audioStreams == null
+        ? ref.read(
+            videoInfoProvider(
+              videoUrl != null ? VideoId(videoUrl!) : video!.id,
+            ),
+          )
+        : null;
+
+    final loadedVideo = video?.videoStreams != null ? video! : videoData!.value;
+
+    return loadedVideo != null
+        ? DownloadsWidget(
+            isClickable: isClickable,
+            video: loadedVideo,
+          )
+        : videoData!.isLoading
+            ? _progressIndicator
+            : Text(context.locals.error);
+  }
 }
 
 class DownloadsWidget extends ConsumerWidget {
@@ -75,103 +92,81 @@ class DownloadsWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Future<VideoData?> getVideo() async {
-      final res = await PipedApi().getUnauthenticatedApi().streamInfo(
-            videoId: video.id.value,
-          );
-
-      if (res.data == null) return null;
-
-      return VideoData.fromVideoInfo(res.data!, video.id);
-    }
-
     return SafeArea(
-      child: FutureBuilder<VideoData?>(
-        future: video.audioStreams == null ? getVideo() : null,
-        builder: (context, snapshot) {
-          final data = video.audioStreams != null ? video : snapshot.data;
-
-          return snapshot.hasData || data != null
-              ? Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    PSVideo(
-                      videoData: video,
-                      isRow: true,
-                      isInsidePopup: true,
-                      isClickable: isClickable,
-                    ),
-                    AdwActionRow(
-                      contentPadding: EdgeInsets.zero,
-                      onActivated:
-                          ref.read(rememberChoiceProvider.notifier).toggle,
-                      start: Checkbox(
-                        value: ref.watch(rememberChoiceProvider),
-                        onChanged: (value) => ref
-                            .read(rememberChoiceProvider.notifier)
-                            .value = value!,
-                      ),
-                      title: 'Remember my choice',
-                    ),
-                    if (ref.watch(thumbnailDownloaderProvider)) ...[
-                      linksHeader(
-                        context,
-                        icon: Icons.video_call,
-                        label: context.locals.thumbnail,
-                        padding: const EdgeInsets.only(top: 6, bottom: 14),
-                      ),
-                      for (var thumbnail
-                          in video.thumbnails.toStreamInfo(context))
-                        DownloadQualityTile.thumbnail(
-                          stream: thumbnail,
-                          video: video,
-                          onClose: onClose,
-                        ),
-                    ],
-                    linksHeader(
-                      context,
-                      icon: Icons.movie,
-                      label: context.locals.videoPlusAudio,
-                      padding: const EdgeInsets.only(top: 6, bottom: 14),
-                    ),
-                    for (var videoStream in data!.videoStreams!
-                        .where((p0) => !(p0.videoOnly ?? false))
-                        .toList()
-                        .reversed)
-                      DownloadQualityTile(
-                        stream: videoStream,
-                        video: video,
-                        onClose: onClose,
-                      ),
-                    linksHeader(
-                      context,
-                      icon: Icons.audiotrack,
-                      label: context.locals.audioOnly,
-                    ),
-                    for (var audioStream in data.audioStreams!)
-                      DownloadQualityTile(
-                        stream: audioStream,
-                        video: video,
-                        onClose: onClose,
-                      ),
-                    linksHeader(
-                      context,
-                      icon: Icons.videocam,
-                      label: context.locals.videoOnly,
-                    ),
-                    for (var videoStream in data.videoStreams!
-                        .where((p0) => p0.videoOnly ?? false)
-                        .toList())
-                      DownloadQualityTile(
-                        stream: videoStream,
-                        video: video,
-                        onClose: onClose,
-                      ),
-                  ],
-                )
-              : _progressIndicator;
-        },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          PSVideo(
+            videoData: video,
+            isRow: true,
+            isInsidePopup: true,
+            isClickable: isClickable,
+          ),
+          AdwActionRow(
+            contentPadding: EdgeInsets.zero,
+            onActivated: ref.read(rememberChoiceProvider.notifier).toggle,
+            start: Checkbox(
+              value: ref.watch(rememberChoiceProvider),
+              onChanged: (value) =>
+                  ref.read(rememberChoiceProvider.notifier).value = value!,
+            ),
+            title: 'Remember my choice',
+          ),
+          if (ref.watch(thumbnailDownloaderProvider)) ...[
+            linksHeader(
+              context,
+              icon: Icons.video_call,
+              label: context.locals.thumbnail,
+              padding: const EdgeInsets.only(top: 6, bottom: 14),
+            ),
+            for (var thumbnail in video.thumbnails.toStreamInfo(context))
+              DownloadQualityTile.thumbnail(
+                stream: thumbnail,
+                video: video,
+                onClose: onClose,
+              ),
+          ],
+          linksHeader(
+            context,
+            icon: Icons.movie,
+            label: context.locals.videoPlusAudio,
+            padding: const EdgeInsets.only(top: 6, bottom: 14),
+          ),
+          for (var videoStream in video.videoStreams!
+              .where((p0) => !(p0.videoOnly ?? false))
+              .toList()
+              .reversed)
+            DownloadQualityTile(
+              stream: videoStream,
+              video: video,
+              onClose: onClose,
+            ),
+          linksHeader(
+            context,
+            icon: Icons.audiotrack,
+            label: context.locals.audioOnly,
+          ),
+          for (var audioStream in video.audioStreams!)
+            DownloadQualityTile(
+              stream: audioStream,
+              video: video,
+              onClose: onClose,
+            ),
+          linksHeader(
+            context,
+            icon: Icons.videocam,
+            label: context.locals.videoOnly,
+          ),
+          for (var videoStream in video.videoStreams!
+              .where((p0) => p0.videoOnly ?? false)
+              .toList())
+            DownloadQualityTile(
+              stream: videoStream,
+              video: video,
+              onClose: onClose,
+            ),
+        ],
       ),
     );
   }

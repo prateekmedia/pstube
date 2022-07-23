@@ -36,11 +36,17 @@ class CommentsNotifierProvider extends ChangeNotifier {
   CommentsList? _commentsList;
   BuiltList<CommentData>? get comments => _commentsList?.comments;
 
+  void resetComments() {
+    _commentsList = null;
+    notifyListeners();
+  }
+
   Future<void> getComments(String videoId) async {
     isLoading = true;
     _commentsList = null;
-    notifyListeners();
-
+    if (!isLoading) {
+      notifyListeners();
+    }
     final page = await api.comments(
       videoId: videoId,
     );

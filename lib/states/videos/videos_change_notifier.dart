@@ -1,14 +1,21 @@
 import 'package:flutter/cupertino.dart';
-import 'package:piped_api/piped_api.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pstube/data/models/models.dart';
+import 'package:pstube/foundation/view_model/video_info_view_model.dart';
+import 'package:pstube/ui/screens/video_screen/view_model/comments_view_model.dart';
 
 class VideosChangeNotifier extends ChangeNotifier {
-  final _api = PipedApi().getUnauthenticatedApi();
+  VideosChangeNotifier(ChangeNotifierProviderRef ref) : _ref = ref;
+
+  final ChangeNotifierProviderRef _ref;
+  late final videoViewModel = _ref.read(videoViewModelProvider);
+
   bool isLoading = true;
 
   List<VideoData> videos = [];
 
   Future<void> addVideoUrl(String videoId, VideoData? value) async {
+    _ref.read(commentsProvider).resetComments();
     isLoading = true;
 
     if (value != null) {
@@ -17,11 +24,9 @@ class VideosChangeNotifier extends ChangeNotifier {
       );
     }
 
-    final videoInfo = await _api.streamInfo(
-      videoId: videoId,
-    );
+    final videoData = await videoViewModel.getInfo(VideoId(videoId));
 
-    if (videoInfo.data != null) {
+    if (videoData != null) {
       if (value != null) {
         final index = videos.indexWhere(
           (element) => element.id.value == value.id.value,
@@ -29,62 +34,52 @@ class VideosChangeNotifier extends ChangeNotifier {
         videos.replaceRange(
           index,
           index + 1,
-          [
-            VideoData.fromVideoInfo(
-              videoInfo.data!,
-              VideoId(value.id.value),
-            )
-          ],
+          [videoData],
         );
       } else {
         videos.add(
-          VideoData.fromVideoInfo(
-            videoInfo.data!,
-            VideoId(videoId),
-          ),
+          videoData,
         );
       }
     }
 
     isLoading = false;
     notifyListeners();
+    await _ref.read(commentsProvider).getComments(videos.last.id.value);
   }
 
   Future<void> addVideoData(
     VideoData videoData, {
     bool loadMore = false,
   }) async {
+    _ref.read(commentsProvider).resetComments();
     isLoading = true;
     notifyListeners();
     videos.add(videoData);
     if (loadMore) {
-      final videoInfo = await _api.streamInfo(
-        videoId: videoData.id.value,
-      );
+      final videoInfo = await videoViewModel.getInfo(videoData.id);
 
-      if (videoInfo.data != null) {
+      if (videoInfo != null) {
         final index = videos.indexWhere(
           (element) => element.id.value == videoData.id.value,
         );
         videos.replaceRange(
           index,
           index + 1,
-          [
-            VideoData.fromVideoInfo(
-              videoInfo.data!,
-              VideoId(videoData.id.value),
-            )
-          ],
+          [videoInfo],
         );
       }
     }
     isLoading = false;
     notifyListeners();
+    await _ref.read(commentsProvider).getComments(videos.last.id.value);
   }
 
-  void popVideo() {
+  Future<void> popVideo() async {
+    _ref.read(commentsProvider).resetComments();
     videos.removeLast();
     notifyListeners();
+    await _ref.read(commentsProvider).getComments(videos.last.id.value);
   }
 
   void disposeVideos() {
