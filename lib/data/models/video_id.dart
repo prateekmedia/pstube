@@ -24,7 +24,7 @@ class VideoId {
       return false;
     }
 
-    if (videoId.length != 11) {
+    if (videoId.length != 20) {
       return false;
     }
 
