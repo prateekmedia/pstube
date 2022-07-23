@@ -54,11 +54,11 @@ class SearchNotifierProvider extends ChangeNotifier {
       filter: filter,
     );
 
-    if (nextPage == null || nextPage.items != null) {
+    if (nextPage?.items == null) {
       return;
     }
 
-    nextPageToken = nextPage.nextpage;
+    nextPageToken = nextPage!.nextpage;
 
     searchList = searchList!.rebuild(
       (b) => b.addAll(

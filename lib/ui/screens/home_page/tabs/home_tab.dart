@@ -1,20 +1,15 @@
-import 'package:built_collection/built_collection.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:piped_api/piped_api.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
+import 'package:pstube/foundation/services/piped_service.dart';
 
 import 'package:pstube/ui/widgets/widgets.dart';
 
 class HomeTab extends ConsumerStatefulWidget {
   const HomeTab({
     super.key,
-    required this.snapshot,
   });
-
-  final AsyncValue<Response<BuiltList<StreamItem>>> snapshot;
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -26,8 +21,9 @@ class _HomeScreenState extends ConsumerState<HomeTab>
   Widget build(BuildContext context) {
     super.build(context);
 
-    return (widget.snapshot.asData != null &&
-            widget.snapshot.value!.data != null)
+    final videos = ref.watch(trendingVideosProvider);
+
+    return (videos.asData != null)
         ? SingleChildScrollView(
             child: Column(
               children: [
@@ -40,14 +36,11 @@ class _HomeScreenState extends ConsumerState<HomeTab>
                     ),
                     shrinkWrap: true,
                     primary: false,
-                    itemBuilder: (ctx, idx) {
-                      final streamItem = widget.snapshot.value!.data![idx];
-                      return PSVideo.streamItem(
-                        loadData: true,
-                        streamItem: streamItem,
-                      );
-                    },
-                    itemCount: widget.snapshot.value!.data!.length,
+                    itemBuilder: (ctx, idx) => PSVideo(
+                      loadData: true,
+                      videoData: videos.value![idx],
+                    ),
+                    itemCount: videos.value!.length,
                   ),
                 ),
               ],

@@ -146,8 +146,10 @@ class VideoActions extends HookConsumerWidget {
                                 children: [
                                   for (var streamItem
                                       in videoData.relatedStreams!)
-                                    PSVideo.streamItem(
-                                      streamItem: streamItem,
+                                    PSVideo(
+                                      videoData: VideoData.fromStreamItem(
+                                        streamItem,
+                                      ),
                                       isRelated: true,
                                       onTap: () {
                                         ref.read(videosProvider).addVideoData(

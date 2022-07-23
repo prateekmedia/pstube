@@ -1,7 +1,9 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:piped_api/piped_api.dart';
+import 'package:pstube/data/models/comment_data.dart';
+import 'package:pstube/data/models/comments_list.dart';
+import 'package:pstube/data/models/models.dart';
 import 'package:pstube/states/region/provider.dart';
 
 final pipedServiceProvider = Provider<PipedService>((ref) {
@@ -19,9 +21,79 @@ class PipedService {
   final Ref ref;
   final UnauthenticatedApi api;
 
-  Future<Response<BuiltList<StreamItem>>> getTrending() => api.trending(
-        region: ref.watch(regionProvider),
-      );
+  Future<BuiltList<VideoData>?> getTrending() async {
+    final trending = await api.trending(
+      region: ref.watch(regionProvider),
+    );
+
+    if (trending.data == null) return null;
+    final data = trending.data!
+        .map(
+          VideoData.fromStreamItem,
+        )
+        .toBuiltList();
+
+    return data;
+  }
+
+  Future<VideoData?> getVideoData(String videoUrl) async {
+    final data = (await PipedApi().getUnauthenticatedApi().streamInfo(
+              videoId: videoUrl.split('v=').last,
+            ))
+        .data;
+
+    if (data == null) return null;
+
+    return VideoData.fromVideoInfo(
+      data,
+      VideoId(videoUrl),
+    );
+  }
+
+  Future<CommentsList?>? comments({required String videoId}) async {
+    final commentsPage = (await PipedApi().getUnauthenticatedApi().comments(
+              videoId: videoId,
+            ))
+        .data;
+
+    if (commentsPage?.comments == null) return null;
+
+    final _comments = commentsPage!.comments!
+        .map(
+          CommentData.fromComment,
+        )
+        .toBuiltList();
+
+    return CommentsList(
+      comments: _comments,
+      nextpage: commentsPage.nextpage,
+    );
+  }
+
+  Future<CommentsList?>? commentsNextPage({
+    required String videoId,
+    required String nextpage,
+  }) async {
+    final commentsPage =
+        (await PipedApi().getUnauthenticatedApi().commentsNextPage(
+                  nextpage: nextpage,
+                  videoId: videoId,
+                ))
+            .data;
+
+    if (commentsPage?.comments == null) return null;
+
+    final _comments = commentsPage!.comments!
+        .map(
+          CommentData.fromComment,
+        )
+        .toBuiltList();
+
+    return CommentsList(
+      comments: _comments,
+      nextpage: commentsPage.nextpage,
+    );
+  }
 
   Future<SearchPage?> search({
     required String query,

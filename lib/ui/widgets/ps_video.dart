@@ -1,17 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
 import 'package:pstube/foundation/services.dart';
+import 'package:pstube/foundation/services/piped_service.dart';
 import 'package:pstube/ui/screens/screens.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 
-class PSVideo extends HookWidget {
+class PSVideo extends ConsumerWidget {
   const PSVideo({
     super.key,
     this.videoUrl,
@@ -29,49 +28,6 @@ class PSVideo extends HookWidget {
     this.isClickable = true,
   });
 
-  PSVideo.streamItem({
-    super.key,
-    this.videoUrl,
-    this.date,
-    this.views,
-    this.duration,
-    required StreamItem? streamItem,
-    this.isRow = false,
-    this.showChannel = true,
-    this.loadData = false,
-    this.actions = const [],
-    this.isRelated = false,
-    this.onTap,
-    this.isClickable = true,
-  })  : isInsidePopup = false,
-        videoData = streamItem != null
-            ? VideoData.fromStreamItem(
-                streamItem,
-              )
-            : null;
-
-  PSVideo.videoInfo({
-    super.key,
-    required this.videoUrl,
-    this.date,
-    this.views,
-    this.duration,
-    required VideoInfo? videoInfo,
-    this.isRow = false,
-    this.showChannel = true,
-    this.loadData = false,
-    this.actions = const [],
-    this.onTap,
-    this.isClickable = true,
-  })  : isInsidePopup = false,
-        isRelated = true,
-        videoData = videoInfo != null
-            ? VideoData.fromVideoInfo(
-                videoInfo,
-                VideoId(videoUrl!),
-              )
-            : null;
-
   final String? date;
   final String? views;
   final String? duration;
@@ -87,21 +43,13 @@ class PSVideo extends HookWidget {
   final bool isClickable;
 
   @override
-  Widget build(BuildContext context) {
-    Future<Response<VideoInfo>?> getVideo() =>
-        PipedApi().getUnauthenticatedApi().streamInfo(
-              videoId: videoUrl!.split('v=').last,
-            );
-
-    return FutureBuilder<Response<VideoInfo>?>(
-      future: videoUrl != null ? getVideo() : null,
+  Widget build(BuildContext context, WidgetRef ref) {
+    return FutureBuilder<VideoData?>(
+      future: videoUrl != null
+          ? ref.watch(pipedServiceProvider).getVideoData(videoUrl!)
+          : null,
       builder: (context, snapshot) {
-        final video = snapshot.data != null && snapshot.data!.data != null
-            ? VideoData.fromVideoInfo(
-                snapshot.data!.data!,
-                VideoId(videoUrl!),
-              )
-            : videoData;
+        final video = snapshot.data ?? videoData;
 
         return Padding(
           padding: const EdgeInsets.all(8),
@@ -116,10 +64,7 @@ class PSVideo extends HookWidget {
                         )
                     : null),
             child: Padding(
-              padding:
-                  // isInsideDownloadPopup
-                  //     ? EdgeInsets.zero :
-                  const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: isRow
                   ? Row(
                       children: [

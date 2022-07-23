@@ -10,7 +10,6 @@ import 'package:libadwaita_searchbar_ac/libadwaita_searchbar_ac.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
 import 'package:pstube/foundation/services.dart';
-import 'package:pstube/foundation/services/piped_service.dart';
 import 'package:pstube/states/history/provider.dart';
 import 'package:pstube/states/states.dart';
 import 'package:pstube/ui/screens/home_page/search_screen.dart';
@@ -29,10 +28,9 @@ class MyHomePage extends HookConsumerWidget {
     final toggleSearch = useState<bool>(false);
     final searchedTerm = useState<String>('');
     final _controller = PageController(initialPage: _currentIndex.value);
-    final videos = ref.watch(trendingVideosProvider);
 
     final mainScreens = [
-      HomeTab(snapshot: videos),
+      const HomeTab(),
       const PlaylistTab(),
       const DownloadsTab(),
       const SettingsTab(),

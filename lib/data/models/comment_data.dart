@@ -9,6 +9,7 @@ class CommentData {
     required this.commentedTime,
     required this.likeCount,
     required this.hearted,
+    this.replies = 0,
   });
 
   CommentData.fromLikedComment(LikedComment likedComment)
@@ -17,6 +18,7 @@ class CommentData {
         commentText = likedComment.text,
         commentedTime = likedComment.publishedTime,
         likeCount = likedComment.likeCount,
+        replies = 0,
         hearted = null;
 
   CommentData.fromComment(Comment comment)
@@ -25,6 +27,7 @@ class CommentData {
         commentText = comment.commentText ?? '',
         commentedTime = comment.commentedTime ?? '',
         likeCount = comment.likeCount ?? 0,
+        replies = comment.repliesPage != null ? 1 : 0,
         hearted = comment.hearted;
 
   final String commentorUrl;
@@ -33,4 +36,7 @@ class CommentData {
   final String commentedTime;
   final int likeCount;
   final bool? hearted;
+  final int replies;
+
+  bool get hasReplies => replies > 0;
 }

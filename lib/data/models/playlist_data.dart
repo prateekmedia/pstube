@@ -1,3 +1,5 @@
+import 'package:piped_api/piped_api.dart';
+
 class PlaylistData {
   PlaylistData({
     required this.name,
@@ -5,6 +7,13 @@ class PlaylistData {
     required this.thumbnail,
     required this.videos,
   });
+
+  PlaylistData.fromSearchItem({
+    required SearchItem searchItem,
+  })  : name = searchItem.name!,
+        thumbnail = searchItem.thumbnail,
+        url = searchItem.url,
+        videos = searchItem.videos!;
 
   final String name;
   final String url;

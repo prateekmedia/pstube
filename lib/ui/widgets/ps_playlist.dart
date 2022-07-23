@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/models/playlist_data.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
 import 'package:pstube/states/states.dart';
@@ -13,16 +12,6 @@ class PSPlaylist extends ConsumerWidget {
     super.key,
     required this.playlist,
   });
-
-  PSPlaylist.searchItem({
-    super.key,
-    required SearchItem searchItem,
-  }) : playlist = PlaylistData(
-          name: searchItem.name!,
-          thumbnail: searchItem.thumbnail,
-          url: searchItem.url,
-          videos: searchItem.videos!,
-        );
 
   final PlaylistData playlist;
 

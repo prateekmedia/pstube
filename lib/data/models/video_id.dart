@@ -7,10 +7,6 @@ class VideoId {
     String idOrUrl,
   ) : value = parseVideoId(idOrUrl)!;
 
-  VideoId.addPrefix(
-    String idOrUrl,
-  ) : value = parseVideoId(Constants.ytCom + idOrUrl)!;
-
   static final _regMatchExp = RegExp(r'youtube\..+?/watch.*?v=(.*?)(?:&|/|$)');
   static final _shortMatchExp = RegExp(r'youtu\.be/(.*?)(?:\?|&|/|$)');
   static final _embedMatchExp = RegExp(r'youtube\..+?/embed/(.*?)(?:\?|&|/|$)');
@@ -32,7 +28,8 @@ class VideoId {
       return false;
     }
 
-    return !RegExp(r'[^0-9a-zA-Z_\-]').hasMatch(videoId);
+    return !RegExp(r'^(\/(?:[\w\-]+\?v=)?)([a-zA-Z0-9\_-])+$')
+        .hasMatch(videoId);
   }
 
   /// Parses a video id from url or if given a valid id as url returns itself.
@@ -43,7 +40,7 @@ class VideoId {
     }
 
     if (validateVideoId(url)) {
-      return url;
+      return Constants.ytCom + url;
     }
 
     // https://www.youtube.com/watch?v=yIVRs6YSbOM

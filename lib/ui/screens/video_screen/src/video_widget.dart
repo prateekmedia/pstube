@@ -1,21 +1,19 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:piped_api/piped_api.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pstube/data/enums/enums.dart';
 import 'package:pstube/data/models/video_data.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
 import 'package:pstube/ui/screens/video_screen/src/export.dart';
+import 'package:pstube/ui/screens/video_screen/view_model/comments_view_model.dart';
 import 'package:pstube/ui/widgets/channel_details.dart';
 
-class VideoWidget extends StatelessWidget {
+class VideoWidget extends ConsumerWidget {
   const VideoWidget({
     super.key,
     required this.videoData,
     required this.sideType,
     required this.sideWidget,
-    required this.replyComment,
-    required this.commentsSnapshot,
     required this.emptySide,
     required this.isCinemaMode,
   });
@@ -24,12 +22,13 @@ class VideoWidget extends StatelessWidget {
   final VideoData videoData;
   final ValueNotifier<SideType?> sideType;
   final ValueNotifier<Widget?> sideWidget;
-  final ValueNotifier<Comment?> replyComment;
-  final AsyncSnapshot<Response<CommentsPage>> commentsSnapshot;
   final VoidCallback emptySide;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final commentsP = ref.watch(commentsProvider);
+    final comments = commentsP.comments;
+
     return Column(
       children: [
         if (videoData.videoStreams != null)
@@ -96,7 +95,7 @@ class VideoWidget extends StatelessWidget {
                   ),
                   const Divider(height: 4),
                   ListTile(
-                    onTap: commentsSnapshot.data == null
+                    onTap: comments == null
                         ? null
                         : sideType.value == SideType.comment
                             ? emptySide
@@ -104,12 +103,10 @@ class VideoWidget extends StatelessWidget {
                                 sideType.value = SideType.comment;
                                 sideWidget.value = CommentsWidget(
                                   onClose: emptySide,
-                                  replyComment: replyComment,
-                                  snapshot: commentsSnapshot,
                                   videoId: videoData.id.value,
                                 );
                               },
-                    enabled: commentsSnapshot.data != null,
+                    enabled: comments != null,
                     title: Text(
                       context.locals.comments,
                     ),

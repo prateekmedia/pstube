@@ -1,6 +1,7 @@
 export 'download_item.dart';
 export 'liked_comment.dart';
 export 'package_info.dart';
+export 'playlist_data.dart';
 export 'ps_info.dart';
 export 'query_video.dart';
 export 'stream_data.dart';

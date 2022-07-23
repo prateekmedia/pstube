@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/models/comment_data.dart';
 
 import 'package:pstube/data/models/models.dart';
@@ -9,13 +8,12 @@ import 'package:pstube/states/states.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 
 class BuildCommentBox extends StatefulHookConsumerWidget {
-  BuildCommentBox({
+  const BuildCommentBox({
     super.key,
-    required Comment comment,
+    required this.comment,
     required this.onReplyTap,
     this.hideReplyBtn = false,
-  })  : comment = CommentData.fromComment(comment),
-        updateLike = null;
+  }) : updateLike = null;
 
   BuildCommentBox.liked({
     super.key,

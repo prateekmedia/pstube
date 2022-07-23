@@ -1,78 +1,48 @@
-import 'package:built_collection/built_collection.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
-import 'package:piped_api/piped_api.dart';
+import 'package:pstube/data/models/comment_data.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
 import 'package:pstube/ui/screens/video_screen/src/build_comment_box.dart';
+import 'package:pstube/ui/screens/video_screen/view_model/comments_view_model.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 
-class CommentsWidget extends StatefulHookWidget {
+class CommentsWidget extends StatefulHookConsumerWidget {
   const CommentsWidget({
     super.key,
     this.onClose,
     required this.videoId,
-    required this.replyComment,
-    required this.snapshot,
   });
 
   final String videoId;
-  final ValueNotifier<Comment?> replyComment;
-  final AsyncSnapshot<Response<CommentsPage>?> snapshot;
   final VoidCallback? onClose;
 
   @override
-  State<CommentsWidget> createState() => _CommentsWidgetState();
+  ConsumerState<CommentsWidget> createState() => _CommentsWidgetState();
 }
 
-class _CommentsWidgetState extends State<CommentsWidget>
+class _CommentsWidgetState extends ConsumerState<CommentsWidget>
     with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
     final isMounted = useIsMounted();
     final pageController = PageController();
-    final _currentPage = useState<BuiltList<Comment>?>(
-      widget.snapshot.data?.data?.comments,
-    );
     final controller = useScrollController();
     final currentPage = useState<int>(0);
-    final nextPageToken = useState<String?>(
-      widget.snapshot.data?.data?.nextpage,
-    );
-    final isLoading = useState<bool>(false);
+    final commentsP = ref.watch(commentsProvider);
+    final replyComment = commentsP.replyComment;
+    final comments = commentsP.comments;
 
     Future<void> _getMoreData() async {
-      if (isLoading.value ||
-          !isMounted() ||
-          _currentPage.value == null ||
-          nextPageToken.value == null ||
+      if (!isMounted() ||
           controller.position.pixels != controller.position.maxScrollExtent) {
         return;
       }
 
-      isLoading.value = true;
-
-      final nextPage =
-          await PipedApi().getUnauthenticatedApi().commentsNextPage(
-                videoId: widget.videoId,
-                nextpage: nextPageToken.value!,
-              );
-
-      if (nextPage.data == null && nextPage.data!.comments == null) {
-        return;
-      }
-
-      nextPageToken.value = nextPage.data!.nextpage;
-
-      _currentPage.value = _currentPage.value!.rebuild(
-        (b) => b.addAll(
-          nextPage.data!.comments!.toList(),
-        ),
-      );
-      isLoading.value = false;
+      await ref.read(commentsProvider).commentsNextPage(widget.videoId);
     }
 
     useEffect(
@@ -109,7 +79,7 @@ class _CommentsWidgetState extends State<CommentsWidget>
                     duration: const Duration(milliseconds: 200),
                     curve: Curves.easeInOut,
                   );
-                  widget.replyComment.value = null;
+                  ref.read(commentsProvider).replyComment = null;
                 },
                 icon: Icon(
                   Icons.chevron_left,
@@ -133,30 +103,30 @@ class _CommentsWidgetState extends State<CommentsWidget>
                   ListView.builder(
                     controller: controller,
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: _currentPage.value!.length + 1,
+                    itemCount: comments!.length + 1,
                     itemBuilder: (ctx, idx) {
-                      final comment = idx != _currentPage.value!.length
-                          ? _currentPage.value![idx]
-                          : null;
-                      return idx == _currentPage.value!.length
+                      final comment =
+                          idx != comments.length ? comments[idx] : null;
+                      return idx == comments.length
                           ? getCircularProgressIndicator()
                           : BuildCommentBox(
                               comment: comment!,
                               onReplyTap: () {
-                                widget.replyComment.value = comment;
+                                ref.read(commentsProvider).replyComment =
+                                    comment;
                                 pageController.animateToPage(
                                   1,
                                   duration: const Duration(milliseconds: 200),
                                   curve: Curves.easeInOut,
                                 );
                               },
-                              hideReplyBtn: comment.repliesPage == null,
+                              hideReplyBtn: comment.hasReplies,
                             );
                     },
                   ),
                   RepliesPage(
                     videoId: widget.videoId,
-                    comment: widget.replyComment.value,
+                    comment: replyComment,
                     padding: EdgeInsets.symmetric(
                       horizontal: widget.onClose != null ? 16 : 0,
                     ),
@@ -164,13 +134,13 @@ class _CommentsWidgetState extends State<CommentsWidget>
                 ][index],
               ),
               onWillPop: () async {
-                if (widget.replyComment.value != null) {
+                if (ref.read(commentsProvider).replyComment != null) {
                   await pageController.animateToPage(
                     0,
                     duration: const Duration(milliseconds: 200),
                     curve: Curves.easeInOut,
                   );
-                  widget.replyComment.value = null;
+                  ref.read(commentsProvider).replyComment = null;
                 } else {
                   context.back();
                 }
@@ -187,7 +157,7 @@ class _CommentsWidgetState extends State<CommentsWidget>
   bool get wantKeepAlive => true;
 }
 
-class RepliesPage extends HookWidget {
+class RepliesPage extends HookConsumerWidget {
   const RepliesPage({
     super.key,
     required this.videoId,
@@ -196,65 +166,26 @@ class RepliesPage extends HookWidget {
   });
 
   final String videoId;
-  final Comment? comment;
+  final CommentData? comment;
   final EdgeInsets padding;
 
   @override
-  Widget build(BuildContext context) {
-    final _currentPage = useState<BuiltList<Comment>?>(null);
+  Widget build(BuildContext context, WidgetRef ref) {
     final controller = useScrollController();
-    final repliesToken = useState<String?>(
-      comment?.repliesPage,
-    );
-    final isLoading = useState<bool>(true);
     final isMounted = useIsMounted();
+    final commentsP = ref.watch(commentsProvider);
 
     Future<void> _getMoreData() async {
-      if (isLoading.value ||
-          !isMounted() ||
-          _currentPage.value == null ||
-          repliesToken.value == null ||
+      if (!isMounted() ||
           controller.position.pixels != controller.position.maxScrollExtent) {
         return;
       }
 
-      isLoading.value = true;
-
-      final nextPage =
-          await PipedApi().getUnauthenticatedApi().commentsNextPage(
-                videoId: videoId,
-                nextpage: repliesToken.value!,
-              );
-
-      if (nextPage.data == null && nextPage.data!.comments == null) {
-        return;
-      }
-
-      repliesToken.value = nextPage.data!.nextpage;
-
-      _currentPage.value = _currentPage.value!.rebuild(
-        (b) => b.addAll(
-          nextPage.data!.comments!.toList(),
-        ),
-      );
-      isLoading.value = false;
+      await ref.read(commentsProvider).repliesNextPage(videoId);
     }
 
     Future<void> loadData() async {
-      _currentPage.value = null;
-      if (repliesToken.value == null) {
-        isLoading.value = false;
-        return;
-      }
-      final nextPage =
-          await PipedApi().getUnauthenticatedApi().commentsNextPage(
-                videoId: videoId,
-                nextpage: repliesToken.value!,
-              );
-      if (nextPage.data == null) return;
-
-      _currentPage.value = nextPage.data!.comments;
-      isLoading.value = false;
+      await ref.read(commentsProvider).getReplies(videoId);
     }
 
     useEffect(
@@ -276,23 +207,23 @@ class RepliesPage extends HookWidget {
                 onReplyTap: null,
                 hideReplyBtn: true,
               ),
-              if (_currentPage.value != null)
+              if (commentsP.replies != null)
                 Container(
                   padding: const EdgeInsets.only(left: 50),
                   child: Column(
                     children: [
-                      for (Comment reply in _currentPage.value!)
+                      for (CommentData reply in commentsP.replies!)
                         BuildCommentBox(
                           comment: reply,
                           onReplyTap: null,
                           hideReplyBtn: true,
                         ),
-                      if (repliesToken.value != null)
+                      if (commentsP.isLoadingReplies)
                         getCircularProgressIndicator(),
                     ],
                   ),
                 )
-              else if (isLoading.value)
+              else if (commentsP.isLoadingReplies)
                 getCircularProgressIndicator()
               else
                 const Center(

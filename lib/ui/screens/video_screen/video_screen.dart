@@ -1,16 +1,16 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
-import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/enums/enums.dart';
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
 import 'package:pstube/foundation/services.dart';
+import 'package:pstube/foundation/view_model/video_info_view_model.dart';
 import 'package:pstube/states/states.dart';
 import 'package:pstube/ui/screens/video_screen/src/export.dart';
+import 'package:pstube/ui/screens/video_screen/view_model/comments_view_model.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 
 class VideoScreen extends StatefulHookConsumerWidget {
@@ -34,6 +34,7 @@ class VideoScreen extends StatefulHookConsumerWidget {
 
 class _VideoScreenState extends ConsumerState<VideoScreen>
     with AutomaticKeepAliveClientMixin {
+  late final videoId = widget.videoId ?? widget.video!.id.url;
   void initVideo() {
     ref.read(videosProvider).disposeVideos();
     if (widget.loadData || widget.videoId != null) {
@@ -48,32 +49,28 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
     }
   }
 
+  void getComments() {
+    ref.read(commentsProvider).getComments(videoId);
+  }
+
   @override
   void initState() {
     super.initState();
     initVideo();
+    getComments();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
-    final videoId = widget.videoId ?? widget.video!.id.value;
-
     final videoSnapshot = widget.loadData || widget.videoId != null
-        ? useFuture(
-            useMemoized(
-              () => PipedApi().getUnauthenticatedApi().streamInfo(
-                    videoId: videoId,
-                  ),
-            ),
-          )
+        ? ref.watch(videoInfoProvider(videoId))
         : null;
     final videosP = ref.watch(videosProvider);
 
     final videoData = videosP.videos.isNotEmpty ? videosP.videos.last : null;
 
-    final replyComment = useState<Comment?>(null);
     final sideWidget = useState<Widget?>(null);
     final sideType = useState<SideType?>(null);
     final isCinemaMode =
@@ -87,45 +84,36 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                 ? Center(child: Text(context.locals.videoNotFound))
                 : videoData == null
                     ? getCircularProgressIndicator()
-                    : FutureBuilder<Response<CommentsPage>>(
-                        future: PipedApi().getUnauthenticatedApi().comments(
-                              videoId: videoData.id.value,
-                            ),
-                        builder: (context, commentsSnapshot) {
-                          return Flex(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            direction: Axis.horizontal,
-                            children: [
-                              Flexible(
-                                flex: 8,
-                                child: SFBody(
-                                  child: VideoWidget(
-                                    videoData: videoData,
-                                    sideType: sideType,
-                                    sideWidget: sideWidget,
-                                    replyComment: replyComment,
-                                    commentsSnapshot: commentsSnapshot,
-                                    isCinemaMode: isCinemaMode,
-                                    emptySide: () {
-                                      sideWidget.value = null;
-                                      sideType.value = null;
-                                    },
-                                  ),
-                                ),
+                    : Flex(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        direction: Axis.horizontal,
+                        children: [
+                          Flexible(
+                            flex: 8,
+                            child: SFBody(
+                              child: VideoWidget(
+                                videoData: videoData,
+                                sideType: sideType,
+                                sideWidget: sideWidget,
+                                isCinemaMode: isCinemaMode,
+                                emptySide: () {
+                                  sideWidget.value = null;
+                                  sideType.value = null;
+                                },
                               ),
-                              if (!context.isMobile && !isCinemaMode.value)
-                                Flexible(
-                                  flex: 4,
-                                  child: [
-                                    DescriptionWidget(
-                                      video: videoData,
-                                      isInsidePopup: false,
-                                    ),
-                                  ].last,
+                            ),
+                          ),
+                          if (!context.isMobile && !isCinemaMode.value)
+                            Flexible(
+                              flex: 4,
+                              child: [
+                                DescriptionWidget(
+                                  video: videoData,
+                                  isInsidePopup: false,
                                 ),
-                            ],
-                          );
-                        },
+                              ].last,
+                            ),
+                        ],
                       ),
           ),
           if (!Constants.mobVideoPlatforms &&
