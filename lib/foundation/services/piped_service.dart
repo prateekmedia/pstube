@@ -1,8 +1,8 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:piped_api/piped_api.dart';
+import 'package:pstube/data/models/channel_data.dart';
 import 'package:pstube/data/models/comment_data.dart';
-import 'package:pstube/data/models/comments_list.dart';
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/states/region/provider.dart';
 
@@ -21,6 +21,12 @@ class PipedService {
   final Ref ref;
   final UnauthenticatedApi api;
 
+  Future<ChannelData?> channelInfo(UploaderId uploaderId) async {
+    final _info = await api.channelInfoId(channelId: uploaderId.value);
+    if (_info.data == null) return null;
+    return ChannelData.fromChannelInfo(channelInfo: _info.data!);
+  }
+
   Future<BuiltList<VideoData>?> getTrending() async {
     final trending = await api.trending(
       region: ref.watch(regionProvider),
@@ -36,10 +42,34 @@ class PipedService {
     return data;
   }
 
+  Future<StreamList<VideoData>?>? channelNextPage({
+    required UploaderId uploaderId,
+    required String nextpage,
+  }) async {
+    final commentsPage = (await api.channelNextPage(
+      nextpage: nextpage,
+      channelId: uploaderId.value,
+    ))
+        .data;
+
+    if (commentsPage?.relatedStreams == null) return null;
+
+    final _comments = commentsPage!.relatedStreams!
+        .map(
+          VideoData.fromStreamItem,
+        )
+        .toBuiltList();
+
+    return StreamList(
+      streams: _comments,
+      nextpage: commentsPage.nextpage,
+    );
+  }
+
   Future<VideoData?> getVideoData(VideoId videoId) async {
-    final data = (await PipedApi().getUnauthenticatedApi().streamInfo(
-              videoId: videoId.value,
-            ))
+    final data = (await api.streamInfo(
+      videoId: videoId.value,
+    ))
         .data;
 
     if (data == null) return null;
@@ -50,10 +80,10 @@ class PipedService {
     );
   }
 
-  Future<CommentsList?>? comments({required String videoId}) async {
-    final commentsPage = (await PipedApi().getUnauthenticatedApi().comments(
-              videoId: videoId,
-            ))
+  Future<StreamList<CommentData>?>? comments({required String videoId}) async {
+    final commentsPage = (await api.comments(
+      videoId: videoId,
+    ))
         .data;
 
     if (commentsPage?.comments == null) return null;
@@ -64,22 +94,21 @@ class PipedService {
         )
         .toBuiltList();
 
-    return CommentsList(
-      comments: _comments,
+    return StreamList(
+      streams: _comments,
       nextpage: commentsPage.nextpage,
     );
   }
 
-  Future<CommentsList?>? commentsNextPage({
+  Future<StreamList<CommentData>?>? commentsNextPage({
     required String videoId,
     required String nextpage,
   }) async {
-    final commentsPage =
-        (await PipedApi().getUnauthenticatedApi().commentsNextPage(
-                  nextpage: nextpage,
-                  videoId: videoId,
-                ))
-            .data;
+    final commentsPage = (await api.commentsNextPage(
+      nextpage: nextpage,
+      videoId: videoId,
+    ))
+        .data;
 
     if (commentsPage?.comments == null) return null;
 
@@ -89,31 +118,59 @@ class PipedService {
         )
         .toBuiltList();
 
-    return CommentsList(
-      comments: _comments,
+    return StreamList(
+      streams: _comments,
       nextpage: commentsPage.nextpage,
     );
   }
 
-  Future<SearchPage?> search({
+  Future<StreamList<VideoData>?>? search({
     required String query,
     required SearchFilter filter,
-  }) async =>
-      (await api.search(
-        q: query,
-        filter: filter,
-      ))
-          .data;
+  }) async {
+    final data = (await api.search(
+      q: query,
+      filter: filter,
+    ))
+        .data;
 
-  Future<SearchPage?> searchNextPage({
+    if (data == null) return null;
+
+    final _results = data.items!
+        .map(
+          VideoData.fromSearchItem,
+        )
+        .toBuiltList();
+
+    return StreamList(
+      streams: _results,
+      nextpage: data.nextpage,
+    );
+  }
+
+  Future<StreamList<VideoData>?>? searchNextPage({
     required String nextpage,
     required String query,
     required SearchFilter filter,
-  }) async =>
-      (await api.searchNextPage(
-        nextpage: nextpage,
-        q: query,
-        filter: filter,
-      ))
-          .data;
+  }) async {
+    final searchPage = (await api.searchNextPage(
+      nextpage: nextpage,
+      q: query,
+      filter: filter,
+    ))
+        .data;
+
+    if (searchPage?.items == null) return null;
+
+    final results = searchPage!.items!
+        .map(
+          VideoData.fromSearchItem,
+        )
+        .toBuiltList();
+
+    return StreamList(
+      streams: results,
+      nextpage: searchPage.nextpage,
+    );
+  }
 }

@@ -1,26 +1,21 @@
-import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:piped_api/piped_api.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
+import 'package:pstube/ui/screens/channel_screen/state/channel_notifier.dart';
 import 'package:pstube/ui/screens/channel_screen/tabs/tabs.dart';
 import 'package:pstube/ui/widgets/widgets.dart' hide ChannelDetails;
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-class ChannelScreen extends HookWidget {
+class ChannelScreen extends HookConsumerWidget {
   const ChannelScreen({super.key, required this.channelId});
   final String channelId;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isMounted = useIsMounted();
-    final yt = YoutubeExplode();
-    final channel = useState<ChannelInfo?>(null);
-    final channelInfo = useState<ChannelAbout?>(null);
-    final currentVidPage = useState<BuiltList<StreamItem>?>(null);
     final _pageController = usePageController();
     final _currentIndex = useState<int>(0);
     final _tabs = <String, IconData>{
@@ -29,59 +24,26 @@ class ChannelScreen extends HookWidget {
       context.locals.about: LucideIcons.info,
     };
     final controller = useScrollController();
-    final nextPageToken = useState<String?>(null);
-    final isLoading = useState<bool>(false);
-
-    Future<void> getVideos() async {
-      currentVidPage.value = channel.value!.relatedStreams;
-    }
-
-    final api = PipedApi().getUnauthenticatedApi();
+    final channelP = ref.watch(channelProvider);
+    final channelData = channelP.channelData;
+    final channelInfo = channelP.channelInfo;
+    final videos = channelP.videos;
 
     Future<void> loadChannelData() async {
-      channel.value = (await api.channelInfoId(
-        channelId: channelId,
-      ))
-          .data;
-
-      nextPageToken.value = channel.value!.nextpage;
-
-      if (!isMounted()) return;
-      await getVideos();
+      await ref.read(channelProvider).loadChannelData(channelId);
     }
 
     Future<void> loadAboutPage() async {
-      channelInfo.value = await yt.channels.getAboutPage(channelId);
+      await ref.read(channelProvider).loadAboutPage(channelId);
     }
 
     Future<dynamic> _getMoreData() async {
-      if (isLoading.value ||
-          !isMounted() ||
-          channel.value == null ||
-          nextPageToken.value == null ||
+      if (!isMounted() ||
           controller.position.pixels != controller.position.maxScrollExtent) {
         return;
       }
 
-      isLoading.value = true;
-
-      final nextPage = await api.channelNextPage(
-        channelId: channel.value!.id!,
-        nextpage: nextPageToken.value!,
-      );
-
-      if (nextPage.data == null && nextPage.data?.relatedStreams != null) {
-        return;
-      }
-
-      nextPageToken.value = nextPage.data!.nextpage;
-
-      currentVidPage.value = currentVidPage.value!.rebuild(
-        (b) => b.addAll(
-          nextPage.data!.relatedStreams!.toList(),
-        ),
-      );
-      isLoading.value = false;
+      await ref.read(channelProvider).videosNextPage();
     }
 
     useEffect(
@@ -100,9 +62,9 @@ class ChannelScreen extends HookWidget {
       start: [
         context.backLeading(),
       ],
-      title: channel.value != null
+      title: channelData != null
           ? Text(
-              channel.value!.name.toString(),
+              channelData.name,
             )
           : null,
       viewSwitcher: AdwViewSwitcher(
@@ -125,23 +87,18 @@ class ChannelScreen extends HookWidget {
             switch (entry.key) {
               case 0:
                 tab = ChannelHomeTab(
-                  channel: channel.value,
+                  channel: channelData,
                 );
-                isVisible = channel.value != null;
+                isVisible = channelData != null;
                 break;
               case 1:
                 scrollController = controller;
-                tab = ChannelVideosTab(
-                  channel: channel.value,
-                  currentVidPage: currentVidPage,
-                );
-                isVisible = currentVidPage.value != null;
+                tab = const ChannelVideosTab();
+                isVisible = videos != null;
                 break;
               case 2:
-                tab = ChannelAboutTab(
-                  channelInfo: channelInfo.value,
-                );
-                isVisible = currentVidPage.value != null;
+                tab = const ChannelAboutTab();
+                isVisible = channelInfo != null;
                 break;
               default:
             }

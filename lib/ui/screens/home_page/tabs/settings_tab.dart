@@ -35,7 +35,6 @@ class _SettingsScreenState extends ConsumerState<SettingsTab>
       ),
     )
         .then((http.Response response) async {
-      // ignore: implicit_dynamic_invoke
       await compute(
         jsonDecode,
         response.body,

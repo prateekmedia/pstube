@@ -1,38 +1,33 @@
-import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:piped_api/piped_api.dart';
-import 'package:pstube/data/models/models.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
+import 'package:pstube/ui/screens/channel_screen/state/channel_notifier.dart';
 import 'package:pstube/ui/widgets/widgets.dart' hide ChannelDetails;
 
-class ChannelVideosTab extends HookWidget {
+class ChannelVideosTab extends HookConsumerWidget {
   const ChannelVideosTab({
     super.key,
-    required this.currentVidPage,
-    required this.channel,
   });
 
-  final ChannelInfo? channel;
-  final ValueNotifier<BuiltList<StreamItem>?> currentVidPage;
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final channelP = ref.watch(channelProvider);
+    final videos = channelP.videos;
+
     return ListView.builder(
       shrinkWrap: true,
       primary: false,
-      itemCount:
-          currentVidPage.value != null ? currentVidPage.value!.length + 1 : 1,
+      itemCount: videos != null ? videos.length + 1 : 1,
       itemBuilder: (ctx, index) {
-        final loading = index == currentVidPage.value!.length;
+        final loading = index == videos?.length;
 
         if (loading) return getCircularProgressIndicator();
 
-        final streamItem = currentVidPage.value![index];
+        final videoData = videos![index];
 
         return PSVideo(
-          date: streamItem.uploadedDate,
-          videoData: VideoData.fromStreamItem(streamItem),
+          date: videoData.uploadDate,
+          videoData: videoData,
           loadData: true,
           showChannel: false,
           isRow: !context.isMobile,

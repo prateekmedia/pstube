@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:piped_api/piped_api.dart';
+import 'package:pstube/data/models/channel_data.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
 
 class ChannelHomeTab extends StatelessWidget {
@@ -9,7 +9,7 @@ class ChannelHomeTab extends StatelessWidget {
     required this.channel,
   });
 
-  final ChannelInfo? channel;
+  final ChannelData? channel;
 
   @override
   Widget build(BuildContext context) {
@@ -25,16 +25,14 @@ class ChannelHomeTab extends StatelessWidget {
             children: [
               ClipOval(
                 child: Container(
-                  decoration: channel!.avatarUrl != null
-                      ? BoxDecoration(
-                          image: DecorationImage(
-                            image: CachedNetworkImageProvider(
-                              channel!.avatarUrl!,
-                            ),
-                          ),
-                          color: Colors.grey,
-                        )
-                      : null,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: CachedNetworkImageProvider(
+                        channel!.avatarUrl,
+                      ),
+                    ),
+                    color: Colors.grey,
+                  ),
                   height: 80,
                   width: 80,
                 ),
@@ -43,11 +41,10 @@ class ChannelHomeTab extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(channel!.name ?? ''),
+                  Text(channel!.name),
                   Text(
-                    channel!.subscriberCount != null &&
-                            channel!.subscriberCount != -1
-                        ? '${channel!.subscriberCount!.addCommas} ${context.locals.subscribers}'
+                    channel!.subscriberCount != -1
+                        ? '${channel!.subscriberCount.addCommas} ${context.locals.subscribers}'
                         : context.locals.hidden,
                   ),
                 ],

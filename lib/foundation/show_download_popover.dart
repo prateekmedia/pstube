@@ -6,7 +6,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
 import 'package:pstube/foundation/view_model/video_info_view_model.dart';
@@ -138,7 +137,7 @@ class DownloadsWidget extends ConsumerWidget {
               .toList()
               .reversed)
             DownloadQualityTile(
-              stream: videoStream,
+              stream: StreamData.fromStream(stream: videoStream),
               video: video,
               onClose: onClose,
             ),
@@ -149,7 +148,7 @@ class DownloadsWidget extends ConsumerWidget {
           ),
           for (var audioStream in video.audioStreams!)
             DownloadQualityTile(
-              stream: audioStream,
+              stream: StreamData.fromStream(stream: audioStream),
               video: video,
               onClose: onClose,
             ),
@@ -162,7 +161,7 @@ class DownloadsWidget extends ConsumerWidget {
               .where((p0) => p0.videoOnly ?? false)
               .toList())
             DownloadQualityTile(
-              stream: videoStream,
+              stream: StreamData.fromStream(stream: videoStream),
               video: video,
               onClose: onClose,
             ),
@@ -197,16 +196,12 @@ Widget linksHeader(
 }
 
 class DownloadQualityTile extends HookConsumerWidget {
-  DownloadQualityTile({
+  const DownloadQualityTile({
     super.key,
-    required Stream stream,
+    required this.stream,
     required this.video,
     this.onClose,
-  }) : stream = StreamData(
-          quality: stream.quality!,
-          format: stream.format!.getName,
-          url: stream.url!,
-        );
+  });
 
   DownloadQualityTile.thumbnail({
     super.key,

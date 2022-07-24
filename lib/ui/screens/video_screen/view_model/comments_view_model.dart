@@ -2,7 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pstube/data/models/comment_data.dart';
-import 'package:pstube/data/models/comments_list.dart';
+import 'package:pstube/data/models/stream_list.dart';
 import 'package:pstube/foundation/services/piped_service.dart';
 
 final commentsProvider =
@@ -30,11 +30,11 @@ class CommentsNotifierProvider extends ChangeNotifier {
   }
 
   bool isLoading = true;
-  CommentsList? _repliesList;
-  BuiltList<CommentData>? get replies => _repliesList?.comments;
+  StreamList<CommentData>? _repliesList;
+  BuiltList<CommentData>? get replies => _repliesList?.streams;
 
-  CommentsList? _commentsList;
-  BuiltList<CommentData>? get comments => _commentsList?.comments;
+  StreamList<CommentData>? _commentsList;
+  BuiltList<CommentData>? get comments => _commentsList?.streams;
 
   void resetComments() {
     _commentsList = null;
@@ -51,7 +51,7 @@ class CommentsNotifierProvider extends ChangeNotifier {
       videoId: videoId,
     );
 
-    if (page?.comments == null) return;
+    if (page?.streams == null) return;
 
     _commentsList = page;
     isLoading = false;
@@ -59,7 +59,7 @@ class CommentsNotifierProvider extends ChangeNotifier {
   }
 
   Future<void> commentsNextPage(String videoId) async {
-    if (_commentsList?.nextpage == null || isLoading) return;
+    if (!(_commentsList?.hasNextpage ?? true) || isLoading) return;
 
     isLoading = true;
     notifyListeners();
@@ -69,11 +69,11 @@ class CommentsNotifierProvider extends ChangeNotifier {
       videoId: videoId,
     );
 
-    if (nextPage?.comments == null) {
+    if (nextPage?.streams == null) {
       return;
     }
 
-    _commentsList = _commentsList!.rebuild(nextPage!.comments);
+    _commentsList = _commentsList!.rebuild(nextPage!.streams);
     isLoading = false;
     notifyListeners();
   }
@@ -87,7 +87,7 @@ class CommentsNotifierProvider extends ChangeNotifier {
       videoId: videoId,
     );
 
-    if (page?.comments == null) return;
+    if (page?.streams == null) return;
 
     _repliesList = page;
     isLoadingReplies = false;
@@ -107,11 +107,11 @@ class CommentsNotifierProvider extends ChangeNotifier {
       videoId: videoId,
     );
 
-    if (nextPage?.comments == null) {
+    if (nextPage?.streams == null) {
       return;
     }
 
-    _commentsList = _repliesList!.rebuild(nextPage!.comments);
+    _commentsList = _repliesList!.rebuild(nextPage!.streams);
     isLoadingReplies = false;
     notifyListeners();
   }

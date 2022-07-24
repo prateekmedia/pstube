@@ -2,6 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:piped_api/piped_api.dart';
+import 'package:pstube/data/models/models.dart';
 import 'package:pstube/foundation/services/piped_service.dart';
 import 'package:pstube/states/history/provider.dart';
 
@@ -21,12 +22,13 @@ class SearchNotifierProvider extends ChangeNotifier {
   SearchFilter filter = SearchFilter.videos;
   String? nextPageToken = '';
 
-  BuiltList<SearchItem>? searchList;
+  StreamList<VideoData>? _searchList;
+  BuiltList<VideoData>? get results => _searchList?.streams;
 
   Future<void> search(String _query) async {
     isLoading = true;
     query = _query;
-    searchList = null;
+    _searchList = null;
     notifyListeners();
 
     ref.read(historyProvider).addSearchedTerm(query);
@@ -35,10 +37,9 @@ class SearchNotifierProvider extends ChangeNotifier {
       filter: filter,
     );
 
-    if (page?.items == null) return;
+    if (page?.streams == null) return;
 
-    searchList = page!.items;
-    nextPageToken = page.nextpage;
+    _searchList = page;
     isLoading = false;
     notifyListeners();
   }
@@ -54,17 +55,14 @@ class SearchNotifierProvider extends ChangeNotifier {
       filter: filter,
     );
 
-    if (nextPage?.items == null) {
+    if (nextPage?.streams == null) {
       return;
     }
 
     nextPageToken = nextPage!.nextpage;
 
-    searchList = searchList!.rebuild(
-      (b) => b.addAll(
-        nextPage.items!.toList(),
-      ),
-    );
+    _searchList = _searchList!.rebuild(nextPage.streams);
+
     isLoading = false;
     notifyListeners();
   }

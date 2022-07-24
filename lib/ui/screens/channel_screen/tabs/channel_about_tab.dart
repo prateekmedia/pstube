@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
+import 'package:pstube/ui/screens/channel_screen/state/channel_notifier.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-class ChannelAboutTab extends StatelessWidget {
+class ChannelAboutTab extends ConsumerWidget {
   const ChannelAboutTab({
     super.key,
-    required this.channelInfo,
   });
 
-  final ChannelAbout? channelInfo;
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final channelP = ref.watch(channelProvider);
+    final channelInfo = channelP.channelInfo;
+
     final getStats = (channelInfo != null)
         ? [
             Padding(
@@ -24,18 +26,18 @@ class ChannelAboutTab extends StatelessWidget {
             ),
             const Divider(height: 26),
             Text(
-              '${context.locals.joined} ${channelInfo!.joinDate}',
+              '${context.locals.joined} ${channelInfo.joinDate}',
               style: context.textTheme.bodyText2,
             ),
             const Divider(height: 26),
             Text(
-              '${(channelInfo!.viewCount ?? 0).addCommas} '
+              '${(channelInfo.viewCount ?? 0).addCommas} '
               '${context.locals.views}',
               style: context.textTheme.bodyText2,
             ),
-            if (channelInfo!.country != null) ...[
+            if (channelInfo.country != null) ...[
               const Divider(height: 26),
-              Text(channelInfo!.country!),
+              Text(channelInfo.country!),
             ],
           ]
         : <Widget>[];
@@ -59,10 +61,10 @@ class ChannelAboutTab extends StatelessWidget {
                   ),
                 ),
                 SelectableText(
-                  channelInfo!.description!,
+                  channelInfo.description!,
                 ),
               ],
-              if (channelInfo!.channelLinks.isNotEmpty) ...[
+              if (channelInfo.channelLinks.isNotEmpty) ...[
                 const Divider(),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
@@ -73,7 +75,7 @@ class ChannelAboutTab extends StatelessWidget {
                 ),
                 Wrap(
                   children: [
-                    for (ChannelLink link in channelInfo!.channelLinks)
+                    for (ChannelLink link in channelInfo.channelLinks)
                       AdwButton.pill(
                         onPressed: link.url.toString().launchIt,
                         padding: const EdgeInsets.symmetric(
@@ -85,8 +87,6 @@ class ChannelAboutTab extends StatelessWidget {
                           vertical: 3,
                         ),
                         child: Text(link.title),
-                        //   labelStyle: context.textTheme.bodyText2,
-                        // ),
                       )
                   ],
                 ),

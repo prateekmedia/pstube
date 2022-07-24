@@ -49,17 +49,21 @@ class SearchScreen extends HookConsumerWidget {
       [controller],
     );
 
-    return searchP.searchList != null && !searchP.isLoading
+    return searchP.results != null && !searchP.isLoading
         ? ListView.separated(
             separatorBuilder: (context, index) => Divider(
               color: context.getBackgroundColor.withOpacity(0.6),
             ),
             shrinkWrap: true,
             controller: controller,
-            itemCount: searchP.searchList!.length + 1,
-            itemBuilder: (ctx, idx) => idx == searchP.searchList!.length
+            itemCount: searchP.results!.length + 1,
+            itemBuilder: (ctx, idx) => idx == searchP.results!.length
                 ? getCircularProgressIndicator()
-                : searchP.searchList![idx].showContent(context),
+                : PSVideo(
+                    videoData: searchP.results![idx],
+                    loadData: true,
+                    isRow: !context.isMobile,
+                  ),
           )
         : const Center(
             child: CircularProgressIndicator(),
