@@ -190,7 +190,7 @@ class ControlsWrapperDesktop extends HookConsumerWidget {
                                     actions: AdwActions().bitsdojo,
                                     start: [
                                       Theme(
-                                        data: AdwaitaThemeData.light(),
+                                        data: context.theme,
                                         child: context.backLeading(
                                           isCircular: true,
                                         ),
