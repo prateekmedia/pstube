@@ -2,22 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
-import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:pstube/data/models/comment_data.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
-import 'package:pstube/ui/screens/video_screen/src/build_comment_box.dart';
+import 'package:pstube/ui/screens/video_screen/src/export.dart';
 import 'package:pstube/ui/screens/video_screen/view_model/comments_view_model.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 
 class CommentsWidget extends StatefulHookConsumerWidget {
   const CommentsWidget({
     super.key,
-    this.onClose,
+    required this.onClose,
     required this.videoId,
   });
 
   final String videoId;
-  final VoidCallback? onClose;
+  final VoidCallback onClose;
 
   @override
   ConsumerState<CommentsWidget> createState() => _CommentsWidgetState();
@@ -53,103 +52,77 @@ class _CommentsWidgetState extends ConsumerState<CommentsWidget>
       [controller],
     );
 
-    return Column(
-      children: [
-        AdwHeaderBar(
-          title: Text(
-            currentPage.value == 0
-                ? context.locals.comments
-                : context.locals.replies,
-          ),
-          actions: AdwActions(
-            onClose: widget.onClose ?? context.back,
-            onHeaderDrag: appWindow?.startDragging,
-            onDoubleTap: appWindow?.maximizeOrRestore,
-          ),
-          style: const HeaderBarStyle(
-            autoPositionWindowButtons: false,
-            height: 46,
-          ),
-          start: [
-            if (currentPage.value == 1)
-              AdwHeaderButton(
-                onPressed: () {
-                  pageController.animateToPage(
-                    0,
-                    duration: const Duration(milliseconds: 200),
-                    curve: Curves.easeInOut,
-                  );
-                  ref.read(commentsProvider).replyComment = null;
-                },
-                icon: Icon(
-                  Icons.chevron_left,
-                  color: context.textTheme.bodyText1!.color,
-                ),
-              )
-            else
-              const SizedBox(),
-          ],
-        ),
-        Expanded(
-          child: ColoredBox(
-            color: context.theme.canvasColor,
-            child: WillPopScope(
-              child: PageView.builder(
-                onPageChanged: (index) => currentPage.value = index,
-                controller: pageController,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: 2,
-                itemBuilder: (_, index) => [
-                  ListView.builder(
-                    controller: controller,
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: comments!.length + 1,
-                    itemBuilder: (ctx, idx) {
-                      final comment =
-                          idx != comments.length ? comments[idx] : null;
-                      return idx == comments.length
-                          ? getCircularProgressIndicator()
-                          : BuildCommentBox(
-                              comment: comment!,
-                              onReplyTap: () {
-                                ref.read(commentsProvider).replyComment =
-                                    comment;
-                                pageController.animateToPage(
-                                  1,
-                                  duration: const Duration(milliseconds: 200),
-                                  curve: Curves.easeInOut,
-                                );
-                              },
-                              hideReplyBtn: comment.hasReplies,
-                            );
-                    },
-                  ),
-                  RepliesPage(
-                    videoId: widget.videoId,
-                    comment: replyComment,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: widget.onClose != null ? 16 : 0,
-                    ),
-                  ),
-                ][index],
-              ),
-              onWillPop: () async {
-                if (ref.read(commentsProvider).replyComment != null) {
-                  await pageController.animateToPage(
-                    0,
-                    duration: const Duration(milliseconds: 200),
-                    curve: Curves.easeInOut,
-                  );
-                  ref.read(commentsProvider).replyComment = null;
-                } else {
-                  context.back();
-                }
-                return false;
-              },
+    return VideoPopupWrapper(
+      isScrollable: false,
+      title: currentPage.value == 0
+          ? context.locals.comments
+          : context.locals.replies,
+      onClose: () async {
+        if (ref.read(commentsProvider).replyComment != null) {
+          await pageController.animateToPage(
+            0,
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeInOut,
+          );
+          ref.read(commentsProvider).replyComment = null;
+          return;
+        }
+        widget.onClose();
+      },
+      start: [
+        if (currentPage.value == 1)
+          AdwHeaderButton(
+            onPressed: () {
+              pageController.animateToPage(
+                0,
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeInOut,
+              );
+              ref.read(commentsProvider).replyComment = null;
+            },
+            icon: Icon(
+              Icons.chevron_left,
+              color: context.textTheme.bodyText1!.color,
             ),
-          ),
-        ),
+          )
+        else
+          const SizedBox(),
       ],
+      child: PageView.builder(
+        onPageChanged: (index) => currentPage.value = index,
+        controller: pageController,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: 2,
+        itemBuilder: (_, index) => [
+          ListView.builder(
+            controller: controller,
+            padding: const EdgeInsets.all(10),
+            itemCount: comments!.length + 1,
+            itemBuilder: (ctx, idx) {
+              final comment = idx != comments.length ? comments[idx] : null;
+              return idx == comments.length
+                  ? getCircularProgressIndicator()
+                  : BuildCommentBox(
+                      comment: comment!,
+                      onReplyTap: () {
+                        ref.read(commentsProvider).replyComment = comment;
+                        pageController.animateToPage(
+                          1,
+                          duration: const Duration(milliseconds: 200),
+                          curve: Curves.easeInOut,
+                        );
+                      },
+                      hideReplyBtn: comment.hasReplies,
+                    );
+            },
+          ),
+          RepliesPage(
+            videoId: widget.videoId,
+            comment: replyComment,
+            padding: const EdgeInsets.all(10),
+          ),
+        ][index],
+      ),
     );
   }
 
@@ -207,9 +180,10 @@ class RepliesPage extends HookConsumerWidget {
                 onReplyTap: null,
                 hideReplyBtn: true,
               ),
+              const Divider(),
               if (commentsP.replies != null)
                 Container(
-                  padding: const EdgeInsets.only(left: 50),
+                  padding: const EdgeInsets.only(left: 20),
                   child: Column(
                     children: [
                       for (CommentData reply in commentsP.replies!)

@@ -9,11 +9,13 @@ class CommentData {
     required this.commentedTime,
     required this.likeCount,
     required this.hearted,
+    required this.isVerified,
     this.replies = 0,
   });
 
   CommentData.fromLikedComment(LikedComment likedComment)
       : commentorUrl = likedComment.channelId,
+        isVerified = false,
         author = likedComment.author,
         commentText = likedComment.text,
         commentedTime = likedComment.publishedTime,
@@ -23,6 +25,7 @@ class CommentData {
 
   CommentData.fromComment(Comment comment)
       : commentorUrl = comment.commentorUrl ?? '',
+        isVerified = comment.verified ?? false,
         author = comment.author ?? '',
         commentText = comment.commentText ?? '',
         commentedTime = comment.commentedTime ?? '',
@@ -30,6 +33,7 @@ class CommentData {
         replies = comment.repliesPage != null ? 1 : 0,
         hearted = comment.hearted;
 
+  final bool isVerified;
   final String commentorUrl;
   final String author;
   final String commentText;

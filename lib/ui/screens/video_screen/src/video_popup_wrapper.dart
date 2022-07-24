@@ -9,11 +9,15 @@ class VideoPopupWrapper extends StatelessWidget {
     required this.title,
     required this.onClose,
     required this.child,
+    this.isScrollable = true,
+    this.start = const [],
   });
 
   final Widget child;
   final VoidCallback onClose;
   final String title;
+  final bool isScrollable;
+  final List<Widget> start;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +29,7 @@ class VideoPopupWrapper extends StatelessWidget {
             height: 46,
           ),
           title: Text(title),
+          start: start,
           actions: AdwActions(
             onClose: onClose,
             onHeaderDrag: appWindow?.startDragging,
@@ -35,16 +40,18 @@ class VideoPopupWrapper extends StatelessWidget {
           child: ColoredBox(
             color: context.theme.canvasColor,
             child: WillPopScope(
-              child: SingleChildScrollView(
-                controller: ScrollController(),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15,
-                  vertical: 12,
-                ),
-                child: child,
-              ),
+              child: isScrollable
+                  ? SingleChildScrollView(
+                      controller: ScrollController(),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 15,
+                        vertical: 12,
+                      ),
+                      child: child,
+                    )
+                  : child,
               onWillPop: () async {
-                context.back();
+                onClose();
                 return false;
               },
             ),

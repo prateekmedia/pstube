@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:pod_player/pod_player.dart';
+import 'package:pstube/foundation/extensions/extensions.dart';
 
 class VideoPlayerMobile extends StatefulWidget {
   const VideoPlayerMobile({
@@ -51,6 +54,8 @@ class _VideoPlayerState extends State<VideoPlayerMobile>
   @override
   Widget build(BuildContext context) {
     return PodVideoPlayer(
+      frameAspectRatio:
+          context.width / min(context.height * 0.45, context.width * 9 / 16),
       controller: _controller,
     );
   }

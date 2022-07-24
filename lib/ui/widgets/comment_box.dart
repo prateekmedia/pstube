@@ -45,131 +45,124 @@ class CommentBox extends HookConsumerWidget {
     );
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      child: Row(
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GestureDetector(
-            onTap: () => context.pushPage(
-              ChannelScreen(
-                channelId: comment.commentorUrl,
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () => context.pushPage(
+                  ChannelScreen(
+                    channelId: comment.commentorUrl,
+                  ),
+                ),
+                child: ChannelLogo(
+                  channel: channelData.data?.data,
+                  size: 35,
+                  author: comment.author,
+                ),
               ),
-            ),
-            child: ChannelLogo(
-              channel: channelData.data?.data,
-              size: 40,
-              author: comment.author,
-            ),
-          ),
-          Flexible(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      context.pushPage(
+              const SizedBox(width: 6),
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () => context.pushPage(
                         ChannelScreen(
                           channelId: comment.commentorUrl,
                         ),
-                      );
-                    },
-                    child: IconWithLabel(
-                      label: comment.author,
+                      ),
+                      child: Text(
+                        comment.author,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    IconWithLabel(
+                      padding: EdgeInsets.zero,
                       margin: EdgeInsets.zero,
-                      secColor: SecColor.dark,
+                      label: comment.commentedTime,
+                      style:
+                          context.textTheme.bodyText2!.copyWith(fontSize: 12),
                     ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: ReadMoreText(
+              comment.commentText,
+              style: context.textTheme.bodyText2!
+                  .copyWith(color: context.brightness.textColor),
+              trimLines: 4,
+              trimMode: TrimMode.Line,
+              trimCollapsedText: '\n${context.locals.readMore}',
+              trimExpandedText: '\n${context.locals.showLess}',
+              lessStyle: context.textTheme.bodyText1!.copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+              moreStyle: context.textTheme.bodyText1!.copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const SizedBox(height: 6),
+          Wrap(
+            children: [
+              GestureDetector(
+                onTap: updateLike?.call,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
                   ),
-                  const SizedBox(height: 4),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: ReadMoreText(
-                      comment.commentText,
-                      style: context.textTheme.bodyText2!
-                          .copyWith(color: context.brightness.textColor),
-                      trimLines: 4,
-                      trimMode: TrimMode.Line,
-                      trimCollapsedText: '\n${context.locals.readMore}',
-                      trimExpandedText: '\n${context.locals.showLess}',
-                      lessStyle: context.textTheme.bodyText1!.copyWith(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      moreStyle: context.textTheme.bodyText1!.copyWith(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                  margin: const EdgeInsets.symmetric(
+                    vertical: 4,
                   ),
-                  const SizedBox(height: 6),
-                  Wrap(
+                  decoration: BoxDecoration(
+                    color: context.getBackgroundColor.brighten(context, 20),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      GestureDetector(
-                        onTap: updateLike?.call,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 5,
-                          ),
-                          margin: const EdgeInsets.symmetric(
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: context.getBackgroundColor
-                                .brighten(context, 20),
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                isLiked
-                                    ? Icons.thumb_up
-                                    : Icons.thumb_up_outlined,
-                                size: 16,
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                (comment.likeCount).formatNumber,
-                                style: context.textTheme.bodyText2!
-                                    .copyWith(fontSize: 12),
-                              ),
-                            ],
-                          ),
-                        ),
+                      Icon(
+                        isLiked ? Icons.thumb_up : Icons.thumb_up_outlined,
+                        size: 16,
                       ),
                       const SizedBox(width: 8),
-                      IconWithLabel(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 5,
-                        ),
-                        margin: const EdgeInsets.symmetric(vertical: 4),
-                        label: comment.commentedTime,
+                      Text(
+                        (comment.likeCount).formatNumber,
                         style:
                             context.textTheme.bodyText2!.copyWith(fontSize: 12),
                       ),
-                      if (!isLikedComment && !isInsideReply)
-                        GestureDetector(
-                          onTap: onReplyTap,
-                          child: IconWithLabel(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 5,
-                            ),
-                            margin: const EdgeInsets.symmetric(vertical: 4)
-                                .copyWith(left: 4),
-                            label: context.locals.replies,
-                            style: context.textTheme.bodyText2!
-                                .copyWith(fontSize: 12),
-                          ),
-                        ),
                     ],
                   ),
-                ],
+                ),
               ),
-            ),
+              if (!isLikedComment && !isInsideReply) ...[
+                const SizedBox(width: 8),
+                GestureDetector(
+                  onTap: onReplyTap,
+                  child: IconWithLabel(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 5,
+                    ),
+                    margin: const EdgeInsets.symmetric(vertical: 4)
+                        .copyWith(left: 4),
+                    label: context.locals.replies,
+                    style: context.textTheme.bodyText2!.copyWith(fontSize: 12),
+                  ),
+                ),
+              ],
+            ],
           ),
         ],
       ),

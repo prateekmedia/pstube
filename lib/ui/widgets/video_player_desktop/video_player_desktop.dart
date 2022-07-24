@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -180,9 +182,7 @@ class _VideoDesktop extends ConsumerWidget {
           fit: boxFit,
           player: player,
           height: !isFullScreen
-              ? context.isMobile
-                  ? 320
-                  : 480
+              ? min(context.height * 0.45, context.width * 9 / 16)
               : null,
           volumeThumbColor: Colors.blue,
           volumeActiveColor: Colors.blue,

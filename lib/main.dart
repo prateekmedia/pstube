@@ -59,6 +59,7 @@ Future<void> main() async {
       win
         ..title = 'PsTube'
         ..size = size
+        ..alignment = Alignment.center
         ..minSize = initialSize
         ..show();
     });

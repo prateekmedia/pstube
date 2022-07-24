@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -39,8 +41,8 @@ class VideoWidget extends ConsumerWidget {
         else
           ConstrainedBox(
             constraints: BoxConstraints.tightFor(
-              height: context.isMobile ? 320 : 480,
-              width: context.isMobile ? 569 : 853,
+              height: min(context.height * 0.45, context.width * 9 / 16),
+              width: double.infinity,
             ),
             child: Stack(
               children: [
