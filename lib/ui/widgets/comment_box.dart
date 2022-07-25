@@ -79,10 +79,8 @@ class CommentBox extends HookConsumerWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    IconWithLabel(
-                      padding: EdgeInsets.zero,
-                      margin: EdgeInsets.zero,
-                      label: comment.commentedTime,
+                    Text(
+                      comment.commentedTime,
                       style:
                           context.textTheme.bodyText2!.copyWith(fontSize: 12),
                     ),

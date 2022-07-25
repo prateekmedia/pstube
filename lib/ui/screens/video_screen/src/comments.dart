@@ -112,7 +112,7 @@ class _CommentsWidgetState extends ConsumerState<CommentsWidget>
                           curve: Curves.easeInOut,
                         );
                       },
-                      hideReplyBtn: comment.hasReplies,
+                      hideReplyBtn: !comment.hasReplies,
                     );
             },
           ),
@@ -199,12 +199,14 @@ class RepliesPage extends HookConsumerWidget {
                 )
               else if (commentsP.isLoadingReplies)
                 getCircularProgressIndicator()
-              else
+              else ...[
+                const SizedBox(height: 6),
                 const Center(
-                  child: IconWithLabel(
-                    label: 'No replies found.',
+                  child: Text(
+                    'No replies found.',
                   ),
                 ),
+              ]
             ],
           )
         : getCircularProgressIndicator();

@@ -11,6 +11,7 @@ class CommentData {
     required this.hearted,
     required this.isVerified,
     this.replies = 0,
+    this.nextpage,
   });
 
   CommentData.fromLikedComment(LikedComment likedComment)
@@ -20,6 +21,7 @@ class CommentData {
         commentText = likedComment.text,
         commentedTime = likedComment.publishedTime,
         likeCount = likedComment.likeCount,
+        nextpage = null,
         replies = 0,
         hearted = null;
 
@@ -30,6 +32,7 @@ class CommentData {
         commentText = comment.commentText ?? '',
         commentedTime = comment.commentedTime ?? '',
         likeCount = comment.likeCount ?? 0,
+        nextpage = comment.repliesPage,
         replies = comment.repliesPage != null ? 1 : 0,
         hearted = comment.hearted;
 
@@ -41,6 +44,7 @@ class CommentData {
   final int likeCount;
   final bool? hearted;
   final int replies;
+  final String? nextpage;
 
   bool get hasReplies => replies > 0;
 }

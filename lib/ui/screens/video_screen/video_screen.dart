@@ -41,10 +41,12 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
       ref.read(videosProvider).addVideoUrl(
             widget.videoId ?? widget.video!.id.value,
             widget.video,
+            loadComments: false,
           );
     } else {
       ref.read(videosProvider).addVideoData(
             widget.video!,
+            loadComments: false,
           );
     }
   }

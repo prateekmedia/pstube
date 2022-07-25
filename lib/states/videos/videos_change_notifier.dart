@@ -14,8 +14,14 @@ class VideosChangeNotifier extends ChangeNotifier {
 
   List<VideoData> videos = [];
 
-  Future<void> addVideoUrl(String videoId, VideoData? value) async {
-    _ref.read(commentsProvider).resetComments();
+  Future<void> addVideoUrl(
+    String videoId,
+    VideoData? value, {
+    bool loadComments = true,
+  }) async {
+    if (loadComments) {
+      _ref.read(commentsProvider).resetComments();
+    }
     isLoading = true;
 
     if (value != null) {
@@ -45,14 +51,19 @@ class VideosChangeNotifier extends ChangeNotifier {
 
     isLoading = false;
     notifyListeners();
-    await _ref.read(commentsProvider).getComments(videos.last.id.value);
+    if (loadComments) {
+      await _ref.read(commentsProvider).getComments(videos.last.id.value);
+    }
   }
 
   Future<void> addVideoData(
     VideoData videoData, {
     bool loadMore = false,
+    bool loadComments = true,
   }) async {
-    _ref.read(commentsProvider).resetComments();
+    if (loadComments) {
+      _ref.read(commentsProvider).resetComments();
+    }
     isLoading = true;
     notifyListeners();
     videos.add(videoData);
@@ -72,7 +83,9 @@ class VideosChangeNotifier extends ChangeNotifier {
     }
     isLoading = false;
     notifyListeners();
-    await _ref.read(commentsProvider).getComments(videos.last.id.value);
+    if (loadComments) {
+      await _ref.read(commentsProvider).getComments(videos.last.id.value);
+    }
   }
 
   Future<void> popVideo() async {

@@ -83,8 +83,14 @@ class CommentsNotifierProvider extends ChangeNotifier {
     _repliesList = null;
     notifyListeners();
 
-    final page = await api.comments(
+    if (replyComment?.nextpage == null) {
+      isLoadingReplies = false;
+      notifyListeners();
+    }
+
+    final page = await api.commentsNextPage(
       videoId: videoId,
+      nextpage: replyComment!.nextpage!,
     );
 
     if (page?.streams == null) return;
@@ -111,7 +117,7 @@ class CommentsNotifierProvider extends ChangeNotifier {
       return;
     }
 
-    _commentsList = _repliesList!.rebuild(nextPage!.streams);
+    _repliesList = _repliesList!.rebuild(nextPage!.streams);
     isLoadingReplies = false;
     notifyListeners();
   }
