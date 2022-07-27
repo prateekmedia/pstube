@@ -11,6 +11,7 @@ import 'package:pstube/foundation/view_model/video_info_view_model.dart';
 import 'package:pstube/states/states.dart';
 import 'package:pstube/ui/screens/video_screen/src/export.dart';
 import 'package:pstube/ui/screens/video_screen/view_model/comments_view_model.dart';
+import 'package:pstube/ui/widgets/custom_pip_view.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 
 class VideoScreen extends StatefulHookConsumerWidget {
@@ -126,7 +127,10 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
               child: AdwHeaderBar(
                 actions: AdwActions().bitsdojo,
                 start: [
-                  context.backLeading(isCircular: true),
+                  context.backLeading(
+                    isCircular: true,
+                    onBack: CustomPIPView.of(context)?.stopFloating,
+                  ),
                 ],
                 style: const HeaderBarStyle(isTransparent: true),
               ),
@@ -136,7 +140,10 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
               alignment: Alignment.topLeft,
               child: Container(
                 margin: const EdgeInsets.only(left: 6, top: 4),
-                child: context.backLeading(isCircular: true),
+                child: context.backLeading(
+                  isCircular: true,
+                  onBack: CustomPIPView.of(context)?.stopFloating,
+                ),
               ),
             ),
           if (!context.isMobile && sideWidget.value != null)

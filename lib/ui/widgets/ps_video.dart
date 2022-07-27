@@ -8,6 +8,7 @@ import 'package:pstube/foundation/extensions/extensions.dart';
 import 'package:pstube/foundation/services.dart';
 import 'package:pstube/foundation/services/piped_service.dart';
 import 'package:pstube/ui/screens/screens.dart';
+import 'package:pstube/ui/widgets/custom_pip_view.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 
 class PSVideo extends ConsumerWidget {
@@ -56,7 +57,7 @@ class PSVideo extends ConsumerWidget {
           child: InkWell(
             onTap: onTap ??
                 (video != null && isClickable
-                    ? () => context.pushPage(
+                    ? () => CustomPIPView.of(context)!.presentTop(
                           VideoScreen(
                             video: video,
                             loadData: isRelated || loadData,

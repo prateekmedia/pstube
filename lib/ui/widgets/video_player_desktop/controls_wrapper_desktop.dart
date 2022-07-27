@@ -10,6 +10,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
+import 'package:pstube/ui/widgets/custom_pip_view.dart';
 import 'package:pstube/ui/widgets/video_player_desktop/states/player_state_provider.dart';
 
 class ControlsDesktopData {
@@ -193,6 +194,8 @@ class ControlsWrapperDesktop extends HookConsumerWidget {
                                         data: context.theme,
                                         child: context.backLeading(
                                           isCircular: true,
+                                          onBack: CustomPIPView.of(context)
+                                              ?.stopFloating,
                                         ),
                                       ),
                                     ],
