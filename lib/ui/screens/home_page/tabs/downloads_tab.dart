@@ -61,14 +61,12 @@ class DownloadItemBuilder extends StatelessWidget {
         child: Row(
           children: [
             GestureDetector(
-              onTap: () {
-                context.pushPage(
-                  VideoScreen(
-                    video: null,
-                    videoId: item.queryVideo.id,
-                  ),
-                );
-              },
+              onTap: () => context.pushPage(
+                VideoScreen(
+                  video: null,
+                  videoId: item.queryVideo.id,
+                ),
+              ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Column(

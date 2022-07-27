@@ -79,6 +79,7 @@ class MyApp extends HookConsumerWidget {
       },
       [],
     );
+
     return MaterialApp(
       title: AppInfo.myApp.name,
       builder: (context, child) {

@@ -32,4 +32,7 @@ extension ColorTint on Color {
 
   Color brighten(BuildContext ctx, [int percent = 10]) =>
       ctx.isDark ? darken(percent) : lighten(percent);
+
+  Color brightenReverse(BuildContext ctx, [int percent = 10]) =>
+      ctx.isDark ? lighten(percent) : darken(percent);
 }
