@@ -1,5 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pstube/data/models/models.dart';
+import 'package:pstube/foundation/remove_toxic_symbols.dart';
 import 'package:pstube/foundation/services.dart';
 
 part 'query_video.g.dart';
@@ -23,7 +24,7 @@ class QueryVideo {
     required this.path,
   })  : name = checkIfExists(
           path,
-          '${video.title}(${stream.quality}).'
+          '${removeToxicSymbols(video.title ?? '')}(${stream.quality}).'
           '${stream.format.toLowerCase()}',
         ),
         id = video.id.value,
