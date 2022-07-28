@@ -5,8 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
-import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:libadwaita_searchbar_ac/libadwaita_searchbar_ac.dart';
+import 'package:libadwaita_window_manager/libadwaita_window_manager.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
 import 'package:pstube/foundation/services.dart';
@@ -137,7 +137,7 @@ class MyHomePage extends HookConsumerWidget {
       },
       child: CustomPIPView(
         builder: (_, __) => AdwScaffold(
-          actions: AdwActions().bitsdojo,
+          actions: AdwActions().windowManager,
           start: [
             AdwHeaderButton(
               isActive: toggleSearch.value,

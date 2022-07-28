@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:libadwaita/libadwaita.dart';
-import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
+import 'package:libadwaita_window_manager/libadwaita_window_manager.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:piped_api/piped_api.dart';
 import 'package:pstube/config/info/app_info.dart';
@@ -126,8 +126,8 @@ class _SettingsScreenState extends ConsumerState<SettingsTab>
                     'https://github.com/prateekmedia/pstube/issues',
                 appName: AppInfo.myApp.name,
                 actions: AdwActions(
-                  onDoubleTap: appWindow?.maximizeOrRestore,
-                  onHeaderDrag: appWindow?.startDragging,
+                  onDoubleTap: AdwActions().windowManager.onDoubleTap,
+                  onHeaderDrag: AdwActions().windowManager.onHeaderDrag,
                   onClose: Navigator.of(context).pop,
                 ),
                 headerBarStyle: const HeaderBarStyle(

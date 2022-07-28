@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
-import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
+import 'package:libadwaita_window_manager/libadwaita_window_manager.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
 import 'package:pstube/ui/widgets/custom_pip_view.dart';
 import 'package:pstube/ui/widgets/video_player_desktop/states/player_state_provider.dart';
@@ -188,7 +188,7 @@ class ControlsWrapperDesktop extends HookConsumerWidget {
                                 child: Theme(
                                   data: AdwaitaThemeData.dark(),
                                   child: AdwHeaderBar(
-                                    actions: AdwActions().bitsdojo,
+                                    actions: AdwActions().windowManager,
                                     start: [
                                       Theme(
                                         data: context.theme,

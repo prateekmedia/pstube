@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
-import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
+import 'package:libadwaita_window_manager/libadwaita_window_manager.dart';
 import 'package:pstube/data/enums/enums.dart';
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
@@ -125,7 +125,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
             SizedBox(
               height: 51,
               child: AdwHeaderBar(
-                actions: AdwActions().bitsdojo,
+                actions: AdwActions().windowManager,
                 start: [
                   context.backLeading(
                     isCircular: true,

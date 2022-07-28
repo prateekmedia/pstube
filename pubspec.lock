@@ -50,34 +50,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.10.0"
-  bitsdojo_window_linux:
-    dependency: transitive
-    description:
-      name: bitsdojo_window_linux
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.2"
-  bitsdojo_window_macos:
-    dependency: transitive
-    description:
-      name: bitsdojo_window_macos
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.2"
-  bitsdojo_window_platform_interface:
-    dependency: transitive
-    description:
-      name: bitsdojo_window_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.2"
-  bitsdojo_window_windows:
-    dependency: transitive
-    description:
-      name: bitsdojo_window_windows
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.2"
   bot_toast:
     dependency: "direct main"
     description:
@@ -622,13 +594,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
-  libadwaita_bitsdojo:
-    dependency: "direct main"
-    description:
-      name: libadwaita_bitsdojo
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.3"
   libadwaita_core:
     dependency: transitive
     description:
@@ -650,6 +615,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.5.3"
+  libadwaita_window_manager:
+    dependency: "direct main"
+    description:
+      name: libadwaita_window_manager
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.1"
   logging:
     dependency: transitive
     description:
@@ -1437,7 +1409,7 @@ packages:
     source: hosted
     version: "2.6.1"
   window_manager:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: window_manager
       url: "https://pub.dartlang.org"
@@ -1472,5 +1444,5 @@ packages:
     source: hosted
     version: "1.12.0"
 sdks:
-  dart: ">=2.17.0 <3.0.0"
+  dart: ">=2.17.6 <3.0.0"
   flutter: ">=3.0.0"

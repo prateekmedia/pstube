@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libadwaita/libadwaita.dart';
-import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
+import 'package:libadwaita_window_manager/libadwaita_window_manager.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
 
 class VideoPopupWrapper extends StatelessWidget {
@@ -32,8 +32,8 @@ class VideoPopupWrapper extends StatelessWidget {
           start: start,
           actions: AdwActions(
             onClose: onClose,
-            onHeaderDrag: appWindow?.startDragging,
-            onDoubleTap: appWindow?.maximizeOrRestore,
+            onHeaderDrag: AdwActions().windowManager.onHeaderDrag,
+            onDoubleTap: AdwActions().windowManager.onDoubleTap,
           ),
         ),
         Expanded(

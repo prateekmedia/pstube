@@ -9,7 +9,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pstube/config/info/app_info.dart';
 import 'package:pstube/data/models/models.dart';
@@ -18,9 +17,23 @@ import 'package:pstube/foundation/services.dart';
 import 'package:pstube/states/states.dart';
 import 'package:pstube/ui/screens/home_page/home_page.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:window_manager/window_manager.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await windowManager.ensureInitialized();
+
+  const windowOptions = WindowOptions(
+    size: Size(1000, 600),
+    // minimumSize: Size(400, 450),
+    backgroundColor: Colors.transparent,
+    skipTaskbar: false,
+    titleBarStyle: TitleBarStyle.hidden,
+  );
+  await windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.show();
+    await windowManager.focus();
+  });
 
   // Intialize Dart VLC
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
@@ -51,19 +64,6 @@ Future<void> main() async {
   await Hive.openBox<List<dynamic>>('historyList');
 
   runApp(const ProviderScope(child: MyApp()));
-  if (!Constants.mobVideoPlatforms) {
-    doWhenWindowReady(() {
-      final win = appWindow!;
-      const initialSize = Size(400, 450);
-      const size = Size(1000, 600);
-      win
-        ..title = 'PsTube'
-        ..size = size
-        ..alignment = Alignment.center
-        ..minSize = initialSize
-        ..show();
-    });
-  }
 }
 
 class MyApp extends HookConsumerWidget {
@@ -100,6 +100,7 @@ class MyApp extends HookConsumerWidget {
         }
 
         child = botToastBuilder(context, child);
+        child = DragToResizeArea(child: child);
         child = myBuilder(context, child);
         return child;
       },

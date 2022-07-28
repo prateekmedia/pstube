@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
-import 'package:libadwaita_bitsdojo/libadwaita_bitsdojo.dart';
+import 'package:libadwaita_window_manager/libadwaita_window_manager.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
 import 'package:pstube/states/liked_list/liked_list.dart';
@@ -33,7 +33,7 @@ class _LikedScreenState extends State<LikedScreen>
       builder: (context, ref, _) {
         final likedList = ref.watch(likedListProvider);
         return AdwScaffold(
-          actions: AdwActions().bitsdojo,
+          actions: AdwActions().windowManager,
           start: [
             context.backLeading(),
           ],
