@@ -21,19 +21,21 @@ import 'package:window_manager/window_manager.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await windowManager.ensureInitialized();
+  if (!Constants.mobVideoPlatforms) {
+    await windowManager.ensureInitialized();
 
-  const windowOptions = WindowOptions(
-    size: Size(1000, 600),
-    // minimumSize: Size(400, 450),
-    backgroundColor: Colors.transparent,
-    skipTaskbar: false,
-    titleBarStyle: TitleBarStyle.hidden,
-  );
-  await windowManager.waitUntilReadyToShow(windowOptions, () async {
-    await windowManager.show();
-    await windowManager.focus();
-  });
+    const windowOptions = WindowOptions(
+      size: Size(1000, 600),
+      // minimumSize: Size(400, 450),
+      backgroundColor: Colors.transparent,
+      skipTaskbar: false,
+      titleBarStyle: TitleBarStyle.hidden,
+    );
+    await windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
+    });
+  }
 
   // Intialize Dart VLC
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
