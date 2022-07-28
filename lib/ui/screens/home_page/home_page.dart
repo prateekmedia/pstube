@@ -134,82 +134,13 @@ class MyHomePage extends HookConsumerWidget {
 
         return true;
       },
-<<<<<<< HEAD
-      child: CustomPIPView(
-        builder: (_, __) => AdwScaffold(
-          actions: AdwActions().windowManager,
-          start: [
-            AdwHeaderButton(
-              isActive: toggleSearch.value,
-              onPressed: toggleSearchBar,
-              icon: const Icon(Icons.search, size: 20),
-            ),
-          ],
-          title: toggleSearch.value
-              ? AdwSearchBarAc(
-                  constraints: BoxConstraints.loose(const Size(500, 40)),
-                  toggleSearchBar: toggleSearchBar,
-                  hintText: '',
-                  search: null,
-                  asyncSuggestions: (str) => str.trim().isNotEmpty
-                      ? yexp.YoutubeExplode().search.getQuerySuggestions(str)
-                      : Future.value(
-                          ref.watch(historyProvider.notifier).history,
-                        ),
-                  onSubmitted: (str) => searchedTerm.value = str,
-                  controller: _searchController,
-                )
-              : null,
-          end: [
-            if (!toggleSearch.value)
-              AdwHeaderButton(
-                onPressed: addDownload,
-                icon: const Icon(Icons.add, size: 17),
-              ),
-            if (!toggleSearch.value && _currentIndex.value == 2)
-              AdwHeaderButton(
-                icon: const Icon(LucideIcons.trash),
-                onPressed: clearAll,
-              ),
-          ],
-          body: Column(
-            children: [
-              if (!toggleSearch.value)
-                Flexible(
-                  child: SFBody(
-                    child: PageView.builder(
-                      controller: _controller,
-                      itemCount: mainScreens.length,
-                      itemBuilder: (context, index) => mainScreens[index],
-                      onPageChanged: (index) => _currentIndex.value = index,
-                    ),
-                  ),
-                )
-              else
-                Flexible(
-                  child: searchedTerm.value.isNotEmpty
-                      ? SearchScreen(
-                          searchedTerm: searchedTerm,
-                        )
-                      : Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Center(
-                              child: Text(context.locals.typeToSearch),
-                            ),
-                          ],
-                        ),
-                ),
-            ],
-=======
       child: AdwScaffold(
-        actions: AdwActions().bitsdojo,
+        actions: AdwActions().windowManager,
         start: [
           AdwHeaderButton(
             isActive: toggleSearch.value,
             onPressed: toggleSearchBar,
             icon: const Icon(Icons.search, size: 20),
->>>>>>> parent of 6d73a7a (Try to add pip view(may remove))
           ),
         ],
         title: toggleSearch.value
