@@ -14,7 +14,6 @@ import 'package:pstube/states/history/provider.dart';
 import 'package:pstube/states/states.dart';
 import 'package:pstube/ui/screens/home_page/search_screen.dart';
 import 'package:pstube/ui/screens/home_page/tabs.dart';
-import 'package:pstube/ui/widgets/custom_pip_view.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yexp;
 
@@ -135,6 +134,7 @@ class MyHomePage extends HookConsumerWidget {
 
         return true;
       },
+<<<<<<< HEAD
       child: CustomPIPView(
         builder: (_, __) => AdwScaffold(
           actions: AdwActions().windowManager,
@@ -201,27 +201,91 @@ class MyHomePage extends HookConsumerWidget {
                         ),
                 ),
             ],
+=======
+      child: AdwScaffold(
+        actions: AdwActions().bitsdojo,
+        start: [
+          AdwHeaderButton(
+            isActive: toggleSearch.value,
+            onPressed: toggleSearchBar,
+            icon: const Icon(Icons.search, size: 20),
+>>>>>>> parent of 6d73a7a (Try to add pip view(may remove))
           ),
-          viewSwitcher: !toggleSearch.value
-              ? AdwViewSwitcher(
-                  tabs: List.generate(
-                    navItems.entries.length,
-                    (index) {
-                      final item = navItems.entries.elementAt(index);
-                      return ViewSwitcherData(
-                        title: item.key,
-                        badge: index == 2
-                            ? ref.watch(downloadListProvider).downloading
-                            : null,
-                        icon: item.value,
-                      );
-                    },
+        ],
+        title: toggleSearch.value
+            ? AdwSearchBarAc(
+                constraints: BoxConstraints.loose(const Size(500, 40)),
+                toggleSearchBar: toggleSearchBar,
+                hintText: '',
+                search: null,
+                asyncSuggestions: (str) => str.trim().isNotEmpty
+                    ? yexp.YoutubeExplode().search.getQuerySuggestions(str)
+                    : Future.value(ref.watch(historyProvider.notifier).history),
+                onSubmitted: (str) => searchedTerm.value = str,
+                controller: _searchController,
+              )
+            : null,
+        end: [
+          if (!toggleSearch.value)
+            AdwHeaderButton(
+              onPressed: addDownload,
+              icon: const Icon(Icons.add, size: 17),
+            ),
+          if (!toggleSearch.value && _currentIndex.value == 2)
+            AdwHeaderButton(
+              icon: const Icon(LucideIcons.trash),
+              onPressed: clearAll,
+            ),
+        ],
+        body: Column(
+          children: [
+            if (!toggleSearch.value)
+              Flexible(
+                child: SFBody(
+                  child: PageView.builder(
+                    controller: _controller,
+                    itemCount: mainScreens.length,
+                    itemBuilder: (context, index) => mainScreens[index],
+                    onPageChanged: (index) => _currentIndex.value = index,
                   ),
-                  currentIndex: _currentIndex.value,
-                  onViewChanged: _controller.jumpToPage,
-                )
-              : null,
+                ),
+              )
+            else
+              Flexible(
+                child: searchedTerm.value.isNotEmpty
+                    ? SearchScreen(
+                        searchedTerm: searchedTerm,
+                      )
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Center(
+                            child: Text(context.locals.typeToSearch),
+                          ),
+                        ],
+                      ),
+              ),
+          ],
         ),
+        viewSwitcher: !toggleSearch.value
+            ? AdwViewSwitcher(
+                tabs: List.generate(
+                  navItems.entries.length,
+                  (index) {
+                    final item = navItems.entries.elementAt(index);
+                    return ViewSwitcherData(
+                      title: item.key,
+                      badge: index == 2
+                          ? ref.watch(downloadListProvider).downloading
+                          : null,
+                      icon: item.value,
+                    );
+                  },
+                ),
+                currentIndex: _currentIndex.value,
+                onViewChanged: _controller.jumpToPage,
+              )
+            : null,
       ),
     );
   }
