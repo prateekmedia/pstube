@@ -10,22 +10,28 @@ import 'package:pstube/foundation/services.dart';
 import 'package:window_manager/window_manager.dart';
 
 class Configuration {
+  static const windowOptions = WindowOptions(
+    size: Size(1000, 600),
+    minimumSize: Size(400, 450),
+    skipTaskbar: false,
+    backgroundColor: Colors.transparent,
+    titleBarStyle: TitleBarStyle.hidden,
+    title: 'PsTube',
+  );
+
+  static Future<void> initWindowManager() async {
+    await windowManager.ensureInitialized();
+
+    await windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.setAsFrameless();
+      await windowManager.show();
+      await windowManager.focus();
+    });
+  }
+
   static Future<void> init() async {
     if (Constants.isDesktop) {
-      await windowManager.ensureInitialized();
-
-      const windowOptions = WindowOptions(
-        size: Size(1000, 600),
-        // minimumSize: Size(400, 450),
-        backgroundColor: Colors.transparent,
-        skipTaskbar: false,
-        titleBarStyle: TitleBarStyle.hidden,
-      );
-
-      await windowManager.waitUntilReadyToShow(windowOptions, () async {
-        await windowManager.show();
-        await windowManager.focus();
-      });
+      await initWindowManager();
     }
 
     // Intialize Dart VLC

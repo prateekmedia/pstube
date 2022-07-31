@@ -326,7 +326,7 @@ packages:
       name: easy_autocomplete
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.5.0"
+    version: "1.6.0"
   equatable:
     dependency: "direct main"
     description:
@@ -489,13 +489,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.5"
-  handy_window:
-    dependency: "direct main"
-    description:
-      name: handy_window
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.6"
   hive:
     dependency: "direct main"
     description:
@@ -593,14 +586,14 @@ packages:
       name: libadwaita
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.1"
   libadwaita_core:
     dependency: transitive
     description:
       name: libadwaita_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.1"
+    version: "0.5.4"
   libadwaita_searchbar:
     dependency: transitive
     description:
@@ -614,14 +607,14 @@ packages:
       name: libadwaita_searchbar_ac
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.3"
+    version: "0.5.7"
   libadwaita_window_manager:
     dependency: "direct main"
     description:
       name: libadwaita_window_manager
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.1"
+    version: "0.5.4+1"
   logging:
     dependency: transitive
     description:
@@ -1404,9 +1397,11 @@ packages:
   window_manager:
     dependency: "direct main"
     description:
-      name: window_manager
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: patch-1
+      resolved-ref: "26588765762e7c88ffb467e2962b33e7c9cd025c"
+      url: "https://github.com/prateekmedia/window_manager"
+    source: git
     version: "0.2.5"
   xdg_directories:
     dependency: transitive

@@ -37,7 +37,7 @@ class MyApp extends HookConsumerWidget {
     return MaterialApp(
       title: AppInfo.myApp.name,
       builder: (context, child) {
-        Widget myBuilder(BuildContext ctx, Widget child) {
+        Widget responsiveBuilder(BuildContext ctx, Widget child) {
           return ResponsiveWrapper.builder(
             child,
             minWidth: 480,
@@ -54,7 +54,7 @@ class MyApp extends HookConsumerWidget {
         }
 
         child = botToastBuilder(context, child);
-        child = myBuilder(context, child);
+        child = responsiveBuilder(context, child);
         child = virtualWindowFrameBuilder(context, child);
         return child;
       },
