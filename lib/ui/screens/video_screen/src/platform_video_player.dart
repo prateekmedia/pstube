@@ -23,7 +23,7 @@ class PlatformVideoPlayer extends StatelessWidget {
         )
         .toList();
 
-    return (Constants.mobVideoPlatforms)
+    return Constants.isMobileOrWeb
         ? VideoPlayerMobile(
             defaultQuality: 360,
             resolutions: videoStreams

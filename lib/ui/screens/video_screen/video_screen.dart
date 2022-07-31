@@ -118,7 +118,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen>
                         ],
                       ),
           ),
-          if (!Constants.mobVideoPlatforms &&
+          if (Constants.isDesktop &&
               (videoData?.videoStreams == null ||
                   (!isCinemaMode.value && !context.isMobile)))
             SizedBox(
