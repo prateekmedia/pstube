@@ -38,12 +38,12 @@ We use [weblate](https://hosted.weblate.org/projects/pstube/) for translations.
 
 ### Build from source
 
-- Download latest Flutter SDK (>=2.8.0)
+- Download latest Flutter SDK (>=3.0.0)
 - Clone this repo and then for building
 
 ```bash
 # Download dependencies
-flutter pub get; flutter create .
+flutter pub get
 
 # For Direct Testing
 flutter build <windows/apk/linux>
@@ -51,7 +51,7 @@ flutter build <windows/apk/linux>
 
 ### Credits
 
-This project would not be possible without [youtube_explode_dart](https://github.com/Hexer10/youtube_explode_dart/) ported from C# by [Hexer10](https://github.com/Hexer10).
+This project would not be possible without [piped_api](https://github.com/TeamPiped/Piped) and some parts also use [youtube_explode_dart](https://github.com/Hexer10/youtube_explode_dart).
 
 ### License
 

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:dart_vlc/dart_vlc.dart';
@@ -22,20 +23,18 @@ class Configuration {
   static Future<void> initWindowManager() async {
     await windowManager.ensureInitialized();
 
-    await windowManager.waitUntilReadyToShow(windowOptions, () async {
-      await windowManager.setAsFrameless();
-      await windowManager.show();
-      await windowManager.focus();
-    });
+    unawaited(
+      windowManager.waitUntilReadyToShow(windowOptions, () async {
+        if (Platform.isLinux) await windowManager.setAsFrameless();
+        await windowManager.show();
+        await windowManager.focus();
+      }),
+    );
   }
 
   static Future<void> init() async {
     if (Constants.isDesktop) {
       await initWindowManager();
-    }
-
-    // Intialize Dart VLC
-    if (!Constants.isDesktop) {
       await DartVLC.initialize();
     }
 
