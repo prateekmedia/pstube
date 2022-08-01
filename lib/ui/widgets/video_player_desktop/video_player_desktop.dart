@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:dart_vlc/dart_vlc.dart';
@@ -26,7 +27,7 @@ class VideoPlayerDesktop extends StatefulWidget {
 
 class _VideoPlayerDesktopState extends State<VideoPlayerDesktop>
     with WidgetsBindingObserver {
-  Player player = Player(id: 0);
+  Player player = Player(id: 0, registerTexture: !Platform.isWindows);
   CurrentState current = CurrentState();
   PositionState position = PositionState();
   PlaybackState playback = PlaybackState();
@@ -174,19 +175,33 @@ class _VideoDesktop extends ConsumerWidget {
       BuildContext context, {
       bool isFullScreen = false,
     }) =>
-        Video(
-          showControls: false,
-          progressBarThumbGlowColor: Colors.red.withOpacity(0.2),
-          progressBarThumbColor: Colors.red,
-          progressBarActiveColor: Colors.red,
-          fit: boxFit,
-          player: player,
-          height: !isFullScreen
-              ? min(context.height * 0.45, context.width * 9 / 16)
-              : null,
-          volumeThumbColor: Colors.blue,
-          volumeActiveColor: Colors.blue,
-        );
+        Platform.isWindows
+            ? NativeVideo(
+                showControls: false,
+                progressBarThumbGlowColor: Colors.red.withOpacity(0.2),
+                progressBarThumbColor: Colors.red,
+                progressBarActiveColor: Colors.red,
+                fit: boxFit,
+                player: player,
+                height: !isFullScreen
+                    ? min(context.height * 0.45, context.width * 9 / 16)
+                    : null,
+                volumeThumbColor: Colors.blue,
+                volumeActiveColor: Colors.blue,
+              )
+            : Video(
+                showControls: false,
+                progressBarThumbGlowColor: Colors.red.withOpacity(0.2),
+                progressBarThumbColor: Colors.red,
+                progressBarActiveColor: Colors.red,
+                fit: boxFit,
+                player: player,
+                height: !isFullScreen
+                    ? min(context.height * 0.45, context.width * 9 / 16)
+                    : null,
+                volumeThumbColor: Colors.blue,
+                volumeActiveColor: Colors.blue,
+              );
 
     return ControlsWrapperDesktop(
       player: player,

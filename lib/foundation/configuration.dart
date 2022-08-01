@@ -35,7 +35,7 @@ class Configuration {
   static Future<void> init() async {
     if (Constants.isDesktop) {
       await initWindowManager();
-      await DartVLC.initialize();
+      await DartVLC.initialize(useFlutterNativeView: Platform.isWindows);
     }
 
     // Connectivity check stream initialised.
