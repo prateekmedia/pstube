@@ -14,7 +14,6 @@ class AppInfo {
       name: 'Prateek Sunal',
       url: 'https://github.com/prateekmedia',
       description: 'Founder | Lead Developer',
-      image: 'prateekmedia.jpeg',
     )
   ];
 
