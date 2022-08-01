@@ -49,5 +49,50 @@ class AppInfo {
       url: 'https://github.com/oktay454',
       description: 'Turkish',
     ),
+    SFInfo(
+      name: 'Turkish',
+      url: 'https://github.com/oktay454',
+      description: 'mailto:enesgokalp19@gmail.com',
+    ),
+    SFInfo(
+      name: 'J. Lavoie',
+      url: 'mailto:j.lavoie@net-c.ca',
+      description: 'French, Italian',
+    ),
+    SFInfo(
+      name: 'T. C.',
+      url: 'tct1234@protonmail.com',
+      description: 'German',
+    ),
+    SFInfo(
+      name: 'Egor Qwersk',
+      url: 'qs98@i.ua',
+      description: 'Russian, Ukrainian',
+    ),
+    SFInfo(
+      name: 'Artem',
+      url: 'mailto:artem@molotov.work',
+      description: 'Ukrainian',
+    ),
+    SFInfo(
+      name: 'HiSubway',
+      url: 'mailto:shenyusoftware@gmail.com',
+      description: 'Japanese',
+    ),
+    SFInfo(
+      name: 'Zeref',
+      url: 'mailto:nguyentestf1@gmail.com',
+      description: 'Vietnamese',
+    ),
+    SFInfo(
+      name: 'ReVanced',
+      url: 'mailto:revanced2022@gmail.com',
+      description: 'Azerbaijani',
+    ),
+    SFInfo(
+      name: 'rene-coty',
+      url: 'mailto:irenee.thirion@e.email',
+      description: 'Azerbaijani',
+    ),
   ];
 }
