@@ -138,5 +138,7 @@
   "youAreUsingTheLatestVersion": "У вас самая новая версия",
   "@youAreUsingTheLatestVersion": {},
   "like": "Нравится",
-  "@like": {}
+  "@like": {},
+  "cinema": "Кино",
+  "@cinema": {}
 }
