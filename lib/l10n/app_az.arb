@@ -138,5 +138,7 @@
   "reply": "cavab",
   "@reply": {},
   "error": "Xəta",
-  "@error": {}
+  "@error": {},
+  "cinema": "Kino",
+  "@cinema": {}
 }
