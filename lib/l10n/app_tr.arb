@@ -138,5 +138,7 @@
   "region": "Bölge",
   "@region": {},
   "lookingForNewVersion": "Yeni sürüm aranıyor.",
-  "@lookingForNewVersion": {}
+  "@lookingForNewVersion": {},
+  "cinema": "Sinema",
+  "@cinema": {}
 }
