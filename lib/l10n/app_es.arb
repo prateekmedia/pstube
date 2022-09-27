@@ -1,1 +1,10 @@
-{}
+{
+  "settings": "Ajustes",
+  "@settings": {},
+  "home": "Inicio",
+  "@home": {},
+  "playlist": "Lista de reproducción",
+  "@playlist": {},
+  "downloads": "Descargas",
+  "@downloads": {}
+}
