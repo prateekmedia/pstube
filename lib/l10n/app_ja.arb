@@ -138,5 +138,7 @@
   "downloadQuality": "ダウンロード品質",
   "@downloadQuality": {},
   "lookingForNewVersion": "新しいバージョンを探しています。",
-  "@lookingForNewVersion": {}
+  "@lookingForNewVersion": {},
+  "cinema": "映画館",
+  "@cinema": {}
 }
