@@ -137,6 +137,8 @@
   "@typeToSearch": {},
   "region": "Regione",
   "@region": {},
-  "lookingForNewVersion": "Ricerca di nuove versioni…",
-  "@lookingForNewVersion": {}
+  "lookingForNewVersion": "Ricerca di nuove versioni.",
+  "@lookingForNewVersion": {},
+  "cinema": "Cinema",
+  "@cinema": {}
 }
