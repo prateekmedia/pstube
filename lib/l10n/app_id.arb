@@ -29,7 +29,7 @@
   "@highResolution": {},
   "maxResolution": "Maks",
   "@maxResolution": {},
-  "downloadStarted": "Mengunduh…",
+  "downloadStarted": "Mengunduh",
   "@downloadStarted": {},
   "downloadFinished": "Selesai",
   "@downloadFinished": {},
@@ -91,7 +91,7 @@
   "@replies": {},
   "error": "Error",
   "@error": {},
-  "thumbnail": "Thumbnail",
+  "thumbnail": "Gambar mini",
   "@thumbnail": {},
   "videoPlusAudio": "Video + Audio",
   "@videoPlusAudio": {},
@@ -138,5 +138,7 @@
   "region": "Wilayah",
   "@region": {},
   "lookingForNewVersion": "Mencari versi baru...",
-  "@lookingForNewVersion": {}
+  "@lookingForNewVersion": {},
+  "cinema": "Bioskop",
+  "@cinema": {}
 }
