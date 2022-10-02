@@ -29,7 +29,7 @@
   "@highResolution": {},
   "maxResolution": "Max",
   "@maxResolution": {},
-  "downloadStarted": "Téléchargement",
+  "downloadStarted": "Téléchargement commencé",
   "@downloadStarted": {},
   "downloadFinished": "Terminé",
   "@downloadFinished": {},
