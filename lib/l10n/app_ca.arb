@@ -1,1 +1,14 @@
-{}
+{
+  "downloads": "Descàrregues",
+  "@downloads": {},
+  "home": "Llar",
+  "@home": {},
+  "playlist": "llista de reproducció",
+  "@playlist": {},
+  "settings": "Configuració",
+  "@settings": {},
+  "downloadFromVideoUrl": "Baixada des de l'URL del vídeo",
+  "@downloadFromVideoUrl": {},
+  "alsoDeleteThemFromStorage": "També esborra els fitxers emmagatzemats",
+  "@alsoDeleteThemFromStorage": {}
+}
