@@ -101,7 +101,7 @@
   "@downloads": {},
   "downloadFromVideoUrl": "動画URLからダウンロード",
   "@downloadFromVideoUrl": {},
-  "downloadStarted": "ダウンロード中",
+  "downloadStarted": "ダウンロード開始",
   "@downloadStarted": {},
   "downloadFinished": "終了",
   "@downloadFinished": {},
