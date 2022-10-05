@@ -142,7 +142,7 @@ packages:
       name: characters
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.1"
   charcode:
     dependency: transitive
     description:
@@ -177,7 +177,7 @@ packages:
       name: clock
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.1"
   code_builder:
     dependency: transitive
     description:
@@ -583,9 +583,11 @@ packages:
   libadwaita:
     dependency: "direct main"
     description:
-      name: libadwaita
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: native-controls
+      resolved-ref: "01a267e1311a154276d8b0dce2fdadb98f6df528"
+      url: "https://github.com/gtk-flutter/libadwaita"
+    source: git
     version: "1.2.5"
   libadwaita_core:
     dependency: transitive
@@ -649,14 +651,14 @@ packages:
       name: material_color_utilities
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.4"
+    version: "0.1.5"
   meta:
     dependency: transitive
     description:
       name: meta
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.7.0"
+    version: "1.8.0"
   mime:
     dependency: transitive
     description:
@@ -763,7 +765,7 @@ packages:
       name: path
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.1"
+    version: "1.8.2"
   path_drawing:
     dependency: transitive
     description:

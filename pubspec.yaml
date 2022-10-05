@@ -36,7 +36,10 @@ dependencies:
   hooks_riverpod: ^2.0.0-dev.0
   html: ^0.15.0
   intl: ^0.17.0
-  libadwaita: ^1.2.1
+  libadwaita:
+    git:
+      url: https://github.com/gtk-flutter/libadwaita
+      ref: native-controls
   libadwaita_searchbar_ac: ^0.5.7
   libadwaita_window_manager: ^0.5.4
   lucide_icons: ^0.73.0
