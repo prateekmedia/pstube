@@ -140,5 +140,7 @@
   "region": "Region",
   "@region": {},
   "lookingForNewVersion": "Leter etter ny versjoner …",
-  "@lookingForNewVersion": {}
+  "@lookingForNewVersion": {},
+  "cinema": "Kino",
+  "@cinema": {}
 }
