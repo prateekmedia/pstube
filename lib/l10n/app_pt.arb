@@ -25,7 +25,7 @@
   "@mediumResolution": {},
   "maxResolution": "Máxima",
   "@maxResolution": {},
-  "downloadStarted": "Baixando…",
+  "downloadStarted": "Download iniciado",
   "@downloadStarted": {},
   "downloadFinished": "Concluído",
   "@downloadFinished": {},
@@ -135,8 +135,10 @@
   "@typeToSearch": {},
   "region": "Região",
   "@region": {},
-  "lookingForNewVersion": "Procurando por novas versões…",
+  "lookingForNewVersion": "Procurando novas versões.",
   "@lookingForNewVersion": {},
   "highResolution": "Alta",
-  "@highResolution": {}
+  "@highResolution": {},
+  "cinema": "Cinemas",
+  "@cinema": {}
 }

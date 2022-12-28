@@ -29,7 +29,7 @@
   "@highResolution": {},
   "maxResolution": "إعلى دقة",
   "@maxResolution": {},
-  "downloadStarted": "بدء التنزيل",
+  "downloadStarted": "بدأ التنزيل",
   "@downloadStarted": {},
   "downloadFinished": "انتها التنزيل",
   "@downloadFinished": {},
@@ -138,5 +138,7 @@
   "region": "Region",
   "@region": {},
   "lookingForNewVersion": "Looking for new version...",
-  "@lookingForNewVersion": {}
+  "@lookingForNewVersion": {},
+  "cinema": "سينما",
+  "@cinema": {}
 }

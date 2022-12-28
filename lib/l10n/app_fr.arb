@@ -29,7 +29,7 @@
   "@highResolution": {},
   "maxResolution": "Max",
   "@maxResolution": {},
-  "downloadStarted": "Téléchargement",
+  "downloadStarted": "Téléchargement commencé",
   "@downloadStarted": {},
   "downloadFinished": "Terminé",
   "@downloadFinished": {},
@@ -138,5 +138,7 @@
   "region": "Région",
   "@region": {},
   "lookingForNewVersion": "Recherche d'une nouvelle version….",
-  "@lookingForNewVersion": {}
+  "@lookingForNewVersion": {},
+  "cinema": "Cinéma",
+  "@cinema": {}
 }

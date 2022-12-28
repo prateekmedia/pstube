@@ -25,7 +25,7 @@
   "@standardResolution": {},
   "maxResolution": "Max",
   "@maxResolution": {},
-  "downloadStarted": "Lade herunter…",
+  "downloadStarted": "Download gestartet",
   "@downloadStarted": {},
   "downloadFinished": "Fertig",
   "@downloadFinished": {},
@@ -95,7 +95,7 @@
   "@showLess": {},
   "region": "Region",
   "@region": {},
-  "lookingForNewVersion": "Suche nach neuen Versionen…",
+  "lookingForNewVersion": "Suche nach neuen Versionen.",
   "@lookingForNewVersion": {},
   "playlist": "Playlist",
   "@playlist": {},
@@ -138,5 +138,7 @@
   "videoNotFound": "Video nicht gefunden!",
   "@videoNotFound": {},
   "typeToSearch": "Tippe zum suchen",
-  "@typeToSearch": {}
+  "@typeToSearch": {},
+  "cinema": "Kino",
+  "@cinema": {}
 }

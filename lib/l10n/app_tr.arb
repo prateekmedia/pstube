@@ -29,7 +29,7 @@
   "@highResolution": {},
   "maxResolution": "Azami",
   "@maxResolution": {},
-  "downloadStarted": "İndiriliyor",
+  "downloadStarted": "İndirme başladı",
   "@downloadStarted": {},
   "downloadFinished": "Tamamlandı",
   "@downloadFinished": {},
@@ -138,5 +138,7 @@
   "region": "Bölge",
   "@region": {},
   "lookingForNewVersion": "Yeni sürüm aranıyor.",
-  "@lookingForNewVersion": {}
+  "@lookingForNewVersion": {},
+  "cinema": "Sinema",
+  "@cinema": {}
 }
