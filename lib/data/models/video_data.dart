@@ -67,25 +67,6 @@ class VideoData {
         description = videoInfo.description,
         likes = videoInfo.likes;
 
-  VideoData.fromSearchItem(SearchItem searchItem)
-      : duration = searchItem.duration,
-        thumbnails = Thumbnails(videoId: searchItem.url),
-        title = searchItem.title,
-        id = VideoId(searchItem.url),
-        description = searchItem.description,
-        uploadDate = searchItem.uploadedDate,
-        uploader = searchItem.uploaderName,
-        views = searchItem.views,
-        uploaderId = UploaderId.addPrefix(searchItem.uploaderUrl!),
-        durationString = null,
-        audioStreams = null,
-        videoStreams = null,
-        relatedStreams = null,
-        likes = null,
-        uploaded = searchItem.uploaded,
-        uploaderAvatar = searchItem.uploaderAvatar,
-        uploaderVerified = searchItem.uploaderVerified;
-
   final BuiltList<StreamItem>? relatedStreams;
 
   /// The duration of the video in seconds.

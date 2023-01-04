@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/models/models.dart';
+import 'package:pstube/data/models/search_data.dart';
 import 'package:pstube/foundation/services/piped_service.dart';
 import 'package:pstube/states/history/provider.dart';
 
@@ -22,8 +23,8 @@ class SearchNotifierProvider extends ChangeNotifier {
   SearchFilter filter = SearchFilter.videos;
   String? nextPageToken = '';
 
-  StreamList<VideoData>? _searchList;
-  BuiltList<VideoData>? get results => _searchList?.streams;
+  StreamList<SearchData>? _searchList;
+  BuiltList<SearchData>? get results => _searchList?.streams;
 
   Future<void> search(String _query) async {
     isLoading = true;

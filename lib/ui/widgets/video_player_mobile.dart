@@ -11,7 +11,7 @@ class VideoPlayerMobile extends StatefulWidget {
     required this.resolutions,
   });
 
-  final int defaultQuality;
+  final int? defaultQuality;
   final List<VideoQalityUrls> resolutions;
 
   @override
@@ -32,7 +32,12 @@ class _VideoPlayerState extends State<VideoPlayerMobile>
   void mediaPlayerControllerSetUp() {
     _controller = PodPlayerController(
       podPlayerConfig: PodPlayerConfig(
-        initialVideoQuality: widget.defaultQuality,
+        videoQualityPriority: [
+          if (widget.defaultQuality != null) widget.defaultQuality!,
+          1080,
+          720,
+          360,
+        ],
       ),
       playVideoFrom: PlayVideoFrom.networkQualityUrls(
         videoPlayerOptions: VideoPlayerOptions(

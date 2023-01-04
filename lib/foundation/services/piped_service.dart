@@ -4,6 +4,8 @@ import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/models/channel_data.dart';
 import 'package:pstube/data/models/comment_data.dart';
 import 'package:pstube/data/models/models.dart';
+import 'package:pstube/data/models/search_data.dart';
+import 'package:pstube/foundation/extensions/extensions.dart';
 import 'package:pstube/states/region/provider.dart';
 
 final pipedServiceProvider = Provider<PipedService>((ref) {
@@ -124,7 +126,7 @@ class PipedService {
     );
   }
 
-  Future<StreamList<VideoData>?>? search({
+  Future<StreamList<SearchData>?> search({
     required String query,
     required SearchFilter filter,
   }) async {
@@ -136,11 +138,8 @@ class PipedService {
 
     if (data == null) return null;
 
-    final _results = data.items!
-        .map(
-          VideoData.fromSearchItem,
-        )
-        .toBuiltList();
+    final _results =
+        data.items!.map((e) => SearchData(data: e.data)).toBuiltList();
 
     return StreamList(
       streams: _results,
@@ -148,7 +147,7 @@ class PipedService {
     );
   }
 
-  Future<StreamList<VideoData>?>? searchNextPage({
+  Future<StreamList<SearchData>?> searchNextPage({
     required String nextpage,
     required String query,
     required SearchFilter filter,
@@ -164,7 +163,7 @@ class PipedService {
 
     final results = searchPage!.items!
         .map(
-          VideoData.fromSearchItem,
+          (e) => SearchData(data: e.data),
         )
         .toBuiltList();
 

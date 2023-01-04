@@ -34,6 +34,16 @@ class ChannelData {
               )
             : null;
 
+  ChannelData.fromChannelItem(ChannelItem item)
+      : name = item.name!,
+        bannerUrl = '',
+        avatarUrl = item.thumbnail!,
+        subscriberCount = item.subscribers ?? -1,
+        description = item.description ?? '',
+        id = UploaderId(item.url!),
+        verified = item.verified ?? false,
+        videos = null;
+
   final String name;
   final String? bannerUrl;
   final String avatarUrl;
