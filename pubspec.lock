@@ -548,7 +548,7 @@ packages:
     description:
       path: "."
       ref: native-controls
-      resolved-ref: "01a267e1311a154276d8b0dce2fdadb98f6df528"
+      resolved-ref: "5389e2c317343f83bb9634c1d1228c3c03befc91"
       url: "https://github.com/gtk-flutter/libadwaita"
     source: git
     version: "1.2.5"
@@ -657,20 +657,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
-  one_of:
-    dependency: transitive
-    description:
-      name: one_of
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.5.0"
-  one_of_serializer:
-    dependency: transitive
-    description:
-      name: one_of_serializer
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.5.0"
   open_file:
     dependency: "direct main"
     description:
@@ -860,7 +846,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: fd20ae95b1d517bdb5b43293c592f61eb94733ec
+      resolved-ref: "938917a83572fd65826d6b0fbafe013777c905fe"
       url: "https://github.com/TeamPiped/piped_dart"
     source: git
     version: "1.0.0"
@@ -920,13 +906,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.1"
-  quiver:
-    dependency: transitive
-    description:
-      name: quiver
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.1.0"
   readmore:
     dependency: "direct main"
     description:
