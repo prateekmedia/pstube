@@ -148,7 +148,7 @@ class MyHomePage extends HookConsumerWidget {
                 constraints: BoxConstraints.loose(const Size(500, 40)),
                 toggleSearchBar: toggleSearchBar,
                 hintText: '',
-                search: null,
+                // search: null,
                 asyncSuggestions: (str) => str.trim().isNotEmpty
                     ? yexp.YoutubeExplode().search.getQuerySuggestions(str)
                     : Future.value(ref.watch(historyProvider.notifier).history),

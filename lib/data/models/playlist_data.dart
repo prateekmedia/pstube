@@ -8,11 +8,11 @@ class PlaylistData {
     required this.videos,
   });
 
-  PlaylistData.fromSearchItem({
-    required SearchItem searchItem,
+  PlaylistData.fromPlaylistItem({
+    required PlaylistItem searchItem,
   })  : name = searchItem.name!,
-        thumbnail = searchItem.thumbnail,
-        url = searchItem.url,
+        thumbnail = searchItem.thumbnail!,
+        url = searchItem.url!,
         videos = searchItem.videos!;
 
   final String name;
