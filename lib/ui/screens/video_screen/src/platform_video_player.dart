@@ -41,15 +41,7 @@ class PlatformVideoPlayer extends StatelessWidget {
           )
         : VideoPlayerDesktop(
             isCinemaMode: isCinemaMode,
-            url: videoStreams
-                .firstWhere(
-                  (element) => element.quality!.contains(
-                    '360',
-                  ),
-                  orElse: () => videoStreams.first,
-                )
-                .url
-                .toString(),
+            url: videoStreams.last.url.toString(),
             resolutions: videoStreams.asMap().map(
                   (key, value) => MapEntry(
                     value.quality!,

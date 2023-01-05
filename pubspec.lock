@@ -657,6 +657,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
+  one_of:
+    dependency: transitive
+    description:
+      name: one_of
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.5.0"
+  one_of_serializer:
+    dependency: transitive
+    description:
+      name: one_of_serializer
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.5.0"
   open_file:
     dependency: "direct main"
     description:
@@ -846,7 +860,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "938917a83572fd65826d6b0fbafe013777c905fe"
+      resolved-ref: fd20ae95b1d517bdb5b43293c592f61eb94733ec
       url: "https://github.com/TeamPiped/piped_dart"
     source: git
     version: "1.0.0"
@@ -906,6 +920,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.1"
+  quiver:
+    dependency: transitive
+    description:
+      name: quiver
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.2.1"
   readmore:
     dependency: "direct main"
     description:

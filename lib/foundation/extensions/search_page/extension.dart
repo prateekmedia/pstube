@@ -4,14 +4,14 @@ import 'package:pstube/data/models/models.dart';
 
 extension BSC on SearchItem {
   dynamic get data {
-    if (oneOf is ChannelItem) {
-      final item = this as ChannelItem;
+    if (oneOf.valueType is ChannelItem) {
+      final item = oneOf.value! as ChannelItem;
       return ChannelData.fromChannelItem(item);
-    } else if (oneOf is StreamItem) {
-      final item = this as StreamItem;
+    } else if (oneOf.valueType is StreamItem) {
+      final item = oneOf.value! as StreamItem;
       return VideoData.fromStreamItem(item);
     } else {
-      final item = this as PlaylistItem;
+      final item = oneOf.value! as PlaylistItem;
       return PlaylistData.fromPlaylistItem(searchItem: item);
     }
   }

@@ -20,13 +20,12 @@ class SearchScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isMounted = useIsMounted();
     final searchP = ref.watch(searchProvider);
-    final searchPro = ref.read(searchProvider.notifier);
     final controller = useScrollController();
 
     Future<void> loadVideos() async {
       if (!isMounted()) return;
 
-      await searchPro.search(searchedTerm.value);
+      await ref.read(searchProvider.notifier).search(searchedTerm.value);
     }
 
     Future<void> _getMoreData() async {
@@ -35,7 +34,7 @@ class SearchScreen extends HookConsumerWidget {
         return;
       }
 
-      await searchPro.searchNextPage();
+      await ref.read(searchProvider.notifier).searchNextPage();
     }
 
     useEffect(
