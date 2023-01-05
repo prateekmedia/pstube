@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pod_player/pod_player.dart';
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/foundation/services.dart';
+import 'package:pstube/ui/widgets/video_player_desktop/vid_player_mpv.dart';
 import 'package:pstube/ui/widgets/video_player_desktop/video_player_desktop.dart';
 import 'package:pstube/ui/widgets/video_player_mobile.dart';
 
@@ -39,7 +40,7 @@ class PlatformVideoPlayer extends StatelessWidget {
                 )
                 .toList(),
           )
-        : VideoPlayerDesktop(
+        : VideoPlayerMpv(
             isCinemaMode: isCinemaMode,
             url: videoStreams.last.url.toString(),
             resolutions: videoStreams.asMap().map(

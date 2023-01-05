@@ -35,7 +35,7 @@ class Configuration {
   static Future<void> init() async {
     if (Constants.isDesktop) {
       await initWindowManager();
-      DartVLC.initialize();
+      //DartVLC.initialize();
     }
 
     // Connectivity check stream initialised.

@@ -20,6 +20,10 @@ dependencies:
   dart_vlc: ^0.4.0
     # git:
     #   url: https://github.com/alexmercerind/dart_vlc
+  media_kit:
+    path: "../media_kit/media_kit"
+  media_kit_core_video:
+    path: "../media_kit/media_kit_core_video"
   dio: ^4.0.4
   dio_cookie_manager: ^2.0.0
   equatable: ^2.0.3 
@@ -43,10 +47,7 @@ dependencies:
   libadwaita_searchbar_ac: ^0.5.8
   libadwaita_window_manager: ^0.5.4
   lucide_icons: ^0.104.0
-  open_file: # Upgrade to pub.dev when package > 3.2.1
-    git:
-      url: https://github.com/miDeb/open_file.git
-      ref: no_system
+  open_filex: ^4.3.0
   package_info_plus: ^1.3.0
   page_transition: ^2.0.5
   path: ^1.8.0
