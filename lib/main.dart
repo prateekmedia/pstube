@@ -7,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pstube/config/info/app_info.dart';
 import 'package:pstube/foundation/configuration.dart';
+import 'package:pstube/foundation/controller/scrollable.dart';
 import 'package:pstube/states/states.dart';
 import 'package:pstube/ui/screens/home_page/home_page.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -36,6 +37,7 @@ class MyApp extends HookConsumerWidget {
 
     return MaterialApp(
       title: AppInfo.myApp.name,
+      scrollBehavior: CustomScrollBehavior(),
       builder: (context, child) {
         Widget responsiveBuilder(BuildContext ctx, Widget child) {
           return ResponsiveWrapper.builder(
