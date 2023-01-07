@@ -23,6 +23,16 @@ class PlatformVideoPlayer extends StatelessWidget {
           (p0) => !(p0.videoOnly ?? false),
         )
         .toList();
+    final videoonlyStreams = videoData.videoStreams!
+        .where(
+          (p0) => !(p0.videoOnly == false),
+        )
+        .toList();
+    final audioonlyStreams = videoData.audioStreams!
+        .where(
+          (p0) => (p0.codec == "opus"), //TODO: make this customizable
+        )
+        .toList();
 
     return Constants.isMobileOrWeb
         ? VideoPlayerMobile(
@@ -43,7 +53,13 @@ class PlatformVideoPlayer extends StatelessWidget {
         : VideoPlayerMpv(
             isCinemaMode: isCinemaMode,
             url: videoStreams.last.url.toString(),
-            resolutions: videoStreams.asMap().map(
+            audstreams: audioonlyStreams.asMap().map(
+                  (key, value) => MapEntry(
+                    value.bitrate!,
+                    value.url.toString(),
+                  ),
+                ),
+            resolutions: videoonlyStreams.asMap().map(
                   (key, value) => MapEntry(
                     value.quality!,
                     value.url.toString(),

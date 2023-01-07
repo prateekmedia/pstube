@@ -1,30 +1,24 @@
 import 'dart:async';
-import 'dart:io';
-import 'dart:math';
+
+import 'package:flutter/material.dart';
 
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_core_video/media_kit_core_video.dart';
-import 'package:path/path.dart' as path;
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pstube/foundation/extensions/extensions.dart';
-import 'package:pstube/ui/widgets/video_player_desktop/controls_wrapper_desktop.dart';
-import 'package:pstube/ui/widgets/video_player_desktop/states/player_state_provider.dart';
-import 'package:window_manager/window_manager.dart';
 
 class VideoPlayerMpv extends StatefulWidget {
   const VideoPlayerMpv({
     super.key,
     required this.url,
+    required this.audstreams,
     required this.resolutions,
     required this.isCinemaMode,
   });
 
   final ValueNotifier<bool> isCinemaMode;
   final String url;
+  final Map<int, String> audstreams;
   final Map<String, String> resolutions;
 
   @override
@@ -127,11 +121,11 @@ class _SeekBarState extends State<SeekBar> {
               },
             ),
           ),
-          //Text(duration.toString().substring(2, 7)),
+          Text(duration.toString().substring(2, 7)),
           //IconButton(
           //  onPressed: ,
           //  icon: Icon(
-          //    volume = 0.0 ? Icons.volume_off : Icons.volume_up,
+          //    Icons.volume = 0.0 ? Icons.volume_off : Icons.volume_up,,
           //  ),
           //  color: Theme.of(context).primaryColor,
           //  iconSize: 36.0,
@@ -165,11 +159,30 @@ class EventDesktopPlayerState extends State<VideoPlayerMpv> {
   bool isVisible = false;
   String? url;
   late List<Media> medias = <Media>[Media(widget.url)];
+  late Map<int, String> aud = widget.audstreams;
+  late Map<String, String> res = widget.resolutions;
   
 
-    void _downloadAction() async {
-      
-      await player.open(Playlist(medias));
+    void _downloadAction(String vid) async {
+      // default to using the highest bitrate, probably a better way of doing this
+      // TODO probably want a way to override this
+      late var bitrate=0;
+      late var audurl;
+
+      aud.forEach((k,v){
+      if(k>bitrate) {
+        audurl = v;
+        bitrate = k;
+      }
+      });
+
+      //load audio track should get put behind an if statment
+      if (player?.platform is libmpvPlayer) {
+        await (player?.platform as libmpvPlayer?)?.setProperty("audio-files", audurl);
+      }
+
+      //await player.open(Playlist(medias)); //load url with both audio and video
+      await player.open(Playlist([Media(vid)])); // load video only url
 
       setState(() => _isDownloading = false);
       setState(() => Triggered = true);
@@ -190,51 +203,71 @@ class EventDesktopPlayerState extends State<VideoPlayerMpv> {
       color: Color.fromARGB(0, 0, 0, 0),
       child: ConstrainedBox(
         //TODO: make height customizable, figure out ratio from mpv needs set to proper align with side.
-        constraints: BoxConstraints(maxHeight: 300, maxWidth: 16 / 9 * 300), 
+        constraints: BoxConstraints(maxHeight: 500, maxWidth: 16 / 9 * 500), 
         child: Triggered == true
             ? Stack(
               //alignment: Alignment.bottomCenter,
-              children: [
-                  Center(child: Video(controller: controller)),
-                  if(isVisible)
-                  Container(
-                    child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: Container(
-                      color: Color.fromARGB(125, 0, 0, 0),
-                      child: SeekBar(player: player),
+                children: [
+                    Center(child: Video(controller: controller)),
+                    if(isVisible)
+                    Container(
+                      child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: Container(
+                        color: Color.fromARGB(125, 0, 0, 0),
+                        child: SeekBar(player: player),
+                      )
                     )
+                  ),
+                  MouseRegion(
+                    onEnter: (PointerEvent details)=>setState(()=>isVisible = true),
+                    onExit: (PointerEvent details)=>setState(()=>isVisible = false),
+                    opaque: false,
                   )
-                ),
-                MouseRegion(
-                  onEnter: (PointerEvent details)=>setState(()=>isVisible = true),
-                  onExit: (PointerEvent details)=>setState(()=>isVisible = false),
-                  opaque: false,
-                )
-              ]
-            )
+                ]
+              )
             : //Stack(
                 //children: [
                   Center(
-                    child: OutlinedButton.icon(
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.surface,
-                      ),
-                      icon: _isDownloading
-                          ? const SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: CircularProgressIndicator.adaptive(
-                                  strokeWidth: 2),
-                            )
-                          : const Icon(Icons.download_outlined),
-                        label: Text("test"),
-                      onPressed: _downloadAction,
+                    child: //OutlinedButton.icon(
+                      //style: OutlinedButton.styleFrom(
+                      //  backgroundColor: Theme.of(context).colorScheme.surface,
+                      //),
+                      //icon: //_isDownloading
+                          //? const SizedBox(
+                          //    width: 24,
+                          //    height: 24,
+                          //    child: CircularProgressIndicator.adaptive(
+                          //        strokeWidth: 2),
+                          //  )
+                          //: 
+
+                          // for showing audio bitrate
+
+                          //SimpleDialog(
+                          //    title: Text('Resolutions'),
+                          //    children: aud.entries.map((entry) {
+                          //      var w = var(entry.key);
+                          //      //_downloadAction(entry.value); //sends the URL
+                          //      return w;
+                          //    }).toList()),  
+
+                          SimpleDialog(
+                              title: Text('Resolutions'),
+                              children: res.entries.map((entry) {
+                                var w = Text(entry.key.toString());
+                                _downloadAction(entry.value); //sends the URL
+                                return w;
+                              }).toList()), //TODO
+                          
+                          //const Icon(Icons.download_outlined),
+                            //label: Text("test"),
+                            //onPressed: _downloadAction,
                     ),
                   )
                 //],
-              ),
-      );
+    );
+      //);
 
   }
 }
