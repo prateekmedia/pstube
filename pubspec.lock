@@ -618,16 +618,20 @@ packages:
   media_kit:
     dependency: "direct main"
     description:
-      path: "../media_kit/media_kit"
-      relative: true
-    source: path
+      path: media_kit
+      ref: HEAD
+      resolved-ref: d49b9b06c92b3be553ee9d2699d99496313a6458
+      url: "https://github.com/alexmercerind/media_kit/"
+    source: git
     version: "0.0.1"
   media_kit_core_video:
     dependency: "direct main"
     description:
-      path: "../media_kit/media_kit_core_video"
-      relative: true
-    source: path
+      path: media_kit_core_video
+      ref: HEAD
+      resolved-ref: d49b9b06c92b3be553ee9d2699d99496313a6458
+      url: "https://github.com/alexmercerind/media_kit/"
+    source: git
     version: "0.0.1"
   meta:
     dependency: transitive
