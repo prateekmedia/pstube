@@ -34,8 +34,8 @@ class PlatformVideoPlayer extends StatelessWidget {
         )
         .toList();
 
-    return Constants.isMobileOrWeb
-        ? VideoPlayerMobile(
+    if (Constants.isMobileOrWeb) {
+        return VideoPlayerMobile(
             defaultQuality: 360,
             resolutions: videoStreams
                 .map(
@@ -49,8 +49,9 @@ class PlatformVideoPlayer extends StatelessWidget {
                   ),
                 )
                 .toList(),
-          )
-        : VideoPlayerMpv(
+          );
+        } else if (Constants.isWindows){ 
+        return VideoPlayerMpv(
             isCinemaMode: isCinemaMode,
             url: videoStreams.last.url.toString(),
             audstreams: audioonlyStreams.asMap().map(
@@ -66,5 +67,17 @@ class PlatformVideoPlayer extends StatelessWidget {
                   ),
                 ),
           );
+        } else {
+          return VideoPlayerDesktop(
+            isCinemaMode: isCinemaMode,
+            url: videoStreams.last.url.toString(),
+            resolutions: videoStreams.asMap().map(
+                  (key, value) => MapEntry(
+                    value.quality!,
+                    value.url.toString(),
+                  ),
+                ),
+          );
+        };
   }
 }
