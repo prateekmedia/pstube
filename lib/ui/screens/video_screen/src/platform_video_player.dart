@@ -66,6 +66,12 @@ class PlatformVideoPlayer extends StatelessWidget {
                     value.url.toString(),
                   ),
                 ),
+            handw: videoonlyStreams.asMap().map(
+                  (key, value) => MapEntry(
+                    value.width!,
+                    value.height!,
+                  ),
+            ),
           );
         } else {
           return VideoPlayerDesktop(

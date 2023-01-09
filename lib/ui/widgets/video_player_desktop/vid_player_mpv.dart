@@ -14,12 +14,14 @@ class VideoPlayerMpv extends StatefulWidget {
     required this.audstreams,
     required this.resolutions,
     required this.isCinemaMode,
+    required this.handw,
   });
 
   final ValueNotifier<bool> isCinemaMode;
   final String url;
   final Map<int, String> audstreams;
   final Map<String, String> resolutions;
+  final Map<int, int> handw;
 
   @override
   EventDesktopPlayerState createState() => EventDesktopPlayerState();
@@ -157,10 +159,13 @@ class EventDesktopPlayerState extends State<VideoPlayerMpv> {
   bool _isDownloading = false;
   bool Triggered = false;
   bool isVisible = false;
+  bool Asp = false;
   String? url;
   late List<Media> medias = <Media>[Media(widget.url)];
   late Map<int, String> aud = widget.audstreams;
   late Map<String, String> res = widget.resolutions;
+  late Map<int, int> aspect = widget.handw;
+  late double aspectvalue;
   
 
     void _downloadAction(String vid) async {
@@ -186,6 +191,13 @@ class EventDesktopPlayerState extends State<VideoPlayerMpv> {
 
       setState(() => _isDownloading = false);
       setState(() => Triggered = true);
+      setState(() => Asp = true);
+
+      var aspectlist = aspect.entries.toList();
+      var h = aspectlist[0].key;
+      var w = aspectlist[0].value;
+
+      aspectvalue = h / w;
     }
 
     @override
@@ -201,9 +213,8 @@ class EventDesktopPlayerState extends State<VideoPlayerMpv> {
 
     return Material(
       color: Color.fromARGB(0, 0, 0, 0),
-      child: ConstrainedBox(
-        //TODO: make height customizable, figure out ratio from mpv needs set to proper align with side.
-        constraints: BoxConstraints(maxHeight: 500, maxWidth: 16 / 9 * 500), 
+      child: AspectRatio(
+        aspectRatio: Asp != true ? 5 / 1 : aspectvalue,
         child: Triggered == true
             ? Stack(
               //alignment: Alignment.bottomCenter,
