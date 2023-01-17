@@ -140,7 +140,10 @@ class MyHomePage extends HookConsumerWidget {
           AdwHeaderButton(
             isActive: toggleSearch.value,
             onPressed: toggleSearchBar,
-            icon: const Icon(Icons.search, size: 20),
+            icon: Icon(
+              toggleSearch.value == true ? Icons.chevron_left : Icons.search,
+              size: 20,
+            ),
           ),
         ],
         title: toggleSearch.value
