@@ -1,7 +1,7 @@
 {
   "downloadFromVideoUrl": "Baixar via URL do vídeo",
   "@downloadFromVideoUrl": {},
-  "alsoDeleteThemFromStorage": "Também excluir arquivos salvos",
+  "alsoDeleteThemFromStorage": "Também apagar ficheiros salvos",
   "@alsoDeleteThemFromStorage": {},
   "settings": "Configurações",
   "@settings": {},
