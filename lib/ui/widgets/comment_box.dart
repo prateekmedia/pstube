@@ -82,7 +82,7 @@ class CommentBox extends HookConsumerWidget {
                     Text(
                       comment.commentedTime,
                       style:
-                          context.textTheme.bodyText2!.copyWith(fontSize: 12),
+                          context.textTheme.bodyMedium!.copyWith(fontSize: 12),
                     ),
                   ],
                 ),
@@ -94,17 +94,17 @@ class CommentBox extends HookConsumerWidget {
             padding: const EdgeInsets.only(left: 10),
             child: ReadMoreText(
               comment.commentText,
-              style: context.textTheme.bodyText2!
+              style: context.textTheme.bodyMedium!
                   .copyWith(color: context.brightness.textColor),
               trimLines: 4,
               trimMode: TrimMode.Line,
               trimCollapsedText: '\n${context.locals.readMore}',
               trimExpandedText: '\n${context.locals.showLess}',
-              lessStyle: context.textTheme.bodyText1!.copyWith(
+              lessStyle: context.textTheme.bodyLarge!.copyWith(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),
-              moreStyle: context.textTheme.bodyText1!.copyWith(
+              moreStyle: context.textTheme.bodyLarge!.copyWith(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),
@@ -137,8 +137,8 @@ class CommentBox extends HookConsumerWidget {
                       const SizedBox(width: 8),
                       Text(
                         (comment.likeCount).formatNumber,
-                        style:
-                            context.textTheme.bodyText2!.copyWith(fontSize: 12),
+                        style: context.textTheme.bodyMedium!
+                            .copyWith(fontSize: 12),
                       ),
                     ],
                   ),
@@ -156,7 +156,7 @@ class CommentBox extends HookConsumerWidget {
                     margin: const EdgeInsets.symmetric(vertical: 4)
                         .copyWith(left: 4),
                     label: context.locals.replies,
-                    style: context.textTheme.bodyText2!.copyWith(fontSize: 12),
+                    style: context.textTheme.bodyMedium!.copyWith(fontSize: 12),
                   ),
                 ),
               ],

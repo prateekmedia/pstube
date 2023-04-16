@@ -39,7 +39,7 @@ class _ChannelLogoState extends State<ChannelLogo>
       child: Center(
         child: Text(
           channelData?.name?.characters.first ?? widget.author?[0] ?? '...',
-          style: context.textTheme.headline5!.copyWith(
+          style: context.textTheme.headlineSmall!.copyWith(
             fontWeight: FontWeight.w500,
             color:
                 bgColor.computeLuminance() > 0.5 ? Colors.black : Colors.white,

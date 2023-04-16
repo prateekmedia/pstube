@@ -82,7 +82,7 @@ class _CommentsWidgetState extends ConsumerState<CommentsWidget>
             },
             icon: Icon(
               Icons.chevron_left,
-              color: context.textTheme.bodyText1!.color,
+              color: context.textTheme.bodyLarge!.color,
             ),
           )
         else

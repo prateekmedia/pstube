@@ -17,7 +17,7 @@ class DescriptionInfoWidget extends StatelessWidget {
       children: [
         Text(
           title,
-          style: context.textTheme.headline3,
+          style: context.textTheme.displaySmall,
         ),
         Text(body),
       ],

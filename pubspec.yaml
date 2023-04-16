@@ -17,21 +17,11 @@ dependencies:
   cached_network_image: ^3.2.0
   connectivity_plus: ^3.0.2
   custom_text: ^0.6.0-dev.1
-  dart_vlc: ^0.4.0
+  # dart_vlc:
     # git:
     #   url: https://github.com/alexmercerind/dart_vlc
-  media_kit:
-    git:
-      url: https://github.com/alexmercerind/media_kit/
-      path: media_kit
-    #path: "../media_kit/media_kit"
-  media_kit_core_video:
-    git:
-      url: https://github.com/alexmercerind/media_kit/
-      path: media_kit_core_video
-    #path: "../media_kit/media_kit_core_video"
-  dio: ^4.0.4
   dio_cookie_manager: ^2.0.0
+  dio: ^4.0.4
   equatable: ^2.0.3 
   file_picker: ^5.2.4
   flutter:
@@ -53,6 +43,12 @@ dependencies:
   libadwaita_searchbar_ac: ^0.5.8
   libadwaita_window_manager: ^0.5.4
   lucide_icons: ^0.104.0
+  media_kit_video:
+    git:
+      url: https://github.com/alexmercerind/media_kit/
+      path: media_kit_video
+  media_kit_libs_windows_video:
+  media_kit_libs_linux:
   open_filex: ^4.3.0
   package_info_plus: ^1.3.0
   page_transition: ^2.0.5
@@ -81,6 +77,10 @@ dev_dependencies:
 
 dependency_overrides:
   ffi: ^2.0.1
+  media_kit:
+    git:
+      url: https://github.com/alexmercerind/media_kit/
+      path: media_kit
 #   window_manager:
 #     git:
 #       url: https://github.com/prateekmedia/window_manager

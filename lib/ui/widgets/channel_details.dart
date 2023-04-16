@@ -65,7 +65,7 @@ class _ChannelInfoState extends State<ChannelDetails>
                   Text(
                     channelData?.name ?? '',
                     overflow: TextOverflow.clip,
-                    style: context.textTheme.headline4,
+                    style: context.textTheme.headlineMedium,
                   ),
                   Text(
                     channelData != null
@@ -75,7 +75,7 @@ class _ChannelInfoState extends State<ChannelDetails>
                             : '${channelData.subscriberCount!.formatNumber} '
                                 '${context.locals.subscribers}'
                         : '',
-                    style: context.textTheme.bodyText2,
+                    style: context.textTheme.bodyMedium,
                   ),
                 ],
               ),

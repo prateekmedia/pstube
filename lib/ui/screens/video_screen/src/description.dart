@@ -24,7 +24,7 @@ class DescriptionWidget extends StatelessWidget {
       children: [
         Text(
           context.locals.description,
-          style: context.textTheme.bodyText1!.copyWith(
+          style: context.textTheme.bodyLarge!.copyWith(
             fontWeight: FontWeight.bold,
             fontSize: isInsidePopup ? 16 : 18,
           ),

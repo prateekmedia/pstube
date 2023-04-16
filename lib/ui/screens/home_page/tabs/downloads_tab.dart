@@ -100,7 +100,7 @@ class DownloadItemBuilder extends StatelessWidget {
                       item.queryVideo.name,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: context.textTheme.bodyText1,
+                      style: context.textTheme.bodyLarge,
                     ),
                     const SizedBox(height: 5),
                     Wrap(

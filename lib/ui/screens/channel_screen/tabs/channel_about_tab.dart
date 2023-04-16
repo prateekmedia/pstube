@@ -21,19 +21,19 @@ class ChannelAboutTab extends ConsumerWidget {
               padding: const EdgeInsets.only(top: 8),
               child: Text(
                 context.locals.stats,
-                style: context.textTheme.headline5,
+                style: context.textTheme.headlineSmall,
               ),
             ),
             const Divider(height: 26),
             Text(
               '${context.locals.joined} ${channelInfo.joinDate}',
-              style: context.textTheme.bodyText2,
+              style: context.textTheme.bodyMedium,
             ),
             const Divider(height: 26),
             Text(
               '${(channelInfo.viewCount ?? 0).addCommas} '
               '${context.locals.views}',
-              style: context.textTheme.bodyText2,
+              style: context.textTheme.bodyMedium,
             ),
             if (channelInfo.country != null) ...[
               const Divider(height: 26),
@@ -57,7 +57,7 @@ class ChannelAboutTab extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Text(
                     context.locals.description,
-                    style: context.textTheme.headline5,
+                    style: context.textTheme.headlineSmall,
                   ),
                 ),
                 SelectableText(
@@ -70,7 +70,7 @@ class ChannelAboutTab extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Text(
                     context.locals.links,
-                    style: context.textTheme.headline5,
+                    style: context.textTheme.headlineSmall,
                   ),
                 ),
                 Wrap(

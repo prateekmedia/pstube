@@ -50,7 +50,7 @@ class NetStatus extends StatelessWidget {
                       context.locals.networkLostShowingCachedData,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1!
+                          .bodyLarge!
                           .copyWith(color: Colors.white),
                     ),
                   ),
@@ -69,7 +69,7 @@ class NetStatus extends StatelessWidget {
                       context.locals.backOnline,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1!
+                          .bodyLarge!
                           .copyWith(color: Colors.white),
                     ),
                   ),

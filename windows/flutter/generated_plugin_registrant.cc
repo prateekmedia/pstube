@@ -7,8 +7,7 @@
 #include "generated_plugin_registrant.h"
 
 #include <connectivity_plus/connectivity_plus_windows_plugin.h>
-#include <dart_vlc/dart_vlc_plugin.h>
-#include <media_kit_core_video/media_kit_core_video_plugin_c_api.h>
+#include <media_kit_video/media_kit_video_plugin_c_api.h>
 #include <permission_handler_windows/permission_handler_windows_plugin.h>
 #include <screen_retriever/screen_retriever_plugin.h>
 #include <share_plus/share_plus_windows_plugin_c_api.h>
@@ -18,10 +17,8 @@
 void RegisterPlugins(flutter::PluginRegistry* registry) {
   ConnectivityPlusWindowsPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("ConnectivityPlusWindowsPlugin"));
-  DartVlcPluginRegisterWithRegistrar(
-      registry->GetRegistrarForPlugin("DartVlcPlugin"));
-  MediaKitCoreVideoPluginCApiRegisterWithRegistrar(
-      registry->GetRegistrarForPlugin("MediaKitCoreVideoPluginCApi"));
+  MediaKitVideoPluginCApiRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("MediaKitVideoPluginCApi"));
   PermissionHandlerWindowsPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("PermissionHandlerWindowsPlugin"));
   ScreenRetrieverPluginRegisterWithRegistrar(

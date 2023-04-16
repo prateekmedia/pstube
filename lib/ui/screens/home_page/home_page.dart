@@ -94,7 +94,7 @@ class MyHomePage extends HookConsumerWidget {
               children: [
                 Text(
                   context.locals.clearAll,
-                  style: context.textTheme.bodyText1,
+                  style: context.textTheme.bodyLarge,
                 ),
                 CheckboxListTile(
                   value: value,

@@ -75,7 +75,7 @@ class VideoWidget extends ConsumerWidget {
                     padding: const EdgeInsets.all(12),
                     child: Text(
                       videoData.title!,
-                      style: context.textTheme.headline4!.copyWith(
+                      style: context.textTheme.headlineMedium!.copyWith(
                         fontWeight: FontWeight.w400,
                       ),
                     ),

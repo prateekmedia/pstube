@@ -56,7 +56,7 @@ Future<dynamic> showPopoverForm({
                   onFieldSubmitted: (val) {
                     onConfirm?.call();
                   },
-                  style: context.textTheme.bodyText1,
+                  style: context.textTheme.bodyLarge,
                   decoration: InputDecoration(
                     hintText: hint,
                     isDense: true,
@@ -109,7 +109,7 @@ class Popover extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GtkDialog(
-      title: Text(title, style: context.textTheme.headline5),
+      title: Text(title, style: context.textTheme.headlineSmall),
       padding: padding,
       actions: AdwActions(
         onClose: Navigator.of(context).pop,

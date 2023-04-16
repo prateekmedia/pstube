@@ -188,7 +188,7 @@ Widget linksHeader(
         const SizedBox(width: 10),
         Text(
           label,
-          style: context.textTheme.headline5,
+          style: context.textTheme.headlineSmall,
         )
       ],
     ),
@@ -285,7 +285,7 @@ class DownloadQualityTile extends HookConsumerWidget {
               Align(
                 child: Text(
                   stream.quality,
-                  style: context.textTheme.headline5,
+                  style: context.textTheme.headlineSmall,
                   textAlign: TextAlign.center,
                 ),
               )

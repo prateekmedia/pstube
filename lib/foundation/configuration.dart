@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
@@ -35,7 +34,7 @@ class Configuration {
   static Future<void> init() async {
     if (Constants.isDesktop) {
       await initWindowManager();
-      DartVLC.initialize();
+      // DartVLC.initialize();
     }
 
     // Connectivity check stream initialised.
