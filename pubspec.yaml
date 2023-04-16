@@ -43,10 +43,9 @@ dependencies:
   libadwaita_searchbar_ac: ^0.5.8
   libadwaita_window_manager: ^0.5.4
   lucide_icons: ^0.104.0
+  media_kit:
   media_kit_video:
-    git:
-      url: https://github.com/alexmercerind/media_kit/
-      path: media_kit_video
+  media_kit_native_event_loop: 
   media_kit_libs_windows_video:
   media_kit_libs_linux:
   open_filex: ^4.3.0
@@ -77,10 +76,10 @@ dev_dependencies:
 
 dependency_overrides:
   ffi: ^2.0.1
-  media_kit:
-    git:
-      url: https://github.com/alexmercerind/media_kit/
-      path: media_kit
+  # media_kit:
+  #   git:
+  #     url: https://github.com/alexmercerind/media_kit/
+  #     path: media_kit
 #   window_manager:
 #     git:
 #       url: https://github.com/prateekmedia/window_manager

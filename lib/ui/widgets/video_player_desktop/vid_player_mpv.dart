@@ -144,7 +144,7 @@ class EventDesktopPlayerState extends State<VideoPlayerMpv> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      controller = await VideoController.create(player);
+      controller = await VideoController.create(player.handle);
       setState(() {});
     });
   }
@@ -179,8 +179,8 @@ class EventDesktopPlayerState extends State<VideoPlayerMpv> {
           ?.setProperty('audio-files', audurl);
     }
 
-    //await player.open(Playlist(medias)); //load url with both audio and video
-    await player.open(Playlist([Media(vid)])); // load video only url
+    await player.open(Playlist(medias)); //load url with both audio and video
+    // await player.open(Playlist([Media(vid)])); // load video only url
 
     setState(() => _isDownloading = false);
     setState(() => Triggered = true);

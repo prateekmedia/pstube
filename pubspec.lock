@@ -683,13 +683,12 @@ packages:
     source: hosted
     version: "0.2.0"
   media_kit:
-    dependency: "direct overridden"
+    dependency: "direct main"
     description:
-      path: media_kit
-      ref: HEAD
-      resolved-ref: "2f58dba1908bf7a8972eaa88e501619de16aba1e"
-      url: "https://github.com/alexmercerind/media_kit/"
-    source: git
+      name: media_kit
+      sha256: defc249a792bf39346e6ee3ec40bbe48685c54aab86a25c4c27cc54a99afb6b1
+      url: "https://pub.dev"
+    source: hosted
     version: "0.0.4+1"
   media_kit_libs_linux:
     dependency: "direct main"
@@ -707,14 +706,21 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
+  media_kit_native_event_loop:
+    dependency: "direct main"
+    description:
+      name: media_kit_native_event_loop
+      sha256: "677ea41d13a2013ca7fe050674eac3b5d891185d4300779727a5860a85cdda60"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   media_kit_video:
     dependency: "direct main"
     description:
-      path: media_kit_video
-      ref: HEAD
-      resolved-ref: "2f58dba1908bf7a8972eaa88e501619de16aba1e"
-      url: "https://github.com/alexmercerind/media_kit/"
-    source: git
+      name: media_kit_video
+      sha256: "1a870a3d731a9ce34e12ec5baed05b3081164f0c85b71baf05900ca47ee5639c"
+      url: "https://pub.dev"
+    source: hosted
     version: "0.0.4"
   meta:
     dependency: transitive
