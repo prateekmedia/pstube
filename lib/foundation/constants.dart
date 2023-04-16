@@ -8,6 +8,7 @@ class Constants {
   static const mobileWidth = 800;
   static const primaryColor = Colors.red;
   static final isMobileOrWeb = kIsWeb || Platform.isAndroid || Platform.isIOS;
+  static final isWindows = Platform.isWindows;
   static final isDesktop = !isMobileOrWeb;
 
   static const ytCom = 'https://youtube.com';

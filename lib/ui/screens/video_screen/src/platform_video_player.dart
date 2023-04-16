@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pod_player/pod_player.dart';
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/foundation/services.dart';
+import 'package:pstube/ui/widgets/video_player_desktop/vid_player_mpv.dart';
 import 'package:pstube/ui/widgets/video_player_desktop/video_player_desktop.dart';
 import 'package:pstube/ui/widgets/video_player_mobile.dart';
 
@@ -22,9 +23,19 @@ class PlatformVideoPlayer extends StatelessWidget {
           (p0) => !(p0.videoOnly ?? false),
         )
         .toList();
+    final videoonlyStreams = videoData.videoStreams!
+        .where(
+          (p0) => !(p0.videoOnly == false),
+        )
+        .toList();
+    final audioonlyStreams = videoData.audioStreams!
+        .where(
+          (p0) => (p0.codec == "opus"), //TODO: make this customizable
+        )
+        .toList();
 
-    return Constants.isMobileOrWeb
-        ? VideoPlayerMobile(
+    if (Constants.isMobileOrWeb) {
+        return VideoPlayerMobile(
             defaultQuality: 360,
             resolutions: videoStreams
                 .map(
@@ -38,8 +49,32 @@ class PlatformVideoPlayer extends StatelessWidget {
                   ),
                 )
                 .toList(),
-          )
-        : VideoPlayerDesktop(
+          );
+        } else if (Constants.isWindows){ 
+        return VideoPlayerMpv(
+            isCinemaMode: isCinemaMode,
+            url: videoStreams.last.url.toString(),
+            audstreams: audioonlyStreams.asMap().map(
+                  (key, value) => MapEntry(
+                    value.bitrate!,
+                    value.url.toString(),
+                  ),
+                ),
+            resolutions: videoonlyStreams.asMap().map(
+                  (key, value) => MapEntry(
+                    value.quality!,
+                    value.url.toString(),
+                  ),
+                ),
+            handw: videoonlyStreams.asMap().map(
+                  (key, value) => MapEntry(
+                    value.width!,
+                    value.height!,
+                  ),
+            ),
+          );
+        } else {
+          return VideoPlayerDesktop(
             isCinemaMode: isCinemaMode,
             url: videoStreams.last.url.toString(),
             resolutions: videoStreams.asMap().map(
@@ -49,5 +84,6 @@ class PlatformVideoPlayer extends StatelessWidget {
                   ),
                 ),
           );
+        };
   }
 }

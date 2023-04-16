@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:open_file/open_file.dart';
+import 'package:open_filex/open_filex.dart';
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
 import 'package:pstube/states/download_list/download_list.dart';
@@ -54,7 +54,7 @@ class DownloadItemBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: item.total != 0 && item.total == item.downloaded
-          ? () => OpenFile.open(item.queryVideo.path + item.queryVideo.name)
+          ? () => OpenFilex.open(item.queryVideo.path + item.queryVideo.name)
           : null,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
