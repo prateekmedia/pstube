@@ -13,12 +13,12 @@ class DownloadPathNotifier extends ChangeNotifier {
 
   set path(String? newPath) {
     if (newPath != null && newPath != path && Directory(newPath).existsSync()) {
-      final _newPath =
+      final newPath0 =
           newPath.endsWith('/') || Platform.isWindows && newPath.endsWith(r'\')
               ? newPath
               : newPath + (Platform.isWindows ? r'\' : '/');
-      MyPrefs().prefs.setString('downloadPath', _newPath);
-      _path = _newPath;
+      MyPrefs().prefs.setString('downloadPath', newPath0);
+      _path = newPath0;
       notifyListeners();
     }
   }

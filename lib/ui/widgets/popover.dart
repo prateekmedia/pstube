@@ -21,10 +21,10 @@ Future<dynamic> showPopover({
 
 Future<dynamic> showPopoverForm({
   required BuildContext context,
-  GlobalKey<FormState>? key,
   required String title,
-  Widget Function(BuildContext)? builder,
   required void Function()? onConfirm,
+  GlobalKey<FormState>? key,
+  Widget Function(BuildContext)? builder,
   TextEditingController? controller,
   String hint = '',
   void Function()? onCancel,
@@ -34,7 +34,7 @@ Future<dynamic> showPopoverForm({
   String? confirmText,
   bool hideConfirm = false,
 }) {
-  final _formKey = key ?? GlobalKey<FormState>();
+  final formKey = key ?? GlobalKey<FormState>();
   return showPopover(
     context: context,
     title: title,
@@ -49,7 +49,7 @@ Future<dynamic> showPopoverForm({
             child: Container(
               padding: padding,
               child: Form(
-                key: _formKey,
+                key: formKey,
                 child: TextFormField(
                   autofocus: true,
                   controller: controller,
@@ -96,10 +96,10 @@ Future<dynamic> showPopoverForm({
 
 class Popover extends StatelessWidget {
   const Popover({
-    super.key,
     required this.child,
     required this.title,
     required this.padding,
+    super.key,
   });
 
   final Widget child;

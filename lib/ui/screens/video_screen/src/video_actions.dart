@@ -16,12 +16,12 @@ import 'package:share_plus/share_plus.dart';
 
 class VideoActions extends HookConsumerWidget {
   const VideoActions({
-    super.key,
     required this.sideWidget,
     required this.videoData,
     required this.sideType,
     required this.emptySide,
     required this.isCinemaMode,
+    super.key,
   });
 
   final ValueNotifier<bool> isCinemaMode;
@@ -36,7 +36,7 @@ class VideoActions extends HookConsumerWidget {
     final isLiked = useState<bool>(
       likedList.likedVideoList.contains(videoData.id.url),
     );
-    final _textController = TextEditingController();
+    final textController = TextEditingController();
 
     void updateLike() {
       isLiked.value = !isLiked.value;
@@ -115,14 +115,14 @@ class VideoActions extends HookConsumerWidget {
                     context: context,
                     cancelText: context.locals.done,
                     hideConfirm: true,
-                    controller: _textController,
+                    controller: textController,
                     title: context.locals.save,
                     hint: context.locals.createNew,
                     onConfirm: () {
                       ref
                           .read(playlistProvider.notifier)
-                          .addPlaylist(_textController.value.text);
-                      _textController.value = TextEditingValue.empty;
+                          .addPlaylist(textController.value.text);
+                      textController.value = TextEditingValue.empty;
                     },
                     builder: (ctx) => PlaylistPopup(
                       videoData: videoData,
@@ -177,10 +177,10 @@ class VideoActions extends HookConsumerWidget {
 
 class VideoAction extends StatelessWidget {
   const VideoAction({
-    super.key,
     required this.icon,
-    this.onPressed,
     required this.label,
+    super.key,
+    this.onPressed,
   });
 
   final IconData icon;

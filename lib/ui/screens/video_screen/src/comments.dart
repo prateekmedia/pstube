@@ -10,9 +10,9 @@ import 'package:pstube/ui/widgets/widgets.dart';
 
 class CommentsWidget extends StatefulHookConsumerWidget {
   const CommentsWidget({
-    super.key,
     required this.onClose,
     required this.videoId,
+    super.key,
   });
 
   final String videoId;
@@ -35,7 +35,7 @@ class _CommentsWidgetState extends ConsumerState<CommentsWidget>
     final replyComment = commentsP.replyComment;
     final comments = commentsP.comments;
 
-    Future<void> _getMoreData() async {
+    Future<void> getMoreData() async {
       if (!isMounted() ||
           controller.position.pixels != controller.position.maxScrollExtent) {
         return;
@@ -46,8 +46,8 @@ class _CommentsWidgetState extends ConsumerState<CommentsWidget>
 
     useEffect(
       () {
-        controller.addListener(_getMoreData);
-        return () => controller.removeListener(_getMoreData);
+        controller.addListener(getMoreData);
+        return () => controller.removeListener(getMoreData);
       },
       [controller],
     );
@@ -132,10 +132,10 @@ class _CommentsWidgetState extends ConsumerState<CommentsWidget>
 
 class RepliesPage extends HookConsumerWidget {
   const RepliesPage({
-    super.key,
     required this.videoId,
     required this.comment,
     required this.padding,
+    super.key,
   });
 
   final String videoId;
@@ -148,7 +148,7 @@ class RepliesPage extends HookConsumerWidget {
     final isMounted = useIsMounted();
     final commentsP = ref.watch(commentsProvider);
 
-    Future<void> _getMoreData() async {
+    Future<void> getMoreData() async {
       if (!isMounted() ||
           controller.position.pixels != controller.position.maxScrollExtent) {
         return;
@@ -164,8 +164,8 @@ class RepliesPage extends HookConsumerWidget {
     useEffect(
       () {
         loadData();
-        controller.addListener(_getMoreData);
-        return () => controller.removeListener(_getMoreData);
+        controller.addListener(getMoreData);
+        return () => controller.removeListener(getMoreData);
       },
       [controller],
     );

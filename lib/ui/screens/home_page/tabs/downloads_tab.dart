@@ -42,9 +42,9 @@ class DownloadsTab extends ConsumerWidget {
 
 class DownloadItemBuilder extends StatelessWidget {
   const DownloadItemBuilder({
-    super.key,
     required this.item,
     required this.downloadListUtils,
+    super.key,
   });
 
   final DownloadItem item;

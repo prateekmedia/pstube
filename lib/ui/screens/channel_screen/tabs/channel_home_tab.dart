@@ -5,8 +5,8 @@ import 'package:pstube/foundation/extensions/extensions.dart';
 
 class ChannelHomeTab extends StatelessWidget {
   const ChannelHomeTab({
-    super.key,
     required this.channel,
+    super.key,
   });
 
   final ChannelData? channel;

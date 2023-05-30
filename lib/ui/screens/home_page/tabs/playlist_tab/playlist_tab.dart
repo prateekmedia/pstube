@@ -58,9 +58,9 @@ class _PlaylistScreenState extends ConsumerState<PlaylistTab>
 
 class PlaylistSubScreen extends StatelessWidget {
   const PlaylistSubScreen({
-    super.key,
     required this.playlistName,
     required this.ref,
+    super.key,
   });
 
   final String playlistName;

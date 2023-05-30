@@ -15,8 +15,8 @@ import 'package:pstube/ui/widgets/widgets.dart';
 
 class VideoScreen extends StatefulHookConsumerWidget {
   const VideoScreen({
-    super.key,
     required this.video,
+    super.key,
     this.videoId,
     this.loadData = false,
   }) : assert(

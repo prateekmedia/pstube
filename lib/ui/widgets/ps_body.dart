@@ -6,8 +6,8 @@ import 'package:pstube/ui/widgets/widgets.dart';
 
 class SFBody extends StatelessWidget {
   const SFBody({
-    super.key,
     required this.child,
+    super.key,
     this.expanded = true,
   });
 

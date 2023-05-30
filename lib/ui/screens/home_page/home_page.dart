@@ -22,12 +22,12 @@ class MyHomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _currentIndex = useState<int>(0);
-    final _addDownloadController = TextEditingController();
-    final _searchController = TextEditingController();
+    final currentIndex = useState<int>(0);
+    final addDownloadController = TextEditingController();
+    final searchController = TextEditingController();
     final toggleSearch = useState<bool>(false);
     final searchedTerm = useState<String>('');
-    final _controller = PageController(initialPage: _currentIndex.value);
+    final controller = PageController(initialPage: currentIndex.value);
 
     final mainScreens = [
       const HomeTab(),
@@ -49,7 +49,7 @@ class MyHomePage extends HookConsumerWidget {
     };
 
     Future<dynamic> addDownload() async {
-      if (_addDownloadController.text.isEmpty) {
+      if (addDownloadController.text.isEmpty) {
         final clipboard = await Clipboard.getData(Clipboard.kTextPlain);
         final youtubeRegEx = RegExp(
           r'^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$',
@@ -57,29 +57,31 @@ class MyHomePage extends HookConsumerWidget {
         if (clipboard != null &&
             clipboard.text != null &&
             youtubeRegEx.hasMatch(clipboard.text!)) {
-          _addDownloadController.text = clipboard.text!;
+          addDownloadController.text = clipboard.text!;
         }
       }
-      return showPopoverForm(
-        context: context,
-        onConfirm: () {
-          if (_addDownloadController.value.text.isNotEmpty) {
-            context.back();
-            showDownloadPopup(
-              context,
-              isClickable: true,
-              videoUrl: _addDownloadController.text
-                  .split('/')
-                  .last
-                  .split('watch?v=')
-                  .last,
-            );
-          }
-        },
-        hint: 'https://youtube.com/watch?v=***********',
-        title: context.locals.downloadFromVideoUrl,
-        controller: _addDownloadController,
-      );
+      if (context.mounted) {
+        return showPopoverForm(
+          context: context,
+          onConfirm: () {
+            if (addDownloadController.value.text.isNotEmpty) {
+              context.back();
+              showDownloadPopup(
+                context,
+                isClickable: true,
+                videoUrl: addDownloadController.text
+                    .split('/')
+                    .last
+                    .split('watch?v=')
+                    .last,
+              );
+            }
+          },
+          hint: 'https://youtube.com/watch?v=***********',
+          title: context.locals.downloadFromVideoUrl,
+          controller: addDownloadController,
+        );
+      }
     }
 
     void clearAll() {
@@ -124,8 +126,8 @@ class MyHomePage extends HookConsumerWidget {
 
     return WillPopScope(
       onWillPop: () async {
-        if (_currentIndex.value != 0) {
-          _controller.jumpToPage(0);
+        if (currentIndex.value != 0) {
+          controller.jumpToPage(0);
           return false;
         } else if (toggleSearch.value) {
           toggleSearchBar();
@@ -156,7 +158,7 @@ class MyHomePage extends HookConsumerWidget {
                     ? yexp.YoutubeExplode().search.getQuerySuggestions(str)
                     : Future.value(ref.watch(historyProvider.notifier).history),
                 onSubmitted: (str) => searchedTerm.value = str,
-                controller: _searchController,
+                controller: searchController,
               )
             : null,
         end: [
@@ -165,7 +167,7 @@ class MyHomePage extends HookConsumerWidget {
               onPressed: addDownload,
               icon: const Icon(Icons.add, size: 17),
             ),
-          if (!toggleSearch.value && _currentIndex.value == 2)
+          if (!toggleSearch.value && currentIndex.value == 2)
             AdwHeaderButton(
               icon: const Icon(LucideIcons.trash),
               onPressed: clearAll,
@@ -177,10 +179,10 @@ class MyHomePage extends HookConsumerWidget {
               Flexible(
                 child: SFBody(
                   child: PageView.builder(
-                    controller: _controller,
+                    controller: controller,
                     itemCount: mainScreens.length,
                     itemBuilder: (context, index) => mainScreens[index],
-                    onPageChanged: (index) => _currentIndex.value = index,
+                    onPageChanged: (index) => currentIndex.value = index,
                   ),
                 ),
               )
@@ -216,8 +218,8 @@ class MyHomePage extends HookConsumerWidget {
                     );
                   },
                 ),
-                currentIndex: _currentIndex.value,
-                onViewChanged: _controller.jumpToPage,
+                currentIndex: currentIndex.value,
+                onViewChanged: controller.jumpToPage,
               )
             : null,
       ),

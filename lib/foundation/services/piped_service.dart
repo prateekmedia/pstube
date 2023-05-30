@@ -24,9 +24,9 @@ class PipedService {
   final UnauthenticatedApi api;
 
   Future<ChannelData?> channelInfo(UploaderId uploaderId) async {
-    final _info = await api.channelInfoId(channelId: uploaderId.value);
-    if (_info.data == null) return null;
-    return ChannelData.fromChannelInfo(channelInfo: _info.data!);
+    final info = await api.channelInfoId(channelId: uploaderId.value);
+    if (info.data == null) return null;
+    return ChannelData.fromChannelInfo(channelInfo: info.data!);
   }
 
   Future<BuiltList<VideoData>?> getTrending() async {
@@ -56,14 +56,14 @@ class PipedService {
 
     if (commentsPage?.relatedStreams == null) return null;
 
-    final _comments = commentsPage!.relatedStreams!
+    final comments = commentsPage!.relatedStreams!
         .map(
           VideoData.fromStreamItem,
         )
         .toBuiltList();
 
     return StreamList(
-      streams: _comments,
+      streams: comments,
       nextpage: commentsPage.nextpage,
     );
   }
@@ -90,14 +90,14 @@ class PipedService {
 
     if (commentsPage?.comments == null) return null;
 
-    final _comments = commentsPage!.comments!
+    final comments = commentsPage!.comments!
         .map(
           CommentData.fromComment,
         )
         .toBuiltList();
 
     return StreamList(
-      streams: _comments,
+      streams: comments,
       nextpage: commentsPage.nextpage,
     );
   }
@@ -114,14 +114,14 @@ class PipedService {
 
     if (commentsPage?.comments == null) return null;
 
-    final _comments = commentsPage!.comments!
+    final comments = commentsPage!.comments!
         .map(
           CommentData.fromComment,
         )
         .toBuiltList();
 
     return StreamList(
-      streams: _comments,
+      streams: comments,
       nextpage: commentsPage.nextpage,
     );
   }
@@ -138,11 +138,11 @@ class PipedService {
 
     if (data == null) return null;
 
-    final _results =
+    final results =
         data.items!.map((e) => SearchData(data: e.data)).toBuiltList();
 
     return StreamList(
-      streams: _results,
+      streams: results,
       nextpage: data.nextpage,
     );
   }

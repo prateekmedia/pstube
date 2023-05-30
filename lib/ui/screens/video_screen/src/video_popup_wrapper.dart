@@ -5,10 +5,10 @@ import 'package:pstube/foundation/extensions/extensions.dart';
 
 class VideoPopupWrapper extends StatelessWidget {
   const VideoPopupWrapper({
-    super.key,
     required this.title,
     required this.onClose,
     required this.child,
+    super.key,
     this.isScrollable = true,
     this.start = const [],
   });

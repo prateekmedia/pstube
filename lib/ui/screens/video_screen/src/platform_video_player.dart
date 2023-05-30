@@ -7,9 +7,9 @@ import 'package:pstube/ui/widgets/video_player_mobile.dart';
 
 class PlatformVideoPlayer extends StatelessWidget {
   const PlatformVideoPlayer({
-    super.key,
     required this.videoData,
     required this.isCinemaMode,
+    super.key,
   });
 
   final ValueNotifier<bool> isCinemaMode;

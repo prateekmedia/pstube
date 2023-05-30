@@ -1,18 +1,16 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
+import 'package:media_kit_video_controls/widgets/widgets.dart';
 
 class VideoPlayerMpv extends StatefulWidget {
   const VideoPlayerMpv({
-    super.key,
     required this.url,
     required this.audstreams,
     required this.resolutions,
     required this.isCinemaMode,
     required this.handw,
+    super.key,
   });
 
   final ValueNotifier<bool> isCinemaMode;
@@ -22,256 +20,72 @@ class VideoPlayerMpv extends StatefulWidget {
   final Map<int, int> handw;
 
   @override
-  EventDesktopPlayerState createState() => EventDesktopPlayerState();
+  State<VideoPlayerMpv> createState() => _VideoPlayerMpvState();
 }
 
-//begin seekbar
-class SeekBar extends StatefulWidget {
-  const SeekBar({
-    super.key,
-    required this.player,
-  });
-  final Player player;
-
-  @override
-  State<SeekBar> createState() => _SeekBarState();
-}
-
-class _SeekBarState extends State<SeekBar> {
-  bool isPlaying = false;
-  Duration position = Duration.zero;
-  Duration duration = Duration.zero;
-  double volume = 0.5;
-
-  List<StreamSubscription<dynamic>> subscriptions = [];
+class _VideoPlayerMpvState extends State<VideoPlayerMpv> {
+  final Player player = Player(
+    configuration: const PlayerConfiguration(
+      logLevel: MPVLogLevel.warn,
+    ),
+  );
+  MediaKitController? mediaKitController;
+  VideoController? videoController;
 
   @override
   void initState() {
     super.initState();
-    isPlaying = widget.player.state.playing;
-    position = widget.player.state.position;
-    duration = widget.player.state.duration;
-    volume = widget.player.state.volume;
-
-    subscriptions.addAll(
-      [
-        widget.player.streams.playing.listen((event) {
-          setState(() {
-            isPlaying = event;
-          });
-        }),
-        widget.player.streams.position.listen((event) {
-          setState(() {
-            position = event;
-          });
-        }),
-        widget.player.streams.duration.listen((event) {
-          setState(() {
-            duration = event;
-          });
-        }),
-        widget.player.streams.volume.listen((event) {
-          setState(() {
-            volume = event;
-          });
-        }),
-      ],
+    mediaKitController = MediaKitController(
+      player: player,
+      autoPlay: true,
+      looping: true,
     );
-  }
 
-  @override
-  void dispose() {
-    super.dispose();
-    for (final s in subscriptions) {
-      s.cancel();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: Row(
-        children: [
-          IconButton(
-            onPressed: widget.player.playOrPause,
-            icon: Icon(
-              isPlaying ? Icons.pause : Icons.play_arrow,
-            ),
-            // color: Theme.of(context).toggleableActiveColor,
-            iconSize: 36,
-          ),
-          Text(position.toString().substring(2, 7)),
-          Expanded(
-            child: Slider(
-              max: duration.inMilliseconds.toDouble(),
-              value: position.inMilliseconds.toDouble().clamp(
-                    0,
-                    duration.inMilliseconds.toDouble(),
-                  ),
-              onChanged: (e) {
-                setState(() {
-                  position = Duration(milliseconds: e ~/ 1);
-                });
-              },
-              onChangeEnd: (e) {
-                widget.player.seek(Duration(milliseconds: e ~/ 1));
-              },
-            ),
-          ),
-          Text(duration.toString().substring(2, 7)),
-          //IconButton(
-          //  onPressed: ,
-          //  icon: Icon(
-          //    Icons.volume = 0.0 ? Icons.volume_off : Icons.volume_up,,
-          //  ),
-          //  color: Theme.of(context).primaryColor,
-          //  iconSize: 36.0,
-          //),
-        ],
-      ),
-    );
-  }
-}
-//end seekbar
-
-class EventDesktopPlayerState extends State<VideoPlayerMpv> {
-  // Create a [Player] instance from `package:media_kit`.
-  final Player player = Player();
-  // Reference to the [VideoController] instance from `package:media_kit_core_video`.
-  VideoController? controller;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      controller = await VideoController.create(player.handle);
+    Future.microtask(() async {
+      videoController = await VideoController.create(player);
       setState(() {});
     });
   }
 
-  bool _isDownloading = false;
-  bool Triggered = false;
-  bool isVisible = false;
-  bool Asp = false;
-  String? url;
-  late List<Media> medias = <Media>[Media(widget.url)];
-  late Map<int, String> aud = widget.audstreams;
-  late Map<String, String> res = widget.resolutions;
-  late Map<int, int> aspect = widget.handw;
-  late double aspectvalue;
-
-  Future<void> _downloadAction(String vid) async {
-    // default to using the highest bitrate, probably a better way of doing this
-    // TODO probably want a way to override this
-    late var bitrate = 0;
-    late String audurl;
-
-    aud.forEach((k, v) {
-      if (k > bitrate) {
-        audurl = v;
-        bitrate = k;
-      }
-    });
-
-    //load audio track should get put behind an if statment
-    if (player.platform is libmpvPlayer) {
-      await (player.platform as libmpvPlayer?)
-          ?.setProperty('audio-files', audurl);
-    }
-
-    await player.open(Playlist(medias)); //load url with both audio and video
-    // await player.open(Playlist([Media(vid)])); // load video only url
-
-    setState(() => _isDownloading = false);
-    setState(() => Triggered = true);
-    setState(() => Asp = true);
-
-    final aspectlist = aspect.entries.toList();
-    final h = aspectlist[0].key;
-    final w = aspectlist[0].value;
-
-    aspectvalue = h / w;
-  }
-
   @override
   void dispose() {
-    Future.microtask(() async {
-      await controller?.dispose();
-      await player.dispose();
-    });
+    player.dispose();
+    videoController?.dispose();
+    mediaKitController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: const Color.fromARGB(0, 0, 0, 0),
-      child: AspectRatio(
-        aspectRatio: Asp != true ? 5 / 1 : aspectvalue,
-        child: Triggered == true
-            ? Stack(
-                //alignment: Alignment.bottomCenter,
+    return Center(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            flex: 3,
+            child: Container(
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Center(child: Video(controller: controller)),
-                  if (isVisible)
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: ColoredBox(
-                        color: const Color.fromARGB(125, 0, 0, 0),
-                        child: SeekBar(player: player),
+                  Expanded(
+                    child: Card(
+                      elevation: 8,
+                      clipBehavior: Clip.antiAlias,
+                      margin: const EdgeInsets.all(32),
+                      child: MediaKitControls(
+                        controller: mediaKitController!,
+                        video: Video(controller: videoController),
                       ),
                     ),
-                  MouseRegion(
-                    onEnter: (PointerEvent details) =>
-                        setState(() => isVisible = true),
-                    onExit: (PointerEvent details) =>
-                        setState(() => isVisible = false),
-                    opaque: false,
-                  )
+                  ),
+                  const SizedBox(height: 32),
                 ],
-              )
-            : //Stack(
-            //children: [
-            Center(
-                child: //OutlinedButton.icon(
-                    //style: OutlinedButton.styleFrom(
-                    //  backgroundColor: Theme.of(context).colorScheme.surface,
-                    //),
-                    //icon: //_isDownloading
-                    //? const SizedBox(
-                    //    width: 24,
-                    //    height: 24,
-                    //    child: CircularProgressIndicator.adaptive(
-                    //        strokeWidth: 2),
-                    //  )
-                    //:
-
-                    // for showing audio bitrate
-
-                    //SimpleDialog(
-                    //    title: Text('Resolutions'),
-                    //    children: aud.entries.map((entry) {
-                    //      var w = var(entry.key);
-                    //      //_downloadAction(entry.value); //sends the URL
-                    //      return w;
-                    //    }).toList()),
-
-                    SimpleDialog(
-                  title: const Text('Resolutions'),
-                  children: res.entries.map((entry) {
-                    final w = Text(entry.key.toString());
-                    _downloadAction(entry.value); //sends the URL
-                    return w;
-                  }).toList(),
-                ), //TODO
-
-                //const Icon(Icons.download_outlined),
-                //label: Text("test"),
-                //onPressed: _downloadAction,
               ),
+            ),
+          ),
+        ],
       ),
-      //],
     );
-    //);
   }
 }

@@ -136,7 +136,7 @@ class _SettingsScreenState extends ConsumerState<SettingsTab>
                 ),
                 appIcon: Image.asset(AppInfo.myApp.imagePath),
                 credits: [
-                  AdwPreferencesGroup.credits(
+                  AdwPreferencesGroup(
                     title: 'Developers',
                     children: AppInfo.developerInfos
                         .map(
@@ -147,7 +147,7 @@ class _SettingsScreenState extends ConsumerState<SettingsTab>
                         )
                         .toList(),
                   ),
-                  AdwPreferencesGroup.credits(
+                  AdwPreferencesGroup(
                     title: 'Translations',
                     children: AppInfo.translatorsInfos
                         .map(

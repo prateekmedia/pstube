@@ -10,15 +10,15 @@ import 'package:pstube/ui/screens/channel_screen/tabs/tabs.dart';
 import 'package:pstube/ui/widgets/widgets.dart' hide ChannelDetails;
 
 class ChannelScreen extends HookConsumerWidget {
-  const ChannelScreen({super.key, required this.channelId});
+  const ChannelScreen({required this.channelId, super.key});
   final String channelId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isMounted = useIsMounted();
-    final _pageController = usePageController();
-    final _currentIndex = useState<int>(0);
-    final _tabs = <String, IconData>{
+    final pageController = usePageController();
+    final currentIndex = useState<int>(0);
+    final tabs = <String, IconData>{
       context.locals.home: LucideIcons.home,
       context.locals.videos: LucideIcons.video,
       context.locals.about: LucideIcons.info,
@@ -37,7 +37,7 @@ class ChannelScreen extends HookConsumerWidget {
       await ref.read(channelProvider).loadAboutPage(channelId);
     }
 
-    Future<dynamic> _getMoreData() async {
+    Future<dynamic> getMoreData() async {
       if (!isMounted() ||
           controller.position.pixels != controller.position.maxScrollExtent) {
         return;
@@ -51,8 +51,8 @@ class ChannelScreen extends HookConsumerWidget {
         loadChannelData();
         loadAboutPage();
 
-        controller.addListener(_getMoreData);
-        return () => controller.removeListener(_getMoreData);
+        controller.addListener(getMoreData);
+        return () => controller.removeListener(getMoreData);
       },
       [controller],
     );
@@ -68,17 +68,17 @@ class ChannelScreen extends HookConsumerWidget {
             )
           : null,
       viewSwitcher: AdwViewSwitcher(
-        currentIndex: _currentIndex.value,
-        onViewChanged: _pageController.jumpToPage,
-        tabs: _tabs.entries
+        currentIndex: currentIndex.value,
+        onViewChanged: pageController.jumpToPage,
+        tabs: tabs.entries
             .map((e) => ViewSwitcherData(title: e.key, icon: e.value))
             .toList(),
       ),
       body: PageView(
-        controller: _pageController,
-        onPageChanged: (idx) => _currentIndex.value = idx,
+        controller: pageController,
+        onPageChanged: (idx) => currentIndex.value = idx,
         // These are the contents of the tab views, below the tabs.
-        children: _tabs.keys.toList().asMap().entries.map(
+        children: tabs.keys.toList().asMap().entries.map(
           (MapEntry<int, String> entry) {
             ScrollController? scrollController;
             late Widget tab;

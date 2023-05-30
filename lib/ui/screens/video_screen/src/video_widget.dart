@@ -12,12 +12,12 @@ import 'package:pstube/ui/widgets/channel_details.dart';
 
 class VideoWidget extends ConsumerWidget {
   const VideoWidget({
-    super.key,
     required this.videoData,
     required this.sideType,
     required this.sideWidget,
     required this.emptySide,
     required this.isCinemaMode,
+    super.key,
   });
 
   final ValueNotifier<bool> isCinemaMode;

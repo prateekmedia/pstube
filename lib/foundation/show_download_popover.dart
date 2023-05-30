@@ -79,8 +79,8 @@ class _DownloadWrapper extends ConsumerWidget {
 
 class DownloadsWidget extends ConsumerWidget {
   const DownloadsWidget({
-    super.key,
     required this.video,
+    super.key,
     this.onClose,
     this.isClickable = false,
   });
@@ -197,16 +197,16 @@ Widget linksHeader(
 
 class DownloadQualityTile extends HookConsumerWidget {
   const DownloadQualityTile({
-    super.key,
     required this.stream,
     required this.video,
+    super.key,
     this.onClose,
   });
 
   DownloadQualityTile.thumbnail({
-    super.key,
     required ThumbnailStreamInfo stream,
     required this.video,
+    super.key,
     this.onClose,
   }) : stream = StreamData(
           quality: stream.name,
@@ -221,15 +221,15 @@ class DownloadQualityTile extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final size = useState<int>(0);
-    final isMounted = useIsMounted();
 
     Future<void> getSize() async {
       final dio = Dio();
       try {
         // ignore: inference_failure_on_function_invocation
         final r = await dio.head(stream.url);
-        if (!isMounted()) return;
-        size.value = int.tryParse(r.headers['content-length']![0]) ?? 0;
+        if (context.mounted) {
+          size.value = int.tryParse(r.headers['content-length']![0]) ?? 0;
+        }
       } catch (e) {
         debugPrint('$e');
       }
@@ -255,17 +255,18 @@ class DownloadQualityTile extends HookConsumerWidget {
                   !await Permission.manageExternalStorage.request().isGranted) {
             return;
           }
-          if (!isMounted()) return;
-          onClose != null ? onClose!() : context.back();
+          if (context.mounted) {
+            onClose != null ? onClose!() : context.back();
 
-          await ref.read(downloadListProvider.notifier).addDownload(
-                context,
-                DownloadItem.fromVideo(
-                  video: video,
-                  stream: stream,
-                  path: ref.watch(downloadPathProvider).path,
-                ),
-              );
+            await ref.read(downloadListProvider.notifier).addDownload(
+                  context,
+                  DownloadItem.fromVideo(
+                    video: video,
+                    stream: stream,
+                    path: ref.watch(downloadPathProvider).path,
+                  ),
+                );
+          }
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),

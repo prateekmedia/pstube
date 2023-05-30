@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class SFInfo {
   SFInfo({
-    this.nickname,
     required this.name,
     required this.url,
     required this.description,
+    this.nickname,
     this.image,
   });
 

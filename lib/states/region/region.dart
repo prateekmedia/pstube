@@ -14,6 +14,7 @@ class RegionNotifier extends StateNotifier<Regions> {
   void reset() {
     MyPrefs().prefs.remove('region').whenComplete(
           () => state = Regions.values.firstWhere(
+            // ignore: deprecated_member_use
             (e) => e.name == WidgetsBinding.instance.window.locale.countryCode,
             orElse: () => Regions.US,
           ),

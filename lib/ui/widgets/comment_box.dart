@@ -12,9 +12,9 @@ import 'package:readmore/readmore.dart';
 
 class CommentBox extends HookConsumerWidget {
   const CommentBox({
-    super.key,
     required this.comment,
     required this.onReplyTap,
+    super.key,
     this.isInsideReply = false,
     this.isLiked = false,
     this.isLikedComment = false,

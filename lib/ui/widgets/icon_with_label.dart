@@ -5,8 +5,8 @@ enum SecColor { dark, light }
 
 class IconWithLabel extends StatelessWidget {
   const IconWithLabel({
-    super.key,
     required this.label,
+    super.key,
     this.style,
     this.margin = const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
     this.padding = const EdgeInsets.symmetric(horizontal: 12, vertical: 2),

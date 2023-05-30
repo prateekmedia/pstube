@@ -10,8 +10,8 @@ import 'package:pstube/ui/widgets/widgets.dart';
 
 class SearchScreen extends HookConsumerWidget {
   const SearchScreen({
-    super.key,
     required this.searchedTerm,
+    super.key,
   });
 
   final ValueNotifier<String> searchedTerm;
@@ -28,7 +28,7 @@ class SearchScreen extends HookConsumerWidget {
       await ref.read(searchProvider.notifier).search(searchedTerm.value);
     }
 
-    Future<void> _getMoreData() async {
+    Future<void> getMoreData() async {
       if (!isMounted() ||
           controller.position.pixels != controller.position.maxScrollExtent) {
         return;
@@ -40,12 +40,12 @@ class SearchScreen extends HookConsumerWidget {
     useEffect(
       () {
         loadVideos();
-        controller.addListener(_getMoreData);
+        controller.addListener(getMoreData);
         searchedTerm.addListener(loadVideos);
 
         return () {
           searchedTerm.removeListener(loadVideos);
-          controller.removeListener(_getMoreData);
+          controller.removeListener(getMoreData);
         };
       },
       [controller],
@@ -71,8 +71,8 @@ class SearchScreen extends HookConsumerWidget {
 
 class SearchContentWidget extends StatelessWidget {
   const SearchContentWidget({
-    super.key,
     required this.searchData,
+    super.key,
   });
 
   final SearchData searchData;

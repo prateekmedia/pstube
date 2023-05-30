@@ -5,8 +5,8 @@ class DownloadItem {
   DownloadItem({
     required this.queryVideo,
     required this.downloaded,
-    this.cancelToken,
     required this.total,
+    this.cancelToken,
   });
 
   DownloadItem.fromVideo({

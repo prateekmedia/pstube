@@ -9,16 +9,16 @@ import 'package:pstube/ui/widgets/widgets.dart';
 
 class BuildCommentBox extends StatefulHookConsumerWidget {
   const BuildCommentBox({
-    super.key,
     required this.comment,
     required this.onReplyTap,
+    super.key,
     this.hideReplyBtn = false,
   }) : updateLike = null;
 
   BuildCommentBox.liked({
-    super.key,
     required LikedComment comment,
     required this.onReplyTap,
+    super.key,
     this.hideReplyBtn = false,
     this.updateLike,
   }) : comment = CommentData.fromLikedComment(comment);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:libadwaita_window_manager/libadwaita_window_manager.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -22,9 +22,9 @@ class _LikedScreenState extends State<LikedScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final _controller = PageController();
-    final _currentIndex = useState<int>(0);
-    final _tabs = {
+    final controller = PageController();
+    final currentIndex = useState<int>(0);
+    final tabs = {
       context.locals.videos: LucideIcons.video,
       context.locals.comments: LucideIcons.messageCircle,
     };
@@ -38,9 +38,9 @@ class _LikedScreenState extends State<LikedScreen>
             context.backLeading(),
           ],
           viewSwitcher: AdwViewSwitcher(
-            currentIndex: _currentIndex.value,
-            onViewChanged: _controller.jumpToPage,
-            tabs: _tabs.entries
+            currentIndex: currentIndex.value,
+            onViewChanged: controller.jumpToPage,
+            tabs: tabs.entries
                 .map(
                   (e) => ViewSwitcherData(
                     title: e.key,
@@ -50,8 +50,8 @@ class _LikedScreenState extends State<LikedScreen>
                 .toList(),
           ),
           body: PageView(
-            controller: _controller,
-            onPageChanged: (page) => _currentIndex.value = page,
+            controller: controller,
+            onPageChanged: (page) => currentIndex.value = page,
             children: [
               LikedVideoList(likedList: likedList),
               LikedCommentList(likedList: likedList),
@@ -68,8 +68,8 @@ class _LikedScreenState extends State<LikedScreen>
 
 class LikedVideoList extends StatefulWidget {
   const LikedVideoList({
-    super.key,
     required this.likedList,
+    super.key,
   });
 
   final LikedList likedList;
@@ -108,8 +108,8 @@ class _LikedVideoListState extends State<LikedVideoList>
 
 class LikedCommentList extends StatefulWidget {
   const LikedCommentList({
-    super.key,
     required this.likedList,
+    super.key,
   });
 
   final LikedList likedList;

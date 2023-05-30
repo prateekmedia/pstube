@@ -9,8 +9,8 @@ import 'package:pstube/states/states.dart';
 
 class PSPlaylist extends ConsumerWidget {
   const PSPlaylist({
-    super.key,
     required this.playlist,
+    super.key,
   });
 
   final PlaylistData playlist;

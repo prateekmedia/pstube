@@ -26,9 +26,9 @@ class SearchNotifierProvider extends ChangeNotifier {
   StreamList<SearchData>? _searchList;
   BuiltList<SearchData>? get results => _searchList?.streams;
 
-  Future<void> search(String _query) async {
+  Future<void> search(String query) async {
     isLoading = true;
-    query = _query;
+    this.query = query;
     _searchList = null;
     notifyListeners();
 

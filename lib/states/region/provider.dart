@@ -9,6 +9,7 @@ final regionProvider = StateNotifierProvider<RegionNotifier, Regions>(
     Regions.values.firstWhere(
       (p0) => prefs.getString('region') != null
           ? p0.name == prefs.getString('region')
+          // ignore: deprecated_member_use
           : p0.name == WidgetsBinding.instance.window.locale.countryCode,
       orElse: () => Regions.US,
     ),

@@ -6,9 +6,9 @@ import 'package:pstube/foundation/extensions/extensions.dart';
 
 class VideoPlayerMobile extends StatefulWidget {
   const VideoPlayerMobile({
-    super.key,
     required this.defaultQuality,
     required this.resolutions,
+    super.key,
   });
 
   final int? defaultQuality;

@@ -7,8 +7,8 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 class DescriptionWidget extends StatelessWidget {
   const DescriptionWidget({
-    super.key,
     required this.video,
+    super.key,
     this.isInsidePopup = true,
   });
 
@@ -47,9 +47,9 @@ class DescriptionWidget extends StatelessWidget {
         if ((video.description ?? '').isNotEmpty)
           Container(
             padding: const EdgeInsets.symmetric(vertical: 4),
-            child: SelectableHtml(
+            child: Html(
               data: video.description!.replaceAll('\n', '<br>'),
-              onLinkTap: (link, _, __, ___) {
+              onLinkTap: (link, _, __) {
                 if (link != null) {
                   launchUrlString(link);
                   return;

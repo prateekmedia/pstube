@@ -40,18 +40,17 @@ class MyApp extends HookConsumerWidget {
       scrollBehavior: CustomScrollBehavior(),
       builder: (context, child) {
         Widget responsiveBuilder(BuildContext ctx, Widget child) {
-          return ResponsiveWrapper.builder(
-            child,
-            minWidth: 480,
-            defaultScale: true,
-            defaultScaleLandscape: true,
-            defaultScaleFactor: 1.11,
-            defaultScaleFactorLandscape: 0.9,
-            breakpoints: [
-              const ResponsiveBreakpoint.resize(480, name: MOBILE),
-              const ResponsiveBreakpoint.resize(800, name: TABLET),
-              const ResponsiveBreakpoint.resize(1000, name: DESKTOP),
-            ],
+          return MaxWidthBox(
+            maxWidth: 600,
+            child: ResponsiveBreakpoints.builder(
+              child: child,
+              breakpoints: [
+                const Breakpoint(start: 0, end: 450, name: MOBILE),
+                const Breakpoint(start: 451, end: 800, name: TABLET),
+                const Breakpoint(start: 801, end: 1920, name: DESKTOP),
+                const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
+              ],
+            ),
           );
         }
 
@@ -68,19 +67,15 @@ class MyApp extends HookConsumerWidget {
         AppLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      localeResolutionCallback: (deviceLocale, supportedLocales) {
-        if (supportedLocales.contains(deviceLocale)) {
-          return deviceLocale;
-        }
-        return const Locale('en');
-      },
       theme: AdwaitaThemeData.light(fontFamily: 'Noto Sans').copyWith(
         useMaterial3: true,
         primaryColor: Colors.red,
+        dividerColor: Colors.grey.withOpacity(0),
       ),
       darkTheme: AdwaitaThemeData.dark(fontFamily: 'Noto Sans').copyWith(
         primaryColor: Colors.red,
         useMaterial3: true,
+        dividerColor: Colors.grey.withOpacity(0),
       ),
       themeMode: ref.watch(themeTypeProvider),
       debugShowCheckedModeBanner: false,

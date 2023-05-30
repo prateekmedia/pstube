@@ -5,8 +5,8 @@ import 'package:pstube/states/states.dart';
 
 class PlaylistPopup extends ConsumerWidget {
   const PlaylistPopup({
-    super.key,
     required this.videoData,
+    super.key,
   });
 
   final VideoData videoData;

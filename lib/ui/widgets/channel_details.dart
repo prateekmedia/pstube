@@ -9,8 +9,8 @@ import 'package:pstube/ui/widgets/widgets.dart';
 
 class ChannelDetails extends StatefulHookWidget {
   const ChannelDetails({
-    super.key,
     required this.channelId,
+    super.key,
     this.textColor,
     this.isOnVideo = false,
   });
