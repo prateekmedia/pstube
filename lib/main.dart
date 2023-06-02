@@ -40,23 +40,20 @@ class MyApp extends HookConsumerWidget {
       scrollBehavior: CustomScrollBehavior(),
       builder: (context, child) {
         Widget responsiveBuilder(BuildContext ctx, Widget child) {
-          return MaxWidthBox(
-            maxWidth: 600,
-            child: ResponsiveBreakpoints.builder(
-              child: child,
-              breakpoints: [
-                const Breakpoint(start: 0, end: 450, name: MOBILE),
-                const Breakpoint(start: 451, end: 800, name: TABLET),
-                const Breakpoint(start: 801, end: 1920, name: DESKTOP),
-                const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
-              ],
-            ),
+          return ResponsiveBreakpoints.builder(
+            child: child,
+            breakpoints: [
+              const Breakpoint(start: 0, end: 450, name: MOBILE),
+              const Breakpoint(start: 451, end: 800, name: TABLET),
+              const Breakpoint(start: 801, end: 1920, name: DESKTOP),
+              const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
+            ],
           );
         }
 
+        child = virtualWindowFrameBuilder(context, child);
         child = botToastBuilder(context, child);
         child = responsiveBuilder(context, child);
-        child = virtualWindowFrameBuilder(context, child);
         return child;
       },
       navigatorObservers: [BotToastNavigatorObserver()],

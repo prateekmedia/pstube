@@ -41,15 +41,15 @@ dependencies:
   libadwaita_searchbar_ac: ^0.5.8
   libadwaita_window_manager: ^0.5.4
   lucide_icons: ^0.162.0
-  media_kit: ^0.0.3+3
+  media_kit:
     # git:
     #   url: https://github.com/zezo357/media_kit
     #   ref: controls
     #   path: media_kit
-  media_kit_libs_windows_video: ^1.0.2
-  media_kit_video: ^0.0.4
-  media_kit_libs_linux: ^1.0.2
-  media_kit_native_event_loop: ^1.0.2
+  media_kit_libs_linux:
+  media_kit_libs_windows_video:
+  media_kit_video:
+  media_kit_native_event_loop:
   media_kit_video_controls:
     git:
       url: https://github.com/zezo357/media_kit
@@ -86,19 +86,11 @@ dependency_overrides:
   wakelock: ^0.6.2
   wakelock_windows : ^0.2.1
   win32: ^4.0.0
-  media_kit_libs_windows_video: ^1.0.2
-  media_kit_libs_linux: ^1.0.2
-  media_kit_native_event_loop: ^1.0.2
   media_kit:
     git:
       url: https://github.com/zezo357/media_kit
       ref: controls
       path: media_kit
-  media_kit_video:
-    git:
-      url: https://github.com/zezo357/media_kit
-      ref: controls
-      path: media_kit_video
   csslib: 0.17.0
 #   window_manager:
 #     git:

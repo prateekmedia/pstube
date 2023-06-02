@@ -30,7 +30,7 @@ class _VideoPlayerMpvState extends State<VideoPlayerMpv> {
     ),
   );
   MediaKitController? mediaKitController;
-  VideoController? videoController;
+  late VideoController videoController;
 
   @override
   void initState() {
@@ -41,16 +41,13 @@ class _VideoPlayerMpvState extends State<VideoPlayerMpv> {
       looping: true,
     );
 
-    Future.microtask(() async {
-      videoController = await VideoController.create(player);
-      setState(() {});
-    });
+    videoController = VideoController(player);
+    setState(() {});
   }
 
   @override
   void dispose() {
     player.dispose();
-    videoController?.dispose();
     mediaKitController?.dispose();
     super.dispose();
   }
