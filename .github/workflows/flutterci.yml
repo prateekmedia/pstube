@@ -76,7 +76,7 @@ jobs:
           channel: stable
 
       - name: Install dependencies
-        run: sudo apt-get update -y && sudo apt-get install -y libfuse2 libvlc-dev ninja-build libgtk-3-dev dpkg-dev pkg-config rpm
+        run: sudo apt-get update -y && sudo apt-get install -y libfuse2 libmpv-dev ninja-build libgtk-3-dev dpkg-dev pkg-config rpm
 
       - name: Enable desktop support
         run: flutter config --enable-linux-desktop
