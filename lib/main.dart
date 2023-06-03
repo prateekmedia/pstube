@@ -67,12 +67,10 @@ class MyApp extends HookConsumerWidget {
       theme: AdwaitaThemeData.light(fontFamily: 'Noto Sans').copyWith(
         useMaterial3: true,
         primaryColor: Colors.red,
-        dividerColor: Colors.grey.withOpacity(0),
       ),
       darkTheme: AdwaitaThemeData.dark(fontFamily: 'Noto Sans').copyWith(
         primaryColor: Colors.red,
         useMaterial3: true,
-        dividerColor: Colors.grey.withOpacity(0),
       ),
       themeMode: ref.watch(themeTypeProvider),
       debugShowCheckedModeBanner: false,
