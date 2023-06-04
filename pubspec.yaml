@@ -52,7 +52,7 @@ dependencies:
   media_kit_native_event_loop:
   media_kit_video_controls:
     git:
-      url: https://github.com/zezo357/media_kit
+      url: https://github.com/prateekmedia/media_kit
       ref: controls
       path: media_kit_video_controls
   open_filex: ^4.3.0
@@ -88,7 +88,7 @@ dependency_overrides:
   win32: ^4.0.0
   media_kit:
     git:
-      url: https://github.com/zezo357/media_kit
+      url: https://github.com/prateekmedia/media_kit
       ref: controls
       path: media_kit
   csslib: 0.17.0
