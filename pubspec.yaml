@@ -2,7 +2,7 @@ name: pstube
 description: Watch and download videos without ads
 
 publish_to: none
-version: 2.6.0+2
+version: 3.0.0+3
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
@@ -37,7 +37,7 @@ dependencies:
   html: ^0.15.0
   http: ^0.13.6
   intl: ^0.18.0
-  libadwaita: ^2.0.0
+  libadwaita: ^2.0.1
   libadwaita_searchbar_ac: ^0.5.8
   libadwaita_window_manager: ^0.5.4
   lucide_icons: ^0.162.0
