@@ -20,7 +20,7 @@ dependencies:
   # dart_vlc:
     # git:
     #   url: https://github.com/alexmercerind/dart_vlc
-  dio: ^4.0.4
+  dio: ^5.0.0
   dio_cookie_manager: ^2.0.0
   equatable: ^2.0.3 
   file_picker: ^5.2.4
