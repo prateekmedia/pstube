@@ -18,11 +18,11 @@ dependencies:
   connectivity_plus: ^3.0.2
   custom_text: ^0.8.0
   # dart_vlc:
-    # git:
-    #   url: https://github.com/alexmercerind/dart_vlc
+  # git:
+  #   url: https://github.com/alexmercerind/dart_vlc
   dio: ^5.0.0
   dio_cookie_manager: ^2.0.0
-  equatable: ^2.0.3 
+  equatable: ^2.0.3
   file_picker: ^5.2.4
   flutter:
     sdk: flutter
@@ -42,14 +42,14 @@ dependencies:
   libadwaita_window_manager: ^0.5.4
   lucide_icons: ^0.162.0
   media_kit:
-    # git:
-    #   url: https://github.com/zezo357/media_kit
-    #   ref: controls
-    #   path: media_kit
+  # git:
+  #   url: https://github.com/zezo357/media_kit
+  #   ref: controls
+  #   path: media_kit
   media_kit_libs_linux:
   media_kit_libs_windows_video:
-  media_kit_video:
   media_kit_native_event_loop:
+  media_kit_video:
   media_kit_video_controls:
     git:
       url: https://github.com/prateekmedia/media_kit
@@ -82,21 +82,20 @@ dev_dependencies:
   very_good_analysis: ^4.0.0+1
 
 dependency_overrides:
+  csslib: 0.17.0
   ffi: ^2.0.1
-  wakelock: ^0.6.2
-  wakelock_windows : ^0.2.1
-  win32: ^4.0.0
   media_kit:
     git:
       url: https://github.com/prateekmedia/media_kit
       ref: controls
       path: media_kit
-  csslib: 0.17.0
 #   window_manager:
 #     git:
 #       url: https://github.com/prateekmedia/window_manager
 #       ref: patch-1
-
+  wakelock: ^0.6.2
+  wakelock_windows: ^0.2.1
+  win32: ^4.0.0
 flutter:
   generate: true
   uses-material-design: true

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:built_collection/built_collection.dart';
 import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/models/models.dart';

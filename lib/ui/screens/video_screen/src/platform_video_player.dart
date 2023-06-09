@@ -1,3 +1,4 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:pod_player/pod_player.dart';
 import 'package:pstube/data/models/models.dart';
@@ -17,19 +18,19 @@ class PlatformVideoPlayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final videoStreams = videoData.videoStreams!
+    final videoStreams = (videoData.videoStreams ?? BuiltList.from([]))
         .where(
           (p0) => !(p0.videoOnly ?? false),
         )
         .toList();
-    final videoonlyStreams = videoData.videoStreams!
+    final videoonlyStreams = (videoData.videoStreams ?? BuiltList.from([]))
         .where(
           (p0) => !(p0.videoOnly == false),
         )
         .toList();
-    final audioonlyStreams = videoData.audioStreams!
+    final audioonlyStreams = (videoData.audioStreams ?? BuiltList.from([]))
         .where(
-          (p0) => p0.codec == 'opus', //TODO: make this customizable
+          (p0) => p0.codec == 'opus',
         )
         .toList();
 
