@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:html/parser.dart';
+import 'package:parsed_readmore/parsed_readmore.dart';
 import 'package:piped_api/piped_api.dart';
 import 'package:pstube/data/models/comment_data.dart';
 import 'package:pstube/data/models/models.dart';
@@ -8,7 +10,6 @@ import 'package:pstube/foundation/constants.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
 import 'package:pstube/ui/screens/screens.dart';
 import 'package:pstube/ui/widgets/widgets.dart';
-import 'package:readmore/readmore.dart';
 
 class CommentBox extends HookConsumerWidget {
   const CommentBox({
@@ -92,12 +93,11 @@ class CommentBox extends HookConsumerWidget {
           const SizedBox(height: 8),
           Padding(
             padding: const EdgeInsets.only(left: 10),
-            child: ReadMoreText(
-              comment.commentText,
+            child: ParsedReadMore(
+              parse(comment.commentText.replaceAll('<br>', '\n')).body!.text,
               style: context.textTheme.bodyMedium!
                   .copyWith(color: context.brightness.textColor),
               trimLines: 4,
-              trimMode: TrimMode.Line,
               trimCollapsedText: '\n${context.locals.readMore}',
               trimExpandedText: '\n${context.locals.showLess}',
               lessStyle: context.textTheme.bodyLarge!.copyWith(

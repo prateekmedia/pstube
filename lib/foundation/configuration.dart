@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:media_kit/media_kit.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/foundation/controller/internet_connectivity.dart';
@@ -34,7 +35,9 @@ class Configuration {
   static Future<void> init() async {
     if (Constants.isDesktop) {
       await initWindowManager();
-      // DartVLC.initialize();
+
+      /// [MediaKit.ensureInitialized] must be called before using the library.
+      MediaKit.ensureInitialized();
     }
 
     // Connectivity check stream initialised.

@@ -222,10 +222,10 @@ packages:
     dependency: "direct main"
     description:
       name: connectivity_plus
-      sha256: b74247fad72c171381dbe700ca17da24deac637ab6d43c343b42867acb95c991
+      sha256: "8599ae9edca5ff96163fca3e36f8e481ea917d1e71cdad912c084b5579913f34"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.6"
+    version: "4.0.1"
   connectivity_plus_platform_interface:
     dependency: transitive
     description:
@@ -254,10 +254,10 @@ packages:
     dependency: transitive
     description:
       name: cookie_jar
-      sha256: d1cc6516a190ba667941f722b6365d202caff3dacb38de24268b8d6ff1ec8a1d
+      sha256: "823fd13d22c5cf0c846e8a31c9b276f768f423cca134990c22c33045462f8ef9"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.1"
+    version: "4.0.3"
   cross_file:
     dependency: transitive
     description:
@@ -286,10 +286,10 @@ packages:
     dependency: "direct main"
     description:
       name: custom_text
-      sha256: ceb65f0fb068d177fd8e6bccb2ab8b011a21dd95b3d5fc648e411c0d132b17d6
+      sha256: "51dd6a3c4c8d6f1fbd27fe65a1f25803218c750a085c47f9923eefab4dc236e9"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.0"
+    version: "1.0.0"
   dart_style:
     dependency: transitive
     description:
@@ -318,10 +318,10 @@ packages:
     dependency: "direct main"
     description:
       name: dio_cookie_manager
-      sha256: b45f11c2fcbccf39c5952ab68910b3a155486c4fa730ceb4ce867c4943169ea1
+      sha256: c4b7a693aa09efd694a5c5e12065daa5e026647b106245281ed1042b3ebefb8f
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.4"
+    version: "3.1.0"
   easy_autocomplete:
     dependency: transitive
     description:
@@ -669,10 +669,10 @@ packages:
     dependency: "direct main"
     description:
       name: lucide_icons
-      sha256: "652f3e5c813073481d98217e75d252a44cf34dcb4ca399feeb8d01f95e32393a"
+      sha256: "5c16819bc8af963cee90670c42f9874319e82289840ae0712bbe3ab081abcb26"
       url: "https://pub.dev"
     source: hosted
-    version: "0.162.0"
+    version: "0.241.0"
   matcher:
     dependency: transitive
     description:
@@ -692,11 +692,10 @@ packages:
   media_kit:
     dependency: "direct main"
     description:
-      path: media_kit
-      ref: controls
-      resolved-ref: "2e709411e5fff3de68a986148c78e876ca09a4e9"
-      url: "https://github.com/prateekmedia/media_kit"
-    source: git
+      name: media_kit
+      sha256: "080cfb5af8d04f8cc454cb4c5ea34b19de5b8e1a1b3af62a34e766364b5244ad"
+      url: "https://pub.dev"
+    source: hosted
     version: "0.0.11"
   media_kit_libs_linux:
     dependency: "direct main"
@@ -735,7 +734,7 @@ packages:
     description:
       path: media_kit_video_controls
       ref: controls
-      resolved-ref: "2e709411e5fff3de68a986148c78e876ca09a4e9"
+      resolved-ref: "537c54461c04f152daaf44335cb7cdfc05a3559d"
       url: "https://github.com/prateekmedia/media_kit"
     source: git
     version: "0.0.1"
@@ -835,6 +834,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.9"
+  parsed_readmore:
+    dependency: "direct main"
+    description:
+      name: parsed_readmore
+      sha256: "246493a6b64190ebc83fddf8e7ce71fc64dc9720d2a7368164ea61cec73540f7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.6"
   path:
     dependency: "direct main"
     description:
@@ -1044,14 +1051,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.1"
-  readmore:
-    dependency: "direct main"
-    description:
-      name: readmore
-      sha256: "99c2483202f7c7e98c50834d72be2b119aefecf4497ca1960ae9d5f418eb1481"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.0"
   responsive_framework:
     dependency: "direct main"
     description:
@@ -1096,10 +1095,10 @@ packages:
     dependency: "direct main"
     description:
       name: share_plus
-      sha256: b1f15232d41e9701ab2f04181f21610c36c83a12ae426b79b4bd011c567934b1
+      sha256: ed3fcea4f789ed95913328e629c0c53e69e80e08b6c24542f1b3576046c614e8
       url: "https://pub.dev"
     source: hosted
-    version: "6.3.4"
+    version: "7.0.2"
   share_plus_platform_interface:
     dependency: transitive
     description:
@@ -1301,10 +1300,10 @@ packages:
     dependency: transitive
     description:
       name: text_parser
-      sha256: "9d497412519764fc60715e6ed2ad0e39aed2b11de7e8f4be742c4c2be52e6be1"
+      sha256: "3cd3c808c5fa60e7c2d65b062cc1327c273f28680e05e86d0aac8479dfecaf34"
       url: "https://pub.dev"
     source: hosted
-    version: "0.4.2"
+    version: "2.0.0"
   timeago:
     dependency: "direct main"
     description:
@@ -1461,10 +1460,10 @@ packages:
     dependency: "direct dev"
     description:
       name: very_good_analysis
-      sha256: ebc48c51db35beeeec8c414e32f7bd78e612bd7f5992ccb0d46e19edaeb40b08
+      sha256: "5e4ea72d2a9188630f0dd8f120a541de730090ef8863243fedca8267a84508b8"
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.0+1"
+    version: "5.0.0+1"
   video_player:
     dependency: transitive
     description:
