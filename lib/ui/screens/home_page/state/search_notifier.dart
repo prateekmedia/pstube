@@ -20,8 +20,8 @@ class SearchNotifierProvider extends ChangeNotifier {
 
   bool isLoading = true;
   String query = '';
-  SearchFilter filter = SearchFilter.videos;
-  String? nextPageToken = '';
+  SearchFilter filter = SearchFilter.all;
+  String? nextPageToken;
 
   StreamList<SearchData>? _searchList;
   BuiltList<SearchData>? get results => _searchList?.streams;
@@ -42,13 +42,13 @@ class SearchNotifierProvider extends ChangeNotifier {
 
     _searchList = page;
     isLoading = false;
+    nextPageToken = page!.nextpage;
+
     notifyListeners();
   }
 
   Future<void> searchNextPage() async {
-    if (nextPageToken == null || isLoading) return;
-    isLoading = true;
-    notifyListeners();
+    if (nextPageToken == null || nextPageToken!.isEmpty || isLoading) return;
 
     final nextPage = await api.searchNextPage(
       nextpage: nextPageToken!,
@@ -64,7 +64,6 @@ class SearchNotifierProvider extends ChangeNotifier {
 
     _searchList = _searchList!.rebuild(nextPage.streams);
 
-    isLoading = false;
     notifyListeners();
   }
 }
