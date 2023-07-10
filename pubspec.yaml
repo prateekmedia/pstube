@@ -37,7 +37,7 @@ dependencies:
   html: ^0.15.0
   http: ^0.13.6
   intl: ^0.18.0
-  libadwaita: ^2.0.1
+  libadwaita: ^2.0.2
   libadwaita_searchbar_ac: ^0.5.8
   libadwaita_window_manager: ^0.5.4
   lucide_icons: ^0.241.0
