@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -29,8 +27,9 @@ class _ChannelLogoState extends State<ChannelLogo>
     super.build(context);
     final channelHasData = widget.channel != null;
     final channelData = channelHasData ? widget.channel! : null;
-    final Color bgColor =
-        Colors.primaries[Random().nextInt(Colors.primaries.length)];
+    final Color bgColor = Colors.primaries[
+        (channelData?.name ?? widget.author ?? '').encodeToInt %
+            Colors.primaries.length];
 
     final Widget defaultPlaceholder = Container(
       width: widget.size,

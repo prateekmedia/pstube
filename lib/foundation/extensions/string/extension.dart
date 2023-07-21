@@ -17,6 +17,14 @@ extension UrlLauncher on String {
     micros = (double.parse(parts[parts.length - 1]) * 1000000).round();
     return Duration(hours: hours, minutes: minutes, microseconds: micros);
   }
+
+  int get encodeToInt {
+    var sum = 0;
+    for (var i = 0; i < length; i++) {
+      sum += codeUnitAt(i);
+    }
+    return sum;
+  }
 }
 
 extension NullableExtension on String? {

@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:http/http.dart' as http;
 import 'package:libadwaita/libadwaita.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pstube/data/models/models.dart';
@@ -223,15 +223,24 @@ class DownloadQualityTile extends HookConsumerWidget {
     final size = useState<int>(0);
 
     Future<void> getSize() async {
-      final dio = Dio();
+      final client = http.Client();
       try {
-        // ignore: inference_failure_on_function_invocation
-        final r = await dio.head(stream.url);
-        if (context.mounted) {
-          size.value = int.tryParse(r.headers['content-length']![0]) ?? 0;
+        final r = await client.head(
+          Uri.parse(stream.url),
+        );
+        if (r.statusCode == 200) {
+          final length = r.headers['content-length'];
+          if (length != null) {
+            final sizeP = int.tryParse(length);
+            if (sizeP != null && context.mounted) {
+              size.value = sizeP;
+            }
+          }
         }
       } catch (e) {
         debugPrint('$e');
+      } finally {
+        client.close();
       }
     }
 

@@ -40,21 +40,14 @@ dependencies:
   libadwaita: ^2.0.2
   libadwaita_searchbar_ac: ^0.5.8
   libadwaita_window_manager: ^0.5.4
-  lucide_icons: ^0.241.0
+  lucide_icons: ^0.257.0
   media_kit:
-  # git:
-  #   url: https://github.com/zezo357/media_kit
-  #   ref: controls
-  #   path: media_kit
+  media_kit_libs_android_video: ^1.1.1
   media_kit_libs_linux:
   media_kit_libs_windows_video:
   media_kit_native_event_loop:
   media_kit_video:
-  media_kit_video_controls:
-    git:
-      url: https://github.com/prateekmedia/media_kit
-      ref: controls
-      path: media_kit_video_controls
+  miniplayer: ^1.0.1
   open_filex: ^4.3.0
   package_info_plus: ^4.0.2
   page_transition: ^2.0.5
@@ -65,7 +58,7 @@ dependencies:
   piped_api:
     git:
       url: https://github.com/TeamPiped/piped_dart
-  pod_player: ^0.1.0
+  pod_player: ^0.2.0
   responsive_framework: ^1.0.0
   share_plus: ^7.0.2
   shared_preferences: ^2.0.13

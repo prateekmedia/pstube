@@ -201,6 +201,15 @@ class MyHomePage extends HookConsumerWidget {
                         ],
                       ),
               ),
+            // Offstage(
+            //   offstage: ref.watch(selectedVideoProvider) != null,
+            //   child: Miniplayer(
+            //     minHeight: 60,
+            //     controller: ref.read(miniPlayerControllerProvider),
+            //     maxHeight: double.infinity,
+            //     builder: (height, percentage) => VideoScreen(),
+            //   ),
+            // )
           ],
         ),
         viewSwitcher: !toggleSearch.value
