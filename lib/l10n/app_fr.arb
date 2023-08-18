@@ -7,7 +7,7 @@
   "@downloads": {},
   "settings": "Réglages",
   "@settings": {},
-  "downloadFromVideoUrl": "Télécharger une vidéo avec son URL",
+  "downloadFromVideoUrl": "Télécharger une vidéo à partir d'un URL",
   "@downloadFromVideoUrl": {},
   "alsoDeleteThemFromStorage": "Supprimer également les fichiers stockés",
   "@alsoDeleteThemFromStorage": {},
