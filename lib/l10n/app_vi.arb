@@ -19,7 +19,7 @@
   "@standardResolution": {},
   "highResolution": "Cao",
   "@highResolution": {},
-  "downloadStarted": "Đang tải xuống…",
+  "downloadStarted": "Bắt đầu tải xuống…",
   "@downloadStarted": {},
   "joined": "Đã tham gia",
   "@joined": {},
@@ -138,5 +138,7 @@
   "videoNotFound": "Video không được tìm thấy!",
   "@videoNotFound": {},
   "downloadFolder": "Thư mục tải về",
-  "@downloadFolder": {}
+  "@downloadFolder": {},
+  "cinema": "Rạp phim",
+  "@cinema": {}
 }
