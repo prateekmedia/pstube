@@ -91,7 +91,7 @@ class _LikedVideoListState extends State<LikedVideoList>
           const SizedBox(height: 60),
           const Icon(LucideIcons.thumbsUp, size: 30),
           const SizedBox(height: 10),
-          Text(context.locals.noLikedVideosFound).center()
+          Text(context.locals.noLikedVideosFound).center(),
         ] else
           for (final url in widget.likedList.likedVideoList)
             PSVideo(
@@ -130,7 +130,7 @@ class _LikedCommentListState extends State<LikedCommentList>
           const SizedBox(height: 60),
           const Icon(LucideIcons.thumbsUp, size: 30),
           const SizedBox(height: 10),
-          Text(context.locals.noLikedCommentsFound).center()
+          Text(context.locals.noLikedCommentsFound).center(),
         ] else
           for (final comment in widget.likedList.likedCommentList)
             BuildCommentBox.liked(

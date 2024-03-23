@@ -119,7 +119,7 @@ class DownloadsWidget extends ConsumerWidget {
               label: context.locals.thumbnail,
               padding: const EdgeInsets.only(top: 6, bottom: 14),
             ),
-            for (var thumbnail in video.thumbnails.toStreamInfo(context))
+            for (final thumbnail in video.thumbnails.toStreamInfo(context))
               DownloadQualityTile.thumbnail(
                 stream: thumbnail,
                 video: video,
@@ -132,7 +132,7 @@ class DownloadsWidget extends ConsumerWidget {
             label: context.locals.videoPlusAudio,
             padding: const EdgeInsets.only(top: 6, bottom: 14),
           ),
-          for (var videoStream in video.videoStreams!
+          for (final videoStream in video.videoStreams!
               .where((p0) => !(p0.videoOnly ?? false))
               .toList()
               .reversed)
@@ -146,7 +146,7 @@ class DownloadsWidget extends ConsumerWidget {
             icon: Icons.audiotrack,
             label: context.locals.audioOnly,
           ),
-          for (var audioStream in video.audioStreams!)
+          for (final audioStream in video.audioStreams!)
             DownloadQualityTile(
               stream: StreamData.fromStream(stream: audioStream),
               video: video,
@@ -157,7 +157,7 @@ class DownloadsWidget extends ConsumerWidget {
             icon: Icons.videocam,
             label: context.locals.videoOnly,
           ),
-          for (var videoStream in video.videoStreams!
+          for (final videoStream in video.videoStreams!
               .where((p0) => p0.videoOnly ?? false)
               .toList())
             DownloadQualityTile(
@@ -189,7 +189,7 @@ Widget linksHeader(
         Text(
           label,
           style: context.textTheme.headlineSmall,
-        )
+        ),
       ],
     ),
   );
@@ -298,7 +298,7 @@ class DownloadQualityTile extends HookConsumerWidget {
                   style: context.textTheme.headlineSmall,
                   textAlign: TextAlign.center,
                 ),
-              )
+              ),
             ],
           ),
         ),

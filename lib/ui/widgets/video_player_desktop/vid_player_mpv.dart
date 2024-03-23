@@ -49,10 +49,10 @@ class _VideoPlayerMpvState extends State<VideoPlayerMpv> {
     // The audio URL is needed to load the audio track
     final audioUrl = aud[maxBitrate]!;
 
-    if (player.platform != null && player.platform is libmpvPlayer) {
+    if (player.platform != null && player.platform is NativePlayer) {
       try {
-        // The audio track is appended to the video track using the libmpvPlayer method
-        await (player.platform! as libmpvPlayer).setProperty(
+        // The audio track is appended to the video track using the NativePlayer method
+        await (player.platform! as NativePlayer).setProperty(
           'audio-files',
           Platform.isWindows
               ? audioUrl.replaceAll(';', r'\;')

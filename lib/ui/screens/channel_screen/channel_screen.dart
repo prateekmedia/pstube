@@ -15,7 +15,6 @@ class ChannelScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isMounted = useIsMounted();
     final pageController = usePageController();
     final currentIndex = useState<int>(0);
     final tabs = <String, IconData>{
@@ -38,7 +37,7 @@ class ChannelScreen extends HookConsumerWidget {
     }
 
     Future<dynamic> getMoreData() async {
-      if (!isMounted() ||
+      if (!context.mounted ||
           controller.position.pixels != controller.position.maxScrollExtent) {
         return;
       }

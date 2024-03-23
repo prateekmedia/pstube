@@ -117,7 +117,7 @@ class PSVideo extends ConsumerWidget {
                                       child: getTime(video),
                                     ),
                                 ],
-                              )
+                              ),
                             ],
                           ),
                         ),
@@ -145,7 +145,7 @@ class PSVideo extends ConsumerWidget {
                                     alignment: const Alignment(0.98, 0.94),
                                     child: getDuration(video),
                                   ),
-                                )
+                                ),
                             ],
                           ),
                         ),
@@ -184,7 +184,7 @@ class PSVideo extends ConsumerWidget {
                                 child: getTime(video),
                               ),
                           ],
-                        )
+                        ),
                       ],
                     ),
             ),

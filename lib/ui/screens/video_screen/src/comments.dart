@@ -27,7 +27,6 @@ class _CommentsWidgetState extends ConsumerState<CommentsWidget>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final isMounted = useIsMounted();
     final pageController = PageController();
     final controller = useScrollController();
     final currentPage = useState<int>(0);
@@ -36,7 +35,7 @@ class _CommentsWidgetState extends ConsumerState<CommentsWidget>
     final comments = commentsP.comments;
 
     Future<void> getMoreData() async {
-      if (!isMounted() ||
+      if (!context.mounted ||
           controller.position.pixels != controller.position.maxScrollExtent) {
         return;
       }
@@ -145,11 +144,10 @@ class RepliesPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = useScrollController();
-    final isMounted = useIsMounted();
     final commentsP = ref.watch(commentsProvider);
 
     Future<void> getMoreData() async {
-      if (!isMounted() ||
+      if (!context.mounted ||
           controller.position.pixels != controller.position.maxScrollExtent) {
         return;
       }
@@ -186,7 +184,7 @@ class RepliesPage extends HookConsumerWidget {
                   padding: const EdgeInsets.only(left: 20),
                   child: Column(
                     children: [
-                      for (CommentData reply in commentsP.replies!)
+                      for (final reply in commentsP.replies!)
                         BuildCommentBox(
                           comment: reply,
                           onReplyTap: null,
@@ -206,7 +204,7 @@ class RepliesPage extends HookConsumerWidget {
                     'No replies found.',
                   ),
                 ),
-              ]
+              ],
             ],
           )
         : getCircularProgressIndicator();
