@@ -1,3 +1,5 @@
+// ignore_for_file: unawaited_futures
+
 import 'dart:io';
 import 'dart:math';
 
@@ -40,41 +42,53 @@ class _VideoPlayerMpvState extends State<VideoPlayerMpv> {
   @override
   void initState() {
     super.initState();
-    _selectResolution(widget.resolutions.values.first);
+    _selectResolution(widget.resolutions.values.first, true);
   }
 
-  Future<void> _selectResolution(String vid) async {
-    // The maximum bitrate is needed to select the best audio quality
-    final maxBitrate = aud.keys.reduce(max);
-    // The audio URL is needed to load the audio track
-    final audioUrl = aud[maxBitrate]!;
+  Future<void> _selectResolution(String vid, [bool firstTime = false]) async {
+    Duration? currentPosition;
+    if (firstTime) {
+      // The maximum bitrate is needed to select the best audio quality
+      final maxBitrate = aud.keys.reduce(max);
+      // The audio URL is needed to load the audio track
+      final audioUrl = aud[maxBitrate]!;
 
-    if (player.platform != null && player.platform is NativePlayer) {
-      try {
-        // The audio track is appended to the video track using the NativePlayer method
-        await (player.platform! as NativePlayer).setProperty(
-          'audio-files',
-          Platform.isWindows
-              ? audioUrl.replaceAll(';', r'\;')
-              : audioUrl.replaceAll(':', r'\:'),
-        );
-      } catch (e) {
-        debugPrint('External Audio error: $e');
+      if (player.platform != null && player.platform is NativePlayer) {
+        try {
+          // The audio track is appended to the video track using the NativePlayer method
+          await (player.platform! as NativePlayer).setProperty(
+            'audio-files',
+            Platform.isWindows
+                ? audioUrl.replaceAll(';', r'\;')
+                : audioUrl.replaceAll(':', r'\:'),
+          );
+        } catch (e) {
+          debugPrint('External Audio error: $e');
+        }
       }
+    } else {
+      await player.pause();
+      currentPosition = player.state.position;
     }
 
     // The playlist with both audio and video tracks is opened by the player
     // await player.open(Playlist(medias));
     // Alternatively, only the video track can be opened by the player
-    await player.open(Playlist([Media(vid)]));
+    await player.open(Playlist([Media(vid)]), play: firstTime);
 
-    setState(() {
-      final aspectlist = aspect.entries.toList();
-      final h = aspectlist[0].key;
-      final w = aspectlist[0].value;
+    if (firstTime) {
+      setState(() {
+        final aspectlist = aspect.entries.toList();
+        final h = aspectlist[0].key;
+        final w = aspectlist[0].value;
 
-      aspectvalue = h / w;
-    });
+        aspectvalue = h / w;
+      });
+    }
+    if (currentPosition != null) {
+      await player.seek(currentPosition).then((value) => player.play());
+      setState(() {});
+    }
   }
 
   @override
@@ -91,6 +105,7 @@ class _VideoPlayerMpvState extends State<VideoPlayerMpv> {
         // Use [Video] widget to display video output.
         child: MaterialDesktopVideoControlsTheme(
           fullscreen: MaterialDesktopVideoControlsThemeData(
+            modifyVolumeOnScroll: false,
             bottomButtonBar: [
               const MaterialDesktopSkipPreviousButton(),
               const MaterialDesktopPlayOrPauseButton(),
@@ -117,6 +132,7 @@ class _VideoPlayerMpvState extends State<VideoPlayerMpv> {
             ],
           ),
           normal: MaterialDesktopVideoControlsThemeData(
+            modifyVolumeOnScroll: false,
             bottomButtonBar: [
               const MaterialDesktopSkipPreviousButton(),
               const MaterialDesktopPlayOrPauseButton(),
@@ -164,8 +180,19 @@ class _VideoPlayerMpvState extends State<VideoPlayerMpv> {
           },
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Text(
-              entry.key,
+            child: Row(
+              children: [
+                Text(
+                  entry.key,
+                ),
+                if (quality == entry.key) ...[
+                  const SizedBox(width: 8),
+                  const Icon(
+                    Icons.check,
+                    size: 18,
+                  ),
+                ],
+              ],
             ),
           ),
         );

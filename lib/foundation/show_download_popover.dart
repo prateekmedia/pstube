@@ -43,7 +43,7 @@ Future<dynamic> showDownloadPopup(
   );
 }
 
-class _DownloadWrapper extends ConsumerWidget {
+class _DownloadWrapper extends ConsumerStatefulWidget {
   const _DownloadWrapper({
     required this.video,
     required this.videoUrl,
@@ -55,20 +55,26 @@ class _DownloadWrapper extends ConsumerWidget {
   final bool isClickable;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final videoData = videoUrl != null || video?.audioStreams == null
-        ? ref.read(
-            videoInfoProvider(
-              videoUrl != null ? VideoId(videoUrl!) : video!.id,
-            ),
-          )
-        : null;
+  ConsumerState<_DownloadWrapper> createState() => _DownloadWrapperState();
+}
 
-    final loadedVideo = video?.videoStreams != null ? video! : videoData!.value;
+class _DownloadWrapperState extends ConsumerState<_DownloadWrapper> {
+  late final provider = videoInfoProvider(
+    widget.videoUrl != null ? VideoId(widget.videoUrl!) : widget.video!.id,
+  );
+  @override
+  Widget build(BuildContext context) {
+    final videoData =
+        widget.videoUrl != null || widget.video?.audioStreams == null
+            ? ref.watch(provider)
+            : null;
+
+    final loadedVideo =
+        widget.video?.videoStreams != null ? widget.video! : videoData!.value;
 
     return loadedVideo != null
         ? DownloadsWidget(
-            isClickable: isClickable,
+            isClickable: widget.isClickable,
             video: loadedVideo,
           )
         : videoData!.isLoading

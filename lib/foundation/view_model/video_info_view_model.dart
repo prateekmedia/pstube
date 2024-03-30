@@ -7,11 +7,11 @@ final videoViewModelProvider = Provider<VideoViewModel>((ref) {
   return VideoViewModel(pipedService);
 });
 
-FutureProvider<VideoData?> videoInfoProvider(VideoId videoId) =>
-    FutureProvider((ref) async {
-      final videoViewModel = ref.watch(videoViewModelProvider);
-      return videoViewModel.getInfo(videoId);
-    });
+final videoInfoProvider = FutureProvider.autoDispose
+    .family<VideoData?, VideoId>((ref, videoId) async {
+  final videoViewModel = ref.read(videoViewModelProvider);
+  return videoViewModel.getInfo(videoId);
+});
 
 class VideoViewModel {
   VideoViewModel(this.pipedService);

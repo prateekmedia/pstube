@@ -69,11 +69,7 @@ class MyHomePage extends HookConsumerWidget {
               showDownloadPopup(
                 context,
                 isClickable: true,
-                videoUrl: addDownloadController.text
-                    .split('/')
-                    .last
-                    .split('watch?v=')
-                    .last,
+                videoUrl: addDownloadController.text,
               );
             }
           },
