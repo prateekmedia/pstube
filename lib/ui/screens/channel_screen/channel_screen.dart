@@ -89,16 +89,13 @@ class ChannelScreen extends HookConsumerWidget {
                   channel: channelData,
                 );
                 isVisible = channelData != null;
-                break;
               case 1:
                 scrollController = controller;
                 tab = const ChannelVideosTab();
                 isVisible = videos != null;
-                break;
               case 2:
                 tab = const ChannelAboutTab();
                 isVisible = channelInfo != null;
-                break;
               default:
             }
 

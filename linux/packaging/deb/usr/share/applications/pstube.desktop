@@ -1,8 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=PsTube
-Icon=pstube
-Exec=pstube %u
-StartupWMClass=pstube
-Categories=Utility;
