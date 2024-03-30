@@ -1,0 +1,27 @@
+display_name: PsTube
+package_name: pstube
+maintainer:
+  name: Pratek Sunal
+  email: prateek@sunal.in
+priority: optional
+section: x11
+essential: false
+license: GPLv3
+icon: assets/pstube.png
+installed_size: 36000
+
+dependencies:
+  - libmpv1
+
+keywords:
+  - FluTube
+  - YouTube
+  - Piped
+  - Watch
+
+generic_name: PsTube
+
+categories:
+  - Utility
+
+startup_notify: false

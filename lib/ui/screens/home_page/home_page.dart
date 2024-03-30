@@ -69,11 +69,7 @@ class MyHomePage extends HookConsumerWidget {
               showDownloadPopup(
                 context,
                 isClickable: true,
-                videoUrl: addDownloadController.text
-                    .split('/')
-                    .last
-                    .split('watch?v=')
-                    .last,
+                videoUrl: addDownloadController.text,
               );
             }
           },
@@ -124,18 +120,15 @@ class MyHomePage extends HookConsumerWidget {
       );
     }
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      onPopInvoked: (_) async {
         if (currentIndex.value != 0) {
           controller.jumpToPage(0);
-          return false;
         } else if (toggleSearch.value) {
           toggleSearchBar();
-          return false;
         }
-
-        return true;
       },
+      canPop: currentIndex.value != 0 || toggleSearch.value,
       child: AdwScaffold(
         actions: AdwActions().windowManager,
         start: [

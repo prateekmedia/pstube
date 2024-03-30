@@ -1,0 +1,26 @@
+icon: assets/pstube.png
+summary: Watch and download videos without ads
+group: Application/Utility
+vendor: prateek.sunal.in
+packager: Prateek Sunal
+packagerEmail: prateek@sunal.in
+license: GPLv3
+url: https://github.com/prateekmedia/pstube
+
+display_name: PsTube
+
+dependencies:
+  - mpv-libs
+
+keywords:
+  - FluTube
+  - YouTube
+  - Piped
+  - Watch
+
+generic_name: PsTube
+
+categories:
+  - Utility
+
+startup_notify: false

@@ -144,7 +144,7 @@ class VideoActions extends HookConsumerWidget {
                               title: 'Related Video',
                               child: Column(
                                 children: [
-                                  for (var streamItem
+                                  for (final streamItem
                                       in videoData.relatedStreams!)
                                     PSVideo(
                                       videoData: VideoData.fromStreamItem(

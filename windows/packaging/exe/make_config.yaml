@@ -1,0 +1,9 @@
+app_id: 7C11CF23-CFDD-415B-81E6-5493D6BA68C0
+publisher: prateek.sunal.in
+publisher_url: https://github.com/prateekmedia/pstube
+display_name: PsTube
+create_desktop_icon: false
+install_dir_name: "{autopf}\\PsTube"
+setup_icon_file: ../runner/resources/app_icon.ico
+locales:
+  - en

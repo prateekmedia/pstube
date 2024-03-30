@@ -18,18 +18,17 @@ class SearchScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isMounted = useIsMounted();
     final searchP = ref.watch(searchProvider);
     final controller = useScrollController();
 
     Future<void> loadVideos() async {
-      if (!isMounted()) return;
+      if (context.mounted) return;
 
       await ref.read(searchProvider.notifier).search(searchedTerm.value);
     }
 
     Future<void> getMoreData() async {
-      if (!isMounted() ||
+      if (context.mounted ||
           controller.position.pixels != controller.position.maxScrollExtent) {
         return;
       }

@@ -43,7 +43,7 @@ Future<dynamic> showDownloadPopup(
   );
 }
 
-class _DownloadWrapper extends ConsumerWidget {
+class _DownloadWrapper extends ConsumerStatefulWidget {
   const _DownloadWrapper({
     required this.video,
     required this.videoUrl,
@@ -55,20 +55,26 @@ class _DownloadWrapper extends ConsumerWidget {
   final bool isClickable;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final videoData = videoUrl != null || video?.audioStreams == null
-        ? ref.read(
-            videoInfoProvider(
-              videoUrl != null ? VideoId(videoUrl!) : video!.id,
-            ),
-          )
-        : null;
+  ConsumerState<_DownloadWrapper> createState() => _DownloadWrapperState();
+}
 
-    final loadedVideo = video?.videoStreams != null ? video! : videoData!.value;
+class _DownloadWrapperState extends ConsumerState<_DownloadWrapper> {
+  late final provider = videoInfoProvider(
+    widget.videoUrl != null ? VideoId(widget.videoUrl!) : widget.video!.id,
+  );
+  @override
+  Widget build(BuildContext context) {
+    final videoData =
+        widget.videoUrl != null || widget.video?.audioStreams == null
+            ? ref.watch(provider)
+            : null;
+
+    final loadedVideo =
+        widget.video?.videoStreams != null ? widget.video! : videoData!.value;
 
     return loadedVideo != null
         ? DownloadsWidget(
-            isClickable: isClickable,
+            isClickable: widget.isClickable,
             video: loadedVideo,
           )
         : videoData!.isLoading
@@ -119,7 +125,7 @@ class DownloadsWidget extends ConsumerWidget {
               label: context.locals.thumbnail,
               padding: const EdgeInsets.only(top: 6, bottom: 14),
             ),
-            for (var thumbnail in video.thumbnails.toStreamInfo(context))
+            for (final thumbnail in video.thumbnails.toStreamInfo(context))
               DownloadQualityTile.thumbnail(
                 stream: thumbnail,
                 video: video,
@@ -132,7 +138,7 @@ class DownloadsWidget extends ConsumerWidget {
             label: context.locals.videoPlusAudio,
             padding: const EdgeInsets.only(top: 6, bottom: 14),
           ),
-          for (var videoStream in video.videoStreams!
+          for (final videoStream in video.videoStreams!
               .where((p0) => !(p0.videoOnly ?? false))
               .toList()
               .reversed)
@@ -146,7 +152,7 @@ class DownloadsWidget extends ConsumerWidget {
             icon: Icons.audiotrack,
             label: context.locals.audioOnly,
           ),
-          for (var audioStream in video.audioStreams!)
+          for (final audioStream in video.audioStreams!)
             DownloadQualityTile(
               stream: StreamData.fromStream(stream: audioStream),
               video: video,
@@ -157,7 +163,7 @@ class DownloadsWidget extends ConsumerWidget {
             icon: Icons.videocam,
             label: context.locals.videoOnly,
           ),
-          for (var videoStream in video.videoStreams!
+          for (final videoStream in video.videoStreams!
               .where((p0) => p0.videoOnly ?? false)
               .toList())
             DownloadQualityTile(
@@ -189,7 +195,7 @@ Widget linksHeader(
         Text(
           label,
           style: context.textTheme.headlineSmall,
-        )
+        ),
       ],
     ),
   );
@@ -298,7 +304,7 @@ class DownloadQualityTile extends HookConsumerWidget {
                   style: context.textTheme.headlineSmall,
                   textAlign: TextAlign.center,
                 ),
-              )
+              ),
             ],
           ),
         ),

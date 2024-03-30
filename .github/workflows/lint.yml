@@ -1,0 +1,30 @@
+name: FlutterLint
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+    FLUTTER_VERSION: "3.19.5"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup flutter
+        uses: subosito/flutter-action@master
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION  }}
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run lint check
+        run: flutter analyze --no-fatal-infos

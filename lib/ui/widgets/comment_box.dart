@@ -136,7 +136,7 @@ class CommentBox extends HookConsumerWidget {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        (comment.likeCount).formatNumber,
+                        comment.likeCount.formatNumber,
                         style: context.textTheme.bodyMedium!
                             .copyWith(fontSize: 12),
                       ),

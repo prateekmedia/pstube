@@ -14,7 +14,7 @@ class AppInfo {
       name: 'Prateek Sunal',
       url: 'https://github.com/prateekmedia',
       description: 'Founder | Lead Developer',
-    )
+    ),
   ];
 
   static List<SFInfo> translatorsInfos = <SFInfo>[

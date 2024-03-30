@@ -45,8 +45,10 @@ class PSVideo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return FutureBuilder<VideoData?>(
-      future: videoUrl != null
-          ? ref.watch(pipedServiceProvider).getVideoData(VideoId(videoUrl!))
+      future: videoUrl != null || videoData?.videoStreams == null
+          ? ref
+              .read(pipedServiceProvider)
+              .getVideoData(VideoId(videoUrl ?? videoData!.id.url))
           : null,
       builder: (context, snapshot) {
         final video = snapshot.data ?? videoData;
@@ -117,7 +119,7 @@ class PSVideo extends ConsumerWidget {
                                       child: getTime(video),
                                     ),
                                 ],
-                              )
+                              ),
                             ],
                           ),
                         ),
@@ -145,7 +147,7 @@ class PSVideo extends ConsumerWidget {
                                     alignment: const Alignment(0.98, 0.94),
                                     child: getDuration(video),
                                   ),
-                                )
+                                ),
                             ],
                           ),
                         ),
@@ -184,7 +186,7 @@ class PSVideo extends ConsumerWidget {
                                 child: getTime(video),
                               ),
                           ],
-                        )
+                        ),
                       ],
                     ),
             ),
@@ -254,7 +256,7 @@ class PSVideo extends ConsumerWidget {
 
   AdwButton getDownloadButton(VideoData? video, BuildContext context) =>
       AdwButton.circular(
-        onPressed: video != null
+        onPressed: video?.videoStreams != null
             ? () => showDownloadPopup(
                   context,
                   isClickable: true,

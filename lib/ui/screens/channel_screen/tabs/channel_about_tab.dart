@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:libadwaita/libadwaita.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
 import 'package:pstube/ui/screens/channel_screen/state/channel_notifier.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class ChannelAboutTab extends ConsumerWidget {
   const ChannelAboutTab({
@@ -75,7 +74,7 @@ class ChannelAboutTab extends ConsumerWidget {
                 ),
                 Wrap(
                   children: [
-                    for (ChannelLink link in channelInfo.channelLinks)
+                    for (final link in channelInfo.channelLinks)
                       AdwButton.pill(
                         onPressed: link.url.toString().launchIt,
                         padding: const EdgeInsets.symmetric(
@@ -87,14 +86,14 @@ class ChannelAboutTab extends ConsumerWidget {
                           vertical: 3,
                         ),
                         child: Text(link.title),
-                      )
+                      ),
                   ],
                 ),
               ],
               if (context.isMobile) ...[
                 const Divider(),
                 ...getStats,
-              ]
+              ],
             ],
           ),
         ),

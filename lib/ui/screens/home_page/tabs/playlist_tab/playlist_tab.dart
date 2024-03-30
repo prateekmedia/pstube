@@ -33,7 +33,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistTab>
             end: const Icon(Icons.chevron_right),
           ),
           if (playlist.entries.isNotEmpty)
-            for (var entry in playlist.entries)
+            for (final entry in playlist.entries)
               AdwActionRow(
                 onActivated: () => context.pushPage(
                   PlaylistSubScreen(
@@ -46,7 +46,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistTab>
                   onPressed: () => playlistP.removePlaylist(entry.key),
                   child: const Icon(LucideIcons.minus),
                 ),
-              )
+              ),
         ],
       ),
     );
@@ -84,7 +84,7 @@ class PlaylistSubScreen extends StatelessWidget {
         child: videos.isNotEmpty
             ? ListView(
                 children: [
-                  for (var videoUrl in videos)
+                  for (final videoUrl in videos)
                     PSVideo(
                       isRow: !context.isMobile,
                       videoUrl: videoUrl,

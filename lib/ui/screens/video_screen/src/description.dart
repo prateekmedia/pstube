@@ -3,6 +3,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:pstube/data/models/models.dart';
 import 'package:pstube/foundation/extensions/extensions.dart';
 import 'package:pstube/ui/screens/video_screen/src/export.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher_string.dart';
 
 class DescriptionWidget extends StatelessWidget {
@@ -38,7 +39,11 @@ class DescriptionWidget extends StatelessWidget {
               body: context.locals.views,
             ),
             DescriptionInfoWidget(
-              title: video.uploadDate ?? '',
+              title: video.uploadDate != null
+                  ? DateTime.tryParse(video.uploadDate!) != null
+                      ? timeago.format(DateTime.parse(video.uploadDate!))
+                      : video.uploadDate!
+                  : '',
               body: context.locals.uploadDate,
             ),
           ],

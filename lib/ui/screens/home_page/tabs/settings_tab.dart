@@ -41,8 +41,8 @@ class _SettingsScreenState extends ConsumerState<SettingsTab>
       ).then(
         (dynamic value) => setState(
           () {
-            final json = value as List<Map<String, String>>;
-            version = json.first['tag_name']!;
+            final json = value as List;
+            version = json.first['tag_name']! as String;
           },
         ),
       );

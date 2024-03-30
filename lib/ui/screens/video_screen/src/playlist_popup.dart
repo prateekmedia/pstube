@@ -17,7 +17,7 @@ class PlaylistPopup extends ConsumerWidget {
     final playlistP = ref.read(playlistProvider.notifier);
     return Column(
       children: [
-        for (var entry in playlist.entries)
+        for (final entry in playlist.entries)
           CheckboxListTile(
             value: entry.value.contains(videoData.id.url),
             onChanged: (isTrue) {

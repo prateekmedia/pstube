@@ -27,9 +27,9 @@ class DownloadsTab extends ConsumerWidget {
             const SizedBox(height: 60),
             const Icon(LucideIcons.download, size: 30),
             const SizedBox(height: 10),
-            Text(context.locals.noDownloadsFound).center()
+            Text(context.locals.noDownloadsFound).center(),
           ] else
-            for (DownloadItem item in downloadList)
+            for (final item in downloadList)
               DownloadItemBuilder(
                 item: item,
                 downloadListUtils: downloadListUtils,
@@ -85,7 +85,7 @@ class DownloadItemBuilder extends StatelessWidget {
                       label: item.queryVideo.duration.parseDuration().format(),
                       centerLabel: true,
                       secColor: SecColor.dark,
-                    )
+                    ),
                   ],
                 ),
               ),
