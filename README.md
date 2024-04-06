@@ -6,6 +6,10 @@
 <p align="center">
 <a href="https://github.com/prateekmedia/pstube/releases"><img alt="GitHub release" src="https://img.shields.io/github/v/release/prateekmedia/pstube"/></a> <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/prateekmedia/pstube?color=blue"/></a> <a href="#direct-app-download"><img alt="Download" src="https://img.shields.io/badge/Download-git-blue"/></a> <a href="https://hosted.weblate.org/engage/pstube/"><img src="https://hosted.weblate.org/widgets/pstube/-/app/svg-badge.svg" alt="Translation status" /></a>
 </p>
+<p align="center">
+<a href="https://github.com/prateekmedia/pstube/releases/latest/"><img align="center" src="https://img.shields.io/badge/Download Stable Version-15B?style=for-the-badge&logo=Github"/></a>
+
+</p>
 
 <img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/home-desktop.jpg?raw=true" width="600"/> <img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/search-desktop.jpg?raw=true" width="600"/> <img src="https://github.com/prateekmedia/pstube/blob/main/assets/screenshots/video-desktop.jpg?raw=true" width="600"/> <img src="https://github.com/prateekmedia/pstube/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg?raw=true" width="200"/> <img src="https://github.com/prateekmedia/pstube/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg?raw=true" width="200"/> <img src="https://github.com/prateekmedia/pstube/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/3.jpg?raw=true" width="200"/> 
 
@@ -26,9 +30,9 @@
     <li>Youtube</li>
 </ul>
 
-### Direct app download
+### Download Beta (Latest Features)
 
-<a href="https://github.com/prateekmedia/pstube/releases/latest/"><img src="https://img.shields.io/badge/Download latest version-indigo?style=for-the-badge&logo=Github"/></a>  <a href="https://github.com/prateekmedia/pstube/releases/continuous/"><img src="https://img.shields.io/badge/Download nightly build-157?style=for-the-badge&logo=Github"/></a>
+<a href="https://github.com/prateekmedia/pstube/releases?q=prerelease%3Atrue"><img src="https://img.shields.io/badge/Download beta version-B51?style=for-the-badge&logo=Github"/></a>
 
 ---
 
@@ -38,8 +42,8 @@ We use [weblate](https://hosted.weblate.org/projects/pstube/) for translations.
 
 ### Build from source
 
-- Download latest Flutter SDK (>=3.0.0)
-- Clone this repo and then for building
+- Download latest Flutter SDK (>=3.19.0)
+- Clone this repo and then run the following
 
 ```bash
 # Download dependencies
