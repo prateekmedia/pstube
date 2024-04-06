@@ -48,7 +48,7 @@ jobs:
       - name: Build Flutter app
         run: |
           flutter build apk
-          mv build/app/outputs/apk/release/pstube-* artifacts/pstube-android-${{ github.ref_name }}.apk
+          mv build/app/outputs/apk/release/pstube-* artifacts/pstube-${{ github.ref_name }}-android.apk
       
       - name: Install dependencies
         run: sudo apt-get update -y && sudo apt-get install -y libfuse2 libmpv-dev ninja-build libgtk-3-dev dpkg-dev pkg-config rpm
