@@ -9,8 +9,8 @@ env:
     FLUTTER_VERSION: "3.19.5"
 
 jobs:
-  build-android:
-    name: Android
+  build-android-linux:
+    name: Android and Linux
     runs-on: ubuntu-latest
 
     steps:
@@ -49,32 +49,7 @@ jobs:
         run: |
           flutter build apk
           mv build/app/outputs/apk/release/pstube-* artifacts/pstube-android-${{ github.ref_name }}.apk
-
-      - name: Create a draft GitHub release
-        uses: ncipollo/release-action@v1
-        with:
-            artifacts: "artifacts/*"
-            draft: true
-            allowUpdates: true
-            updateOnlyUnreleased: true
-
-  build-linux:
-    name: Linux
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Setup flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          cache: true
-          flutter-version: ${{ env.FLUTTER_VERSION  }}
-
-      - name: Create artifacts directory
-        run: mkdir artifacts
-
+      
       - name: Install dependencies
         run: sudo apt-get update -y && sudo apt-get install -y libfuse2 libmpv-dev ninja-build libgtk-3-dev dpkg-dev pkg-config rpm
 
@@ -97,11 +72,16 @@ jobs:
             flutter_distributor package --platform=linux --targets=zip --skip-clean
 
             # Move artifacts
-            mv dist/**/*-*-linux.deb artifacts/pstube-${{ github.ref_name }}-x86_64.deb
-            mv dist/**/*-*-linux.rpm artifacts/pstube-${{ github.ref_name }}-x86_64.rpm
-            # mv dist/**/*-*-linux.AppImage artifacts/pstube-${{ github.ref_name }}-x86_64.AppImage
-            mv dist/**/*-*-linux.zip artifacts/pstube-${{ github.ref_name }}-x86_64.zip
-      
+            mv dist/**/*-*-linux.deb artifacts/pstube-${{ github.ref_name }}-linux-x86_64.deb
+            mv dist/**/*-*-linux.rpm artifacts/pstube-${{ github.ref_name }}-linux-x86_64.rpm
+            # mv dist/**/*-*-linux.AppImage artifacts/pstube-${{ github.ref_name }}-linux-x86_64.AppImage
+            mv dist/**/*-*-linux.zip artifacts/pstube-${{ github.ref_name }}-linux-x86_64.zip
+
+      - name: Generate checksums
+        run: |
+          sha256sum artifacts/pstube-*-linux-* > artifacts/sha256sum-linux
+          sha256sum artifacts/pstube-*-android-* > artifacts/sha256sum-android
+
       - name: Create a draft GitHub release
         uses: ncipollo/release-action@v1
         with:
