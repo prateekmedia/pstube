@@ -78,11 +78,11 @@ jobs:
       - name: Install dependencies
         run: sudo apt-get update -y && sudo apt-get install -y libfuse2 libmpv-dev ninja-build libgtk-3-dev dpkg-dev pkg-config rpm
 
-      - name: Install appimagetool
-        run: |
-            wget -O appimagetool "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
-            chmod +x appimagetool
-            mv appimagetool /usr/local/bin/
+      # - name: Install appimagetool
+      #   run: |
+      #       wget -O appimagetool "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
+      #       chmod +x appimagetool
+      #       mv appimagetool /usr/local/bin/
 
       - name: Build desktop app
         run: |
@@ -93,13 +93,13 @@ jobs:
             # Package to different formats
             flutter_distributor package --platform=linux --targets=deb --skip-clean
             flutter_distributor package --platform=linux --targets=rpm --skip-clean
-            flutter_distributor package --platform=linux --targets=appimage --skip-clean
+            # flutter_distributor package --platform=linux --targets=appimage --skip-clean
             flutter_distributor package --platform=linux --targets=zip --skip-clean
 
             # Move artifacts
             mv dist/**/*-*-linux.deb artifacts/pstube-${{ github.ref_name }}-x86_64.deb
             mv dist/**/*-*-linux.rpm artifacts/pstube-${{ github.ref_name }}-x86_64.rpm
-            mv dist/**/*-*-linux.AppImage artifacts/pstube-${{ github.ref_name }}-x86_64.AppImage
+            # mv dist/**/*-*-linux.AppImage artifacts/pstube-${{ github.ref_name }}-x86_64.AppImage
             mv dist/**/*-*-linux.zip artifacts/pstube-${{ github.ref_name }}-x86_64.zip
       
       - name: Create a draft GitHub release

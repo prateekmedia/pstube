@@ -4,6 +4,6 @@ publisher_url: https://github.com/prateekmedia/pstube
 display_name: PsTube
 create_desktop_icon: false
 install_dir_name: "{autopf}\\PsTube"
-setup_icon_file: ../runner/resources/app_icon.ico
+setup_icon_file: ../../windows/runner/resources/app_icon.ico
 locales:
   - en
