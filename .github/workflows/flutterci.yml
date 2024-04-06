@@ -79,8 +79,8 @@ jobs:
 
       - name: Generate checksums
         run: |
-          sha256sum artifacts/pstube-*-linux-* > artifacts/sha256sum-linux
-          sha256sum artifacts/pstube-*-android-* > artifacts/sha256sum-android
+          sha256sum artifacts/pstube-*-linux* > artifacts/sha256sum-linux
+          sha256sum artifacts/pstube-*-android* > artifacts/sha256sum-android
 
       - name: Create a draft GitHub release
         uses: ncipollo/release-action@v1
