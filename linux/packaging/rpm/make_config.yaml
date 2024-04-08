@@ -9,7 +9,7 @@ url: https://github.com/prateekmedia/pstube
 
 display_name: PsTube
 
-dependencies:
+requires:
   - mpv-libs
 
 keywords:
